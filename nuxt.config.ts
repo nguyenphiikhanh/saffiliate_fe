@@ -20,13 +20,13 @@ export default defineNuxtConfig({
   // Server-side route rules (Proxying /api calls to backend to completely bypass browser CORS)
   routeRules: {
     "/api/**": {
-      proxy: "http://localhost:3030/api/**",
+     proxy: `${process.env.NUXT_PUBLIC_API_BASE}/**`,
     },
   },
 
   runtimeConfig: {
     public: {
-      apiBase: "http://localhost:3030/api", // fallback value, NUXT_PUBLIC_API_BASE in .env takes precedence
+      apiBase: "", // fallback value, NUXT_PUBLIC_API_BASE in .env takes precedence
     },
   },
 });
