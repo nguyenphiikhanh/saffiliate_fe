@@ -34,7 +34,7 @@
       <div class="flex flex-col items-center text-center mb-8">
         <!-- Brand Logo Icon -->
         <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-shopee-orange shadow-lg glow-orange shrink-0 mb-4 transition-transform duration-500 hover:rotate-12">
-          <!-- Caffiliate Icon: Orange Rounded Box, Circle with $, chase arrows -->
+          <!-- SAffiliate Icon: Orange Rounded Box, Circle with $, chase arrows -->
           <svg class="h-10 w-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10" />
             <line x1="12" y1="8" x2="12" y2="16" />
@@ -230,14 +230,14 @@
             </a>
 
             <!-- Icon 3: Email Support -->
-            <a href="mailto:support@caffiliate.com" class="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 text-red-600 dark:text-red-400 shadow-sm hover:shadow-md hover:bg-red-100 dark:hover:bg-red-900/40 hover:scale-105 active:scale-95 transition-premium" title="Email Hỗ trợ">
+            <a href="mailto:support@SAffiliate.com" class="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 text-red-600 dark:text-red-400 shadow-sm hover:shadow-md hover:bg-red-100 dark:hover:bg-red-900/40 hover:scale-105 active:scale-95 transition-premium" title="Email Hỗ trợ">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5.5 w-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </a>
 
             <!-- Icon 4: Website -->
-            <a href="#" class="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 text-emerald-600 dark:text-emerald-400 shadow-sm hover:shadow-md hover:bg-emerald-100 dark:hover:bg-emerald-900/40 hover:scale-105 active:scale-95 transition-premium" title="Trang chủ Caffiliate">
+            <a href="#" class="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 text-emerald-600 dark:text-emerald-400 shadow-sm hover:shadow-md hover:bg-emerald-100 dark:hover:bg-emerald-900/40 hover:scale-105 active:scale-95 transition-premium" title="Trang chủ Saffiliate">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5.5 w-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
               </svg>
@@ -265,10 +265,10 @@ definePageMeta({
 
 // SEO Metadata for the login page
 useSeoMeta({
-  title: "Đăng nhập | Caffiliate - Mua hàng, Hoàn Tiền Thật",
-  ogTitle: "Đăng nhập | Caffiliate - Mua hàng, Hoàn Tiền Thật",
-  description: "Đăng nhập hệ thống Caffiliate để quy đổi liên kết Shopee nhận cashback chiết khấu cao.",
-  ogDescription: "Đăng nhập hệ thống Caffiliate để quy đổi liên kết Shopee nhận cashback chiết khấu cao.",
+  title: "Đăng nhập | SAffiliate - Mua hàng, Hoàn Tiền Thật",
+  ogTitle: "Đăng nhập | SAffiliate - Mua hàng, Hoàn Tiền Thật",
+  description: "Đăng nhập hệ thống SAffiliate để quy đổi liên kết Shopee nhận cashback chiết khấu cao.",
+  ogDescription: "Đăng nhập hệ thống SAffiliate để quy đổi liên kết Shopee nhận cashback chiết khấu cao.",
   twitterCard: "summary",
 });
 
@@ -293,6 +293,7 @@ const isLoggingIn = ref(false);
 
 // Google login integration using better-auth client
 const handleGoogleLogin = async () => {
+  const config = useRuntimeConfig();
   if (isLoggingIn.value) return;
   errorMessage.value = "";
   isLoggingIn.value = true;
@@ -304,7 +305,7 @@ const handleGoogleLogin = async () => {
 
   const loginPromise = authClient.signIn.social({
     provider: "google",
-    callbackURL: "/"
+    callbackURL: typeof window !== 'undefined' ? window.location.origin + '/' : config.public.appURL
   });
 
   try {
