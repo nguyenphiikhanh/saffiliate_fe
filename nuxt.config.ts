@@ -26,7 +26,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: "", // fallback value, NUXT_PUBLIC_API_BASE in .env takes precedence
+      apiBase: process.env.NUXT_PUBLIC_API_BASE, // fallback value, NUXT_PUBLIC_API_BASE in .env takes precedence
     },
   },
 });
