@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { useAxios } from "@/composables/useAxios";
+import { useAppFetch } from "@/composables/useAppFetch";
 
 interface ProductInfo {
   itemId: number;
@@ -92,7 +92,7 @@ export function useShopeeApi() {
     isLoading.value = true;
 
     try {
-      const { api } = useAxios();
+      const { api } = useAppFetch();
 
       // Call Elysia API via Axios instance (relative path triggers Nitro proxy to bypass CORS)
       const response = await api.post<ConvertResponse>("/convert", {
