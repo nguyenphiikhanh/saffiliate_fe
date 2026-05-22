@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev -p 3030",
+    "cf:dev": "npx wrangler pages dev dist",
+    "cf:build": "nuxt build --preset=cloudflare_pages",
+    "cf:deploy": "npx wrangler pages deploy dist",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"

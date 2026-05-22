@@ -55,7 +55,7 @@
 
         <!-- Dynamic Slogan -->
         <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 dark:text-slate-200 mt-6 tracking-tight">
-          Mua hàng sọp-pe, <span class="bg-gradient-to-r from-shopee-orange to-amber-500 bg-clip-text text-transparent">Hoàn Tiền Thật</span>
+          Mua hàng sọp pe, <span class="bg-gradient-to-r from-shopee-orange to-amber-500 bg-clip-text text-transparent">Hoàn Tiền Thật</span>
         </h2>
         <p class="text-sm md:text-base font-medium text-slate-500 dark:text-slate-400 mt-2">
           Tiết kiệm thông minh với mỗi đơn hàng online
@@ -265,10 +265,10 @@ definePageMeta({
 
 // SEO Metadata for the login page
 useSeoMeta({
-  title: "Đăng nhập | SAffiliate - Mua hàng, Hoàn Tiền Thật",
-  ogTitle: "Đăng nhập | SAffiliate - Mua hàng, Hoàn Tiền Thật",
-  description: "Đăng nhập hệ thống SAffiliate để quy đổi liên kết Shopee nhận cashback chiết khấu cao.",
-  ogDescription: "Đăng nhập hệ thống SAffiliate để quy đổi liên kết Shopee nhận cashback chiết khấu cao.",
+  title: "Đăng nhập | Saffi - Mua hàng, Hoàn Tiền Thật",
+  ogTitle: "Đăng nhập | Saffi - Mua hàng, Hoàn Tiền Thật",
+  description: "Đăng nhập hệ thống Saffi để quy đổi liên kết Shopee nhận cashback chiết khấu cao.",
+  ogDescription: "Đăng nhập hệ thống Saffi để quy đổi liên kết Shopee nhận cashback chiết khấu cao.",
   twitterCard: "summary",
 });
 

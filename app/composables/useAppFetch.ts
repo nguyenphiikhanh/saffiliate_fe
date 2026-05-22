@@ -12,6 +12,9 @@ export function useAppFetch() {
       "Content-Type": "application/json",
       "Accept": "application/json",
     },
+    onResponse({ request, response, options }) {
+      response._data = response._data.data;
+    },
     onResponseError({ request, response, options }) {
       const parsedError = {
         message: response._data?.message || response.statusText || "Kết nối mạng hoặc API gặp sự cố.",
@@ -31,8 +34,8 @@ export function useAppFetch() {
     delete: <T = any>(url: string, opts?: any) => fetcher<T>(url, { ...opts, method: 'DELETE' }).then(data => ({ data })),
     // Interceptors mockup if needed elsewhere
     interceptors: {
-      request: { use: () => {} },
-      response: { use: () => {} }
+      request: { use: () => { } },
+      response: { use: () => { } }
     }
   };
 
