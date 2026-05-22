@@ -5,10 +5,10 @@
       <!-- Title Area inside Card -->
       <div class="text-center mb-8">
         <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight transition-colors duration-400">
-          Chuyển Đổi Link Tiếp Thị <span class="text-shopee-orange">Shopee</span>
+          Chuyển Đổi Link <span class="text-shopee-orange">Shopee</span>
         </h2>
         <p class="text-slate-600 dark:text-slate-400 text-sm mt-2 font-medium transition-colors duration-400">
-          Dán link sản phẩm Shopee của bạn vào bên dưới để nhận link affiliate rút gọn ngay lập tức.
+          Dán link sản phẩm Shopee của bạn vào bên dưới để mua sắm và nhận hoàn tiền.
         </p>
       </div>
 

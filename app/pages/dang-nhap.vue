@@ -55,10 +55,10 @@
 
         <!-- Dynamic Slogan -->
         <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 dark:text-slate-200 mt-6 tracking-tight">
-          Mua hàng sọp pe, <span class="bg-gradient-to-r from-shopee-orange to-amber-500 bg-clip-text text-transparent">Hoàn Tiền Thật</span>
+          Mua sắm, <span class="bg-gradient-to-r from-shopee-orange to-amber-500 bg-clip-text text-transparent">Hoàn Tiền Thật</span>
         </h2>
         <p class="text-sm md:text-base font-medium text-slate-500 dark:text-slate-400 mt-2">
-          Tiết kiệm thông minh với mỗi đơn hàng online
+          Tiết kiệm thông minh với mỗi đơn hàng mua sắm online
         </p>
       </div>
 
@@ -73,18 +73,18 @@
           <div class="flex gap-3 shrink-0 pr-3 animate-marquee-left">
             <!-- Badge 1 -->
             <div class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm">
-              <svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <span>Giới thiệu</span>
+              <span>Hoàn tiền cực nhanh</span>
             </div>
 
             <!-- Badge 2 -->
             <div class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm">
-              <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5a2 2 0 10-2 2h2zm0 0H4m8 0h8m-8 0v13m-8-6h16" />
+              <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>Mời bạn nhận thưởng</span>
+              <span>Mua sắm tiết kiệm</span>
             </div>
 
             <!-- Badge 3 -->
@@ -108,18 +108,18 @@
           <div class="flex gap-3 shrink-0 pr-3 animate-marquee-left" aria-hidden="true">
             <!-- Badge 1 -->
             <div class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm">
-              <svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <span>Giới thiệu</span>
+              <span>Hoàn tiền cực nhanh</span>
             </div>
 
             <!-- Badge 2 -->
             <div class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm">
-              <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5a2 2 0 10-2 2h2zm0 0H4m8 0h8m-8 0v13m-8-6h16" />
+              <svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>Mời bạn nhận thưởng</span>
+              <span>Mua sắm tiết kiệm</span>
             </div>
 
             <!-- Badge 3 -->

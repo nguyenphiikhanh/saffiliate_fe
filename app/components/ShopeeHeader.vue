@@ -15,9 +15,9 @@
         <div class="flex items-center gap-1 sm:gap-2">
           
           <!-- Logo Brand -->
-          <div class="flex items-center gap-2 mr-2">
+          <NuxtLink to="/" class="flex items-center gap-2 mr-2 cursor-pointer group shrink-0">
             <!-- Brand Icon -->
-            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-shopee-orange shadow-md glow-orange shrink-0 transition-transform duration-500 hover:rotate-12 select-none">
+            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-shopee-orange shadow-md glow-orange shrink-0 transition-transform duration-500 group-hover:rotate-12 select-none">
               <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="16" />
@@ -34,37 +34,55 @@
                 S<span class="text-shopee-orange">affiliate</span>
               </span>
               <span class="text-[7.5px] font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mt-0.5 leading-none">
-                CASHBACK & AFFILIATE
+                MUA SẮM HOÀN TIỀN
               </span>
             </div>
-          </div>
+          </NuxtLink>
 
           <!-- Phân cách dọc 1 -->
           <div class="hidden md:block h-6 w-px bg-slate-200 dark:bg-slate-800 mx-2"></div>
 
-          <!-- Nút Dashboard Cam Tròn Nổi Bật -->
-          <button 
-            class="flex h-9 w-9 items-center justify-center rounded-full bg-shopee-orange text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer hover:shadow-orange-500/25 shrink-0 group relative" 
-            type="button"
+          <!-- Nút Trang chủ (Dashboard) -->
+          <NuxtLink 
+            to="/"
+            class="hidden md:flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer shrink-0 group relative"
+            :class="[
+              route.path === '/'
+                ? 'h-9 w-9 bg-shopee-orange text-white shadow-md hover:scale-105 active:scale-95 hover:shadow-orange-500/25'
+                : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
+            ]"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/' ? '2.2' : '1.8'">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
             <!-- Tooltip -->
             <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
               <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"></div>
               <div class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl">
-                Dashboard
+                Trang chủ
               </div>
             </div>
-          </button>
+          </NuxtLink>
 
           <!-- Hàng Icon Điều Hướng (Dành cho PC & iPad) -->
           <div class="hidden md:flex items-center gap-1.5 ml-1">
-            <!-- Sparkles Icon -->
-            <button class="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0 group relative" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            <!-- Sparkles Icon (Hoàn Tiền) -->
+            <NuxtLink 
+              to="/hoan-tien" 
+              class="flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer shrink-0 group relative"
+              :class="[
+                route.path === '/hoan-tien'
+                  ? 'h-9 w-9 bg-shopee-orange text-white shadow-md hover:scale-105 active:scale-95 hover:shadow-orange-500/25'
+                  : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
+              ]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/hoan-tien' ? '2.2' : '1.8'" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Big curved star -->
+                <path d="M12 3c0 4.5 3.5 8 8 8c-4.5 0-8 3.5-8 8c0-4.5-3.5-8-8-8c4.5 0 8-3.5 8-8Z" />
+                <!-- Small dot -->
+                <circle cx="6" cy="18" r="1" fill="currentColor" />
+                <!-- Small star -->
+                <path d="M19 5c0 1.5 1 2.5 2.5 2.5C20 7.5 19 8.5 19 10c0-1.5-1-2.5-2.5-2.5C18 7.5 19 6.5 19 5Z" />
               </svg>
               <!-- Tooltip -->
               <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
@@ -73,50 +91,51 @@
                   Hoàn Tiền
                 </div>
               </div>
-            </button>
+            </NuxtLink>
 
-            <!-- Gift Icon (có thông báo đỏ) -->
-            <button class="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0 relative group" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5a2 2 0 10-2 2h2zm0 0H4m8 0h8m-8 0v13m-8-6h16" />
-              </svg>
-              <span class="absolute top-1 right-1 flex h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-slate-900 animate-pulse"></span>
-              <!-- Tooltip -->
-              <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
-                <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"></div>
-                <div class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl">
-                  Sự Kiện
-                </div>
-              </div>
-            </button>
-
-            <!-- Box Icon -->
-            <button class="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0 group relative" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <!-- Box Icon (Đơn Hàng) -->
+            <NuxtLink 
+              to="/don-hang" 
+              class="flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer shrink-0 group relative"
+              :class="[
+                route.path === '/don-hang'
+                  ? 'h-9 w-9 bg-shopee-orange text-white shadow-md hover:scale-105 active:scale-95 hover:shadow-orange-500/25'
+                  : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
+              ]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/don-hang' ? '2.2' : '1.8'">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
               <!-- Tooltip -->
               <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
                 <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"></div>
                 <div class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl">
-                  Sản Phẩm
+                  Đơn Hàng
                 </div>
               </div>
-            </button>
+            </NuxtLink>
 
-            <!-- Wallet Icon -->
-            <button class="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0 group relative" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <!-- Wallet Icon (Tài Chính) -->
+            <NuxtLink 
+              to="/tai-chinh" 
+              class="flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer shrink-0 group relative"
+              :class="[
+                route.path === '/tai-chinh'
+                  ? 'h-9 w-9 bg-shopee-orange text-white shadow-md hover:scale-105 active:scale-95 hover:shadow-orange-500/25'
+                  : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
+              ]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/tai-chinh' ? '2.2' : '1.8'">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
               </svg>
               <!-- Tooltip -->
               <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
                 <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"></div>
                 <div class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl">
-                  Doanh Thu
+                  Tài Chính
                 </div>
               </div>
-            </button>
+            </NuxtLink>
 
             <!-- Bell Icon -->
             <button class="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0 group relative" type="button">
@@ -132,9 +151,17 @@
               </div>
             </button>
 
-            <!-- Book Icon -->
-            <button class="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0 group relative" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <!-- Book Icon (Hướng Dẫn) -->
+            <NuxtLink 
+              to="/huong-dan" 
+              class="flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer shrink-0 group relative"
+              :class="[
+                route.path === '/huong-dan'
+                  ? 'h-9 w-9 bg-shopee-orange text-white shadow-md hover:scale-105 active:scale-95 hover:shadow-orange-500/25'
+                  : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
+              ]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/huong-dan' ? '2.2' : '1.8'">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
               <!-- Tooltip -->
@@ -144,11 +171,19 @@
                   Hướng Dẫn
                 </div>
               </div>
-            </button>
+            </NuxtLink>
 
-            <!-- Support Icon -->
-            <button class="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0 group relative" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <!-- Support Icon (Hỗ Trợ) -->
+            <NuxtLink 
+              to="/ho-tro" 
+              class="flex items-center justify-center rounded-full transition-all duration-300 cursor-pointer shrink-0 group relative"
+              :class="[
+                route.path === '/ho-tro'
+                  ? 'h-9 w-9 bg-shopee-orange text-white shadow-md hover:scale-105 active:scale-95 hover:shadow-orange-500/25'
+                  : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
+              ]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/ho-tro' ? '2.2' : '1.8'">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
               <!-- Tooltip -->
@@ -158,7 +193,7 @@
                   Hỗ Trợ
                 </div>
               </div>
-            </button>
+            </NuxtLink>
           </div>
 
         </div>
@@ -276,34 +311,32 @@
                 <!-- 3. Navigation Links List -->
                 <div class="flex flex-col gap-1 py-3 border-b border-slate-100 dark:border-slate-800/60">
                   <!-- Hồ sơ -->
-                  <button class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group">
+                  <NuxtLink 
+                    to="/ho-so" 
+                    @click="isMenuOpen = false"
+                    class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
+                  >
                     <div class="h-8.5 w-8.5 rounded-xl bg-orange-500/10 dark:bg-orange-500/15 text-orange-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
                     <span class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-shopee-orange dark:group-hover:text-shopee-orange transition-colors duration-300">Hồ sơ</span>
-                  </button>
-
-                  <!-- Mời bạn bè -->
-                  <button class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group">
-                    <div class="h-8.5 w-8.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/15 text-amber-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 10.742l5.316-2.658m0 0a3 3 0 100-3.368L8.684 7.376m0 2.366a3 3 0 100 4.516l5.316 2.658m0 0a3 3 0 103-3.368M12 8a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-shopee-orange dark:group-hover:text-shopee-orange transition-colors duration-300">Mời bạn bè</span>
-                  </button>
+                  </NuxtLink>
 
                   <!-- Tài chính -->
-                  <button class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group">
+                  <NuxtLink 
+                    to="/tai-chinh" 
+                    @click="isMenuOpen = false"
+                    class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
+                  >
                     <div class="h-8.5 w-8.5 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                     </div>
                     <span class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-shopee-orange dark:group-hover:text-shopee-orange transition-colors duration-300">Tài chính</span>
-                  </button>
+                  </NuxtLink>
                 </div>
 
                 <!-- 4. Logout Section -->
@@ -335,53 +368,99 @@
   <div class="fixed bottom-0 left-0 right-0 z-[100] h-[68px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-100 dark:border-slate-800/80 flex justify-around items-center px-2 md:hidden pb-safe shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.06)] select-none">
     
     <!-- Tab 1: Home -->
-    <button type="button" class="flex flex-col items-center justify-center gap-1 w-16 h-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange transition-colors active:scale-95 duration-200 cursor-pointer">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <NuxtLink 
+      to="/" 
+      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors active:scale-95 duration-200 cursor-pointer"
+      :class="[
+        route.path === '/'
+          ? 'text-shopee-orange font-extrabold'
+          : 'text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange'
+      ]"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/' ? '2.2' : '2'">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
       </svg>
-      <span class="text-[10px] font-bold tracking-tight">Home</span>
-    </button>
+      <span class="text-[10px] tracking-tight">Home</span>
+    </NuxtLink>
 
-    <!-- Tab 2: Hoàn Tiền (Active) -->
-    <button type="button" class="flex flex-col items-center justify-center gap-1 w-16 h-full text-shopee-orange transition-colors active:scale-95 duration-200 cursor-pointer">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+    <!-- Tab 2: Hoàn Tiền -->
+    <NuxtLink 
+      to="/hoan-tien" 
+      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors active:scale-95 duration-200 cursor-pointer"
+      :class="[
+        route.path === '/hoan-tien'
+          ? 'text-shopee-orange font-extrabold'
+          : 'text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange'
+      ]"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/hoan-tien' ? '2.2' : '2'" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Big curved star -->
+        <path d="M12 3c0 4.5 3.5 8 8 8c-4.5 0-8 3.5-8 8c0-4.5-3.5-8-8-8c4.5 0 8-3.5 8-8Z" />
+        <!-- Small dot -->
+        <circle cx="6" cy="18" r="1" fill="currentColor" />
+        <!-- Small star -->
+        <path d="M19 5c0 1.5 1 2.5 2.5 2.5C20 7.5 19 8.5 19 10c0-1.5-1-2.5-2.5-2.5C18 7.5 19 6.5 19 5Z" />
       </svg>
-      <span class="text-[10px] font-extrabold tracking-tight">Hoàn Tiền</span>
-    </button>
+      <span class="text-[10px] tracking-tight">Hoàn Tiền</span>
+    </NuxtLink>
 
     <!-- Tab 3: Đơn hàng -->
-    <button type="button" class="flex flex-col items-center justify-center gap-1 w-16 h-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange transition-colors active:scale-95 duration-200 cursor-pointer">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <NuxtLink 
+      to="/don-hang" 
+      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors active:scale-95 duration-200 cursor-pointer"
+      :class="[
+        route.path === '/don-hang'
+          ? 'text-shopee-orange font-extrabold'
+          : 'text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange'
+      ]"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/don-hang' ? '2.2' : '2'">
         <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
       </svg>
       <span class="text-[10px] font-bold tracking-tight">Đơn hàng</span>
-    </button>
+    </NuxtLink>
 
     <!-- Tab 4: Tài Chính -->
-    <button type="button" class="flex flex-col items-center justify-center gap-1 w-16 h-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange transition-colors active:scale-95 duration-200 cursor-pointer">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <NuxtLink 
+      to="/tai-chinh" 
+      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors active:scale-95 duration-200 cursor-pointer"
+      :class="[
+        route.path === '/tai-chinh'
+          ? 'text-shopee-orange font-extrabold'
+          : 'text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange'
+      ]"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/tai-chinh' ? '2.2' : '2'">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
       </svg>
       <span class="text-[10px] font-bold tracking-tight">Tài Chính</span>
-    </button>
+    </NuxtLink>
 
-    <!-- Tab 5: Thêm (Có chấm đỏ thông báo) -->
-    <button type="button" class="flex flex-col items-center justify-center gap-1 w-16 h-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange transition-colors active:scale-95 duration-200 cursor-pointer relative">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    <!-- Tab 5: Cá nhân -->
+    <NuxtLink 
+      to="/ho-so" 
+      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors active:scale-95 duration-200 cursor-pointer"
+      :class="[
+        route.path === '/ho-so'
+          ? 'text-shopee-orange font-extrabold'
+          : 'text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange'
+      ]"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/ho-so' ? '2.2' : '2'">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
       </svg>
-      <span class="absolute top-2 right-4 flex h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-slate-900 animate-pulse"></span>
-      <span class="text-[10px] font-bold tracking-tight">Thêm</span>
-    </button>
+      <span class="text-[10px] font-bold tracking-tight">Cá nhân</span>
+    </NuxtLink>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from "vue";
+import { useRoute } from "vue-router";
 import { useTheme } from "@/composables/useTheme";
 import { authClient } from "@/utils/auth-client";
 
+const route = useRoute();
 const { isDark, toggleTheme } = useTheme();
 const { data: session } = await authClient.useSession(useFetch);
 
