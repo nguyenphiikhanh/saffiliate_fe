@@ -50,7 +50,7 @@
             </svg>
           </div>
           <h3 class="text-sm font-bold text-slate-950 dark:text-white mb-1 group-hover:text-emerald-500 transition-colors">Tối Ưu Chiết Khấu</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">Nhận mức chiết khấu hoàn tiền hoa hồng cao nhất thị trường hiện nay, lên đến 95%.</p>
+          <p class="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">Nhận mức chiết khấu hoàn tiền hoa hồng cao nhất thị trường hiện nay, lên đến <b>90%</b>.</p>
         </div>
 
         <!-- Benefit 3 -->

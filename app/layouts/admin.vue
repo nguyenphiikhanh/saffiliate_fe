@@ -60,12 +60,15 @@
       </nav>
       
       <div class="p-4 shrink-0 border-t border-slate-200/50 dark:border-slate-800/50">
-        <NuxtLink to="/" class="flex items-center gap-3 px-4 py-3 rounded-2xl text-[13px] font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z" />
+        <button 
+          @click="handleSignOut" 
+          class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-[13px] font-bold text-rose-500 hover:bg-rose-500/5 hover:text-rose-600 transition-all duration-300 cursor-pointer select-none border-none text-left"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
-          Về trang User
-        </NuxtLink>
+          Đăng xuất
+        </button>
       </div>
     </aside>
 
@@ -73,11 +76,15 @@
     <main class="flex-1 flex flex-col h-full overflow-hidden relative z-10">
       <header class="h-16 flex items-center justify-between px-8 border-b border-slate-200/50 dark:border-slate-800/50 bg-white/30 dark:bg-slate-900/30 backdrop-blur-xl shrink-0">
         <h1 class="text-[17px] font-black text-slate-800 dark:text-slate-100">Hệ thống quản trị nội bộ</h1>
-        <div class="flex items-center gap-4">
-          <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-500 font-bold text-xs cursor-pointer border border-slate-300 dark:border-slate-700">
-            A
+          <div class="flex items-center gap-3 select-none">
+            <span class="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 hidden sm:inline">{{ userName }}</span>
+            <div class="h-8 w-8 rounded-full overflow-hidden flex items-center justify-center border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm relative shrink-0">
+              <img v-if="userAvatar" :src="userAvatar" class="h-full w-full object-cover" referrerpolicy="no-referrer" />
+              <div v-else class="h-full w-full bg-[#EC407A] text-white font-black text-xs flex items-center justify-center uppercase">
+                {{ firstLetter }}
+              </div>
+            </div>
           </div>
-        </div>
       </header>
       
       <div class="flex-1 overflow-y-auto scrollbar-hide p-8">
@@ -90,10 +97,25 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import { useTheme } from "@/composables/useTheme";
+import { authClient } from "@/utils/auth-client";
 
 const { initTheme } = useTheme();
+const { data: session } = await authClient.useSession(useFetch);
+
+const userName = computed(() => session.value?.user?.name || "Admin");
+const userAvatar = computed(() => session.value?.user?.image || "");
+const firstLetter = computed(() => userName.value.charAt(0).toUpperCase());
+
+const handleSignOut = async () => {
+  try {
+    await authClient.signOut();
+    navigateTo("/dang-nhap");
+  } catch (err) {
+    console.error("Lỗi khi đăng xuất:", err);
+  }
+};
 
 onMounted(() => {
   initTheme();

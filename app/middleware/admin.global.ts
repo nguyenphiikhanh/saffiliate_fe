@@ -2,12 +2,16 @@ import { authClient } from '~/utils/auth-client'
 import { ROLES } from '../utils/role'
 
 export default defineNuxtRouteMiddleware(async (to) => {
-	// Chỉ kiểm tra phân quyền nếu truy cập vào các thư mục/trang bắt đầu bằng /admin
-	if (to.path.startsWith('/admin')) {
-		const { data: session } = await authClient.useSession(useFetch);
+	const { data: session } = await authClient.useSession(useFetch);
 
-		// Nếu chưa đăng nhập hoặc không có quyền Admin, đẩy về trang chủ
-		if (!session.value || session.value.user?.role !== ROLES.ADMIN) {
+	if (session.value && session.value.user?.role === ROLES.ADMIN) {
+		// Logged in as Admin: Only allow access to admin routes
+		if (!to.path.startsWith('/admin')) {
+			return navigateTo('/admin');
+		}
+	} else {
+		// Regular user or Guest: Block access to admin routes
+		if (to.path.startsWith('/admin')) {
 			return navigateTo('/');
 		}
 	}
