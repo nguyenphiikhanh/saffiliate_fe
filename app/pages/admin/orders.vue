@@ -22,15 +22,18 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div class="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-900/[0.02]">
         <div class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Tổng đơn hàng</div>
-        <div class="text-2xl font-black text-slate-800 dark:text-white mt-1">{{ orders?.length || 0 }}</div>
+        <div v-if="pending && !response" class="h-8 w-16 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"></div>
+        <div v-else class="text-2xl font-black text-slate-800 dark:text-white mt-1">{{ orders?.length || 0 }}</div>
       </div>
       <div class="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-900/[0.02]">
         <div class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Hoa hồng tạm tính</div>
-        <div class="text-2xl font-black text-shopee-orange mt-1">{{ formatMoney(totalCommission) }}</div>
+        <div v-if="pending && !response" class="h-8 w-32 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"></div>
+        <div v-else class="text-2xl font-black text-shopee-orange mt-1">{{ formatMoney(totalCommission) }}</div>
       </div>
       <div class="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-900/[0.02]">
         <div class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Chờ duyệt</div>
-        <div class="text-2xl font-black text-amber-500 mt-1">{{ pendingCount }}</div>
+        <div v-if="pending && !response" class="h-8 w-16 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"></div>
+        <div v-else class="text-2xl font-black text-amber-500 mt-1">{{ pendingCount }}</div>
       </div>
     </div>
 
@@ -73,7 +76,14 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm">
-            <tr v-if="!orders || orders.length === 0">
+            <tr v-if="pending && !response">
+              <td colspan="5" class="p-4">
+                <div class="flex flex-col gap-3 animate-pulse">
+                  <div v-for="i in 5" :key="i" class="h-14 bg-slate-100 dark:bg-slate-800/50 rounded-xl w-full"></div>
+                </div>
+              </td>
+            </tr>
+            <tr v-else-if="!orders || orders.length === 0">
               <td colspan="5" class="p-8 text-center text-slate-500 text-sm font-medium">
                 Chưa có dữ liệu đơn hàng
               </td>
@@ -262,8 +272,9 @@ const showToast = (msg, type = 'success') => {
 };
 
 const headers = useRequestHeaders(['cookie']);
-const { data: response, refresh } = await useFetch('/api/order', {
-  headers
+const { data: response, refresh, pending } = await useFetch('/api/order', {
+  headers,
+  lazy: true
 });
 const orders = computed(() => {
   const res = response.value;

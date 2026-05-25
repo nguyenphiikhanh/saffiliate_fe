@@ -18,7 +18,8 @@
         </div>
         <div>
           <div class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Tổng Users</div>
-          <div class="text-2xl font-black text-slate-800 dark:text-white mt-0.5">1,248</div>
+          <div v-if="pending" class="h-6 w-16 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"></div>
+          <div v-else class="text-2xl font-black text-slate-800 dark:text-white mt-0.5">1,248</div>
         </div>
       </div>
       
@@ -30,7 +31,8 @@
         </div>
         <div>
           <div class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Đơn thành công</div>
-          <div class="text-2xl font-black text-slate-800 dark:text-white mt-0.5">856</div>
+          <div v-if="pending" class="h-6 w-16 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"></div>
+          <div v-else class="text-2xl font-black text-slate-800 dark:text-white mt-0.5">856</div>
         </div>
       </div>
       
@@ -42,7 +44,8 @@
         </div>
         <div>
           <div class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Tổng Hoa hồng</div>
-          <div class="text-2xl font-black text-slate-800 dark:text-white mt-0.5">42.5M</div>
+          <div v-if="pending" class="h-6 w-20 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"></div>
+          <div v-else class="text-2xl font-black text-slate-800 dark:text-white mt-0.5">42.5M</div>
         </div>
       </div>
       
@@ -54,7 +57,8 @@
         </div>
         <div>
           <div class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Đơn chờ duyệt</div>
-          <div class="text-2xl font-black text-slate-800 dark:text-white mt-0.5">142</div>
+          <div v-if="pending" class="h-6 w-12 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"></div>
+          <div v-else class="text-2xl font-black text-slate-800 dark:text-white mt-0.5">142</div>
         </div>
       </div>
     </div>
@@ -82,7 +86,17 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
+
 definePageMeta({
   layout: "admin"
+});
+
+const pending = ref(true);
+
+onMounted(() => {
+  setTimeout(() => {
+    pending.value = false;
+  }, 600);
 });
 </script>

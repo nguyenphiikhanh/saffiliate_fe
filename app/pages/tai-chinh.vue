@@ -270,35 +270,70 @@
           <div
             v-for="item in historyList"
             :key="item.id"
-            class="p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 bg-slate-50/20 dark:bg-slate-900/20 flex items-center justify-between gap-3.5"
+            class="p-4 rounded-2xl border flex flex-col gap-3 transition-colors"
+            :class="{
+              'bg-emerald-500/5 border-emerald-500/10 dark:bg-emerald-500/10 dark:border-emerald-500/20': item.status === 'success' || item.status === 'completed',
+              'bg-amber-500/5 border-amber-500/10 dark:bg-amber-500/10 dark:border-amber-500/20': item.status === 'pending',
+              'bg-rose-500/5 border-rose-500/10 dark:bg-rose-500/10 dark:border-rose-500/20': item.status === 'rejected' || item.status === 'failed',
+              'border-slate-100 dark:border-slate-800/60 bg-slate-50/20 dark:bg-slate-900/20': !['success', 'completed', 'pending', 'rejected', 'failed'].includes(item.status)
+            }"
           >
-            <div class="flex items-start gap-3">
-              <!-- Wallet Icon -->
-              <div class="h-9 w-9 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2" />
-                </svg>
+            <!-- Thông tin chính -->
+            <div class="flex items-center justify-between gap-3.5">
+              <div class="flex items-start gap-3">
+                <!-- Wallet Icon -->
+                <div class="h-9 w-9 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2" />
+                  </svg>
+                </div>
+                <div>
+                  <span class="text-xs font-black text-slate-800 dark:text-slate-100">{{ item.bankCode }} ({{ item.account }})</span>
+                  <p class="text-[9.5px] text-slate-400 dark:text-slate-500 mt-1 font-bold">{{ item.date }}</p>
+                </div>
               </div>
-              <div>
-                <span class="text-xs font-black text-slate-800 dark:text-slate-100">{{ item.bankCode }} ({{ item.account }})</span>
-                <p class="text-[9.5px] text-slate-400 dark:text-slate-500 mt-1 font-bold">{{ item.date }}</p>
+
+              <!-- Amount details and status -->
+              <div class="flex flex-col items-end shrink-0">
+                <span class="text-xs font-extrabold text-slate-800 dark:text-white leading-none">{{ formatMoney(item.amount) }}</span>
+                <div class="flex items-center gap-1.5 mt-1.5">
+                  <button 
+                    v-if="(item.status === 'rejected' || item.status === 'failed') && item.rejectReason"
+                    @click="item.showReason = !item.showReason"
+                    class="text-[9px] font-bold text-rose-500 hover:text-rose-600 underline decoration-rose-500/30 underline-offset-2 transition-colors focus:outline-none"
+                  >
+                    Lý do huỷ
+                  </button>
+                  <span
+                    class="px-2 py-0.5 rounded-full text-[8.5px] font-black tracking-wide uppercase select-none"
+                    :class="{
+                      'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400': item.status === 'completed' || item.status === 'success',
+                      'bg-amber-500/10 text-amber-600 dark:text-amber-400': item.status === 'pending',
+                      'bg-rose-500/10 text-rose-600 dark:text-rose-400': item.status === 'rejected' || item.status === 'failed'
+                    }"
+                  >
+                    {{ (item.status === 'completed' || item.status === 'success') ? 'Thành công' : (item.status === 'pending' ? 'Đang xử lý' : 'Đã hủy') }}
+                  </span>
+                </div>
               </div>
             </div>
 
-            <!-- Amount details and status -->
-            <div class="flex flex-col items-end shrink-0">
-              <span class="text-xs font-extrabold text-slate-800 dark:text-white leading-none">{{ formatMoney(item.amount) }}</span>
-              <span
-                class="px-2 py-0.5 rounded-full text-[8.5px] font-black tracking-wide uppercase mt-1.5 select-none"
-                :class="[
-                  item.status === 'Thành công'
-                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                    : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
-                ]"
-              >
-                {{ item.status }}
-              </span>
-            </div>
+            <!-- Lý do từ chối -->
+            <transition
+              enter-active-class="transition duration-200 ease-out"
+              enter-from-class="opacity-0 -translate-y-2"
+              enter-to-class="opacity-100 translate-y-0"
+              leave-active-class="transition duration-150 ease-in"
+              leave-from-class="opacity-100 translate-y-0"
+              leave-to-class="opacity-0 -translate-y-2"
+            >
+              <div v-if="item.showReason && (item.status === 'rejected' || item.status === 'failed') && item.rejectReason" class="px-3 py-2.5 bg-rose-50/80 dark:bg-rose-500/10 rounded-xl border border-rose-100 dark:border-rose-500/20 flex items-start gap-2">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-rose-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                 <p class="text-[10px] text-rose-600 dark:text-rose-400 font-bold leading-relaxed">
+                   <span class="uppercase tracking-widest text-rose-400 dark:text-rose-500/80 mr-1">Lý do huỷ:</span> {{ item.rejectReason }}
+                 </p>
+              </div>
+            </transition>
           </div>
 
           <!-- Empty list state -->
@@ -384,14 +419,19 @@ const fetchHistory = async () => {
   try {
     const res = await api.get("/wallet/withdrawals");
     if (res.data) {
-      historyList.value = res.data.map((item) => {
+      // Hỗ trợ cả 2 format: có pagination (res.data.items) hoặc mảng (res.data)
+      const dataArray = Array.isArray(res.data) ? res.data : (res.data.items || []);
+      
+      historyList.value = dataArray.map((item) => {
         return {
-          id: item.id,
+          id: item.id || Math.random(),
           bankCode: "Tài khoản đối soát",
           account: item.referenceId,
           amount: Math.abs(item.amount),
           date: new Date(item.createdAt).toLocaleString("vi-VN"),
-          status: item.status === "completed" ? "Thành công" : "Đang xử lý",
+          status: item.status,
+          rejectReason: item.rejectReason,
+          showReason: false
         };
       });
     }

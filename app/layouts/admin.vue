@@ -50,6 +50,21 @@
           </svg>
           Đơn hàng (Orders)
         </NuxtLink>
+
+        <NuxtLink 
+          to="/admin/withdrawals"
+          class="flex items-center gap-3 px-4 py-3 rounded-2xl text-[13px] font-bold transition-all duration-300"
+          :class="[
+            $route.path.includes('/admin/withdrawals') 
+              ? 'bg-shopee-orange text-white shadow-md shadow-orange-500/20' 
+              : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-800 dark:hover:text-slate-200'
+          ]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2" />
+          </svg>
+          Rút tiền (Withdrawals)
+        </NuxtLink>
         
         <div class="px-4 py-3 rounded-2xl text-[13px] font-bold text-slate-400 dark:text-slate-600 cursor-not-allowed flex items-center gap-3">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -75,7 +90,7 @@
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-full overflow-hidden relative z-10">
       <header class="h-16 flex items-center justify-between px-8 border-b border-slate-200/50 dark:border-slate-800/50 bg-white/30 dark:bg-slate-900/30 backdrop-blur-xl shrink-0">
-        <h1 class="text-[17px] font-black text-slate-800 dark:text-slate-100">Hệ thống quản trị nội bộ</h1>
+        <h1 class="text-[17px] font-black text-slate-800 dark:text-slate-100">Saffi Admin</h1>
           <div class="flex items-center gap-3 select-none">
             <span class="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 hidden sm:inline">{{ userName }}</span>
             <div class="h-8 w-8 rounded-full overflow-hidden flex items-center justify-center border border-slate-250 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm relative shrink-0">
@@ -111,7 +126,9 @@ const firstLetter = computed(() => userName.value.charAt(0).toUpperCase());
 const handleSignOut = async () => {
   try {
     await authClient.signOut();
-    navigateTo("/dang-nhap");
+    if (typeof window !== "undefined") {
+      window.location.href = "/dang-nhap";
+    }
   } catch (err) {
     console.error("Lỗi khi đăng xuất:", err);
   }
