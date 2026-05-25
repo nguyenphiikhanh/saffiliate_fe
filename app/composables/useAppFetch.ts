@@ -1,5 +1,8 @@
+import { usePromiseTracker } from "./usePromiseTracker";
+
 export function useAppFetch() {
   const config = useRuntimeConfig();
+  const { startLoading, stopLoading } = usePromiseTracker();
 
   // On the browser (client-side), we use '/api' to trigger Nuxt's Nitro dev proxy, bypassing CORS.
   // On the server-side (SSR), we call the backend API directly using public runtime configs.
@@ -12,10 +15,18 @@ export function useAppFetch() {
       "Content-Type": "application/json",
       "Accept": "application/json",
     },
+    onRequest() {
+      if (process.client) startLoading();
+    },
+    onRequestError() {
+      if (process.client) stopLoading();
+    },
     onResponse({ request, response, options }) {
+      if (process.client) stopLoading();
       response._data = response._data.data;
     },
     onResponseError({ request, response, options }) {
+      if (process.client) stopLoading();
       const parsedError = {
         message: response._data?.message || response.statusText || "Kết nối mạng hoặc API gặp sự cố.",
         status: response.status || 500,

@@ -95,10 +95,14 @@
 
             <button
               type="submit"
-              :disabled="isUpdatingProfile"
-              class="self-start px-6 bg-shopee-orange text-white hover:bg-shopee-orange/95 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-2xl py-3 font-bold text-xs shadow-md shadow-orange-500/10 cursor-pointer disabled:opacity-50 select-none"
+              :disabled="isLoading || isUpdatingProfile"
+              class="self-start px-6 bg-shopee-orange text-white hover:bg-shopee-orange/95 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-2xl py-3 font-bold text-xs shadow-md shadow-orange-500/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none flex items-center gap-2"
             >
-              {{ isUpdatingProfile ? 'Đang lưu...' : 'Lưu thay đổi' }}
+              <svg v-if="isUpdatingProfile" class="animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>{{ isUpdatingProfile ? 'Đang lưu...' : 'Lưu thay đổi' }}</span>
             </button>
           </form>
         </div>
@@ -301,10 +305,14 @@
               <button
                 v-if="isEditingBank"
                 type="submit"
-                :disabled="isBankLoading || isUpdatingBank"
-                class="self-start px-6 bg-shopee-orange text-white hover:bg-shopee-orange/95 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-2xl py-3 font-bold text-xs shadow-md shadow-orange-500/10 cursor-pointer disabled:opacity-50 select-none"
+                :disabled="isLoading || isBankLoading || isUpdatingBank"
+                class="self-start px-6 bg-shopee-orange text-white hover:bg-shopee-orange/95 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-2xl py-3 font-bold text-xs shadow-md shadow-orange-500/10 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none flex items-center gap-2"
               >
-                {{ isBankLoading ? 'Đang tải...' : (isUpdatingBank ? 'Đang liên kết...' : 'Liên kết tài khoản') }}
+                <svg v-if="isUpdatingBank" class="animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>{{ isBankLoading ? 'Đang tải...' : (isUpdatingBank ? 'Đang liên kết...' : 'Liên kết tài khoản') }}</span>
               </button>
             </transition>
           </form>
@@ -317,6 +325,9 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { authClient } from "@/utils/auth-client";
+import { usePromiseTracker } from "@/composables/usePromiseTracker";
+
+const { isLoading } = usePromiseTracker();
 
 useSeoMeta({
   title: "Hồ sơ cá nhân - Saffi",

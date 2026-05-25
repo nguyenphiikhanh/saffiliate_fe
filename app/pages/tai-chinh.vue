@@ -145,7 +145,7 @@
                 </svg>
               </div>
               <div class="min-w-0">
-                <span class="block text-[9px] font-extrabold uppercase text-slate-400">Rút về tài khoản đối soát mặc định</span>
+                <span class="block text-[9px] font-extrabold uppercase text-slate-400">Rút về tài khoản đối soát</span>
                 <span class="font-black text-slate-800 dark:text-slate-200 truncate block mt-0.5">
                   {{ bankAccountInfo.bankName }} • {{ bankAccountInfo.accountNo }}
                 </span>
@@ -170,8 +170,9 @@
               <label class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Số tiền rút</label>
               <button 
                 type="button" 
+                :disabled="isApiLoading || isSubmitting"
                 @click="withdrawAmount = availableBalance" 
-                class="text-[9.5px] font-black text-shopee-orange uppercase tracking-wide cursor-pointer hover:underline"
+                class="text-[9.5px] font-black text-shopee-orange uppercase tracking-wide cursor-pointer hover:underline disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Rút toàn bộ số dư
               </button>
@@ -183,8 +184,9 @@
                 required
                 :min="10000"
                 :max="availableBalance"
+                :disabled="isApiLoading || isSubmitting || !bankAccountInfo"
                 placeholder="Rút tối thiểu 10.000đ..."
-                class="w-full rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 pl-4 pr-12 py-3 text-xs font-bold text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-shopee-orange/20 focus:border-shopee-orange transition-all"
+                class="w-full rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 pl-4 pr-12 py-3 text-xs font-bold text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-shopee-orange/20 focus:border-shopee-orange transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               />
               <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold text-[11px]">ĐỒNG</span>
             </div>
@@ -210,7 +212,7 @@
           <!-- Submit Button -->
           <button
             type="submit"
-            :disabled="isSubmitting || availableBalance < 10000 || !bankAccountInfo"
+            :disabled="isApiLoading || isSubmitting || availableBalance < 10000 || !bankAccountInfo"
             class="mt-3 w-full bg-shopee-orange text-white hover:bg-shopee-orange/95 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-2xl py-3.5 font-bold text-xs shadow-lg shadow-orange-500/15 cursor-pointer disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 select-none"
           >
             <svg v-if="isSubmitting" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -277,6 +279,9 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { authClient } from "@/utils/auth-client";
+import { usePromiseTracker } from "@/composables/usePromiseTracker";
+
+const { isLoading: isApiLoading } = usePromiseTracker();
 
 useSeoMeta({
   title: "Tài chính & Rút tiền - Saffi",

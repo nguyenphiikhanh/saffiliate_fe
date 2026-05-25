@@ -2,6 +2,7 @@
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <GlobalLoader />
 </template>
 
 <script setup>
