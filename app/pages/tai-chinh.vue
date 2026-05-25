@@ -179,20 +179,36 @@
             </div>
             <div class="relative">
               <input
-                v-model.number="withdrawAmount"
-                type="number"
+                v-model="formattedWithdrawAmount"
+                type="text"
                 required
-                :min="10000"
-                :max="availableBalance"
                 :disabled="isApiLoading || isSubmitting || !bankAccountInfo"
                 placeholder="Rút tối thiểu 10.000đ..."
-                class="w-full rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 pl-4 pr-12 py-3 text-xs font-bold text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-shopee-orange/20 focus:border-shopee-orange transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                class="w-full rounded-2xl border bg-slate-50/50 dark:bg-slate-950/40 pl-4 pr-12 py-3 text-xs font-bold text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                :class="amountError ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500/20 dark:border-rose-500/50 text-rose-600 dark:text-rose-400' : 'border-slate-200/80 dark:border-slate-800 focus:ring-shopee-orange/20 focus:border-shopee-orange'"
               />
-              <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold text-[11px]">ĐỒNG</span>
+              <span class="absolute right-4 top-1/2 -translate-y-1/2 font-extrabold text-[11px]" :class="amountError ? 'text-rose-500' : 'text-slate-400'">ĐỒNG</span>
             </div>
-            <p class="text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-1 select-none">
-              * Hạn mức rút tối thiểu: <span class="text-slate-600 dark:text-slate-350">10.000đ</span> • Phí chuyển khoản: <span class="text-emerald-500">Miễn phí</span>
-            </p>
+            <div class="min-h-[20px]">
+              <transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="opacity-0 -translate-y-1"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-active-class="transition duration-150 ease-in"
+                leave-from-class="opacity-100 translate-y-0"
+                leave-to-class="opacity-0 -translate-y-1"
+              >
+                <p v-if="amountError" class="text-[10px] text-rose-500 font-bold flex items-center gap-1.5 mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  <span>{{ amountError }}</span>
+                </p>
+                <p v-else class="text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-0.5 select-none">
+                  * Hạn mức rút tối thiểu: <span class="text-slate-600 dark:text-slate-350">10.000đ</span> • Phí chuyển khoản: <span class="text-emerald-500">Miễn phí</span>
+                </p>
+              </transition>
+            </div>
           </div>
 
           <!-- Alert message if any -->
@@ -201,19 +217,23 @@
             enter-from-class="transform -translate-y-2 opacity-0"
             enter-to-class="transform translate-y-0 opacity-100"
           >
-            <div v-if="successMsg" class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <div v-if="successMsg || errorMsg" class="p-4 rounded-2xl text-xs font-bold flex items-center gap-2"
+                 :class="errorMsg ? 'bg-rose-500/10 border border-rose-500/15 text-rose-600 dark:text-rose-400' : 'bg-emerald-500/10 border border-emerald-500/15 text-emerald-600 dark:text-emerald-400'">
+              <svg v-if="errorMsg" xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>{{ successMsg }}</span>
+              <span>{{ errorMsg || successMsg }}</span>
             </div>
           </transition>
 
           <!-- Submit Button -->
           <button
             type="submit"
-            :disabled="isApiLoading || isSubmitting || availableBalance < 10000 || !bankAccountInfo"
-            class="mt-3 w-full bg-shopee-orange text-white hover:bg-shopee-orange/95 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-2xl py-3.5 font-bold text-xs shadow-lg shadow-orange-500/15 cursor-pointer disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 select-none"
+            :disabled="!canSubmit"
+            class="w-full bg-shopee-orange text-white hover:bg-shopee-orange/95 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-2xl py-3.5 font-bold text-xs shadow-lg shadow-orange-500/15 cursor-pointer disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 select-none"
           >
             <svg v-if="isSubmitting" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -231,7 +251,22 @@
         </h2>
 
         <!-- History Items Stack -->
-        <div class="mt-6 flex flex-col gap-4">
+        <div v-if="isHistoryLoading" class="mt-6 flex flex-col gap-4 animate-pulse">
+          <div v-for="i in 3" :key="i" class="p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-900/40 flex items-center justify-between gap-3.5">
+            <div class="flex items-start gap-3">
+              <div class="h-9 w-9 rounded-xl bg-slate-200 dark:bg-slate-800 shrink-0"></div>
+              <div>
+                <div class="h-4 w-24 bg-slate-200 dark:bg-slate-800 rounded mb-2"></div>
+                <div class="h-3 w-16 bg-slate-200 dark:bg-slate-800 rounded"></div>
+              </div>
+            </div>
+            <div class="flex flex-col items-end shrink-0">
+              <div class="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded mb-2"></div>
+              <div class="h-3 w-12 bg-slate-200 dark:bg-slate-800 rounded"></div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="mt-6 flex flex-col gap-4">
           <div
             v-for="item in historyList"
             :key="item.id"
@@ -320,6 +355,7 @@ const fetchBankAccount = async () => {
 onMounted(() => {
   fetchWallet();
   fetchBankAccount();
+  fetchHistory();
 });
 
 const availableBalance = computed({
@@ -338,41 +374,118 @@ const totalWithdrawn = computed({
 const withdrawAmount = ref("");
 const isSubmitting = ref(false);
 const successMsg = ref("");
+const errorMsg = ref("");
 
 const historyList = ref([]);
+const isHistoryLoading = ref(true);
 
-const handleSubmit = () => {
-  if (withdrawAmount.value < 10000 || withdrawAmount.value > availableBalance.value) return;
+const fetchHistory = async () => {
+  isHistoryLoading.value = true;
+  try {
+    const res = await api.get("/wallet/withdrawals");
+    if (res.data) {
+      historyList.value = res.data.map((item) => {
+        return {
+          id: item.id,
+          bankCode: "Tài khoản đối soát",
+          account: item.referenceId,
+          amount: Math.abs(item.amount),
+          date: new Date(item.createdAt).toLocaleString("vi-VN"),
+          status: item.status === "completed" ? "Thành công" : "Đang xử lý",
+        };
+      });
+    }
+  } catch (err) {
+    console.error("Lỗi khi tải lịch sử rút tiền:", err);
+  } finally {
+    isHistoryLoading.value = false;
+  }
+};
+const formattedWithdrawAmount = computed({
+  get: () => {
+    if (withdrawAmount.value === "" || withdrawAmount.value === null) return "";
+    return Number(withdrawAmount.value).toLocaleString("vi-VN");
+  },
+  set: (val) => {
+    const digits = val.replace(/\D/g, "");
+    withdrawAmount.value = digits ? Number(digits) : "";
+  }
+});
+
+const amountError = computed(() => {
+  if (withdrawAmount.value === "") return "";
+  const amount = Number(withdrawAmount.value);
+  if (amount < 10000) return "Số tiền rút tối thiểu là 10.000đ";
+  if (amount > availableBalance.value) return "Số dư khả dụng không đủ";
+  return "";
+});
+
+const canSubmit = computed(() => {
+  return !isApiLoading.value && 
+         !isSubmitting.value && 
+         bankAccountInfo.value && 
+         withdrawAmount.value !== "" && 
+         amountError.value === "";
+});
+
+const handleSubmit = async () => {
+  if (!canSubmit.value) return;
 
   isSubmitting.value = true;
   successMsg.value = "";
+  errorMsg.value = "";
 
-  setTimeout(() => {
-    // Subtract from balance
+  try {
+    const res = await api.post("/wallet/withdraw", {
+      amount: Number(withdrawAmount.value),
+    });
+
+    // API call succeeded (if it didn't throw), update balance locally
     availableBalance.value -= withdrawAmount.value;
-    totalWithdrawn.value += withdrawAmount.value;
+    
+    // The API should return the new transaction in res.data
+    const transaction = res.data;
 
-    // Add to history list at beginning
+    // Add to history list at beginning (optimistic update)
     historyList.value.unshift({
-      id: Date.now(),
-      bankCode: (bankAccountInfo.value?.bankName || "Ngân hàng") + " Bank",
-      account: "..." + (bankAccountInfo.value?.accountNo || "").slice(-4),
+      id: transaction?.id || Date.now(),
+      bankCode: "Tài khoản đối soát",
+      account: transaction?.referenceId || "...",
       amount: withdrawAmount.value,
       date: new Date().toLocaleString("vi-VN"),
       status: "Đang xử lý",
     });
 
-    isSubmitting.value = false;
     successMsg.value = "Yêu cầu rút tiền thành công! Hệ thống đang xử lý đối soát tự động.";
-    
-    // Clear form inputs
     withdrawAmount.value = "";
 
+    // Fetch wallet and history again to ensure sync
+    fetchWallet();
+    fetchHistory();
+  } catch (error) {
+    console.error("Lỗi khi rút tiền:", error, error?.data);
+    
+    // Extract exact message from parsedError in useAppFetch
+    if (error?.message && error.message !== "Bad Request") {
+      errorMsg.value = error.message;
+    } else if (error?.data?.message) {
+      errorMsg.value = error.data.message;
+    } else {
+      errorMsg.value = "Yêu cầu rút tiền bị từ chối. Vui lòng thử lại.";
+    }
+
+    if (error?.data?.stack) {
+      errorMsg.value += " | STACK: " + error.data.stack;
+    }
+  } finally {
+    isSubmitting.value = false;
+    
     // Clear message after 4s
     setTimeout(() => {
       successMsg.value = "";
+      errorMsg.value = "";
     }, 4000);
-  }, 1500);
+  }
 };
 
 const formatMoney = (val) => {
