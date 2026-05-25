@@ -53,6 +53,20 @@
         </div>
       </div>
 
+      <!-- Info Box for Cancelled Tab -->
+      <div v-if="activeTab === 'cancelled'" class="mt-5 rounded-2xl bg-rose-50/50 dark:bg-rose-500/5 border border-rose-100/60 dark:border-rose-500/20 p-4">
+        <div class="flex items-start gap-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div>
+            <p class="text-[13px] text-slate-600 dark:text-slate-350 leading-relaxed font-semibold">
+              <span class="font-black text-slate-800 dark:text-slate-100">Đã hủy:</span> đơn có thể do bạn hủy, hoặc cashback bị hủy từ sàn. Saffi là trung gian nên không được cung cấp lý do cụ thể, nhưng luôn sẵn sàng gửi thông tin đối soát từ sàn cho bạn để đảm bảo hệ thống minh bạch. Vui lòng liên hệ <NuxtLink to="/ho-tro" class="text-rose-500 hover:text-rose-600 font-black underline transition-all">Hỗ trợ</NuxtLink> để được cung cấp thêm thông tin.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- Orders Table -->
       <div class="mt-6" v-if="filteredOrders.length > 0">
         <div class="overflow-x-auto bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-100 dark:border-slate-800/60">
