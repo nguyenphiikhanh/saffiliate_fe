@@ -131,7 +131,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8 items-start">
       <!-- COLUMN Left: Withdraw Form (Span 7) -->
       <div class="lg:col-span-7 rounded-3xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900/60 p-6 shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20">
-        <h2 class="text-xs font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none pb-4 border-b border-slate-100 dark:border-slate-800/60">
+        <h2 class="text-[13px] font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none pb-4 border-b border-slate-100 dark:border-slate-800/60">
           Yêu Cầu Rút Tiền
         </h2>
 
@@ -226,7 +226,7 @@
 
       <!-- COLUMN Right: Withdrawal History (Span 5) -->
       <div class="lg:col-span-5 rounded-3xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900/60 p-6 shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20">
-        <h2 class="text-xs font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none pb-4 border-b border-slate-100 dark:border-slate-800/60">
+        <h2 class="text-[13px] font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none pb-4 border-b border-slate-100 dark:border-slate-800/60">
           Lịch Sử Rút Tiền
         </h2>
 

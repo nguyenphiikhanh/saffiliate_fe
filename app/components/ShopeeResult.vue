@@ -60,7 +60,7 @@
             <div>
               <div class="text-[10px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">SAFFI HOÀN TIỀN CHO BẠN</div>
               <div class="text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 mt-1 tracking-tight">
-                từ <span class="text-sm sm:text-base">{{ formatCashbackRange(minCashback) }}</span> đến <span class="text-sm sm:text-base">{{ formatCashbackRange(maxCashback) }}</span>
+                Từ <span class="text-sm sm:text-base">{{ formatCashbackRange(minCashback) }}</span> đến <span class="text-sm sm:text-base">{{ formatCashbackRange(maxCashback) }}</span>
               </div>
             </div>
           </div>

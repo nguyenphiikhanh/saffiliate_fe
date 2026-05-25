@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-4xl mx-auto animate-fade-in">
+  <div class="w-full animate-fade-in">
     <!-- Page Title & Header -->
     <div class="mt-6">
       <h1 class="text-[30px] font-black tracking-tight text-slate-900 dark:text-white leading-tight">
@@ -51,7 +51,7 @@
         <!-- Section 1: User Settings Form -->
         <div class="rounded-3xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900/60 p-6 shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20">
           <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/60">
-            <h3 class="text-xs font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none">
+            <h3 class="text-[13px] font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none">
               Thông Tin Tài Khoản
             </h3>
             
@@ -156,7 +156,7 @@
         <!-- Section 2: Default bank linkage -->
         <div class="rounded-3xl border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-900/60 p-6 shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20">
           <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/60">
-            <h3 class="text-xs font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none">
+            <h3 class="text-[13px] font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none">
               Ngân Hàng Liên Kết Đối Soát
             </h3>
             

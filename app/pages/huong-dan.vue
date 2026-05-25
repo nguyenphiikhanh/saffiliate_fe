@@ -34,8 +34,8 @@
           </div>
         </div>
 
-        <h3 class="text-xs font-black text-slate-800 dark:text-slate-100 mt-5 uppercase tracking-wider">{{ step.title }}</h3>
-        <p class="text-[11.5px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed font-semibold">{{ step.desc }}</p>
+        <h3 class="text-[14px] font-black text-slate-800 dark:text-slate-100 mt-5 uppercase tracking-wider">{{ step.title }}</h3>
+        <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed font-semibold">{{ step.desc }}</p>
       </div>
     </div>
 
@@ -57,7 +57,7 @@
           <button
             @click="toggleFAQ(index)"
             type="button"
-            class="w-full flex items-center justify-between gap-4 p-5 text-left font-bold text-slate-800 dark:text-slate-200 text-xs sm:text-[13px] hover:bg-slate-50 dark:hover:bg-slate-85/40 transition-colors duration-300 cursor-pointer select-none"
+            class="w-full flex items-center justify-between gap-4 p-5 text-left font-bold text-slate-800 dark:text-slate-200 text-[14px] hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors duration-300 cursor-pointer select-none"
           >
             <span>{{ faq.question }}</span>
             <svg
@@ -78,7 +78,7 @@
             class="transition-all duration-300 ease-in-out"
             :style="{ maxHeight: openFAQ === index ? '200px' : '0px' }"
           >
-            <div class="p-5 pt-0 border-t border-slate-50 dark:border-slate-800/50 text-[12px] text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">
+            <div class="p-5 pt-0 border-t border-slate-50 dark:border-slate-800/50 text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">
               {{ faq.answer }}
             </div>
           </div>
@@ -140,7 +140,7 @@ const faqs = [
   },
   {
     question: "Tại sao đơn hàng của tôi bị hủy hoặc không nhận được hoàn tiền?",
-    answer: "Đơn hàng có thể không được ghi nhận hoàn tiền nếu bạn trả hàng hoàn tiền, hủy đơn hàng, hoặc sử dụng các trình duyệt bật chặn quảng cáo AdBlock làm mất cookie đối soát của Shopee. Hãy đảm bảo click link chuyển đổi và đặt hàng ngay lập tức trên app Shopee sạch.",
+    answer: "Đơn hàng có thể không được ghi nhận hoàn tiền nếu bạn hủy đơn hoặc trả hàng hoàn tiền, hoặc sử dụng các trình duyệt bật chặn quảng cáo AdBlock làm mất cookie đối soát của Shopee. Hãy đảm bảo click link chuyển đổi và đặt hàng ngay lập tức trên app Shopee sạch.Cashback có thể bị hủy từ sàn, Saffi là trung gian nên không được cung cấp lý do cụ thể, nhưng luôn sẵn sàng gửi thông tin đối soát từ sàn cho bạn để đảm bảo hệ thống minh bạch. Vui lòng liên hệ Hỗ trợ để được cung cấp thêm thông tin.",
   },
   {
     question: "Có giới hạn số tiền rút tối thiểu không?",

@@ -7,7 +7,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
-      <h2 class="text-[15px] font-bold text-slate-800 dark:text-slate-100">Quy trình đơn hàng</h2>
+      <h2 class="text-[13px] font-black tracking-widest uppercase text-slate-800 dark:text-slate-200">Quy Trình Đơn Hàng</h2>
     </div>
 
     <!-- Timeline -->
@@ -106,7 +106,7 @@
             </svg>
           </div>
           <div>
-            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Thời gian ghi nhận</div>
+            <div class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mb-0.5">Thời gian ghi nhận</div>
             <div class="text-sm font-medium text-slate-700 dark:text-slate-200"><span class="text-shopee-orange font-bold">Trong vòng 24h</span></div>
           </div>
         </div>
@@ -119,7 +119,7 @@
             </svg>
           </div>
           <div>
-            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Thời gian duyệt hoàn</div>
+            <div class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mb-0.5">Thời gian duyệt hoàn</div>
             <div class="text-sm font-medium text-slate-700 dark:text-slate-200"><span class="text-emerald-500 font-bold">7 - 14 ngày</span></div>
           </div>
         </div>

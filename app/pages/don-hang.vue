@@ -67,8 +67,52 @@
         </div>
       </div>
 
+      <!-- Skeleton Loading State -->
+      <div v-if="status === 'pending'" class="mt-6 overflow-x-auto bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-100 dark:border-slate-800/60">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="text-[10px] uppercase tracking-widest font-bold text-slate-400 border-b border-slate-100 dark:border-slate-800">
+              <th class="p-4 pl-6 whitespace-nowrap w-[20%]">Mã đơn</th>
+              <th class="p-4 whitespace-nowrap w-[35%]">Sản phẩm</th>
+              <th class="p-4 whitespace-nowrap w-[15%]">Ngày</th>
+              <th class="p-4 text-right whitespace-nowrap w-[15%]">Tích lũy</th>
+              <th class="p-4 whitespace-nowrap text-center w-[15%]">Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm">
+            <tr v-for="i in 5" :key="i" class="animate-pulse">
+              <!-- Mã đơn Skeleton -->
+              <td class="p-4 pl-6">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-6 h-6 rounded bg-slate-200 dark:bg-slate-800/80 shrink-0"></div>
+                  <div class="h-3 w-16 bg-slate-200 dark:bg-slate-800/80 rounded"></div>
+                </div>
+              </td>
+              <!-- Sản phẩm Skeleton -->
+              <td class="p-4">
+                <div class="h-3.5 w-48 max-w-full bg-slate-200 dark:bg-slate-800/80 rounded"></div>
+              </td>
+              <!-- Ngày Skeleton -->
+              <td class="p-4">
+                <div class="h-3 w-20 bg-slate-200 dark:bg-slate-800/80 rounded"></div>
+              </td>
+              <!-- Tích lũy Skeleton -->
+              <td class="p-4 text-right">
+                <div class="flex items-center justify-end">
+                  <div class="h-3.5 w-16 bg-slate-200 dark:bg-slate-800/80 rounded"></div>
+                </div>
+              </td>
+              <!-- Trạng thái Skeleton -->
+              <td class="p-4 flex justify-center">
+                <div class="h-5 w-20 bg-slate-200 dark:bg-slate-800/80 rounded-full"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <!-- Orders Table -->
-      <div class="mt-6" v-if="filteredOrders.length > 0">
+      <div class="mt-6" v-else-if="filteredOrders.length > 0">
         <div class="overflow-x-auto bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-100 dark:border-slate-800/60">
           <table class="w-full text-left border-collapse">
             <thead>
@@ -132,7 +176,7 @@
       </div>
 
         <!-- Empty state -->
-        <div v-if="filteredOrders.length === 0" class="py-16 flex flex-col items-center justify-center text-center">
+        <div v-else class="py-16 flex flex-col items-center justify-center text-center">
           <template v-if="activeTab === 'pending'">
             <div class="relative">
               <div class="h-16 w-16 rounded-3xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex items-center justify-center text-shopee-orange shadow-inner">
@@ -224,7 +268,7 @@ const queryParams = computed(() => ({
   status: statusMap[activeTab.value]
 }));
 
-const { data: response } = await useFetch('/api/order', {
+const { data: response, status } = await useFetch('/api/order', {
   headers,
   query: queryParams,
   watch: [activeTab] // Tự động gọi lại API khi chuyển tab

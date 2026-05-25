@@ -1,174 +1,145 @@
 <template>
-  <footer class="hidden md:block w-full mt-auto pt-16 pb-8 border-t border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-950 transition-colors duration-500">
+  <footer class="hidden md:block w-full mt-auto pt-12 pb-6 bg-white dark:bg-slate-950 transition-colors duration-500">
     <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
       
-      <!-- TOP REGION: 3 Columns Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 pb-12">
+      <!-- BENTO GRID FOOTER -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
         
-        <!-- COLUMN 1: Brand Logo, Introduction & Socials (Span 5) -->
-        <div class="md:col-span-5 flex flex-col gap-5">
-          <!-- Logo Brand -->
-          <div class="flex items-center gap-2">
-            <!-- Brand Icon -->
-            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-shopee-orange shadow-md glow-orange shrink-0 select-none">
-              <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="16" />
-                <path d="M16 8a6 6 0 0 0-8 0" />
-                <path d="M8 16a6 6 0 0 0 8 0" />
-                <path d="M12 6V4" />
-                <path d="M12 20v-2" />
-              </svg>
+        <!-- BENTO BOX 1: Brand (Span 5) -->
+        <div class="md:col-span-12 lg:col-span-5 relative overflow-hidden rounded-[2rem] bg-orange-50/50 dark:bg-slate-900/40 p-8 md:p-10 shadow-sm hover:shadow-md transition-shadow duration-500 group border border-orange-100/60 dark:border-slate-800/80">
+          <!-- Background Abstract Shapes -->
+          <div class="absolute -top-32 -right-32 w-80 h-80 bg-shopee-orange/10 dark:bg-shopee-orange/20 rounded-full blur-[80px] group-hover:scale-150 transition-transform duration-1000"></div>
+          <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-shopee-orange/5 dark:bg-shopee-orange/10 rounded-full blur-[60px] group-hover:translate-x-10 transition-transform duration-700"></div>
+          
+          <div class="relative z-10 flex flex-col h-full justify-between gap-8">
+            <div>
+              <div class="flex items-center gap-3">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-slate-800 text-shopee-orange shadow-sm border border-orange-100/60 dark:border-slate-700 shrink-0">
+                  <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M16 8a6 6 0 0 0-8 0" />
+                    <path d="M8 16a6 6 0 0 0 8 0" />
+                    <path d="M12 6V4" />
+                    <path d="M12 20v-2" />
+                  </svg>
+                </div>
+                <div class="flex flex-col text-slate-800 dark:text-white">
+                  <span class="font-sans text-3xl font-black tracking-tight leading-none">Saffi</span>
+                  <span class="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500 mt-1">Smart Shopping</span>
+                </div>
+              </div>
+              <p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-relaxed max-w-xs mt-6">
+                Trợ lý mua sắm thông minh thế hệ mới. Hoàn tiền tự động, minh bạch và siêu tốc từ Sọp-pe.
+              </p>
             </div>
-            
-            <!-- Logo Text -->
-            <div class="flex flex-col select-none">
-              <span class="font-sans text-[17px] font-black tracking-tight text-slate-900 dark:text-white leading-none">
-                S<span class="text-shopee-orange">affi</span>
-              </span>
-              <span class="text-[7.5px] font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mt-0.5 leading-none">
-                Smart Shopping
-              </span>
-            </div>
-          </div>
 
-          <!-- Introduction Text -->
-          <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed max-w-sm">
-            Trợ lý mua sắm thông minh giúp bạn hoàn tiền tự động khi mua hàng qua sọp-pi.
-          </p>
-
-          <!-- Social Icons Round Buttons -->
-          <div class="flex items-center gap-2.5 mt-2">
-            <!-- Facebook Button -->
-            <a 
-              href="#" 
-              class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-900/60 text-slate-400 dark:text-slate-500 border border-slate-100 dark:border-slate-800/80 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0" 
-              title="Facebook"
-            >
-              <svg class="h-4.5 w-4.5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.8c4.56-.93 8-4.96 8-9.8z"/>
-              </svg>
-            </a>
-            <!-- Community Button (Users icon) -->
-            <a 
-              href="#" 
-              class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-900/60 text-slate-400 dark:text-slate-500 border border-slate-100 dark:border-slate-800/80 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0" 
-              title="Cộng đồng"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </a>
-            <!-- Mail Button -->
-            <a 
-              href="mailto:getsaffi@gmail.com" 
-              class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-50 dark:bg-slate-900/60 text-slate-400 dark:text-slate-500 border border-slate-100 dark:border-slate-800/80 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-100 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0" 
-              title="Gửi thư hỗ trợ"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z" />
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- COLUMN 2: Navigation Links (Span 3) -->
-        <div class="md:col-span-3 flex flex-col gap-4">
-          <span class="text-xs font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none">
-            SAFFI
-          </span>
-          <div class="flex flex-col gap-3.5">
-            <!-- Công cụ hoàn tiền -->
-            <NuxtLink to="/hoan-tien" class="flex items-center gap-2.5 text-xs font-bold text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:translate-x-1 transition-all duration-300 select-none group">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-slate-300 dark:text-slate-600 group-hover:text-shopee-orange dark:group-hover:text-shopee-orange transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-              </svg>
-              <span>Công cụ hoàn tiền</span>
-            </NuxtLink>
-            <!-- Đơn hàng -->
-            <NuxtLink to="/don-hang" class="flex items-center gap-2.5 text-xs font-bold text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:translate-x-1 transition-all duration-300 select-none group">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-slate-300 dark:text-slate-600 group-hover:text-shopee-orange dark:group-hover:text-shopee-orange transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-              </svg>
-              <span>Đơn hàng</span>
-            </NuxtLink>
-            <!-- Tai chinh -->
-            <NuxtLink to="/tai-chinh" class="flex items-center gap-2.5 text-xs font-bold text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:translate-x-1 transition-all duration-300 select-none group">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-slate-300 dark:text-slate-600 group-hover:text-shopee-orange dark:group-hover:text-shopee-orange transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-              </svg>
-              <span>Tài chính</span>
-            </NuxtLink>
-            <!-- Hướng dẫn sử dụng -->
-            <NuxtLink to="/huong-dan" class="flex items-center gap-2.5 text-xs font-bold text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:translate-x-1 transition-all duration-300 select-none group">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 shrink-0 text-slate-300 dark:text-slate-600 group-hover:text-shopee-orange dark:group-hover:text-shopee-orange transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              <span>Hướng dẫn sử dụng</span>
-            </NuxtLink>
-          </div>
-        </div>
-
-        <!-- COLUMN 3: Contact & Support (Span 4) -->
-        <div class="md:col-span-4 flex flex-col gap-4">
-          <span class="text-xs font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none">
-            LIÊN HỆ
-          </span>
-          <div class="flex flex-col gap-4">
-            
-            <!-- Email Item -->
+            <!-- Socials inside Brand Box -->
             <div class="flex items-center gap-3">
-              <div class="h-9 w-9 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-sm border border-orange-100/60 dark:border-slate-700 text-slate-400 hover:text-shopee-orange hover:border-shopee-orange transition-all duration-300 hover:scale-110 active:scale-95">
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.8c4.56-.93 8-4.96 8-9.8z"/>
                 </svg>
-              </div>
-              <div class="flex flex-col select-all">
-                <span class="text-xs font-bold text-slate-700 dark:text-slate-200 leading-tight">getsaffi@gmail.com</span>
-                <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Email hỗ trợ</span>
-              </div>
+              </a>
+              <a href="#" class="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-sm border border-orange-100/60 dark:border-slate-700 text-slate-400 hover:text-shopee-orange hover:border-shopee-orange transition-all duration-300 hover:scale-110 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </a>
             </div>
+          </div>
+        </div>
 
-            <!-- Hours Item -->
-            <div class="flex items-center gap-3">
-              <div class="h-9 w-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <!-- BENTO BOX 2: Navigation (Span 3) -->
+        <div class="md:col-span-6 lg:col-span-3 rounded-[2rem] bg-slate-50 dark:bg-slate-900/40 p-8 border border-slate-100 dark:border-slate-800/80 hover:border-orange-500/30 dark:hover:border-orange-500/30 transition-colors duration-500 flex flex-col justify-between">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-2 h-2 rounded-full bg-slate-800 dark:bg-slate-200"></div>
+            <span class="text-xs font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none">Menu</span>
+          </div>
+          
+          <div class="flex flex-col gap-4">
+            <NuxtLink to="/hoan-tien" class="group flex items-center justify-between text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-shopee-orange dark:hover:text-shopee-orange transition-all duration-300">
+              <span class="group-hover:translate-x-1 transition-transform duration-300">Hoàn tiền</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </NuxtLink>
+            <div class="h-px w-full bg-slate-200/50 dark:bg-slate-800/50"></div>
+            
+            <NuxtLink to="/don-hang" class="group flex items-center justify-between text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-shopee-orange dark:hover:text-shopee-orange transition-all duration-300">
+              <span class="group-hover:translate-x-1 transition-transform duration-300">Đơn hàng</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </NuxtLink>
+            <div class="h-px w-full bg-slate-200/50 dark:bg-slate-800/50"></div>
+            
+            <NuxtLink to="/tai-chinh" class="group flex items-center justify-between text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-shopee-orange dark:hover:text-shopee-orange transition-all duration-300">
+              <span class="group-hover:translate-x-1 transition-transform duration-300">Tài chính</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </NuxtLink>
+            <div class="h-px w-full bg-slate-200/50 dark:bg-slate-800/50"></div>
+            
+            <NuxtLink to="/huong-dan" class="group flex items-center justify-between text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-shopee-orange dark:hover:text-shopee-orange transition-all duration-300">
+              <span class="group-hover:translate-x-1 transition-transform duration-300">Hướng dẫn</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- BENTO BOX 3: Contact & Support Grid (Span 4) -->
+        <div class="md:col-span-6 lg:col-span-4 flex flex-col gap-4">
+          <!-- Small Box Top -->
+          <div class="flex-1 rounded-[2rem] bg-slate-50 dark:bg-slate-900/40 p-6 border border-slate-100 dark:border-slate-800/80 flex items-center gap-4 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors duration-300 group cursor-pointer" onclick="window.location.href='mailto:getsaffi@gmail.com'">
+            <div class="h-12 w-12 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <span class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-0.5">Hỗ trợ 24/7</span>
+              <span class="block text-sm font-bold text-slate-800 dark:text-slate-200">getsaffi@gmail.com</span>
+            </div>
+          </div>
+          
+          <!-- Small Box Bottom Grid -->
+          <div class="grid grid-cols-2 gap-4 flex-1">
+            <div class="rounded-[2rem] bg-slate-50 dark:bg-slate-900/40 p-5 border border-slate-100 dark:border-slate-800/80 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+              <div class="text-emerald-500 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div class="flex flex-col select-none">
-                <span class="text-xs font-bold text-slate-700 dark:text-slate-200 leading-tight">08:00 - 22:00 hàng ngày</span>
-                <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Giờ hỗ trợ</span>
-              </div>
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-200">08:00 - 22:00</span>
+              <span class="text-[10px] font-medium text-slate-500 mt-0.5">Hàng ngày</span>
             </div>
-
-            <!-- Fast Withdraw Commitment -->
-            <div class="flex items-center gap-3">
-              <div class="h-9 w-9 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            
+            <div class="rounded-[2rem] bg-slate-50 dark:bg-slate-900/40 p-5 border border-slate-100 dark:border-slate-800/80 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300">
+              <div class="text-amber-500 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <div class="flex flex-col select-none">
-                <span class="text-xs font-bold text-slate-700 dark:text-slate-200 leading-tight">Rút tiền &lt; 60 phút</span>
-                <span class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">Cam kết xử lý</span>
-              </div>
+              <span class="text-xs font-bold text-slate-800 dark:text-slate-200">&lt; 60 Phút</span>
+              <span class="text-[10px] font-medium text-slate-500 mt-0.5">Rút tiền</span>
             </div>
-
           </div>
         </div>
 
       </div>
 
-      <!-- BOTTOM REGION: Copyright and Terms Links -->
-      <div class="pt-8 border-t border-slate-100 dark:border-slate-800/60 flex flex-col md:flex-row items-center justify-between gap-4 text-left">
-        <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 select-none">
-          © 2026 Saffi. Bản quyền dịch vụ thuộc về Saffi Team.
+      <!-- BOTTOM PILL -->
+      <div class="mt-5 rounded-full bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 select-none uppercase tracking-widest">
+          &copy; 2026 Saffi Platform. All Rights Reserved.
         </p>
-        <div class="flex items-center gap-4 text-[11px] font-bold text-slate-400 dark:text-slate-500">
-          <a href="#" class="hover:text-shopee-orange dark:hover:text-shopee-orange transition-colors duration-300">Privacy Policy</a>
-          <span class="text-slate-200 dark:text-slate-800">|</span>
-          <a href="#" class="hover:text-shopee-orange dark:hover:text-shopee-orange transition-colors duration-300">Terms of Service</a>
+        <div class="flex items-center gap-6 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+          <a :href="`${mainSiteURL}/privacy-policy`" target="_blank" rel="noopener noreferrer" class="hover:text-shopee-orange dark:hover:text-shopee-orange transition-colors">Privacy Policy</a>
+          <div class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+          <a :href="`${mainSiteURL}/terms-of-service`" target="_blank" rel="noopener noreferrer" class="hover:text-shopee-orange dark:hover:text-shopee-orange transition-colors">Terms of Service</a>
         </div>
       </div>
 
@@ -177,11 +148,6 @@
 </template>
 
 <script setup>
-// Footer logic if any
+const config = useRuntimeConfig();
+const mainSiteURL = config.public.mainSiteURL;
 </script>
-
-<style scoped>
-.glow-orange {
-  box-shadow: 0 4px 14px 0 rgba(239, 83, 80, 0.2);
-}
-</style>
