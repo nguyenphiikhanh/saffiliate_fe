@@ -6,12 +6,12 @@
         Hướng Dẫn <span class="text-shopee-orange">Mua Sắm</span> Hoàn Tiền
       </h1>
       <p class="text-[14px] text-slate-500 dark:text-slate-400 mt-1.5 font-medium leading-relaxed">
-        Chỉ với 4 bước đơn giản, bạn sẽ tiết kiệm được tới 20% chi phí cho mỗi đơn hàng mua sắm trên Shopee.
+        Chỉ với 3 bước đơn giản, bạn sẽ tiết kiệm được tối đa chi phí cho mỗi đơn hàng mua sắm trên Shopee.
       </p>
     </div>
 
-    <!-- 4-Step Visual Timeline / Narrative Layout -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12 relative">
+    <!-- 3-Step Visual Timeline / Narrative Layout -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 relative">
       <!-- Background Connecting Line for Desktop -->
       <div class="hidden md:block absolute top-1/2 left-[10%] right-[10%] h-0.5 bg-slate-100 dark:bg-slate-800/80 -translate-y-12 z-0"></div>
 
@@ -19,23 +19,24 @@
       <div
         v-for="(step, idx) in steps"
         :key="idx"
-        class="rounded-3xl border border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900/40 p-6 shadow-lg shadow-slate-900/[0.01] dark:shadow-slate-950/10 hover:border-slate-200 dark:hover:border-slate-700 hover:scale-[1.02] transition-all duration-300 z-10 group"
+        class="rounded-[2rem] border border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900/40 p-8 shadow-lg shadow-slate-900/[0.01] dark:shadow-slate-950/10 hover:border-slate-200 dark:hover:border-slate-700 hover:scale-[1.02] transition-all duration-300 z-10 group"
       >
         <!-- Step Icon & Number -->
         <div class="flex items-center justify-between gap-3">
-          <div class="h-12 w-12 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0 font-black text-lg group-hover:scale-110 transition-transform duration-300">
-            {{ idx + 1 }}
-          </div>
-          <!-- Tiny SVG Icon representation -->
-          <div class="text-slate-300 dark:text-slate-700 shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <!-- Big Step Number -->
+          <span class="text-[52px] font-black tracking-tight transition-transform duration-300 group-hover:scale-105" :class="step.numberClass">
+            {{ step.num }}
+          </span>
+          <!-- Beautiful Icon Badge -->
+          <div class="h-10 w-10 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:rotate-12" :class="step.badgeClass">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" :d="step.icon" />
             </svg>
           </div>
         </div>
 
-        <h3 class="text-[14px] font-black text-slate-800 dark:text-slate-100 mt-5 uppercase tracking-wider">{{ step.title }}</h3>
-        <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed font-semibold">{{ step.desc }}</p>
+        <h3 class="text-[15px] font-black text-slate-800 dark:text-slate-100 mt-5 uppercase tracking-wider">{{ step.title }}</h3>
+        <p class="text-[13.5px] text-slate-400 dark:text-slate-400 mt-2 leading-relaxed font-semibold">{{ step.desc }}</p>
       </div>
     </div>
 
@@ -108,24 +109,28 @@ const toggleFAQ = (idx) => {
 
 const steps = [
   {
-    title: "1. Sao chép link",
-    desc: "Sao chép đường dẫn (link) sản phẩm bạn muốn mua trên ứng dụng Shopee (hoặc website Shopee).",
-    icon: "M8.684 10.742l5.316-2.658m0 0a3 3 0 100-3.368L8.684 7.376m0 2.366a3 3 0 100 4.516l5.316 2.658m0 0a3 3 0 103-3.368M12 8a3 3 0 11-6 0 3 3 0 016 0z",
+    num: "01",
+    title: "COPY LINK SHOPEE",
+    desc: "Sao chép liên kết sản phẩm bạn yêu thích trực tiếp trên ứng dụng Shopee (hoặc bất kỳ trình duyệt nào).",
+    icon: "M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3",
+    numberClass: "text-orange-500",
+    badgeClass: "bg-orange-50 dark:bg-orange-950/30 text-orange-500",
   },
   {
-    title: "2. Chuyển đổi link",
-    desc: "Truy cập Saffi, dán link sản phẩm vừa copy vào thanh công cụ để tự động quy đổi sang link hoàn tiền.",
-    icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 6.571M21.11 3v5h-5.06",
+    num: "02",
+    title: "DÁN & CHUYỂN ĐỔI",
+    desc: "Mở Saffi, dán liên kết vừa copy vào ô công cụ. Hệ thống sẽ tự động chuyển đổi thành đường link hoàn tiền thông minh trong 1 giây.",
+    icon: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4",
+    numberClass: "text-amber-500",
+    badgeClass: "bg-amber-50 dark:bg-amber-950/20 text-amber-500",
   },
   {
-    title: "3. Tiến hành mua hàng",
-    desc: "Bấm vào nút mua hàng để chuyển sang ứng dụng Shopee, thêm sản phẩm vào giỏ và đặt hàng như bình thường.",
-    icon: "M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z",
-  },
-  {
-    title: "4. Nhận hoàn tiền",
-    desc: "Sau 5 - 15 phút đặt hàng thành công, hoa hồng hoàn tiền tạm duyệt sẽ tự động cập nhật vào ví tài chính của bạn.",
+    num: "03",
+    title: "MUA SẮM & NHẬN TIỀN",
+    desc: "Click vào link chuyển đổi để mua hàng trên Shopee. Hoa hồng trích lại lên tới 90% sẽ được cộng vào số dư Saffi để bạn rút về tài khoản ngân hàng bất kỳ lúc nào!",
     icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    numberClass: "text-emerald-500",
+    badgeClass: "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-500",
   },
 ];
 

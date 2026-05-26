@@ -16,25 +16,9 @@
       <!-- Logo and Branding -->
       <div class="flex flex-col items-center text-center mb-8">
         <!-- Brand Logo Icon -->
-        <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-shopee-orange shadow-lg glow-orange shrink-0 mb-4 transition-transform duration-500 hover:rotate-12">
-          <!-- Saffi Icon: Orange Rounded Box, Circle with $, chase arrows -->
-          <svg class="h-10 w-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="16" />
-            <path d="M16 8a6 6 0 0 0-8 0" />
-            <path d="M8 16a6 6 0 0 0 8 0" />
-            <path d="M12 6V4" />
-            <path d="M12 20v-2" />
-          </svg>
+        <div class="flex h-28 w-28 items-center justify-center shrink-0 mb-4 transition-transform duration-500 hover:rotate-12 select-none">
+          <img src="/saficon.png" class="h-28 w-28 object-contain rounded-3xl shadow-lg" alt="Saffi Logo" />
         </div>
-        
-        <!-- Logo Text -->
-        <h1 class="font-sans text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-4xl transition-colors duration-400">
-          S<span class="text-shopee-orange">affi</span>
-        </h1>
-        <p class="text-2xs tracking-widest text-slate-500 dark:text-slate-400 uppercase font-bold mt-0.5 transition-colors duration-400">
-          Smart Shopping
-        </p>
 
         <!-- Dynamic Slogan -->
         <h2 class="text-2xl md:text-3xl font-extrabold text-slate-800 dark:text-slate-200 mt-6 tracking-tight">

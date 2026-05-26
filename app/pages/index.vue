@@ -8,15 +8,8 @@
 
       <!-- Brand Identity Brandmark -->
       <div class="flex justify-center mb-6">
-        <div class="flex h-20 w-20 items-center justify-center rounded-[24px] bg-shopee-orange shadow-lg shadow-orange-500/30 glow-orange shrink-0 cursor-pointer transition-transform duration-500 hover:rotate-[15deg] select-none group">
-          <svg class="h-10 w-10 text-white transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="16" />
-            <path d="M16 8a6 6 0 0 0-8 0" />
-            <path d="M8 16a6 6 0 0 0 8 0" />
-            <path d="M12 6V4" />
-            <path d="M12 20v-2" />
-          </svg>
+        <div class="flex h-20 w-20 items-center justify-center shrink-0 cursor-pointer transition-transform duration-500 hover:rotate-[15deg] select-none group">
+          <img src="/saficon.png" class="h-20 w-20 object-contain rounded-[24px] shadow-md transition-transform duration-300 group-hover:scale-110" alt="Saffi Logo" />
         </div>
       </div>
 

@@ -14,14 +14,8 @@
           <div class="relative z-10 flex flex-col h-full justify-between gap-8">
             <div>
               <div class="flex items-center gap-3">
-                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-slate-800 text-shopee-orange shadow-sm border border-orange-100/60 dark:border-slate-700 shrink-0">
-                  <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M16 8a6 6 0 0 0-8 0" />
-                    <path d="M8 16a6 6 0 0 0 8 0" />
-                    <path d="M12 6V4" />
-                    <path d="M12 20v-2" />
-                  </svg>
+                <div class="flex h-12 w-12 items-center justify-center shrink-0">
+                  <img src="/saficon.png" class="h-12 w-12 object-contain rounded-2xl shadow-sm" alt="Saffi Logo" />
                 </div>
                 <div class="flex flex-col text-slate-800 dark:text-white">
                   <span class="font-sans text-3xl font-black tracking-tight leading-none">Saffi</span>

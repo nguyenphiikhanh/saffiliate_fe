@@ -17,15 +17,8 @@
           <!-- Logo Brand -->
           <NuxtLink to="/" class="flex items-center gap-2 mr-2 cursor-pointer group shrink-0">
             <!-- Brand Icon -->
-            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-shopee-orange shadow-md glow-orange shrink-0 transition-transform duration-500 group-hover:rotate-12 select-none">
-              <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="16" />
-                <path d="M16 8a6 6 0 0 0-8 0" />
-                <path d="M8 16a6 6 0 0 0 8 0" />
-                <path d="M12 6V4" />
-                <path d="M12 20v-2" />
-              </svg>
+            <div class="flex h-9 w-9 items-center justify-center shrink-0 transition-transform duration-500 group-hover:rotate-12 select-none">
+              <img src="/saficon.png" class="h-9 w-9 object-contain rounded-xl shadow-sm" alt="Saffi Logo" />
             </div>
             
             <!-- Logo Text -->
