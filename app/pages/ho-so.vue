@@ -9,6 +9,78 @@
         Cấu hình thông tin tài khoản cá nhân và liên kết ngân hàng đối soát mặc định.
       </p>
     </div>
+    <!-- Dynamic Member Rank Progress Card -->
+    <div v-if="session?.user" class="w-full rounded-[2rem] border border-slate-100 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/60 p-6 md:p-8 mt-6 shadow-xl shadow-slate-900/[0.01] dark:shadow-slate-950/10 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden backdrop-blur-md">
+      <!-- Decorative rank-colored glow on background -->
+      <div class="absolute top-1/2 left-0 -translate-y-1/2 w-48 h-48 rounded-full blur-[80px] opacity-10 pointer-events-none" :class="rankInfo.glowClass"></div>
+      
+      <!-- Left + Middle: Rank Badge Icon + Progress Bar -->
+      <div class="flex flex-col sm:flex-row items-center gap-4 flex-1 w-full relative z-10">
+        <!-- Rank Icon Badge with Hover rotate -->
+        <div class="h-16 w-16 flex items-center justify-center shrink-0 transition-transform duration-500 hover:rotate-6 select-none">
+          <img :src="rankInfo.image" class="h-16 w-16 object-contain drop-shadow-sm" :alt="rankInfo.name" />
+        </div>
+        
+        <!-- Progress Bar Details -->
+        <div class="flex-1 w-full text-center sm:text-left">
+          <!-- Step indicator: Rank name to Next rank name -->
+          <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 font-sans font-black text-sm tracking-wide">
+            <span :class="rankInfo.textClass">{{ rankInfo.fullName }}</span>
+            <span v-if="rankProgress.nextRankName !== 'ĐẠT ĐỈNH'" class="text-slate-300 dark:text-slate-700 font-normal">&rarr;</span>
+            <span v-if="rankProgress.nextRankName !== 'ĐẠT ĐỈNH'" class="text-shopee-orange">THÀNH VIÊN {{ rankProgress.nextRankName }}</span>
+          </div>
+
+          <!-- The Custom Progress Bar -->
+          <div class="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full mt-3 overflow-hidden shadow-inner relative">
+            <div 
+              class="h-full bg-gradient-to-r from-orange-500 to-rose-500 rounded-full transition-all duration-1000 ease-out"
+              :style="{ width: `${rankProgress.percent}%` }"
+            ></div>
+          </div>
+
+          <!-- Description -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-2 mt-2">
+            <p class="text-slate-400 dark:text-slate-550 text-[11px] font-bold">
+              <span v-if="session?.user?.rank === 'obsidian'">
+                Tổng đơn tích lũy: <span class="text-slate-700 dark:text-slate-300 font-extrabold">{{ session?.user?.completedOrdersCount ?? 0 }} đơn</span>
+              </span>
+              <span v-else>
+                <span class="text-slate-700 dark:text-slate-300 font-extrabold">{{ session?.user?.completedOrdersCount ?? 0 }}</span> / {{ rankProgress.nextThreshold }} đơn hàng • Tiến trình {{ rankProgress.percent }}%
+              </span>
+            </p>
+            <p v-if="session?.user?.rank === 'obsidian'" class="text-[11px] font-extrabold text-emerald-500">
+              💎 Hạng Tinh Hoa tối thượng! Hãy duy trì mua sắm để bảo vệ đặc quyền chiết khấu cao nhất nhé.
+            </p>
+            <p v-else-if="(session?.user?.ordersToNextRank ?? 0) > 0" class="text-[11px] font-bold text-slate-400 dark:text-slate-500">
+              Còn thiếu <span class="text-shopee-orange font-black">{{ session.user.ordersToNextRank }}</span> đơn để thăng hạng
+            </p>
+            <p v-else class="text-[11px] font-extrabold text-emerald-500">
+              Đã đạt cấp bậc tối đa 🎉
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vertical Divider for Desktop -->
+      <div class="hidden md:block h-12 w-px bg-slate-200 dark:bg-slate-800 shrink-0"></div>
+
+      <!-- Right Side: Commission Rates representation -->
+      <div class="flex items-center gap-6 relative z-10 shrink-0 select-none">
+        <div class="text-center">
+          <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block">Chiết khấu ngày thường</span>
+          <span class="text-2xl font-black text-slate-800 dark:text-slate-200 mt-1 block">
+            {{ rankProgress.normalRate }}%
+          </span>
+        </div>
+        <div class="h-8 w-px bg-slate-200 dark:bg-slate-800"></div>
+        <div class="text-center">
+          <span class="text-[9px] font-extrabold text-shopee-orange uppercase tracking-widest block">Chiết khấu ngày đôi / KM</span>
+          <span class="text-2xl font-black text-rose-500 mt-1 block">
+            {{ rankProgress.promoRate }}%
+          </span>
+        </div>
+      </div>
+    </div>
 
     <!-- MAIN GRID layout -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 mt-8 items-start">
@@ -25,24 +97,10 @@
         <h3 class="text-sm font-black text-slate-800 dark:text-slate-100 mt-4 truncate max-w-full leading-tight">{{ userName }}</h3>
         <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1 truncate max-w-full font-bold select-all">{{ userEmail }}</p>
 
-        <!-- Rank badge -->
-        <div class="mt-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold text-[10px] tracking-widest select-none shadow-sm">
-          <svg class="h-3.5 w-3.5 text-amber-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M2 4l3 7h14l3-7-5 4-5-8-5 8-5-4zm17 9H5c-1.1 0-2 .9-2 2v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4c0-1.1-.9-2-2-2z" />
-          </svg>
-          <span>THÀNH VIÊN VÀNG</span>
-        </div>
-
         <!-- Account Metrics -->
-        <div class="w-full mt-6 pt-6 border-t border-slate-100 dark:border-slate-800/60 grid grid-cols-2 gap-4">
-          <div class="text-center">
-            <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Ngày tham gia</span>
-            <span class="text-xs font-black text-slate-700 dark:text-slate-200 block mt-1">12/04/2026</span>
-          </div>
-          <div class="text-center">
-            <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block">Cấp bậc tích lũy</span>
-            <span class="text-xs font-black text-slate-700 dark:text-slate-200 block mt-1">Cấp 4</span>
-          </div>
+        <div class="w-full mt-5 pt-5 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-center gap-2.5 select-none">
+          <span class="text-[9.5px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Ngày tham gia:</span>
+          <span class="text-xs font-black text-slate-700 dark:text-slate-200">{{ joinDate }}</span>
         </div>
       </div>
 
@@ -404,6 +462,80 @@ const userName = computed(() => session.value?.user?.name || "User");
 const userAvatar = computed(() => session.value?.user?.image || "");
 const userEmail = computed(() => session.value?.user?.email || "mailunlockcuakhanh2@gmail.com");
 
+const rankInfo = computed(() => {
+  const rank = session.value?.user?.rank || "silver";
+  if (rank === "obsidian") {
+    return {
+      name: "TINH HOA",
+      fullName: "THÀNH VIÊN TINH HOA",
+      image: "/saffi_obsidian.png",
+      badgeClass: "bg-slate-900/10 dark:bg-slate-100/10 border-slate-900/20 text-slate-800 dark:text-slate-200",
+      borderClass: "border-slate-200/60 dark:border-slate-800/80",
+      glowClass: "bg-slate-500",
+      textClass: "text-slate-700 dark:text-slate-300",
+    };
+  } else if (rank === "gold") {
+    return {
+      name: "VÀNG",
+      fullName: "THÀNH VIÊN VÀNG",
+      image: "/saffi_gold.png",
+      badgeClass: "bg-amber-500/10 dark:bg-amber-500/15 border-amber-500/20 text-amber-600 dark:text-amber-400",
+      borderClass: "border-amber-500/20 dark:border-amber-500/20",
+      glowClass: "bg-amber-500",
+      textClass: "text-amber-500",
+    };
+  } else {
+    return {
+      name: "BẠC",
+      fullName: "THÀNH VIÊN BẠC",
+      image: "/saffi_silver.png",
+      badgeClass: "bg-slate-300/10 dark:bg-slate-300/15 border-slate-300/20 text-slate-600 dark:text-slate-400",
+      borderClass: "border-slate-200 dark:border-slate-800",
+      glowClass: "bg-slate-400",
+      textClass: "text-slate-400",
+    };
+  }
+});
+
+const rankProgress = computed(() => {
+  const count = session.value?.user?.completedOrdersCount ?? 0;
+  const rank = session.value?.user?.rank || "silver";
+  
+  let nextRankName = "";
+  let nextThreshold = 0;
+  let percent = 0;
+  let normalRate = 60;
+  let promoRate = 70;
+
+  if (rank === "obsidian") {
+    nextRankName = "ĐẠT ĐỈNH";
+    nextThreshold = 50;
+    percent = 100;
+    normalRate = 80;
+    promoRate = 90;
+  } else if (rank === "gold") {
+    nextRankName = "TINH HOA";
+    nextThreshold = 50;
+    percent = Math.min(Math.round((count / 50) * 100), 100);
+    normalRate = 70;
+    promoRate = 80;
+  } else {
+    nextRankName = "VÀNG";
+    nextThreshold = 10;
+    percent = Math.min(Math.round((count / 10) * 100), 100);
+    normalRate = 60;
+    promoRate = 70;
+  }
+
+  return {
+    nextRankName,
+    nextThreshold,
+    percent,
+    normalRate,
+    promoRate,
+  };
+});
+
 const firstLetter = computed(() => {
   const name = userName.value;
   return name ? name.charAt(0).toUpperCase() : "U";
@@ -418,6 +550,16 @@ const profileMsg = ref("");
 const profileError = ref("");
 
 const originalProfileName = ref("");
+
+const joinDate = computed(() => {
+  const dateVal = session.value?.user?.createdAt;
+  if (!dateVal) return "N/A";
+  const dateObj = new Date(dateVal);
+  const day = String(dateObj.getDate()).padStart(2, '0');
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const year = dateObj.getFullYear();
+  return `${day}/${month}/${year}`;
+});
 
 const handleEditProfileToggle = () => {
   if (isEditingProfile.value) {

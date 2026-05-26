@@ -182,16 +182,15 @@
         <!-- RIGHT REGION: Rank Badge, Profile Link, Theme Toggle, and User Capsule -->
         <div class="flex items-center gap-2 sm:gap-3">
           
-          <!-- Rank Gold Badge -->
+          <!-- Rank Badge -->
           <div 
-            class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold text-[11px] tracking-widest select-none shrink-0"
-            title="Hạng thành viên của bạn"
+            v-if="session?.user"
+            class="flex items-center gap-1.5 px-3 py-1 rounded-full border select-none shrink-0 font-extrabold text-[11px] tracking-widest"
+            :class="rankInfo.badgeClass"
+            :title="`Hạng thành viên: ${rankInfo.fullName}`"
           >
-            <!-- Crown SVG Icon -->
-            <svg class="h-3.5 w-3.5 text-amber-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M2 4l3 7h14l3-7-5 4-5-8-5 8-5-4zm17 9H5c-1.1 0-2 .9-2 2v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4c0-1.1-.9-2-2-2z" />
-            </svg>
-            <span>VÀNG</span>
+            <img :src="rankInfo.image" class="h-4.5 w-4.5 object-contain shrink-0" :alt="rankInfo.name" />
+            <span>{{ rankInfo.name }}</span>
           </div>
 
           <!-- Nút Chuông Thông Báo -->
@@ -278,13 +277,14 @@
                   </div>
                 </div>
 
-                <!-- 2. Rank Gold Badge -->
-                <div class="flex items-center justify-between py-3 border-b border-slate-100 dark:border-slate-800/60">
-                  <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 dark:bg-amber-500/15 border border-amber-500/20 text-amber-600 dark:text-amber-400 font-extrabold text-[10px] tracking-widest select-none shrink-0">
-                    <svg class="h-3.5 w-3.5 text-amber-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M2 4l3 7h14l3-7-5 4-5-8-5 8-5-4zm17 9H5c-1.1 0-2 .9-2 2v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4c0-1.1-.9-2-2-2z" />
-                    </svg>
-                    <span>VÀNG</span>
+                <!-- 2. Rank Badge -->
+                <div v-if="session?.user" class="flex items-center justify-between py-3 border-b border-slate-100 dark:border-slate-800/60">
+                  <div 
+                    class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border font-extrabold text-[10px] tracking-widest select-none shrink-0"
+                    :class="rankInfo.badgeClass"
+                  >
+                    <img :src="rankInfo.image" class="h-4 w-4 object-contain shrink-0" :alt="rankInfo.name" />
+                    <span>{{ rankInfo.name }}</span>
                   </div>
                   <span class="text-[10px] font-bold text-slate-400 dark:text-slate-550">Cấp bậc hiện tại</span>
                 </div>
@@ -522,6 +522,32 @@ const firstLetter = computed(() => {
 
 const userEmail = computed(() => {
   return session.value.user.email || "mailunlockcuakhanh2@gmail.com";
+});
+
+const rankInfo = computed(() => {
+  const rank = session.value?.user?.rank || "silver";
+  if (rank === "obsidian") {
+    return {
+      name: "TINH HOA",
+      fullName: "THÀNH VIÊN TINH HOA",
+      image: "/saffi_obsidian.png",
+      badgeClass: "bg-slate-900/10 dark:bg-slate-100/10 border-slate-900/20 text-slate-800 dark:text-slate-200",
+    };
+  } else if (rank === "gold") {
+    return {
+      name: "VÀNG",
+      fullName: "THÀNH VIÊN VÀNG",
+      image: "/saffi_gold.png",
+      badgeClass: "bg-amber-500/10 dark:bg-amber-500/15 border-amber-500/20 text-amber-600 dark:text-amber-400",
+    };
+  } else {
+    return {
+      name: "BẠC",
+      fullName: "THÀNH VIÊN BẠC",
+      image: "/saffi_silver.png",
+      badgeClass: "bg-slate-300/10 dark:bg-slate-300/15 border-slate-300/20 text-slate-600 dark:text-slate-400",
+    };
+  }
 });
 
 const handleLogout = async () => {
