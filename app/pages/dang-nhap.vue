@@ -30,7 +30,7 @@
         
         <!-- Logo Text -->
         <h1 class="font-sans text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-4xl transition-colors duration-400">
-          S<span class="text-shopee-orange">affiliate</span>
+          S<span class="text-shopee-orange">affi</span>
         </h1>
         <p class="text-2xs tracking-widest text-slate-500 dark:text-slate-400 uppercase font-bold mt-0.5 transition-colors duration-400">
           Smart Shopping
@@ -228,11 +228,145 @@
 
           </div>
         </div>
-
       </div>
 
     </div>
   </div>
+
+  <!-- In-App Browser Blocker Overlay -->
+  <Transition
+    enter-active-class="transition duration-400 ease-out"
+    enter-from-class="opacity-0 scale-95"
+    enter-to-class="opacity-100 scale-100"
+    leave-active-class="transition duration-300 ease-in"
+    leave-from-class="opacity-100 scale-100"
+    leave-to-class="opacity-0 scale-95"
+  >
+    <div v-if="webViewInfo.isInApp" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-2xl overflow-y-auto">
+      <!-- Radial dynamic background glow -->
+      <div class="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-shopee-orange/20 blur-[100px] pointer-events-none"></div>
+      <div class="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[350px] h-[350px] rounded-full bg-amber-500/20 blur-[100px] pointer-events-none"></div>
+
+      <div class="w-full max-w-md rounded-3xl p-6 md:p-8 bg-slate-900/90 border border-slate-800 shadow-2xl relative z-10 animate-fade-in-up text-center flex flex-col items-center">
+        
+        <!-- Alert Danger Icon -->
+        <div class="h-16 w-16 flex items-center justify-center rounded-2xl bg-gradient-to-br from-shopee-orange to-amber-500 shadow-lg shadow-shopee-orange/20 mb-6 animate-pulse-slow">
+          <svg class="h-9 w-9 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </div>
+
+        <h3 class="text-xl md:text-2xl font-extrabold text-white tracking-tight leading-tight">
+          Yêu cầu mở bằng trình duyệt ngoài
+        </h3>
+        <p class="text-xs font-semibold text-shopee-orange uppercase tracking-wider mt-2 bg-shopee-orange/10 px-3 py-1 rounded-full">
+          Đang mở bằng WebView {{ webViewInfo.platform }}
+        </p>
+
+        <p class="text-sm text-slate-300 mt-4 leading-relaxed">
+          Để đảm bảo tính <strong class="text-white">bảo mật tuyệt đối</strong> của tài khoản và tránh lỗi chặn liên kết từ Google, vui lòng đăng nhập trực tiếp trên trình duyệt Chrome hoặc Safari của thiết bị.
+        </p>
+
+        <!-- Step-by-Step Instructions card -->
+        <div class="w-full mt-6 p-5 rounded-2xl bg-slate-950/50 border border-slate-800 text-left">
+          <h4 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-3">Hướng dẫn mở nhanh:</h4>
+          
+          <!-- Platform Zalo -->
+          <ul v-if="webViewInfo.platform === 'Zalo'" class="space-y-3.5 text-sm text-slate-300 font-medium">
+            <li class="flex items-start gap-2.5">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold">1</span>
+              <span>Bấm vào biểu tượng menu <strong class="text-white">Ba chấm &bull;&bull;&bull;</strong> ở góc trên bên phải.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold">2</span>
+              <span>Chọn mục <strong class="text-white">Mở bằng trình duyệt</strong> để đăng nhập ngay.</span>
+            </li>
+          </ul>
+
+          <!-- Platform Facebook or Messenger -->
+          <ul v-else-if="webViewInfo.platform === 'Facebook' || webViewInfo.platform === 'Messenger'" class="space-y-3.5 text-sm text-slate-300 font-medium">
+            <li class="flex items-start gap-2.5">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold">1</span>
+              <span>Bấm vào biểu tượng menu <strong class="text-white">Ba chấm &bull;&bull;&bull;</strong> ở góc trên bên phải.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold">2</span>
+              <span>Chọn <strong class="text-white">Mở bằng trình duyệt ngoài</strong> hoặc <strong class="text-white">Mở bằng Safari/Chrome</strong>.</span>
+            </li>
+          </ul>
+
+          <!-- Platform Telegram -->
+          <ul v-else-if="webViewInfo.platform === 'Telegram'" class="space-y-3.5 text-sm text-slate-300 font-medium">
+            <li class="flex items-start gap-2.5">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold">1</span>
+              <span>Nhấp biểu tượng menu <strong class="text-white">Ba chấm &bull;&bull;&bull;</strong> ở góc trên màn hình.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold">2</span>
+              <span>Chọn <strong class="text-white">Mở bằng Safari/Chrome</strong> hoặc nhấp biểu tượng trình duyệt.</span>
+            </li>
+          </ul>
+
+          <!-- Platform TikTok -->
+          <ul v-else-if="webViewInfo.platform === 'TikTok'" class="space-y-3.5 text-sm text-slate-300 font-medium">
+            <li class="flex items-start gap-2.5">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold">1</span>
+              <span>Nhấn nút menu chia sẻ hoặc <strong class="text-white">Ba chấm &bull;&bull;&bull;</strong> ở thanh tùy chọn.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold">2</span>
+              <span>Chọn <strong class="text-white">Mở bằng trình duyệt</strong>.</span>
+            </li>
+          </ul>
+
+          <!-- Fallback General instruction -->
+          <ul v-else class="space-y-3.5 text-sm text-slate-300 font-medium">
+            <li class="flex items-start gap-2.5">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold">1</span>
+              <span>Chọn biểu tượng tùy chọn/menu trên ứng dụng của bạn.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold">2</span>
+              <span>Tìm và nhấp vào mục <strong class="text-white">Mở bằng trình duyệt ngoài</strong>.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Actions Area -->
+        <div class="w-full mt-6 flex flex-col gap-3">
+          <!-- Android Dynamic open chrome action -->
+          <button
+            v-if="webViewInfo.isAndroid"
+            @click="redirectToSystemBrowser"
+            class="w-full flex items-center justify-center gap-2.5 px-5 py-4 rounded-2xl bg-gradient-to-r from-shopee-orange to-amber-500 hover:shadow-lg hover:shadow-shopee-orange/25 text-white font-bold text-base active:scale-[0.98] transition-premium cursor-pointer border-0"
+          >
+            <svg class="w-5 h-5 shrink-0 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            <span>Mở trình duyệt mặc định</span>
+          </button>
+
+          <!-- IOS Dynamic Copy Link action -->
+          <button
+            @click="copyLink"
+            class="w-full flex items-center justify-center gap-2.5 px-5 py-4 rounded-2xl border border-slate-700 bg-slate-800/50 hover:bg-slate-800 text-slate-200 hover:text-white font-bold text-base active:scale-[0.98] transition-premium cursor-pointer"
+          >
+            <!-- Copy or Tick icon -->
+            <svg v-if="!isCopied" class="w-5 h-5 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            <svg v-else class="w-5 h-5 shrink-0 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{{ isCopied ? "Đã sao chép liên kết!" : "Sao chép liên kết" }}</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </Transition>
 </template>
 
 <script setup>
@@ -257,7 +391,87 @@ useSeoMeta({
 const route = useRoute();
 const errorMessage = ref("");
 
+// Reactive state for In-App WebView detection
+const webViewInfo = ref({
+  isInApp: false,
+  isAndroid: false,
+  isiOS: false,
+  platform: ""
+});
+
+const isCopied = ref(false);
+
+// Copy link helper for iOS users or fallback
+const copyLink = async () => {
+  if (typeof window === "undefined") return;
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+    isCopied.value = true;
+    setTimeout(() => {
+      isCopied.value = false;
+    }, 2000);
+  } catch (err) {
+    // Fallback copy method
+    const textArea = document.createElement("textarea");
+    textArea.value = window.location.href;
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand("copy");
+      isCopied.value = true;
+      setTimeout(() => {
+        isCopied.value = false;
+      }, 2000);
+    } catch (fallbackErr) {
+      console.error("Fallback copy failed: ", fallbackErr);
+    }
+    document.body.removeChild(textArea);
+  }
+};
+
+// Auto-redirection helper for Android Chrome
+const redirectToSystemBrowser = () => {
+  if (typeof window !== "undefined") {
+    const currentUrl = window.location.href.replace(/^https?:\/\//, '');
+    window.location.href = `intent://${currentUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+  }
+};
+
+
 onMounted(() => {
+  // Detect if opened inside an In-App Browser (WebView)
+  if (typeof window !== "undefined" && window.navigator) {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    
+    const isZalo = ua.indexOf("Zalo") > -1;
+    const isFacebook = (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+    const isMessenger = ua.indexOf("Messenger") > -1 || (isFacebook && ua.indexOf("Messenger") > -1);
+    const isInstagram = ua.indexOf("Instagram") > -1;
+    const isTikTok = ua.indexOf("TikTok") > -1;
+    const isTelegram = ua.indexOf("Telegram") > -1;
+
+    const isInApp = isZalo || isFacebook || isMessenger || isInstagram || isTikTok || isTelegram;
+    
+    webViewInfo.value = {
+      isInApp,
+      isAndroid: /Android/i.test(ua),
+      isiOS: /iPhone|iPad|iPod/i.test(ua),
+      platform: isZalo ? 'Zalo' : 
+                isMessenger ? 'Messenger' : 
+                isFacebook ? 'Facebook' : 
+                isInstagram ? 'Instagram' :
+                isTikTok ? 'TikTok' :
+                isTelegram ? 'Telegram' : 'In-App Browser'
+    };
+
+    // Auto redirect Android users straight to external Chrome browser
+    if (isInApp && webViewInfo.value.isAndroid) {
+      redirectToSystemBrowser();
+    }
+  }
 
   // Check for auth errors passed via callback URL params
   if (route.query.error) {
@@ -277,6 +491,11 @@ const isLoggingIn = ref(false);
 
 // Google login integration using better-auth client
 const handleGoogleLogin = async () => {
+  if (webViewInfo.value.isInApp) {
+    errorMessage.value = "Bạn đang sử dụng trình duyệt in-app. Vui lòng nhấn nút mở trình duyệt ngoài để đăng nhập an toàn.";
+    return;
+  }
+
   const config = useRuntimeConfig();
   if (isLoggingIn.value) return;
   errorMessage.value = "";
