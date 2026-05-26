@@ -115,7 +115,6 @@ export function useShopeeApi() {
       console.error("API error:", err);
       // Retrieve parsed error message from Axios interceptor
       const errMsg = err?.message || "Không thể kết nối đến máy chủ. Vui lòng thử lại sau!";
-      debugger
       error.value = `Lỗi chuyển đổi: ${errMsg}`;
       return false;
     } finally {
