@@ -421,7 +421,7 @@ const queryParams = computed(() => ({
   status: statusMap[activeTab.value]
 }));
 
-const { data: response, status } = await useFetch('/api/order', {
+const { data: response, status } = useLazyFetch('/api/order', {
   headers,
   query: queryParams,
   watch: [activeTab] // Tự động gọi lại API khi chuyển tab

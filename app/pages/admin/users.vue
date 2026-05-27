@@ -72,7 +72,7 @@
 
         <!-- Avatar -->
         <div class="h-16 w-16 rounded-full overflow-hidden flex items-center justify-center border-2 border-slate-100 dark:border-slate-800 shadow-sm shrink-0 mb-3 select-none relative">
-          <img v-if="user.image" :src="user.image" class="h-full w-full object-cover" referrerpolicy="no-referrer" />
+          <img v-if="user.image" :src="user.image" class="h-full w-full object-cover" referrerpolicy="no-referrer" loading="lazy" />
           <div v-else class="h-full w-full bg-[#EC407A] text-white font-black text-xl flex items-center justify-center uppercase">
             {{ user.name ? user.name.charAt(0).toUpperCase() : 'U' }}
           </div>
@@ -175,7 +175,7 @@
 
           <!-- Large Avatar -->
           <div class="h-20 w-20 rounded-full overflow-hidden flex items-center justify-center border-4 border-slate-50 dark:border-slate-850 shadow-md shrink-0 mb-4 select-none relative">
-            <img v-if="selectedUser.image" :src="selectedUser.image" class="h-full w-full object-cover" referrerpolicy="no-referrer" />
+            <img v-if="selectedUser.image" :src="selectedUser.image" class="h-full w-full object-cover" referrerpolicy="no-referrer" loading="lazy" />
             <div v-else class="h-full w-full bg-[#EC407A] text-white font-black text-2xl flex items-center justify-center uppercase">
               {{ selectedUser.name ? selectedUser.name.charAt(0).toUpperCase() : 'U' }}
             </div>
@@ -284,11 +284,13 @@ const clearSearch = () => {
   fetchUsers(1);
 };
 
-// Automatic watch that triggers fetch when searchQuery gets cleared
+// Debounced automatic search with 350ms delay to prevent backend API spamming while typing
+let searchTimeout = null;
 watch(searchQuery, (newVal) => {
-  if (!newVal) {
-    fetchUsers(1);
-  }
+  if (searchTimeout) clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    fetchUsers(1, newVal.trim());
+  }, 350);
 });
 
 const changePage = (page) => {

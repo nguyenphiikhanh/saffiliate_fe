@@ -455,7 +455,7 @@ const showToast = (msg, type = 'success') => {
 };
 
 const headers = useRequestHeaders(['cookie']);
-const { data: response, refresh, pending } = await useFetch('/api/order', {
+const { data: response, refresh, pending } = useFetch('/api/order', {
   headers,
   lazy: true
 });
