@@ -87,7 +87,7 @@
         <!-- BENTO BOX 3: Contact & Support Grid (Span 4) -->
         <div class="md:col-span-6 lg:col-span-4 flex flex-col gap-4">
           <!-- Small Box Top -->
-          <div class="flex-1 rounded-[2rem] bg-slate-50 dark:bg-slate-900/40 p-6 border border-slate-100 dark:border-slate-800/80 flex items-center gap-4 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors duration-300 group cursor-pointer" onclick="window.location.href='mailto:getsaffi@gmail.com'">
+          <div class="flex-1 rounded-[2rem] bg-slate-50 dark:bg-slate-900/40 p-6 border border-slate-100 dark:border-slate-800/80 flex items-center gap-4 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors duration-300 group cursor-pointer" onclick="window.location.href='mailto:support@saffi.vn'">
             <div class="h-12 w-12 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -95,7 +95,7 @@
             </div>
             <div>
               <span class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-0.5">Hỗ trợ 24/7</span>
-              <span class="block text-sm font-bold text-slate-800 dark:text-slate-200">getsaffi@gmail.com</span>
+              <span class="block text-sm font-bold text-slate-800 dark:text-slate-200">support@saffi.vn</span>
             </div>
           </div>
           
