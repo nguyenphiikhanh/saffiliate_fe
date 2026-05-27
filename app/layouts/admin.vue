@@ -66,12 +66,20 @@
           Rút tiền (Withdrawals)
         </NuxtLink>
         
-        <div class="px-4 py-3 rounded-2xl text-[13px] font-bold text-slate-400 dark:text-slate-600 cursor-not-allowed flex items-center gap-3">
+        <NuxtLink 
+          to="/admin/users"
+          class="flex items-center gap-3 px-4 py-3 rounded-2xl text-[13px] font-bold transition-all duration-300"
+          :class="[
+            $route.path.includes('/admin/users') 
+              ? 'bg-shopee-orange text-white shadow-md shadow-orange-500/20' 
+              : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-800 dark:hover:text-slate-200'
+          ]"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
           Người dùng (Users)
-        </div>
+        </NuxtLink>
       </nav>
       
       <div class="p-4 shrink-0 border-t border-slate-200/50 dark:border-slate-800/50">

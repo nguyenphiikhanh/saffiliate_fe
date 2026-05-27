@@ -220,14 +220,8 @@
             <span class="hidden lg:inline text-xs font-bold text-slate-700 dark:text-slate-200 truncate max-w-[100px] md:max-w-[120px]">
               {{ userName }}
             </span>
-            <!-- Avatar Section: Links to Admin if User is Admin -->
-            <NuxtLink v-if="session?.user?.role === 1" to="/admin/orders" @click.stop class="h-8.5 w-8.5 rounded-full overflow-hidden flex items-center justify-center shrink-0 shadow-sm border border-slate-200/50 dark:border-slate-800 hover:scale-105 transition-transform" title="Vào trang quản trị">
-              <img v-if="userAvatar" :src="userAvatar" class="h-full w-full object-cover" referrerpolicy="no-referrer" />
-              <div v-else class="h-full w-full bg-[#EC407A] text-white font-black text-sm flex items-center justify-center uppercase select-none">
-                {{ firstLetter }}
-              </div>
-            </NuxtLink>
-            <div v-else class="h-8.5 w-8.5 rounded-full overflow-hidden flex items-center justify-center shrink-0 shadow-sm border border-slate-200/50 dark:border-slate-800">
+            <!-- Avatar Section -->
+            <div class="h-8.5 w-8.5 rounded-full overflow-hidden flex items-center justify-center shrink-0 shadow-sm border border-slate-200/50 dark:border-slate-800 hover:scale-105 transition-transform">
               <img v-if="userAvatar" :src="userAvatar" class="h-full w-full object-cover" referrerpolicy="no-referrer" />
               <div v-else class="h-full w-full bg-[#EC407A] text-white font-black text-sm flex items-center justify-center uppercase select-none">
                 {{ firstLetter }}
@@ -304,7 +298,22 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
                     </div>
-                    <span class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors duration-300">Trang Quản Trị</span>
+                    <span class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors duration-300">Quản lý Đơn Hàng</span>
+                  </NuxtLink>
+
+                  <!-- Quản lý thành viên (Admin) -->
+                  <NuxtLink 
+                    v-if="session?.user?.role === 1"
+                    to="/admin/users" 
+                    @click="isMenuOpen = false"
+                    class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
+                  >
+                    <div class="h-8.5 w-8.5 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/15 text-indigo-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
+                    <span class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors duration-300">Quản lý Thành Viên</span>
                   </NuxtLink>
 
                   <!-- Hồ sơ -->
