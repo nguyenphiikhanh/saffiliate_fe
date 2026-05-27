@@ -75,8 +75,9 @@
               <th class="p-4 pl-6 whitespace-nowrap w-[20%]">Mã đơn</th>
               <th class="p-4 whitespace-nowrap w-[35%]">Sản phẩm</th>
               <th class="p-4 whitespace-nowrap w-[15%]">Ngày</th>
-              <th class="p-4 text-right whitespace-nowrap w-[15%]">Tích lũy</th>
-              <th class="p-4 whitespace-nowrap text-center w-[15%]">Trạng thái</th>
+              <th class="p-4 text-right whitespace-nowrap w-[15%]">Hoa hồng</th>
+              <th class="p-4 whitespace-nowrap text-center w-[10%]">Trạng thái</th>
+              <th class="p-4 whitespace-nowrap text-center w-[5%]">Hành động</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm">
@@ -103,8 +104,12 @@
                 </div>
               </td>
               <!-- Trạng thái Skeleton -->
-              <td class="p-4 flex justify-center">
-                <div class="h-5 w-20 bg-slate-200 dark:bg-slate-800/80 rounded-full"></div>
+              <td class="p-4 text-center">
+                <div class="h-5 w-20 bg-slate-200 dark:bg-slate-800/80 rounded-full mx-auto"></div>
+              </td>
+              <!-- Hành động Skeleton -->
+              <td class="p-4 text-center">
+                <div class="h-6.5 w-12 bg-slate-200 dark:bg-slate-800/80 rounded-lg mx-auto"></div>
               </td>
             </tr>
           </tbody>
@@ -113,15 +118,17 @@
 
       <!-- Orders Table -->
       <div class="mt-6" v-else-if="filteredOrders.length > 0">
-        <div class="overflow-x-auto bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-100 dark:border-slate-800/60">
+        <!-- Desktop Table View -->
+        <div class="hidden md:block overflow-x-auto bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-100 dark:border-slate-800/60">
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="text-[10px] uppercase tracking-widest font-bold text-slate-400 border-b border-slate-100 dark:border-slate-800">
                 <th class="p-4 pl-6 whitespace-nowrap w-[20%]">Mã đơn</th>
                 <th class="p-4 whitespace-nowrap w-[35%]">Sản phẩm</th>
                 <th class="p-4 whitespace-nowrap w-[15%]">Ngày</th>
-                <th class="p-4 text-right whitespace-nowrap w-[15%]">Tích lũy</th>
-                <th class="p-4 whitespace-nowrap text-center w-[15%]">Trạng thái</th>
+                <th class="p-4 text-right whitespace-nowrap w-[15%]">Hoa hồng</th>
+                <th class="p-4 whitespace-nowrap text-center w-[10%]">Trạng thái</th>
+                <th class="p-4 whitespace-nowrap text-center w-[5%]">Hành động</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm">
@@ -153,7 +160,7 @@
                     {{ order.date }}
                   </div>
                 </td>
-                <!-- Tích lũy -->
+                <!-- Hoa hồng -->
                 <td class="p-4 text-right">
                   <div class="flex items-center justify-end gap-1.5 font-black text-emerald-500 text-[13px]">
                     +{{ formatMoney(order.cashbackAmount) }}
@@ -169,9 +176,59 @@
                     {{ (order.status === 'Completed' || order.status === 'Thành công') ? 'HOÀN THÀNH' : order.status }}
                   </span>
                 </td>
+                <!-- Hành động -->
+                <td class="p-4 text-center">
+                  <button
+                    @click="openOrderDetails(order)"
+                    class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:border-shopee-orange dark:hover:border-shopee-orange bg-slate-50 hover:bg-shopee-orange/5 dark:bg-slate-950/20 text-slate-600 hover:text-shopee-orange dark:text-slate-400 dark:hover:text-shopee-orange font-bold text-xs active:scale-[0.96] transition-all cursor-pointer select-none"
+                    type="button"
+                  >
+                    Xem
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Mobile Card List View -->
+        <div class="block md:hidden space-y-3.5">
+          <div 
+            v-for="order in filteredOrders"
+            :key="order.code"
+            class="bg-white dark:bg-slate-900/60 p-4 rounded-[1.8rem] border border-slate-100 dark:border-slate-800/80 shadow-md flex flex-col gap-2.5 relative group overflow-hidden"
+          >
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-black text-slate-800 dark:text-slate-200 text-xs">#{{ order.code }}</span>
+              <span 
+                class="px-2.5 py-1 rounded-full text-[8.5px] font-black uppercase tracking-wider scale-95 origin-right"
+                :class="statusStyles[order.status]"
+              >
+                {{ (order.status === 'Completed' || order.status === 'Thành công') ? 'HOÀN THÀNH' : order.status }}
+              </span>
+            </div>
+            
+            <div class="font-bold text-slate-650 dark:text-slate-300 text-xs line-clamp-2 pr-1 leading-relaxed" :title="order.itemName || order.storeName">
+              {{ order.itemName || order.storeName || "Sản phẩm từ Shopee" }}
+            </div>
+            
+            <div class="flex items-center justify-between border-t border-slate-100/60 dark:border-slate-800/40 pt-2.5 mt-1 select-none">
+              <div class="text-[10px] text-slate-400 dark:text-slate-500 font-bold">
+                {{ order.date }}
+              </div>
+              <div class="flex items-center gap-1 font-black text-emerald-500 text-xs">
+                +{{ formatMoney(order.cashbackAmount) }}đ
+              </div>
+            </div>
+            
+            <button
+              @click="openOrderDetails(order)"
+              class="w-full py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-shopee-orange bg-slate-50 hover:bg-shopee-orange/5 dark:bg-slate-950/20 text-slate-600 hover:text-shopee-orange dark:text-slate-400 dark:hover:text-shopee-orange font-bold text-xs active:scale-[0.98] transition-all cursor-pointer text-center select-none"
+              type="button"
+            >
+              Xem chi tiết
+            </button>
+          </div>
         </div>
       </div>
 
@@ -216,11 +273,105 @@
           </template>
         </div>
       </div>
-    </div>
+
+    <!-- User Order Details Modal -->
+    <transition
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div v-if="selectedOrder" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
+        <div @click="closeOrderDetails" class="absolute inset-0 cursor-default"></div>
+
+        <div class="relative bg-white dark:bg-slate-900 rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800/80 p-6 md:p-8 animate-fade-in-up z-10">
+          <div class="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-shopee-orange to-rose-500"></div>
+
+          <!-- Modal Header -->
+          <div class="flex items-start justify-between pb-4 border-b border-slate-100 dark:border-slate-800/60 mb-5">
+            <div>
+              <span class="inline-block px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider mb-2" :class="statusStyles[selectedOrder.status]">
+                {{ selectedOrder.status === 'Completed' || selectedOrder.status === 'Thành công' ? 'HOÀN THÀNH' : selectedOrder.status }}
+              </span>
+              <h3 class="text-base font-black text-slate-800 dark:text-slate-100">Chi tiết đơn hàng #{{ selectedOrder.code }}</h3>
+              <p class="text-xs text-slate-400 mt-1">Cửa hàng: {{ selectedOrder.storeName || 'Shopee Store' }}</p>
+            </div>
+            <button @click="closeOrderDetails" class="text-slate-400 hover:text-slate-650 dark:hover:text-slate-200 p-1.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Modal Content -->
+          <div class="space-y-5 select-none pr-1">
+            
+            <!-- 1. Rank Discount rate Info -->
+            <div 
+              v-if="selectedOrder.rawItem?.order?.userRank" 
+              class="bg-slate-50/50 dark:bg-slate-950/20 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/80 flex items-center justify-between"
+            >
+              <div class="flex flex-col">
+                <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Hạng thành viên mua đơn</span>
+                <span class="text-xs font-black text-slate-800 dark:text-slate-200 mt-1">Cấp bậc: {{ getRankName(selectedOrder.rawItem.order.userRank) }}</span>
+              </div>
+              <span class="px-2.5 py-1 rounded-full border text-[9px] font-extrabold tracking-wider bg-shopee-orange/5 border-shopee-orange/20 text-shopee-orange">
+                Nhận {{ selectedOrder.rawItem.order.commissionRate }}% hoa hồng
+              </span>
+            </div>
+
+            <!-- 2. Product Details -->
+            <div>
+              <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Thông tin sản phẩm</span>
+              <div class="space-y-2">
+                <div class="text-xs font-bold text-slate-700 dark:text-slate-200 leading-relaxed">{{ selectedOrder.itemName || 'Sản phẩm từ Shopee' }}</div>
+                <div class="flex items-center gap-1.5 text-[10px] text-slate-450 dark:text-slate-500">
+                  <span v-if="selectedOrder.rawItem?.order?.itemId">Mã SP: {{ selectedOrder.rawItem.order.itemId }}</span>
+                  <span v-if="selectedOrder.rawItem?.order?.l1GlobalCategory" class="h-1 w-1 bg-slate-300 dark:bg-slate-700 rounded-full"></span>
+                  <span v-if="selectedOrder.rawItem?.order?.l1GlobalCategory">Danh mục: {{ selectedOrder.rawItem.order.l1GlobalCategory }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Financial Info Grid -->
+            <div>
+              <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Chi tiết tích lũy hoàn tiền</span>
+              <div class="grid grid-cols-2 gap-3.5">
+                <div class="bg-slate-50/50 dark:bg-slate-950/20 p-3 rounded-2xl border border-slate-100 dark:border-slate-800/80 text-center">
+                  <span class="text-[9px] font-extrabold text-slate-450 dark:text-slate-500 uppercase block tracking-wider">Giá bán sản phẩm</span>
+                  <span class="text-xs font-black text-slate-700 dark:text-slate-200 block mt-1">
+                    {{ selectedOrder.rawItem?.order?.price ? formatMoney(selectedOrder.rawItem.order.price) + 'đ' : 'N/A' }} 
+                    <span v-if="selectedOrder.rawItem?.order?.qty" class="text-[10px] font-bold">x{{ selectedOrder.rawItem.order.qty }}</span>
+                  </span>
+                </div>
+                <div class="bg-slate-50/50 dark:bg-slate-950/20 p-3 rounded-2xl border border-slate-100 dark:border-slate-800/80 text-center">
+                  <span class="text-[9px] font-extrabold text-slate-455 dark:text-slate-500 uppercase block tracking-wider">Giá trị đơn hàng</span>
+                  <span class="text-xs font-black text-slate-700 dark:text-slate-200 block mt-1">{{ formatMoney(selectedOrder.purchaseAmount) }}đ</span>
+                </div>
+                <div class="bg-emerald-500/5 dark:bg-emerald-500/10 p-4 rounded-2xl border border-emerald-500/10 dark:border-emerald-500/20 text-center col-span-2 shadow-sm">
+                  <span class="text-[9px] font-black text-emerald-600 dark:text-emerald-450 uppercase block tracking-widest">Tiền hoa hồng bạn nhận được</span>
+                  <span class="text-base font-black text-emerald-600 dark:text-emerald-400 block mt-1.5">+{{ formatMoney(selectedOrder.cashbackAmount) }}đ</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Date Info -->
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-550 font-bold">
+              <span>Thời gian đặt hàng: {{ selectedOrder.date }}</span>
+              <span>Trạng thái: {{ selectedOrder.status }}</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch, onUnmounted } from "vue";
 
 useSeoMeta({
   title: "Lịch sử đơn hàng - Saffi",
@@ -306,8 +457,9 @@ const mapOrder = (item) => {
     itemName: order.itemName,
     date: dateStr,
     purchaseAmount: order.purchaseValue || 0,
-    cashbackAmount: order.affiliateNetCommission || 0,
-    status: normStatus
+    cashbackAmount: order.userCommission || 0,
+    status: normStatus,
+    rawItem: item
   };
 };
 
@@ -315,6 +467,41 @@ const mapOrder = (item) => {
 const filteredOrders = computed(() => rawOrders.value.map(mapOrder));
 
 const formatMoney = (val) => {
+  if (val === undefined || val === null) return "0";
   return val.toLocaleString("vi-VN");
+};
+
+const selectedOrder = ref(null);
+
+const openOrderDetails = (orderItem) => {
+  selectedOrder.value = orderItem;
+};
+
+const closeOrderDetails = () => {
+  selectedOrder.value = null;
+};
+
+watch(selectedOrder, (newVal) => {
+  if (typeof document !== "undefined") {
+    if (newVal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }
+});
+
+onUnmounted(() => {
+  if (typeof document !== "undefined") {
+    document.body.style.overflow = "";
+  }
+});
+
+const getRankName = (rank) => {
+  if (!rank) return "BẠC";
+  const r = rank.toLowerCase();
+  if (r === "obsidian") return "TINH HOA";
+  if (r === "gold") return "VÀNG";
+  return "BẠC";
 };
 </script>

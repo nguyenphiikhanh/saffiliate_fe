@@ -233,7 +233,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, onUnmounted } from "vue";
 import { useAdminUsers } from "~/composables/useAdminUsers";
 import { authClient } from "~/utils/auth-client";
 
@@ -256,6 +256,22 @@ const { users, pagination, isLoading, error, fetchUsers } = useAdminUsers();
 
 const searchQuery = ref("");
 const selectedUser = ref(null);
+
+watch(selectedUser, (newVal) => {
+  if (typeof document !== "undefined") {
+    if (newVal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }
+});
+
+onUnmounted(() => {
+  if (typeof document !== "undefined") {
+    document.body.style.overflow = "";
+  }
+});
 
 const handleSearch = () => {
   fetchUsers(1, searchQuery.value.trim());
