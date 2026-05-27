@@ -308,15 +308,16 @@
     </div>
 
     <!-- Order Details Modal -->
-    <transition
-      enter-active-class="transition duration-300 ease-out"
-      enter-from-class="opacity-0"
-      enter-to-class="opacity-100"
-      leave-active-class="transition duration-200 ease-in"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
-    >
-      <div v-if="selectedOrder" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+      <div v-if="selectedOrder" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
         <div @click="closeOrderDetails" class="absolute inset-0 cursor-default"></div>
 
         <div class="relative bg-white dark:bg-slate-900 rounded-[2.5rem] w-full max-w-xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800/80 p-6 md:p-8 animate-fade-in-up z-10">
@@ -406,6 +407,7 @@
         </div>
       </div>
     </transition>
+    </Teleport>
 
     <!-- Toast Notification -->
     <transition

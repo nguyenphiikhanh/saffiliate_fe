@@ -143,15 +143,16 @@
     </div>
 
     <!-- User Details Modal (Drawer style popover) -->
-    <transition
-      enter-active-class="transition duration-300 ease-out"
-      enter-from-class="opacity-0"
-      enter-to-class="opacity-100"
-      leave-active-class="transition duration-200 ease-in"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
-    >
-      <div v-if="selectedUser" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+      <div v-if="selectedUser" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md">
         <!-- Close overlay click -->
         <div @click="closeDetails" class="absolute inset-0 cursor-default"></div>
 
@@ -229,6 +230,7 @@
         </div>
       </div>
     </transition>
+    </Teleport>
   </div>
 </template>
 
