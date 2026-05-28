@@ -11,7 +11,8 @@ export default defineNuxtConfig({
         { rel: "icon", type: "image/png", href: "/saficon.png" }
       ],
       meta: [
-        { property: "og:image", content: "/saffi_logo.png" }
+        { property: "og:image", content: "/saffi_logo.png" },
+        { name: "color-scheme", content: "light" }
       ]
     }
   },

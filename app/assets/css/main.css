@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* Bulletproof Kill-Switch for compiled dark mode utility classes across the application */
+@custom-variant dark (&:where(.never-use-dark-mode, .never-use-dark-mode *));
 
 @theme {
   --color-shopee-orange: #EE4D2D;
@@ -17,6 +18,7 @@ html {
   scroll-behavior: smooth;
   font-family: var(--font-sans);
   font-size: 106.25%; /* Tăng kích thước chữ gốc của toàn hệ thống lên ~17px (tương đương tăng ~6.25%) */
+  color-scheme: light; /* Force light mode at browser engine level, turning off any system-forced dark overrides */
 }
 
 body {
@@ -31,11 +33,6 @@ body {
   body {
     padding-bottom: 84px;
   }
-}
-
-body.dark {
-  background-color: #090D16; /* Dark mode active */
-  color: #F8FAFC;
 }
 
 /* Custom premium transitions */
@@ -53,19 +50,9 @@ body.dark {
   transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-.dark .glass-panel {
-  background: rgba(30, 41, 59, 0.7); /* Dark mode active */
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
-}
-
 /* Glow effects */
 .glow-orange {
   box-shadow: 0 0 40px -10px rgba(238, 77, 45, 0.15);
-}
-
-.dark .glow-orange {
-  box-shadow: 0 0 40px -10px rgba(238, 77, 45, 0.3);
 }
 
 .glow-orange-button {
@@ -74,14 +61,6 @@ body.dark {
 
 .glow-orange-button:hover {
   box-shadow: 0 6px 30px rgba(238, 77, 45, 0.45);
-}
-
-.dark .glow-orange-button {
-  box-shadow: 0 4px 20px rgba(238, 77, 45, 0.4);
-}
-
-.dark .glow-orange-button:hover {
-  box-shadow: 0 6px 30px rgba(238, 77, 45, 0.6);
 }
 
 /* Animate skeleton pulse */
@@ -100,20 +79,11 @@ body.dark {
   animation: skeleton-shimmer 1.8s ease-in-out infinite;
 }
 
-.dark .shimmer-bg {
-  background: linear-gradient(90deg, rgba(30, 41, 59, 0.6) 25%, rgba(51, 65, 85, 0.7) 37%, rgba(30, 41, 59, 0.6) 63%);
-  background-size: 400% 100%;
-}
-
 /* Interactive focus glow */
 .input-focus-glow:focus {
   outline: none;
   border-color: #EE4D2D;
   box-shadow: 0 0 15px rgba(238, 77, 45, 0.2);
-}
-
-.dark .input-focus-glow:focus {
-  box-shadow: 0 0 15px rgba(238, 77, 45, 0.25);
 }
 
 /* Fade up and slide animations */
