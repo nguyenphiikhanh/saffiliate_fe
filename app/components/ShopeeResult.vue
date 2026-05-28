@@ -13,9 +13,15 @@
         <div @click="$emit('reset')" class="absolute inset-0 cursor-default"></div>
 
         <!-- Modal Content Box -->
-        <div class="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-800/80 p-6 md:p-8 animate-fade-in-up z-10 scrollbar-container transition-all duration-300">
+        <div 
+          class="relative w-full max-w-xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl p-6 md:p-8 animate-fade-in-up z-10 scrollbar-container transition-all duration-300 border"
+          :class="platformType === 2 ? 'border-slate-950 dark:border-cyan-500' : 'border-slate-100 dark:border-slate-800/80'"
+        >
           <!-- Glowing header bar -->
-          <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-shopee-orange via-orange-500 to-yellow-500"></div>
+          <div 
+            class="absolute top-0 inset-x-0 h-1.5 transition-all duration-300"
+            :class="platformType === 2 ? 'bg-slate-950 dark:bg-cyan-500' : 'bg-gradient-to-r from-shopee-orange via-orange-500 to-yellow-500'"
+          ></div>
 
           <!-- Close button -->
           <button
@@ -41,7 +47,7 @@
               <!-- Product Image -->
               <div class="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border border-slate-200/50 dark:border-slate-800 bg-white shadow-inner flex items-center justify-center p-1.5 transition-colors duration-400">
                 <img :src="productInfo.imageUrl" :alt="productInfo.productName" class="max-w-full max-h-full object-contain" />
-                <div v-if="productInfo.isXtra" class="absolute bottom-0 left-0 right-0 bg-shopee-orange text-white text-[9px] font-black text-center py-0.5 uppercase tracking-wider select-none">
+                <div v-if="productInfo.isXtra && platformType !== 2" class="absolute bottom-0 left-0 right-0 bg-shopee-orange text-white text-[9px] font-black text-center py-0.5 uppercase tracking-wider select-none">
                   Xtra
                 </div>
               </div>
@@ -50,8 +56,11 @@
               <div class="flex-1 min-w-0 space-y-1.5 pt-0.5">
                 <!-- Shop Badge and Name -->
                 <div class="flex items-center gap-1.5">
-                  <span class="inline-flex items-center gap-0.5 rounded bg-shopee-orange text-white px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider select-none">
-                    SỘP-PE
+                  <span 
+                    class="inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider select-none text-white transition-all duration-300"
+                    :class="platformType === 2 ? 'bg-slate-950 dark:bg-cyan-500' : 'bg-shopee-orange'"
+                  >
+                    {{ platformType === 2 ? 'TÓP-TÓP' : 'SỘP-PE' }}
                   </span>
                   <span class="text-xs text-slate-500 dark:text-slate-400 font-semibold truncate transition-colors duration-400">
                     {{ productInfo.shopName }}
@@ -68,13 +77,29 @@
             <!-- Twin Info Cards (Partner Commission & Shopping Cashback Points) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <!-- Partner Commission Card -->
-              <div class="flex items-center gap-3 rounded-2xl bg-orange-500/8 dark:bg-orange-500/5 border border-orange-500/12 dark:border-orange-500/8 p-4 transition-colors duration-400 shadow-sm">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-shopee-orange text-white shadow-md glow-orange">
+              <div 
+                class="flex items-center gap-3 rounded-2xl p-4 transition-colors duration-400 shadow-sm border"
+                :class="platformType === 2 
+                  ? 'bg-slate-950/[0.02] dark:bg-slate-800/10 border-slate-950/10 dark:border-slate-800' 
+                  : 'bg-orange-500/8 dark:bg-orange-500/5 border-orange-500/12 dark:border-orange-500/8'"
+              >
+                <div 
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white shadow-md transition-all duration-300"
+                  :class="platformType === 2 ? 'bg-slate-950 dark:bg-slate-800' : 'bg-shopee-orange glow-orange'"
+                >
                   <span class="font-black text-base">%</span>
                 </div>
                 <div>
-                  <div class="text-[10px] sm:text-xs font-bold text-shopee-orange/80 dark:text-shopee-orange/90 uppercase tracking-wider">HOA HỒNG ĐỐI TÁC</div>
-                  <div class="text-lg sm:text-xl font-extrabold text-shopee-orange mt-0.5 tracking-tight">
+                  <div 
+                    class="text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-colors duration-300"
+                    :class="platformType === 2 ? 'text-slate-900/70 dark:text-slate-350' : 'text-shopee-orange/80 dark:text-shopee-orange/90'"
+                  >
+                    HOA HỒNG ĐỐI TÁC
+                  </div>
+                  <div 
+                    class="text-lg sm:text-xl font-extrabold mt-0.5 tracking-tight transition-colors duration-300"
+                    :class="platformType === 2 ? 'text-slate-950 dark:text-white' : 'text-shopee-orange'"
+                  >
                     {{ formatPartnerCommission(productInfo.commission) }}
                   </div>
                 </div>
@@ -135,7 +160,12 @@
             <button
               type="button"
               @click="handleOpenAffiliate"
-              class="w-full transition-premium flex items-center justify-center gap-2 rounded-2xl py-4 font-sans text-sm font-black text-white uppercase tracking-wider bg-shopee-orange hover:bg-shopee-orange-hover border border-shopee-orange active:scale-98 cursor-pointer select-none glow-orange-button animate-cta-pulse"
+              class="w-full transition-premium flex items-center justify-center gap-2 rounded-2xl py-4 font-sans text-sm font-black text-white uppercase tracking-wider active:scale-98 cursor-pointer select-none border"
+              :class="[
+                platformType === 2 
+                  ? 'bg-slate-950 hover:bg-black dark:bg-slate-850 dark:hover:bg-slate-800 border-slate-950 dark:border-slate-850 glow-tiktok-button animate-cta-pulse-tiktok' 
+                  : 'bg-shopee-orange hover:bg-shopee-orange-hover border border-shopee-orange glow-orange-button animate-cta-pulse'
+              ]"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -260,6 +290,10 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  platformType: {
+    type: Number,
+    default: 1,
+  },
 });
 
 const minCashback = computed(() => {
@@ -349,8 +383,37 @@ const formatCashbackRange = (value) => {
   }
 }
 
+@keyframes custom-pulse-tiktok {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.25);
+  }
+  50% {
+    transform: scale(1.025);
+    box-shadow: 0 20px 35px -5px rgba(6, 182, 212, 0.45);
+  }
+}
+
 .animate-cta-pulse {
   animation: custom-pulse 1.8s infinite ease-in-out;
+}
+
+.animate-cta-pulse-tiktok {
+  animation: custom-pulse-tiktok 1.8s infinite ease-in-out;
+}
+
+.glow-tiktok-button {
+  box-shadow: 0 4px 14px 0 rgba(6, 182, 212, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-tiktok-button:hover:not(:disabled) {
+  box-shadow: 0 6px 20px 0 rgba(6, 182, 212, 0.35);
+  transform: translateY(-1px);
+}
+
+.glow-tiktok-button:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 /* Premium scrollbar styling for the modal content */

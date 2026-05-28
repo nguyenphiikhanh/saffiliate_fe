@@ -77,7 +77,17 @@ export function useShopeeApi() {
     return shopeeRegex.test(url);
   };
 
-  const convertUrl = async (rawUrl: string) => {
+  // Validation function for TikTok link formats
+  const validateTiktokUrl = (url: string): boolean => {
+    if (!url || url.trim() === "") return false;
+
+    // Check if it's a valid TikTok domain pattern
+    const tiktokRegex = /(tiktok\.com|vt\.tiktok\.com|v\.tiktok\.com)/i;
+
+    return tiktokRegex.test(url);
+  };
+
+  const convertUrl = async (rawUrl: string, type?: number) => {
     // Reset states
     resultLink.value = "";
     affiliateLink.value = "";
@@ -85,10 +95,17 @@ export function useShopeeApi() {
 
     const trimmedUrl = rawUrl.trim();
 
-    // Validate link
-    if (!validateShopeeUrl(trimmedUrl)) {
-      error.value = "Vui lòng nhập đường dẫn Shopee hợp lệ! (Ví dụ: shopee.vn/... hoặc shp.ee/...)";
-      return false;
+    // Validate link based on platform type
+    if (type === 2) {
+      if (!validateTiktokUrl(trimmedUrl)) {
+        error.value = "Vui lòng nhập đường dẫn TikTok hợp lệ! (Ví dụ: tiktok.com/... hoặc vt.tiktok.com/...)";
+        return false;
+      }
+    } else {
+      if (!validateShopeeUrl(trimmedUrl)) {
+        error.value = "Vui lòng nhập đường dẫn Shopee hợp lệ! (Ví dụ: shopee.vn/... hoặc shp.ee/...)";
+        return false;
+      }
     }
 
     isLoading.value = true;
@@ -96,10 +113,18 @@ export function useShopeeApi() {
     try {
       const { api } = useAppFetch();
 
-      // Call Elysia API via Axios instance (relative path triggers Nitro proxy to bypass CORS)
-      const response = await api.post<ConvertResponse>("/convert", {
+      // Formulate request payload
+      const payload: Record<string, any> = {
         originalLink: trimmedUrl,
-      });
+      };
+
+      // Only send type if it's not Shopee (type 1) or is explicitly requested (TikTok type 2)
+      if (type && type !== 1) {
+        payload.type = type;
+      }
+
+      // Call Elysia API via Axios instance (relative path triggers Nitro proxy to bypass CORS)
+      const response = await api.post<ConvertResponse>("/convert", payload);
 
       const responseData = response.data;
 
@@ -117,8 +142,32 @@ export function useShopeeApi() {
       }
     } catch (err: any) {
       console.error("API error:", err);
-      // Retrieve parsed error message from Axios interceptor
-      const errMsg = err?.message || "Không thể kết nối đến máy chủ. Vui lòng thử lại sau!";
+      
+      let errMsg = "Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau!";
+      
+      if (err?.response) {
+        const status = err.response.status;
+        const responseData = err.response.data;
+        
+        if (status === 500) {
+          errMsg = "Hệ thống đang gặp sự cố nhỏ khi xử lý liên kết này. Bạn vui lòng kiểm tra lại đường dẫn sản phẩm hoặc thử lại sau ít phút nhé!";
+        } else if (status === 404) {
+          errMsg = "Không tìm thấy máy chủ xử lý quy đổi. Vui lòng liên hệ quản trị viên!";
+        } else if (status === 400 || status === 422) {
+          errMsg = responseData?.message || "Đường dẫn sản phẩm không hợp lệ hoặc không được hỗ trợ.";
+        } else {
+          errMsg = responseData?.message || err.message || "Đã xảy ra lỗi không xác định trong quá trình xử lý.";
+        }
+      } else if (err?.message) {
+        if (err.message.includes("Network Error")) {
+          errMsg = "Không thể kết nối mạng. Vui lòng kiểm tra lại đường truyền internet!";
+        } else if (err.message === "Internal Server Error" || err.message.includes("500")) {
+          errMsg = "Hệ thống đang gặp sự cố nhỏ khi xử lý liên kết này. Bạn vui lòng kiểm tra lại đường dẫn sản phẩm hoặc thử lại sau ít phút nhé!";
+        } else {
+          errMsg = err.message;
+        }
+      }
+      
       error.value = `Lỗi chuyển đổi: ${errMsg}`;
       return false;
     } finally {
@@ -143,5 +192,6 @@ export function useShopeeApi() {
     convertUrl,
     clearStates,
     validateShopeeUrl,
+    validateTiktokUrl,
   };
 }
