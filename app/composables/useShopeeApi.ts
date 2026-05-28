@@ -62,6 +62,7 @@ interface ConvertResponse {
 
 export function useShopeeApi() {
   const resultLink = ref<string>("");
+  const affiliateLink = ref<string>("");
   const productInfo = ref<ProductInfo | null>(null);
   const isLoading = ref<boolean>(false);
   const error = ref<string | null>(null);
@@ -79,6 +80,7 @@ export function useShopeeApi() {
   const convertUrl = async (rawUrl: string) => {
     // Reset states
     resultLink.value = "";
+    affiliateLink.value = "";
     error.value = null;
 
     const trimmedUrl = rawUrl.trim();
@@ -102,10 +104,12 @@ export function useShopeeApi() {
       const responseData = response.data;
 
       // Flexible extraction to handle various response structures
-      const affiliateLink = responseData.shortLink || responseData.affiliateLink || responseData.data?.shortLink;
+      const extractedShortLink = responseData.shortLink || responseData.data?.shortLink;
+      const extractedLongLink = responseData.affiliateLink;
 
-      if (affiliateLink) {
-        resultLink.value = affiliateLink;
+      if (extractedShortLink || extractedLongLink) {
+        resultLink.value = extractedShortLink || extractedLongLink || "";
+        affiliateLink.value = extractedLongLink || extractedShortLink || "";
         productInfo.value = responseData.productInfo || null;
         return true;
       } else {
@@ -124,6 +128,7 @@ export function useShopeeApi() {
 
   const clearStates = () => {
     resultLink.value = "";
+    affiliateLink.value = "";
     productInfo.value = null;
     error.value = null;
     isLoading.value = false;
@@ -131,6 +136,7 @@ export function useShopeeApi() {
 
   return {
     resultLink,
+    affiliateLink,
     productInfo,
     isLoading,
     error,

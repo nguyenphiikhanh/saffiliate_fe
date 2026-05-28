@@ -118,7 +118,7 @@
     </transition>
 
     <!-- Converted Result Card Component -->
-    <ShopeeResult v-if="resultLink && !isLoading" :link="resultLink" :product-info="productInfo" @reset="handleClear" />
+    <ShopeeResult v-if="resultLink && !isLoading" :link="resultLink" :affiliate-link="affiliateLink" :product-info="productInfo" @reset="handleCloseModal" />
   </div>
 </template>
 
@@ -129,7 +129,7 @@ import { useShopeeApi } from "@/composables/useShopeeApi";
 const rawUrl = ref("");
 const isValidating = ref(false);
 
-const { resultLink, productInfo, isLoading, error, convertUrl, clearStates, validateShopeeUrl } = useShopeeApi();
+const { resultLink, affiliateLink, productInfo, isLoading, error, convertUrl, clearStates, validateShopeeUrl } = useShopeeApi();
 
 // Check link validity as user types
 const isUrlValid = computed(() => {
@@ -144,6 +144,10 @@ const handleConvert = async () => {
   if (!rawUrl.value || isLoading.value) return;
   isValidating.value = true;
   await convertUrl(rawUrl.value);
+};
+
+const handleCloseModal = () => {
+  clearStates();
 };
 
 const handleClear = () => {
