@@ -539,13 +539,13 @@ const steps = [
   },
   {
     title: "Dán link vào Saffi",
-    desc: "Trở lại ứng dụng Saffi, <span class='text-shopee-orange font-extrabold'>Dán link</span> vừa sao chép vào ô nhập bên dưới để bắt đầu tự động chuyển đổi link hoàn tiền.",
-    image: "",
+    desc: "Trở lại ứng dụng Saffi, <span class='text-shopee-orange font-extrabold'>Dán link</span> vừa sao chép vào ô nhập bên dưới, nhấn vào nút <span class='text-shopee-orange font-extrabold'>Hoàn Tiền</span> để xem thông tin hoàn tiền.",
+    image: "/step/3.jpg",
   },
   {
     title: "Mua sắm & Nhận hoàn tiền",
-    desc: "Nhấn nút quy đổi để mở ứng dụng sàn và mua sắm như bình thường. Tiền hoàn lại sẽ <span class='text-shopee-orange font-extrabold'>tự động được tích lũy vào tài khoản Saffi</span> của bạn!",
-    image: "",
+    desc: "Nhấn nút đây để mở ứng dụng sàn và mua sắm như bình thường. Tiền hoàn lại sẽ <span class='text-shopee-orange font-extrabold'>tự động được tích lũy vào tài khoản Saffi</span> của bạn!",
+    image: "/step/4.jpg",
   },
 ];
 

@@ -159,16 +159,18 @@ export function useShopeeApi() {
           errMsg = responseData?.message || err.message || "Đã xảy ra lỗi không xác định trong quá trình xử lý.";
         }
       } else if (err?.message) {
-        if (err.message.includes("Network Error")) {
-          errMsg = "Không thể kết nối mạng. Vui lòng kiểm tra lại đường truyền internet!";
-        } else if (err.message === "Internal Server Error" || err.message.includes("500")) {
-          errMsg = "Hệ thống đang gặp sự cố nhỏ khi xử lý liên kết này. Bạn vui lòng kiểm tra lại đường dẫn sản phẩm hoặc thử lại sau ít phút nhé!";
-        } else {
-          errMsg = err.message;
-        }
+        errMsg = getFriendlyErrorMessage(err.message, err.message);
       }
       
-      error.value = `Lỗi chuyển đổi: ${errMsg}`;
+      // Xử lý tiền tố cho một số thông báo lỗi cũ
+      if (
+        errMsg === err?.message || 
+        (err?.response && (err.response.status === 400 || err.response.status === 422))
+      ) {
+        error.value = `Lỗi: ${errMsg}`;
+      } else {
+        error.value = errMsg;
+      }
       return false;
     } finally {
       isLoading.value = false;
