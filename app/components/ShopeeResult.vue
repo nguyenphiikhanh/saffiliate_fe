@@ -433,4 +433,30 @@ const formatCashbackRange = (value) => {
 .scrollbar-container::-webkit-scrollbar-thumb:hover {
   background: rgba(156, 163, 175, 0.5);
 }
+
+/* Mobile specific performance overrides to optimize infinite repaint loops */
+@media (max-width: 767px) {
+  @keyframes custom-pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.018);
+    }
+  }
+
+  @keyframes custom-pulse-tiktok {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.018);
+    }
+  }
+
+  .animate-cta-pulse, 
+  .animate-cta-pulse-tiktok {
+    will-change: transform;
+  }
+}
 </style>
