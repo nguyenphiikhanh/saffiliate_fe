@@ -23,7 +23,7 @@
                 </div>
               </div>
               <p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-relaxed max-w-xs mt-6">
-                Trợ lý mua sắm thông minh thế hệ mới. Hoàn tiền tự động, minh bạch và siêu tốc từ Sọp-pe.
+                Trợ lý mua sắm thông minh thế hệ mới. Hoàn tiền tự động, minh bạch và siêu tốc từ các sàn TMĐT.
               </p>
             </div>
 
