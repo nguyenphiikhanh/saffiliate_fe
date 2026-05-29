@@ -1,14 +1,14 @@
 <template>
   <header 
-    class="fixed top-0 left-0 right-0 z-50 w-full px-4 md:px-6 lg:px-8 pt-3.5 pb-2"
+    class="fixed top-0 left-0 right-0 z-50 w-full px-4 md:px-6 lg:px-8 pt-2 pb-1"
   >
     <div class="mx-auto max-w-7xl">
       <div 
-        class="transition-[background-color,border-color,box-shadow] duration-500 ease-out flex items-center justify-between rounded-full border bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-5 py-2.5"
+        class="transition-[background-color,border-color,box-shadow] duration-500 ease-out flex items-center justify-between rounded-full border bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl px-4 py-2"
         :class="[
           isScrolled 
-            ? 'border-slate-200/50 dark:border-slate-800/50 shadow-lg shadow-slate-900/5 dark:shadow-slate-950/20' 
-            : 'border-slate-200/80 dark:border-slate-800/85 shadow-xl shadow-slate-900/10 dark:shadow-slate-950/30'
+            ? 'border-slate-200/40 dark:border-slate-800/40 shadow-sm' 
+            : 'border-slate-200/60 dark:border-slate-800/60 shadow-md shadow-slate-900/5 dark:shadow-slate-950/20'
         ]"
       >
         <!-- LEFT REGION: Logo, Dashboard Switch, and Hàng Icon Điều Hướng -->
@@ -373,98 +373,73 @@
   <!-- Spacer to prevent content overlapping due to fixed header -->
   <div class="h-20 w-full pointer-events-none"></div>
 
-  <!-- Mobile Bottom Navigation Bar (Mockup Style - Fixed at Bottom) -->
-  <div class="fixed bottom-0 left-0 right-0 z-[100] h-[72px] bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-100 dark:border-slate-800/80 flex justify-around items-center px-2 md:hidden pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.08)] select-none">
+  <!-- Mobile Bottom Navigation Bar (Apple Tab Bar Style) -->
+  <div class="fixed bottom-0 left-0 right-0 z-[100] h-[72px] bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800/80 flex justify-around items-center px-2 md:hidden pb-safe shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.04)] select-none transition-colors duration-300">
     
     <!-- Tab 1: Home -->
     <NuxtLink 
       to="/" 
-      class="transition-spring cursor-pointer select-none"
-      :class="[
-        route.path === '/'
-          ? 'w-14 h-14 -translate-y-4.5 bg-gradient-to-br from-shopee-orange to-orange-600 rounded-full text-white shadow-lg shadow-orange-500/35 border-[5px] border-white dark:border-slate-900 scale-108 active:scale-95 active:duration-100 z-10 flex flex-col items-center justify-center shrink-0'
-          : 'w-16 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange scale-100 active:scale-90 shrink-0'
-      ]"
+      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
+      :class="[route.path === '/' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400']"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="transition-transform duration-300" :class="[route.path === '/' ? 'w-6 h-6 scale-110' : 'w-5.5 h-5.5']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/' ? '2.5' : '2'">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/' ? 'scale-105' : '']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/' ? '2.5' : '2'">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
       </svg>
-      <span v-if="route.path !== '/'" class="text-[9.5px] tracking-tight">Home</span>
+      <span class="text-[10px] font-medium tracking-tight">Home</span>
     </NuxtLink>
 
-    <!-- Tab 2: Hoàn Tiền (Floating Center FAB style with green pulse badge) -->
+    <!-- Tab 2: Hoàn Tiền -->
     <NuxtLink 
       to="/hoan-tien" 
-      class="relative transition-spring cursor-pointer select-none"
-      :class="[
-        route.path === '/hoan-tien'
-          ? 'w-14 h-14 -translate-y-4.5 bg-gradient-to-br from-shopee-orange to-orange-600 rounded-full text-white shadow-lg shadow-orange-500/35 border-[5px] border-white dark:border-slate-900 scale-108 active:scale-95 active:duration-100 z-10 flex flex-col items-center justify-center shrink-0'
-          : 'w-16 h-[54px] rounded-2xl bg-orange-50/80 dark:bg-orange-950/20 border border-orange-100 dark:border-orange-900/30 text-shopee-orange flex flex-col items-center justify-center gap-0.5 scale-100 hover:scale-105 active:scale-95 shrink-0'
-      ]"
+      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200 relative"
+      :class="[route.path === '/hoan-tien' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400']"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="transition-transform duration-500" :class="[route.path === '/hoan-tien' ? 'w-6 h-6 rotate-12 scale-110' : 'w-5.5 h-5.5 hover:rotate-12']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/hoan-tien' ? '2.5' : '2'" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Big curved star -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/hoan-tien' ? 'scale-105 rotate-12' : '']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/hoan-tien' ? '2.5' : '2'" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 3c0 4.5 3.5 8 8 8c-4.5 0-8 3.5-8 8c0-4.5-3.5-8-8-8c4.5 0 8-3.5 8-8Z" />
-        <!-- Small dot -->
         <circle cx="6" cy="18" r="1" fill="currentColor" />
-        <!-- Small star -->
         <path d="M19 5c0 1.5 1 2.5 2.5 2.5C20 7.5 19 8.5 19 10c0-1.5-1-2.5-2.5-2.5C18 7.5 19 6.5 19 5Z" />
       </svg>
-      <span v-if="route.path !== '/hoan-tien'" class="text-[9.5px] tracking-tight font-extrabold text-shopee-orange">Hoàn tiền</span>
-      
-      <!-- Subtle glowing dot only shown when not active to grab attention -->
-      <span v-if="route.path !== '/hoan-tien'" class="absolute top-1 right-1.5 flex h-2.5 w-2.5">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+      <span class="text-[10px] font-medium tracking-tight" :class="{'font-bold text-shopee-orange': route.path === '/hoan-tien'}">Hoàn tiền</span>
+      <!-- Subtle dot indicator if inactive -->
+      <span v-if="route.path !== '/hoan-tien'" class="absolute top-2 right-4 flex h-2 w-2">
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
       </span>
     </NuxtLink>
 
     <!-- Tab 3: Đơn hàng -->
     <NuxtLink 
       to="/don-hang" 
-      class="transition-spring cursor-pointer select-none"
-      :class="[
-        route.path === '/don-hang'
-          ? 'w-14 h-14 -translate-y-4.5 bg-gradient-to-br from-shopee-orange to-orange-600 rounded-full text-white shadow-lg shadow-orange-500/35 border-[5px] border-white dark:border-slate-900 scale-108 active:scale-95 active:duration-100 z-10 flex flex-col items-center justify-center shrink-0'
-          : 'w-16 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange scale-100 active:scale-90 shrink-0'
-      ]"
+      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
+      :class="[route.path === '/don-hang' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400']"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="transition-transform duration-300" :class="[route.path === '/don-hang' ? 'w-6 h-6 scale-110' : 'w-5.5 h-5.5']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/don-hang' ? '2.5' : '2'">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/don-hang' ? 'scale-105' : '']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/don-hang' ? '2.5' : '2'">
         <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
       </svg>
-      <span v-if="route.path !== '/don-hang'" class="text-[9.5px] tracking-tight">Đơn hàng</span>
+      <span class="text-[10px] font-medium tracking-tight">Đơn hàng</span>
     </NuxtLink>
 
     <!-- Tab 4: Tài Chính -->
     <NuxtLink 
       to="/tai-chinh" 
-      class="transition-spring cursor-pointer select-none"
-      :class="[
-        route.path === '/tai-chinh'
-          ? 'w-14 h-14 -translate-y-4.5 bg-gradient-to-br from-shopee-orange to-orange-600 rounded-full text-white shadow-lg shadow-orange-500/35 border-[5px] border-white dark:border-slate-900 scale-108 active:scale-95 active:duration-100 z-10 flex flex-col items-center justify-center shrink-0'
-          : 'w-16 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange scale-100 active:scale-90 shrink-0'
-      ]"
+      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
+      :class="[route.path === '/tai-chinh' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400']"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="transition-transform duration-300" :class="[route.path === '/tai-chinh' ? 'w-6 h-6 scale-110' : 'w-5.5 h-5.5']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/tai-chinh' ? '2.5' : '2'">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/tai-chinh' ? 'scale-105' : '']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/tai-chinh' ? '2.5' : '2'">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
       </svg>
-      <span v-if="route.path !== '/tai-chinh'" class="text-[9.5px] tracking-tight">Tài Chính</span>
+      <span class="text-[10px] font-medium tracking-tight">Tài Chính</span>
     </NuxtLink>
 
     <!-- Tab 5: Cá nhân -->
     <NuxtLink 
       to="/ho-so" 
-      class="transition-spring cursor-pointer select-none"
-      :class="[
-        route.path === '/ho-so'
-          ? 'w-14 h-14 -translate-y-4.5 bg-gradient-to-br from-shopee-orange to-orange-600 rounded-full text-white shadow-lg shadow-orange-500/35 border-[5px] border-white dark:border-slate-900 scale-108 active:scale-95 active:duration-100 z-10 flex flex-col items-center justify-center shrink-0'
-          : 'w-16 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange scale-100 active:scale-90 shrink-0'
-      ]"
+      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
+      :class="[route.path === '/ho-so' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400']"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="transition-transform duration-300" :class="[route.path === '/ho-so' ? 'w-6 h-6 scale-110' : 'w-5.5 h-5.5']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/ho-so' ? '2.5' : '2'">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/ho-so' ? 'scale-105' : '']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/ho-so' ? '2.5' : '2'">
         <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
       </svg>
-      <span v-if="route.path !== '/ho-so'" class="text-[9.5px] tracking-tight">Cá nhân</span>
+      <span class="text-[10px] font-medium tracking-tight">Cá nhân</span>
     </NuxtLink>
   </div>
 </template>

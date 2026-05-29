@@ -28,11 +28,7 @@
                 : 'bg-white dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-850/50 hover:border-slate-300 dark:hover:border-slate-700',
             ]"
           >
-            <!-- Decorative gradient blur -->
-            <div
-              v-if="currentType === AFFILIATE_TYPES.SHOPEE"
-              class="absolute -right-8 -bottom-8 w-20 h-20 bg-shopee-orange/5 dark:bg-shopee-orange/10 rounded-full blur-xl pointer-events-none"
-            ></div>
+
 
             <!-- Brand Logo Frame -->
             <div
@@ -86,11 +82,7 @@
                 : 'bg-white dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-850/50 hover:border-slate-300 dark:hover:border-slate-700',
             ]"
           >
-            <!-- Decorative gradient blur -->
-            <div
-              v-if="currentType === AFFILIATE_TYPES.TIKTOK"
-              class="absolute -right-8 -bottom-8 w-20 h-20 bg-cyan-500/5 dark:bg-cyan-500/10 rounded-full blur-xl pointer-events-none"
-            ></div>
+
 
             <!-- Brand Logo Frame -->
             <div
@@ -139,10 +131,7 @@
       <!-- Friendly Mascot Section -->
       <div class="flex justify-center mb-4 select-none">
         <div class="relative group">
-          <!-- Soft breathing background glow -->
-          <div
-            class="absolute inset-0 bg-amber-500/10 rounded-full blur-xl scale-95 group-hover:scale-110 transition-all duration-700 animate-pulse"
-          ></div>
+
           <!-- Cute Bee Mascot Image -->
           <img
             src="/saffi_gold.png"
@@ -279,11 +268,11 @@
           :disabled="isLoading || !rawUrl"
           class="w-full transition-premium flex items-center justify-center gap-2 rounded-2xl py-4 font-sans text-sm font-bold uppercase tracking-wider select-none border"
           :class="[
-            isLoading || !rawUrl
+            !rawUrl && !isLoading
               ? 'bg-slate-100 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/60 text-slate-500 dark:text-slate-400 cursor-not-allowed shadow-none'
               : currentType === AFFILIATE_TYPES.SHOPEE
-              ? 'bg-shopee-orange hover:bg-shopee-orange-hover border-shopee-orange text-white active:scale-98 cursor-pointer glow-orange-button'
-              : 'bg-slate-900 hover:bg-slate-950 dark:bg-slate-850 dark:hover:bg-slate-800 border-slate-900 dark:border-slate-850 text-white hover:text-cyan-400 dark:hover:text-cyan-400 active:scale-98 cursor-pointer glow-tiktok-button',
+              ? 'bg-shopee-orange border-shopee-orange text-white glow-orange-button ' + (isLoading ? 'opacity-80 !cursor-wait' : 'hover:bg-shopee-orange-hover active:scale-98 cursor-pointer')
+              : 'bg-slate-900 dark:bg-slate-850 border-slate-900 dark:border-slate-850 text-white glow-tiktok-button ' + (isLoading ? 'opacity-80 !cursor-wait' : 'hover:bg-slate-950 dark:hover:bg-slate-800 hover:text-cyan-400 dark:hover:text-cyan-400 active:scale-98 cursor-pointer'),
           ]"
         >
           <!-- Loading Spinner -->
@@ -350,25 +339,7 @@
       </transition>
     </div>
 
-    <!-- Skeleton Loading Screen -->
-    <transition name="fade">
-      <div
-        v-if="isLoading"
-        class="mt-6 glass-panel rounded-3xl p-6 shadow-xl space-y-4"
-      >
-        <div class="flex items-center gap-3">
-          <div class="shimmer-bg h-10 w-10 rounded-xl"></div>
-          <div class="space-y-2 flex-1">
-            <div class="shimmer-bg h-4 w-1/3 rounded-md"></div>
-            <div class="shimmer-bg h-3 w-1/4 rounded-md"></div>
-          </div>
-        </div>
-        <div class="space-y-2 mt-4">
-          <div class="shimmer-bg h-8 w-full rounded-xl"></div>
-          <div class="shimmer-bg h-8 w-2/3 rounded-xl"></div>
-        </div>
-      </div>
-    </transition>
+
 
     <!-- Converted Result Card Component -->
     <ShopeeResult

@@ -1,60 +1,58 @@
 <template>
   <div class="w-full animate-fade-in-up">
     <!-- Premium Welcome Dashboard Card -->
-    <div class="glass-panel rounded-[32px] p-8 md:p-12 shadow-2xl glow-orange text-center relative overflow-hidden transition-all duration-500 border border-slate-200/60 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/60 backdrop-blur-xl">
-      <!-- Decorative background blur blobs inside the card (no purple) -->
-      <div class="absolute -top-24 -left-24 w-48 h-48 rounded-full bg-shopee-orange/10 dark:bg-shopee-orange/5 blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-24 -right-24 w-48 h-48 rounded-full bg-amber-500/10 dark:bg-amber-500/5 blur-3xl pointer-events-none"></div>
-
+    <div class="glass-panel rounded-[32px] p-8 md:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] text-center relative overflow-hidden transition-all duration-500 border border-slate-200/60 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl">
       <!-- Brand Identity Brandmark -->
       <div class="flex justify-center mb-6">
-        <div class="flex h-20 w-20 items-center justify-center shrink-0 cursor-pointer transition-transform duration-500 hover:rotate-[15deg] select-none group">
-          <img src="/saficon.png" class="h-20 w-20 object-contain rounded-[24px] shadow-md transition-transform duration-300 group-hover:scale-110" alt="Saffi Logo" />
+        <div class="flex h-20 w-20 items-center justify-center shrink-0 cursor-pointer transition-transform duration-500 hover:rotate-12 select-none group">
+          <img src="/saficon.png" class="h-20 w-20 object-contain rounded-[24px] shadow-sm transition-transform duration-300 group-hover:scale-105" alt="Saffi Logo" />
         </div>
       </div>
 
       <!-- Welcome Slogan & Copy -->
-      <h1 class="text-3xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight select-none mb-4 transition-colors duration-400">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tighter leading-[1.1] select-none mb-5 transition-colors duration-400">
         Chào mừng bạn đến với <span class="text-shopee-orange">Saffi</span>
       </h1>
       
-      <p class="text-base md:text-lg text-slate-600 dark:text-slate-400 font-medium max-w-2xl mx-auto mb-8 leading-relaxed transition-colors duration-400">
+      <p class="text-base md:text-lg text-slate-500 dark:text-slate-400 font-medium max-w-[60ch] mx-auto mb-10 leading-relaxed transition-colors duration-400">
         Hệ thống quy đổi link mua sắm thông minh. Tự động nhận hoàn tiền và chiết khấu hấp dẫn trực tiếp khi bạn thực hiện mua hàng qua liên kết tiếp thị.
       </p>
 
-      <!-- Key Benefits Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-10 text-left">
-        <!-- Benefit 1 -->
-        <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-800/60 hover:-translate-y-1 transition-all duration-300 group">
-          <div class="h-9 w-9 rounded-xl bg-orange-500/10 dark:bg-orange-500/15 text-orange-500 flex items-center justify-center mb-3">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <!-- Key Benefits Bento Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-12 text-left">
+        <!-- Benefit 1 (Hero Item - spans full width on desktop) -->
+        <div class="md:col-span-2 p-6 md:p-8 rounded-[24px] bg-slate-50/80 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-800/60 hover:bg-white dark:hover:bg-slate-900 transition-colors duration-400 group flex flex-col sm:flex-row items-start sm:items-center gap-5">
+          <div class="h-12 w-12 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h3 class="text-sm font-bold text-slate-950 dark:text-white mb-1 group-hover:text-shopee-orange transition-colors">Tốc Độ Siêu Tốc</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">Quy đổi và xuất mã link tiếp thị nhận hoàn tiền chỉ trong 3 giây.</p>
+          <div>
+            <h3 class="text-base md:text-lg font-bold text-slate-900 dark:text-white mb-1.5 group-hover:text-shopee-orange transition-colors">Tốc Độ Siêu Tốc</h3>
+            <p class="text-sm text-slate-500 leading-relaxed max-w-[50ch]">Hệ thống máy chủ tối ưu hóa giúp quy đổi và xuất mã link tiếp thị nhận hoàn tiền chỉ trong <span class="font-semibold text-slate-700 dark:text-slate-300">chưa đầy 3 giây</span>.</p>
+          </div>
         </div>
 
         <!-- Benefit 2 -->
-        <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-800/60 hover:-translate-y-1 transition-all duration-300 group">
-          <div class="h-9 w-9 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-500 flex items-center justify-center mb-3">
+        <div class="p-6 md:p-8 rounded-[24px] bg-slate-50/80 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-800/60 hover:bg-white dark:hover:bg-slate-900 transition-colors duration-400 group">
+          <div class="h-10 w-10 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 class="text-sm font-bold text-slate-950 dark:text-white mb-1 group-hover:text-emerald-500 transition-colors">Tối Ưu Chiết Khấu</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">Nhận mức chiết khấu hoàn tiền hoa hồng cao nhất thị trường hiện nay, lên đến <b>90%</b>.</p>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 group-hover:text-emerald-500 transition-colors">Tối Ưu Chiết Khấu</h3>
+          <p class="text-sm text-slate-500 leading-relaxed">Nhận mức hoa hồng cao nhất thị trường, cam kết chia sẻ lên đến <b>90%</b> doanh thu.</p>
         </div>
 
         <!-- Benefit 3 -->
-        <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-800/60 hover:-translate-y-1 transition-all duration-300 group">
-          <div class="h-9 w-9 rounded-xl bg-amber-500/10 dark:bg-amber-500/15 text-amber-500 flex items-center justify-center mb-3">
+        <div class="p-6 md:p-8 rounded-[24px] bg-slate-50/80 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-800/60 hover:bg-white dark:hover:bg-slate-900 transition-colors duration-400 group">
+          <div class="h-10 w-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </div>
-          <h3 class="text-sm font-bold text-slate-950 dark:text-white mb-1 group-hover:text-amber-500 transition-colors">An Toàn Tuyệt Đối</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">Cam kết bảo mật thông tin tài khoản và đối soát đơn hàng minh bạch.</p>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 group-hover:text-amber-500 transition-colors">An Toàn Tuyệt Đối</h3>
+          <p class="text-sm text-slate-500 leading-relaxed">Đảm bảo bảo mật tài khoản tuyệt đối và đối soát lịch sử giao dịch minh bạch từng đồng.</p>
         </div>
       </div>
 

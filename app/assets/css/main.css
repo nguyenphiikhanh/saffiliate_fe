@@ -29,37 +29,49 @@ body {
 }
 
 /* Khoảng đệm dưới của body trên di động để tránh bị thanh Bottom Navigation Bar che lấp nội dung */
-@media (max-width: 767px) {
+/* Tối ưu hóa trên thiết bị di động (Mobile Performance Override) */
+@media (max-width: 1024px), supports (-webkit-touch-callout: none) {
   body {
-    padding-bottom: 84px;
+    padding-bottom: 72px; /* Phù hợp với Tab bar gọn nhẹ */
   }
 
   /* Optimize glass panels on mobile: disable expensive backdrop blur filters */
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.98) !important;
+  .glass-panel, [class*="backdrop-blur"] {
+    background-color: rgba(255, 255, 255, 0.98) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border-color: rgba(0, 0, 0, 0.06) !important;
     box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.04) !important;
+  }
+  .dark .glass-panel, .dark [class*="backdrop-blur"] {
+    background-color: rgba(15, 23, 42, 0.98) !important;
   }
 
   /* Simplify glow effects on mobile: avoid wide dynamic blur shadow repaints */
-  .glow-orange {
+  .glow-orange, [class*="shadow-orange"], [class*="shadow-cyan"] {
     box-shadow: none !important;
     border: 1px solid rgba(238, 77, 45, 0.12) !important;
   }
 
   .glow-orange-button {
-    box-shadow: 0 2px 8px rgba(238, 77, 45, 0.15) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
   }
 
-  .glow-orange-button:hover {
-    box-shadow: 0 2px 8px rgba(238, 77, 45, 0.15) !important;
+  /* Ẩn các khối trang trí làm chậm GPU (Blobs) */
+  .blur-xl, .blur-2xl, .blur-3xl {
+    display: none !important;
   }
 
   /* Force hardware acceleration on key animation layers */
-  .animate-fade-in-up {
+  .animate-fade-in-up, .animate-fade-in, img, button {
     will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+  
+  /* Giảm các hoạt ảnh bay lơ lửng, pulse liên tục trên mobile */
+  .animate-float, .animate-pulse {
+    animation: none !important;
+    transform: translateZ(0) !important;
   }
 }
 
