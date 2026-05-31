@@ -100,6 +100,22 @@
           </svg>
           Người dùng (Users)
         </NuxtLink>
+
+        <NuxtLink 
+          to="/admin/link-history"
+          @click="isSidebarOpen = false"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200"
+          :class="[
+            $route.path.includes('/admin/link-history') 
+              ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
+              : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
+          ]"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+          </svg>
+          Lịch sử tạo Link
+        </NuxtLink>
       </nav>
       
       <div class="p-4 shrink-0 border-t border-slate-200 dark:border-slate-800">

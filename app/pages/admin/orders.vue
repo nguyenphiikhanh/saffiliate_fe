@@ -245,7 +245,7 @@
                     class="font-bold text-emerald-600 dark:text-emerald-500 text-[13px]"
                   >
                     +{{
-                      (item.order.affiliateNetCommission || 0).toLocaleString(
+                      Math.round(item.order.affiliateNetCommission || 0).toLocaleString(
                         "vi-VN"
                       )
                     }}đ
@@ -353,7 +353,7 @@
               </div>
               <div class="font-bold text-emerald-600 dark:text-emerald-500">
                 +{{
-                  (item.order.affiliateNetCommission || 0).toLocaleString(
+                  Math.round(item.order.affiliateNetCommission || 0).toLocaleString(
                     "vi-VN"
                   )
                 }}đ
@@ -933,7 +933,7 @@ const pendingCount = computed(() => {
 
 const formatMoney = (val) => {
   if (!val) return "0đ";
-  return val.toLocaleString("vi-VN") + "đ";
+  return Math.round(Number(val)).toLocaleString("vi-VN") + "đ";
 };
 
 const getStatusClass = (status) => {

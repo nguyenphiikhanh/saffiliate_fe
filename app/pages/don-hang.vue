@@ -760,8 +760,8 @@ const mapOrder = (item) => {
 const filteredOrders = computed(() => rawOrders.value.map(mapOrder));
 
 const formatMoney = (val) => {
-  if (val === undefined || val === null) return "0";
-  return val.toLocaleString("vi-VN");
+  if (!val) return "0";
+  return Math.round(Number(val)).toLocaleString("vi-VN");
 };
 
 const selectedOrder = ref(null);
