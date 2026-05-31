@@ -529,7 +529,10 @@
                 <h3
                   class="text-base font-black text-slate-800 dark:text-slate-100"
                 >
-                  Chi tiết đơn hàng #{{ selectedOrder.code }}
+                  Chi tiết đơn hàng
+                  <span class="text-orange-500 dark:text-orange-400 select-all"
+                    >#{{ selectedOrder.code }}</span
+                  >
                 </h3>
                 <p class="text-xs text-slate-400 mt-1">
                   Cửa hàng: {{ selectedOrder.storeName || "Shopee Store" }}
@@ -620,45 +623,11 @@
                 >
                 <div class="grid grid-cols-2 gap-3.5">
                   <div
-                    class="bg-slate-50/50 dark:bg-slate-950/20 p-3 rounded-2xl border border-slate-100 dark:border-slate-800/80 text-center"
-                  >
-                    <span
-                      class="text-[9px] font-extrabold text-slate-450 dark:text-slate-500 uppercase block tracking-wider"
-                      >Giá bán sản phẩm</span
-                    >
-                    <span
-                      class="text-xs font-black text-slate-700 dark:text-slate-200 block mt-1"
-                    >
-                      {{
-                        selectedOrder.rawItem?.order?.price
-                          ? formatMoney(selectedOrder.rawItem.order.price) + "đ"
-                          : "N/A"
-                      }}
-                      <span
-                        v-if="selectedOrder.rawItem?.order?.qty"
-                        class="text-[10px] font-bold"
-                        >x{{ selectedOrder.rawItem.order.qty }}</span
-                      >
-                    </span>
-                  </div>
-                  <div
-                    class="bg-slate-50/50 dark:bg-slate-950/20 p-3 rounded-2xl border border-slate-100 dark:border-slate-800/80 text-center"
-                  >
-                    <span
-                      class="text-[9px] font-extrabold text-slate-455 dark:text-slate-500 uppercase block tracking-wider"
-                      >Giá trị đơn hàng</span
-                    >
-                    <span
-                      class="text-xs font-black text-slate-700 dark:text-slate-200 block mt-1"
-                      >{{ formatMoney(selectedOrder.purchaseAmount) }}đ</span
-                    >
-                  </div>
-                  <div
                     class="bg-emerald-500/5 dark:bg-emerald-500/10 p-4 rounded-2xl border border-emerald-500/10 dark:border-emerald-500/20 text-center col-span-2 shadow-sm"
                   >
                     <span
                       class="text-[9px] font-black text-emerald-600 dark:text-emerald-450 uppercase block tracking-widest"
-                      >Tiền hoa hồng bạn nhận được</span
+                      >Tiền hoàn bạn nhận được</span
                     >
                     <span
                       class="text-base font-black text-emerald-600 dark:text-emerald-400 block mt-1.5"
