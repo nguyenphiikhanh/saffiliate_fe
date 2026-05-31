@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full animate-fade-in flex flex-col gap-6">
+  <div class="w-full animate-fade-in flex flex-col gap-6 pb-24 md:pb-6">
     <!-- Premium Guidelines & Instruction Card -->
     <div
       class="bg-white dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80 shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20 p-6 md:p-8 rounded-3xl flex flex-col gap-2"
