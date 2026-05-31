@@ -156,320 +156,176 @@
       </div>
     </div>
 
-    <!-- User Statistics (Nhỏ xinh) -->
+    <!-- Leaderboard Dashboard -->
     <div
       v-if="session?.user"
-      class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6"
+      class="w-full mt-6 mb-12 animate-fade-in-up"
+      style="animation-delay: 0.1s"
     >
-      <!-- Completed Orders -->
-      <div
-        class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow"
-      >
-        <div class="flex items-center gap-3.5">
-          <div
-            class="h-10 w-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-500 flex items-center justify-center shrink-0"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
+      <!-- Leaderboard Card Container -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-[24px] p-5 md:p-7 shadow-sm mb-12 flex flex-col gap-6">
+        
+        <!-- Section Header Inside Card -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100 dark:border-slate-800/80">
           <div>
-            <p
-              class="text-[11px] font-bold text-slate-400 uppercase tracking-wide"
+            <h2 class="text-xl md:text-2xl font-black text-slate-800 dark:text-slate-100 tracking-tight flex items-center gap-2">
+              🏆 Bảng Xếp Hạng
+            </h2>
+          </div>
+
+          <!-- Tabs -->
+          <div class="inline-flex bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl shadow-inner">
+            <button
+              @click="activeTab = 'monthly'"
+              :class="[
+                'px-4 py-2 text-[13px] font-bold rounded-lg transition-all duration-300',
+                activeTab === 'monthly'
+                  ? 'bg-white dark:bg-slate-700 text-shopee-orange shadow-sm'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200',
+              ]"
             >
-              Đơn thành công
-            </p>
-            <p
-              class="text-xl font-black text-slate-800 dark:text-white leading-tight mt-0.5"
+              Tháng Này
+            </button>
+            <button
+              @click="activeTab = 'allTime'"
+              :class="[
+                'px-4 py-2 text-[13px] font-bold rounded-lg transition-all duration-300',
+                activeTab === 'allTime'
+                  ? 'bg-white dark:bg-slate-700 text-shopee-orange shadow-sm'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200',
+              ]"
             >
-              {{ session?.user?.completedOrdersCount ?? 0 }}
-            </p>
+              Tất Cả
+            </button>
           </div>
         </div>
-      </div>
 
-      <!-- Available Balance -->
-      <div
-        class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow"
-      >
-        <div class="flex items-center gap-3.5">
-          <div
-            class="h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 flex items-center justify-center shrink-0"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <div>
-            <p
-              class="text-[11px] font-bold text-slate-400 uppercase tracking-wide"
-            >
-              Số dư khả dụng
-            </p>
-            <p
-              class="text-xl font-black text-slate-800 dark:text-white leading-tight mt-0.5"
-            >
-              {{ formatMoney(walletData?.availableBalance ?? 0) }}
-            </p>
+        <!-- Leaderboard List -->
+        <div v-if="currentLeaderboard.length > 0" class="flex flex-col gap-4">
+          <div v-for="(user, idx) in currentLeaderboard" :key="user.userId" 
+            class="flex items-center justify-between transition-all duration-300 group relative overflow-hidden"
+            :class="{
+              'border border-amber-400 dark:border-amber-500/50 bg-gradient-to-r from-amber-50/50 via-amber-50/10 to-transparent dark:from-amber-950/20 dark:via-amber-950/5 dark:to-transparent shadow-lg shadow-amber-500/10 hover:shadow-xl hover:shadow-amber-500/20 hover:-translate-y-1 rounded-[20px] p-5': idx === 0,
+              'border border-slate-300 dark:border-slate-700 bg-gradient-to-r from-slate-50 via-slate-50/20 to-transparent dark:from-slate-800/30 dark:via-slate-800/5 dark:to-transparent shadow-md shadow-slate-400/10 hover:shadow-lg hover:shadow-slate-400/15 hover:-translate-y-0.5 rounded-[20px] p-5': idx === 1,
+              'border border-orange-300/80 dark:border-orange-900/40 bg-gradient-to-r from-orange-50/30 via-orange-50/5 to-transparent dark:from-orange-950/10 dark:via-orange-950/2 dark:to-transparent shadow-sm hover:shadow-md hover:-translate-y-0.5 rounded-[20px] p-5': idx === 2,
+              'border-b border-slate-100 dark:border-slate-800 last:border-0 py-4 px-5 hover:bg-slate-50/60 dark:hover:bg-slate-800/40 rounded-xl transition-all': idx > 2
+            }">
+            
+            <!-- Top Badge Ribbons -->
+            <div v-if="idx === 0" class="absolute top-0 left-0 bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 text-[9px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-br-lg shadow-sm flex items-center gap-1">
+              <span>👑</span> {{ activeTab === 'monthly' ? 'Chiến Thần Chốt Đơn' : 'Huyền Thoại Tích Lũy' }}
+            </div>
+            <div v-else-if="idx === 1" class="absolute top-0 left-0 bg-gradient-to-r from-slate-400 to-slate-300 text-slate-950 text-[9px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-br-lg shadow-sm flex items-center gap-1">
+              <span>🥈</span> {{ activeTab === 'monthly' ? 'Bậc Thầy Săn Deal' : 'Triệu Phú Saffi' }}
+            </div>
+            <div v-else-if="idx === 2" class="absolute top-0 left-0 bg-gradient-to-r from-orange-400 to-orange-300/80 text-white text-[9px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-br-lg shadow-sm flex items-center gap-1">
+              <span>🥉</span> {{ activeTab === 'monthly' ? 'Tay Đua Hoàn Tiền' : 'Chuyên Gia Tiết Kiệm' }}
+            </div>
+
+            <div class="flex items-center gap-2 md:gap-4" :class="{ 'mt-2 sm:mt-0': idx <= 2 }">
+              <!-- Rank Element -->
+              <div class="w-16 md:w-20 flex items-center justify-center font-black">
+                <template v-if="idx === 0">
+                  <div class="flex items-center gap-1 text-amber-500 dark:text-amber-400">
+                    <span class="text-sm md:text-base opacity-80 animate-pulse">✨</span>
+                    <span class="text-3xl md:text-4xl drop-shadow-sm font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-400 to-amber-600">1</span>
+                    <span class="text-sm md:text-base opacity-80 animate-pulse scale-x-[-1]">✨</span>
+                  </div>
+                </template>
+                <template v-else-if="idx === 1">
+                  <div class="flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
+                    <span class="text-sm md:text-base opacity-60">🌿</span>
+                    <span class="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-slate-400 to-slate-500">2</span>
+                    <span class="text-sm md:text-base opacity-60 scale-x-[-1]">🌿</span>
+                  </div>
+                </template>
+                <template v-else-if="idx === 2">
+                  <div class="flex items-center gap-1.5 text-orange-400 dark:text-orange-500">
+                    <span class="text-sm md:text-base opacity-60">🌿</span>
+                    <span class="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-400 to-orange-500">3</span>
+                    <span class="text-sm md:text-base opacity-60 scale-x-[-1]">🌿</span>
+                  </div>
+                </template>
+                <template v-else>
+                  <span class="text-xl md:text-2xl text-slate-400 dark:text-slate-500 font-bold">{{ idx + 1 }}</span>
+                </template>
+              </div>
+
+              <!-- Avatar & Info -->
+              <div class="flex items-center gap-4 md:gap-5">
+                <img :src="user.image || '/default-avatar.png'" class="w-12 h-12 md:w-16 md:h-16 rounded-[12px] md:rounded-[16px] border border-slate-100 dark:border-slate-800 object-cover bg-slate-50 dark:bg-slate-800" />
+                <div>
+                  <h3 class="font-bold text-slate-800 dark:text-slate-100 text-[15px] md:text-[17px]">{{ user.name }}</h3>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="text-[11px] md:text-[13px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded-md border border-emerald-100 dark:border-emerald-800/50">
+                      {{ user.totalOrders }} đơn hoàn thành
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reward / Points -->
+            <div class="flex flex-col items-end justify-center pr-2 md:pr-4">
+              <div class="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-emerald-500/30 text-emerald-500 dark:text-emerald-400 mb-1 shadow-sm bg-white dark:bg-slate-900">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div class="font-black text-slate-700 dark:text-slate-200 text-[14px] md:text-[15px]">
+                {{ formatMoney(user.totalCommission) }}
+              </div>
+            </div>
+
           </div>
         </div>
-      </div>
 
-      <!-- Total Withdrawn -->
-      <div
-        class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow"
-      >
-        <div class="flex items-center gap-3.5">
-          <div
-            class="h-10 w-10 rounded-xl bg-orange-50 dark:bg-orange-900/20 text-orange-500 flex items-center justify-center shrink-0"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-              />
-            </svg>
-          </div>
-          <div>
-            <p
-              class="text-[11px] font-bold text-slate-400 uppercase tracking-wide"
-            >
-              Đã thanh toán
-            </p>
-            <p
-              class="text-xl font-black text-slate-800 dark:text-white leading-tight mt-0.5"
-            >
-              {{ formatMoney(walletData?.totalPaid ?? 0) }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Original Premium Welcome Dashboard Card -->
-    <div
-      class="glass-panel rounded-[32px] p-8 md:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] text-center relative overflow-hidden transition-all duration-500 border border-slate-200/60 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl"
-    >
-      <!-- Brand Identity Brandmark -->
-      <div class="flex justify-center mb-6">
+        <!-- Empty State -->
         <div
-          class="flex h-20 w-20 items-center justify-center shrink-0 cursor-pointer transition-transform duration-500 hover:rotate-12 select-none group"
+          v-else
+          class="text-center py-10 text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/20 rounded-[20px] border border-dashed border-slate-200 dark:border-slate-700"
         >
-          <img
-            src="/saficon.png"
-            class="h-20 w-20 object-contain rounded-[24px] shadow-sm transition-transform duration-300 group-hover:scale-105"
-            alt="Saffi Logo"
-          />
+          <div class="text-3xl mb-2 opacity-50">🏃</div>
+          Chưa có dữ liệu thống kê cho bảng xếp hạng này.
         </div>
-      </div>
-
-      <!-- Welcome Slogan & Copy -->
-      <h1
-        class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tighter leading-[1.1] select-none mb-5 transition-colors duration-400"
-      >
-        Chào mừng bạn đến với <span class="text-shopee-orange">Saffi</span>
-      </h1>
-
-      <p
-        class="text-base md:text-lg text-slate-500 dark:text-slate-400 font-medium max-w-[60ch] mx-auto mb-10 leading-relaxed transition-colors duration-400"
-      >
-        Hệ thống quy đổi link mua sắm thông minh. Tự động nhận hoàn tiền và
-        chiết khấu hấp dẫn trực tiếp khi bạn thực hiện mua hàng qua liên kết
-        tiếp thị.
-      </p>
-
-      <!-- Key Benefits Bento Grid -->
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-12 text-left"
-      >
-        <!-- Benefit 1 (Hero Item - spans full width on desktop) -->
-        <div
-          class="md:col-span-2 p-6 md:p-8 rounded-[24px] bg-slate-50/80 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-800/60 hover:bg-white dark:hover:bg-slate-900 transition-colors duration-400 group flex flex-col sm:flex-row items-start sm:items-center gap-5"
-        >
-          <div
-            class="h-12 w-12 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300"
-          >
-            <svg
-              class="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
-          </div>
-          <div>
-            <h3
-              class="text-base md:text-lg font-bold text-slate-900 dark:text-white mb-1.5 group-hover:text-shopee-orange transition-colors"
-            >
-              Tốc Độ Siêu Tốc
-            </h3>
-            <p class="text-sm text-slate-500 leading-relaxed max-w-[50ch]">
-              Hệ thống máy chủ tối ưu hóa giúp quy đổi và xuất mã link tiếp thị
-              nhận hoàn tiền chỉ trong
-              <span class="font-semibold text-slate-700 dark:text-slate-300"
-                >chưa đầy 3 giây</span
-              >.
-            </p>
-          </div>
-        </div>
-
-        <!-- Benefit 2 -->
-        <div
-          class="p-6 md:p-8 rounded-[24px] bg-slate-50/80 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-800/60 hover:bg-white dark:hover:bg-slate-900 transition-colors duration-400 group"
-        >
-          <div
-            class="h-10 w-10 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <h3
-            class="text-base font-bold text-slate-900 dark:text-white mb-2 group-hover:text-emerald-500 transition-colors"
-          >
-            Tối Ưu Chiết Khấu
-          </h3>
-          <p class="text-sm text-slate-500 leading-relaxed">
-            Nhận mức hoa hồng cao nhất thị trường, cam kết chia sẻ lên đến
-            <b>90%</b> doanh thu.
-          </p>
-        </div>
-
-        <!-- Benefit 3 -->
-        <div
-          class="p-6 md:p-8 rounded-[24px] bg-slate-50/80 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-800/60 hover:bg-white dark:hover:bg-slate-900 transition-colors duration-400 group"
-        >
-          <div
-            class="h-10 w-10 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-              />
-            </svg>
-          </div>
-          <h3
-            class="text-base font-bold text-slate-900 dark:text-white mb-2 group-hover:text-amber-500 transition-colors"
-          >
-            An Toàn Tuyệt Đối
-          </h3>
-          <p class="text-sm text-slate-500 leading-relaxed">
-            Đảm bảo bảo mật tài khoản tuyệt đối và đối soát lịch sử giao dịch
-            minh bạch từng đồng.
-          </p>
-        </div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <NuxtLink
-          to="/hoan-tien"
-          class="w-full sm:w-auto px-8 py-4 bg-shopee-orange hover:bg-shopee-orange-hover border border-shopee-orange text-white font-bold text-sm tracking-wide uppercase rounded-2xl transition-premium active:scale-98 cursor-pointer shadow-lg shadow-orange-500/20 glow-orange-button flex items-center justify-center gap-2 select-none"
-        >
-          <span>Mua sắm hoàn tiền ngay</span>
-          <svg
-            class="h-4 w-4 shrink-0 transition-transform duration-300 hover:translate-x-1"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M14 5l7 7m0 0l-7 7m7-7H3"
-            />
-          </svg>
-        </NuxtLink>
-
-        <a
-          href="https://shopee.vn"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="w-full sm:w-auto px-8 py-4 bg-slate-50 hover:bg-slate-100 dark:bg-slate-950/60 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm tracking-wide uppercase rounded-2xl transition-premium active:scale-98 cursor-pointer flex items-center justify-center gap-2 select-none"
-        >
-          <span>Đến Shopee</span>
-          <svg
-            class="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-            />
-          </svg>
-        </a>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { authClient } from "@/utils/auth-client";
+import { useAppFetch } from "@/composables/useAppFetch";
 
 const { walletData, fetchWallet } = useWallet();
 
+const activeTab = ref("monthly");
+const leaderboardData = ref({ allTime: [], monthly: [] });
+
+const fetchLeaderboard = async () => {
+  try {
+    const res = await useAppFetch().api.get("/stat/leaderboard");
+    if (res.data) {
+      leaderboardData.value = res.data;
+    }
+  } catch (err) {
+    console.error("Failed to fetch leaderboard", err);
+  }
+};
+
+const currentLeaderboard = computed(() => {
+  return activeTab.value === "monthly"
+    ? leaderboardData.value.monthly
+    : leaderboardData.value.allTime;
+});
+
+const top3 = computed(() => currentLeaderboard.value.slice(0, 3));
+const top4To10 = computed(() => currentLeaderboard.value.slice(3, 10));
+
 onMounted(() => {
   fetchWallet();
+  fetchLeaderboard();
 });
 
 const formatMoney = (val) => {
