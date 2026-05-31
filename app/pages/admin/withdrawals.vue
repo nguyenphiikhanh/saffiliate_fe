@@ -308,6 +308,10 @@ definePageMeta({
   layout: "admin"
 });
 
+useHead({
+  title: 'Yêu Cầu Rút Tiền | Admin Saffiliate'
+});
+
 const headers = useRequestHeaders(['cookie']);
 const { data: response, refresh, pending } = await useFetch('/api/wallet/withdrawals', {
   headers,

@@ -243,6 +243,10 @@ definePageMeta({
   layout: "admin",
 });
 
+useHead({
+  title: 'Quản lý Thành Viên | Admin Saffiliate'
+});
+
 const { data: session } = await authClient.useSession(useFetch);
 const router = useRouter();
 

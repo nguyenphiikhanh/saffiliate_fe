@@ -623,14 +623,14 @@
                 >
                 <div class="grid grid-cols-2 gap-3.5">
                   <div
-                    class="bg-emerald-500/5 dark:bg-emerald-500/10 p-4 rounded-2xl border border-emerald-500/10 dark:border-emerald-500/20 text-center col-span-2 shadow-sm"
+                    class="bg-shopee-orange/5 dark:bg-shopee-orange/10 p-4 rounded-2xl border border-shopee-orange/10 dark:border-shopee-orange/20 text-center col-span-2 shadow-sm"
                   >
                     <span
-                      class="text-[9px] font-black text-emerald-600 dark:text-emerald-450 uppercase block tracking-widest"
+                      class="text-[9px] font-black text-shopee-orange uppercase block tracking-widest"
                       >Tiền hoàn bạn nhận được</span
                     >
                     <span
-                      class="text-base font-black text-emerald-600 dark:text-emerald-400 block mt-1.5"
+                      class="text-base font-black text-shopee-orange block mt-1.5"
                       >+{{ formatMoney(selectedOrder.cashbackAmount) }}đ</span
                     >
                   </div>

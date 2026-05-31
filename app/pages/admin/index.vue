@@ -92,6 +92,10 @@ definePageMeta({
   layout: "admin"
 });
 
+useHead({
+  title: 'Tổng quan | Admin Saffiliate'
+});
+
 const pending = ref(true);
 
 onMounted(() => {
