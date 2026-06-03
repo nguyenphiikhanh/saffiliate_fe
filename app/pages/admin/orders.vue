@@ -99,42 +99,93 @@
     >
       <!-- Toolbar -->
       <div
-        class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4 bg-slate-50/50 dark:bg-slate-900/50"
+        class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-4 bg-slate-50/50 dark:bg-slate-900/50"
       >
-        <div class="relative max-w-sm w-full sm:w-auto">
+        <!-- Filter by User Button -->
+        <button
+          @click="showUserModal = true"
+          class="flex items-center gap-2 px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-sm font-medium transition-colors hover:border-slate-300 dark:hover:bg-slate-600 cursor-pointer whitespace-nowrap"
+          :class="
+            selectedUserFilter
+              ? 'text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-900/20'
+              : 'text-slate-700 dark:text-slate-200'
+          "
+          type="button"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4.5 w-4.5 shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
+          <span class="truncate max-w-[150px] font-medium">{{
+            selectedUserFilter
+              ? selectedUserFilter.name || selectedUserFilter.email
+              : "Tìm theo người dùng"
+          }}</span>
           <div
-            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+            v-if="selectedUserFilter"
+            @click.stop="clearUserFilter"
+            class="ml-1 p-0.5 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-800 transition-colors"
           >
             <svg
-              class="h-4 w-4 text-slate-400"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3 w-3"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              stroke-width="2.5"
             >
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                d="M6 18L18 6M6 6l12 12"
               />
             </svg>
           </div>
-          <input
-            type="text"
-            placeholder="Tìm kiếm mã đơn hoặc tên shop..."
-            class="block w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg leading-5 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-1 focus:ring-slate-400 transition duration-150 ease-in-out font-medium"
-          />
-        </div>
-        <div class="flex items-center gap-2">
-          <select
-            class="block w-full pl-3 pr-8 py-2 border border-slate-200 dark:border-slate-700 rounded-lg leading-5 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-1 focus:ring-slate-400 transition duration-150 ease-in-out cursor-pointer font-medium"
+        </button>
+
+        <select
+          v-model="selectedStatus"
+          class="block w-full sm:w-48 pl-3 pr-8 py-2 border border-slate-200 dark:border-slate-700 rounded-lg leading-5 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-1 focus:ring-slate-400 transition duration-150 ease-in-out cursor-pointer font-medium"
+        >
+          <option value="all">Tất cả trạng thái</option>
+          <option value="pending">Chờ duyệt</option>
+          <option value="success">Thành công</option>
+          <option value="cancelled">Đã hủy</option>
+        </select>
+
+        <!-- Clear Filter Button -->
+        <button
+          v-if="selectedStatus !== 'all' || selectedUserFilter"
+          @click="clearAllFilters"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors cursor-pointer whitespace-nowrap"
+          type="button"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
           >
-            <option value="all">Tất cả trạng thái</option>
-            <option value="pending">Chờ duyệt</option>
-            <option value="success">Thành công</option>
-            <option value="cancelled">Đã hủy</option>
-          </select>
-        </div>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            />
+          </svg>
+          Xóa bộ lọc
+        </button>
       </div>
 
       <!-- Table -->
@@ -173,7 +224,7 @@
                   </div>
                 </td>
               </tr>
-              <tr v-else-if="!orders || orders.length === 0">
+              <tr v-else-if="!filteredOrders || filteredOrders.length === 0">
                 <td
                   colspan="7"
                   class="p-8 text-center text-slate-500 text-sm font-medium"
@@ -183,7 +234,7 @@
               </tr>
               <tr
                 v-else
-                v-for="item in orders"
+                v-for="item in filteredOrders"
                 :key="item.order.orderId"
                 class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer"
                 @click="openOrderDetails(item)"
@@ -245,9 +296,9 @@
                     class="font-bold text-emerald-600 dark:text-emerald-500 text-[13px]"
                   >
                     +{{
-                      Math.round(item.order.affiliateNetCommission || 0).toLocaleString(
-                        "vi-VN"
-                      )
+                      Math.round(
+                        item.order.affiliateNetCommission || 0
+                      ).toLocaleString("vi-VN")
                     }}đ
                   </div>
                 </td>
@@ -304,14 +355,14 @@
             ></div>
           </div>
           <div
-            v-else-if="!orders || orders.length === 0"
+            v-else-if="!filteredOrders || filteredOrders.length === 0"
             class="text-center py-6 text-slate-500 text-xs font-medium"
           >
             Chưa có dữ liệu đơn hàng
           </div>
           <div
             v-else
-            v-for="item in orders"
+            v-for="item in filteredOrders"
             :key="item.order.orderId"
             @click="openOrderDetails(item)"
             class="p-4 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer"
@@ -353,9 +404,9 @@
               </div>
               <div class="font-bold text-emerald-600 dark:text-emerald-500">
                 +{{
-                  Math.round(item.order.affiliateNetCommission || 0).toLocaleString(
-                    "vi-VN"
-                  )
+                  Math.round(
+                    item.order.affiliateNetCommission || 0
+                  ).toLocaleString("vi-VN")
                 }}đ
               </div>
             </div>
@@ -368,7 +419,7 @@
         class="px-4 py-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50"
       >
         <div class="text-xs text-slate-500 font-medium">
-          Hiển thị 1 - 5 của 5 kết quả
+          {{ paginationText }}
         </div>
         <div class="flex gap-1">
           <button
@@ -818,6 +869,251 @@
       </transition>
     </Teleport>
 
+    <!-- User Selection Modal (Command Palette Style) -->
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div
+          v-if="showUserModal"
+          class="fixed inset-0 z-[300] flex items-start justify-center pt-[10vh] sm:pt-[15vh] p-4"
+        >
+          <div
+            class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            @click="showUserModal = false"
+          ></div>
+
+          <transition
+            enter-active-class="transition transform duration-300 ease-out"
+            enter-from-class="opacity-0 scale-95 -translate-y-4"
+            enter-to-class="opacity-100 scale-100 translate-y-0"
+            leave-active-class="transition transform duration-200 ease-in"
+            leave-from-class="opacity-100 scale-100 translate-y-0"
+            leave-to-class="opacity-0 scale-95 -translate-y-4"
+          >
+            <div
+              v-if="showUserModal"
+              class="relative bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200/50 dark:border-slate-800/50 overflow-hidden flex flex-col max-h-[500px]"
+            >
+              <!-- Search Header (Seamless) -->
+              <div
+                class="relative flex items-center px-4 py-4 border-b border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900"
+              >
+                <svg
+                  class="h-5 w-5 text-slate-400 shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+                <input
+                  v-model="userSearchQuery"
+                  type="text"
+                  placeholder="Tìm kiếm người dùng theo tên, email..."
+                  class="w-full pl-3 pr-4 py-2 bg-transparent text-base sm:text-lg focus:outline-none font-medium text-slate-800 dark:text-slate-100 placeholder-slate-400"
+                  autofocus
+                />
+                <button
+                  @click="showUserModal = false"
+                  class="shrink-0 p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                  title="Đóng (Esc)"
+                  type="button"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Users List -->
+              <div
+                class="flex-1 overflow-y-auto p-2 min-h-[150px] bg-slate-50/50 dark:bg-slate-900/20"
+              >
+                <div
+                  v-if="usersLoading"
+                  class="flex flex-col items-center justify-center h-full text-slate-400 gap-3 py-8"
+                >
+                  <svg
+                    class="animate-spin h-6 w-6 text-indigo-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  <span class="text-sm font-medium">Đang tìm kiếm...</span>
+                </div>
+
+                <div
+                  v-else-if="usersList.length === 0"
+                  class="flex flex-col items-center justify-center h-full text-slate-500 gap-2 py-8"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-10 w-10 text-slate-300 dark:text-slate-700"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  <p class="text-sm font-medium">
+                    Không tìm thấy người dùng phù hợp
+                  </p>
+                </div>
+
+                <div v-else class="space-y-1">
+                  <button
+                    v-for="u in usersList"
+                    :key="u.id"
+                    @click="applyUserFilter(u)"
+                    class="w-full flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-white dark:hover:bg-slate-800 transition-all duration-200 text-left group border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-sm cursor-pointer"
+                    type="button"
+                  >
+                    <div class="flex items-center gap-3 min-w-0">
+                      <div
+                        class="h-10 w-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-800/50 overflow-hidden relative group-hover:scale-105 transition-transform"
+                      >
+                        <img
+                          v-if="u.image"
+                          :src="u.image"
+                          class="h-full w-full object-cover"
+                        />
+                        <span
+                          v-else
+                          class="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase"
+                          >{{ u.name ? u.name.charAt(0) : "U" }}</span
+                        >
+                      </div>
+                      <div class="flex flex-col min-w-0">
+                        <span
+                          class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"
+                          >{{ u.name || "Người dùng Saffi" }}</span
+                        >
+                        <span
+                          class="text-[11px] font-medium text-slate-500 truncate mt-0.5"
+                          >{{ u.email }}</span
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="opacity-0 group-hover:opacity-100 transition-opacity flex items-center shrink-0"
+                    >
+                      <span
+                        class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded"
+                        >CHỌN</span
+                      >
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Pagination -->
+              <div
+                v-if="userPagination.totalPages > 1"
+                class="px-4 py-3 border-t border-slate-100 dark:border-slate-800/60 flex justify-between items-center bg-white dark:bg-slate-900"
+              >
+                <span
+                  class="text-[11px] font-bold text-slate-400 tracking-wider uppercase"
+                  >Trang {{ userPagination.page }} /
+                  {{ userPagination.totalPages }}</span
+                >
+                <div class="flex gap-1">
+                  <button
+                    @click="
+                      fetchUsers(userPagination.page - 1, userSearchQuery)
+                    "
+                    :disabled="userPagination.page === 1"
+                    class="w-8 h-8 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                    type="button"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    @click="
+                      fetchUsers(userPagination.page + 1, userSearchQuery)
+                    "
+                    :disabled="
+                      userPagination.page === userPagination.totalPages
+                    "
+                    class="w-8 h-8 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                    type="button"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </transition>
+        </div>
+      </transition>
+    </Teleport>
+
     <!-- Toast Notification -->
     <transition
       enter-active-class="transition duration-300 ease-out"
@@ -874,6 +1170,7 @@
 
 <script setup>
 import { ref, computed, watch, onUnmounted } from "vue";
+import { useAdminUsers } from "~/composables/useAdminUsers";
 
 definePageMeta({
   layout: "admin",
@@ -898,6 +1195,10 @@ const showToast = (msg, type = "success") => {
   }, 4000);
 };
 
+const searchQuery = ref("");
+const selectedStatus = ref("all");
+const selectedUserFilter = ref(null);
+
 const headers = useRequestHeaders(["cookie"]);
 const {
   data: response,
@@ -906,6 +1207,19 @@ const {
 } = useFetch("/api/order", {
   headers,
   lazy: true,
+  query: computed(() => {
+    const params = {};
+    if (selectedStatus.value !== "all") {
+      if (selectedStatus.value === "pending") params.status = "Pending";
+      else if (selectedStatus.value === "success") params.status = "Completed";
+      else if (selectedStatus.value === "cancelled")
+        params.status = "Cancelled";
+    }
+    if (selectedUserFilter.value) {
+      params.userId = selectedUserFilter.value.id;
+    }
+    return params;
+  }),
 });
 const orders = computed(() => {
   const res = response.value;
@@ -914,6 +1228,56 @@ const orders = computed(() => {
   if (Array.isArray(res.data)) return res.data;
   if (Array.isArray(res)) return res;
   return [];
+});
+
+const filteredOrders = computed(() => {
+  let list = orders.value;
+  if (searchQuery.value.trim()) {
+    const q = searchQuery.value.trim().toLowerCase();
+    list = list.filter((item) => {
+      const orderId = item.order.orderId
+        ? String(item.order.orderId).toLowerCase()
+        : "";
+      const itemName = item.order.itemName
+        ? String(item.order.itemName).toLowerCase()
+        : "";
+      const shopName = item.order.shopName
+        ? String(item.order.shopName).toLowerCase()
+        : "";
+      const buyerName = item.user?.name
+        ? String(item.user.name).toLowerCase()
+        : "";
+      const buyerEmail = item.user?.email
+        ? String(item.user.email).toLowerCase()
+        : "";
+      return (
+        orderId.includes(q) ||
+        itemName.includes(q) ||
+        shopName.includes(q) ||
+        buyerName.includes(q) ||
+        buyerEmail.includes(q)
+      );
+    });
+  }
+  return list;
+});
+
+const paginationText = computed(() => {
+  const total = response.value?.data?.total || filteredOrders.value.length;
+  const page = response.value?.data?.page || 1;
+  const limit = response.value?.data?.limit || 20;
+
+  if (filteredOrders.value.length === 0) {
+    return "Hiển thị 0 kết quả";
+  }
+
+  if (searchQuery.value.trim()) {
+    return `Hiển thị 1 - ${filteredOrders.value.length} của ${filteredOrders.value.length} kết quả tìm kiếm`;
+  }
+
+  const from = (page - 1) * limit + 1;
+  const to = Math.min(page * limit, total);
+  return `Hiển thị ${from} - ${to} của ${total} kết quả`;
 });
 
 const totalCommission = computed(() => {
@@ -1134,5 +1498,58 @@ const getRankName = (rank) => {
   if (r === "obsidian") return "TINH HOA";
   if (r === "gold") return "VÀNG";
   return "BẠC";
+};
+
+// --- User Selection Modal ---
+const showUserModal = ref(false);
+const userSearchQuery = ref("");
+const {
+  users: usersList,
+  pagination: userPagination,
+  isLoading: usersLoading,
+  fetchUsers,
+} = useAdminUsers();
+
+let userSearchTimeout = null;
+watch(userSearchQuery, (newVal) => {
+  if (userSearchTimeout) clearTimeout(userSearchTimeout);
+  userSearchTimeout = setTimeout(() => {
+    fetchUsers(1, newVal.trim());
+  }, 350);
+});
+
+const handleEscKey = (e) => {
+  if (e.key === "Escape") {
+    showUserModal.value = false;
+  }
+};
+
+watch(showUserModal, (newVal) => {
+  if (newVal) {
+    if (usersList.value.length === 0) {
+      fetchUsers(1);
+    }
+    if (typeof window !== "undefined") {
+      window.addEventListener("keydown", handleEscKey);
+    }
+  } else {
+    if (typeof window !== "undefined") {
+      window.removeEventListener("keydown", handleEscKey);
+    }
+  }
+});
+
+const applyUserFilter = (user) => {
+  selectedUserFilter.value = user;
+  showUserModal.value = false;
+};
+
+const clearUserFilter = () => {
+  selectedUserFilter.value = null;
+};
+
+const clearAllFilters = () => {
+  selectedUserFilter.value = null;
+  selectedStatus.value = "all";
 };
 </script>

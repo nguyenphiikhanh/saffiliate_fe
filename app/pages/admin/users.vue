@@ -7,27 +7,35 @@
         <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-1">Danh sách thành viên đăng ký sử dụng nền tảng Saffi.</p>
       </div>
 
-      <!-- Search Box -->
-      <div class="relative w-full sm:w-72">
-        <input
-          v-model="searchQuery"
-          @keyup.enter="handleSearch"
-          type="text"
-          placeholder="Tìm kiếm tên, email..."
-          class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 pl-10 pr-10 py-2.5 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 transition-all font-medium"
-        />
-        <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+      <!-- Search Box (Option C: Integrated Bordered Input Group with Icon Button) -->
+      <div class="flex items-center w-full sm:w-72 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 overflow-hidden focus-within:ring-1 focus-within:ring-slate-400 transition-all">
+        <div class="relative flex-1 flex items-center">
+          <input
+            v-model="searchQuery"
+            @keyup.enter="handleSearch"
+            type="text"
+            placeholder="Tìm kiếm tên, email..."
+            class="w-full bg-transparent pl-4 pr-9 py-2.5 text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none font-medium border-0 ring-0"
+          />
+          <button
+            v-if="searchQuery"
+            @click="clearSearch"
+            type="button"
+            class="absolute right-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors shrink-0"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
         <button
-          v-if="searchQuery"
-          @click="clearSearch"
-          class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors shrink-0"
+          @click="handleSearch"
+          type="button"
+          class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800/80 border-l border-slate-200 dark:border-slate-700 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors cursor-pointer shrink-0"
+          title="Tìm kiếm"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </button>
       </div>
@@ -287,15 +295,6 @@ const clearSearch = () => {
   searchQuery.value = "";
   fetchUsers(1);
 };
-
-// Debounced automatic search with 350ms delay to prevent backend API spamming while typing
-let searchTimeout = null;
-watch(searchQuery, (newVal) => {
-  if (searchTimeout) clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    fetchUsers(1, newVal.trim());
-  }, 350);
-});
 
 const changePage = (page) => {
   if (page < 1 || page > pagination.value.totalPages) return;
