@@ -17,7 +17,7 @@
           </h3>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+        <div class="grid grid-cols-1 max-w-xs mx-auto gap-4">
           <!-- Shopee Card -->
           <button
             @click="selectType(AFFILIATE_TYPES.SHOPEE)"
@@ -72,8 +72,8 @@
             </div>
           </button>
 
-          <!-- TikTok Card -->
-          <button
+          <!-- TikTok Card (Temporarily disabled because API has errors) -->
+          <!-- <button
             @click="selectType(AFFILIATE_TYPES.TIKTOK)"
             class="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer outline-none relative overflow-hidden group active:scale-[0.98] w-full"
             :class="[
@@ -82,9 +82,6 @@
                 : 'bg-white dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-850/50 hover:border-slate-300 dark:hover:border-slate-700',
             ]"
           >
-
-
-            <!-- Brand Logo Frame -->
             <div
               class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0"
               :class="[
@@ -93,7 +90,6 @@
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-400 group-hover:scale-105',
               ]"
             >
-              <!-- Official TikTok Icon -->
               <svg viewBox="0 0 24 24" class="h-5.5 w-5.5" fill="currentColor">
                 <path
                   d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.07-2.89-.52-4.09-1.33a8.16 8.16 0 0 1-2.22-2.14v7.41c.07 2.11-.84 4.31-2.54 5.54-1.76 1.34-4.22 1.73-6.26 1.07-2.45-.76-4.39-2.9-4.75-5.46-.46-3.08 1.16-6.38 4.09-7.46 1.25-.47 2.6-.52 3.89-.2v4.09c-1-.26-2.1-.2-3 .34a3.84 3.84 0 0 0-2 3.25c-.09 1.64 1 3.26 2.6 3.63 1.48.36 3.2-.23 3.84-1.61.27-.57.34-1.22.32-1.85V.02z"
@@ -101,7 +97,6 @@
               </svg>
             </div>
 
-            <!-- Brand Meta -->
             <div>
               <div
                 class="text-[9px] font-black tracking-wider uppercase transition-colors"
@@ -113,18 +108,8 @@
               >
                 Hoàn tiền
               </div>
-              <div
-                class="text-sm sm:text-base font-extrabold tracking-tight mt-0.5"
-                :class="
-                  currentType === AFFILIATE_TYPES.TIKTOK
-                    ? 'text-slate-950 dark:text-white'
-                    : 'text-slate-600 dark:text-slate-400'
-                "
-              >
-                TikTok
-              </div>
             </div>
-          </button>
+          </button> -->
         </div>
       </div>
 
