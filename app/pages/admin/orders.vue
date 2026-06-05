@@ -414,26 +414,58 @@
         </div>
       </div>
 
-      <!-- Pagination (Mock) -->
+      <!-- Pagination -->
       <div
-        class="px-4 py-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50"
+        class="px-4 py-3 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/50 dark:bg-slate-900/50"
       >
-        <div class="text-xs text-slate-500 font-medium">
-          {{ paginationText }}
+        <div class="flex flex-wrap items-center gap-4">
+          <div class="text-xs text-slate-500 font-medium">
+            {{ paginationText }}
+          </div>
+          <div class="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+            <span>Hiển thị:</span>
+            <select
+              v-model="limit"
+              class="border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 px-2 py-1 outline-none cursor-pointer font-semibold shadow-sm focus:border-slate-400"
+            >
+              <option :value="20">20</option>
+              <option :value="50">50</option>
+              <option :value="100">100</option>
+            </select>
+          </div>
         </div>
-        <div class="flex gap-1">
+        <div class="flex gap-1" v-if="totalPages > 1">
           <button
-            class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-white dark:hover:bg-slate-800 cursor-not-allowed opacity-50 flex items-center justify-center"
+            @click="currentPage > 1 && (currentPage--)"
+            :disabled="currentPage === 1"
+            class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
           >
             &lt;
           </button>
+          <template v-for="(p, index) in visiblePages" :key="index">
+            <span
+              v-if="p === '...'"
+              class="w-8 h-8 flex items-center justify-center text-slate-400 text-xs select-none"
+            >
+              ...
+            </span>
+            <button
+              v-else
+              @click="currentPage = p"
+              :class="
+                currentPage === p
+                  ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold'
+                  : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-750'
+              "
+              class="w-8 h-8 rounded border font-semibold flex items-center justify-center text-xs shadow-sm transition-all duration-200"
+            >
+              {{ p }}
+            </button>
+          </template>
           <button
-            class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white bg-white dark:bg-slate-800 font-semibold flex items-center justify-center shadow-sm"
-          >
-            1
-          </button>
-          <button
-            class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-white dark:hover:bg-slate-800 cursor-not-allowed opacity-50 flex items-center justify-center"
+            @click="currentPage < totalPages && (currentPage++)"
+            :disabled="currentPage === totalPages"
+            class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
           >
             &gt;
           </button>
@@ -1198,6 +1230,8 @@ const showToast = (msg, type = "success") => {
 const searchQuery = ref("");
 const selectedStatus = ref("all");
 const selectedUserFilter = ref(null);
+const currentPage = ref(1);
+const limit = ref(20);
 
 const headers = useRequestHeaders(["cookie"]);
 const {
@@ -1208,7 +1242,10 @@ const {
   headers,
   lazy: true,
   query: computed(() => {
-    const params = {};
+    const params = {
+      page: currentPage.value,
+      limit: limit.value,
+    };
     if (selectedStatus.value !== "all") {
       if (selectedStatus.value === "pending") params.status = "Pending";
       else if (selectedStatus.value === "success") params.status = "Completed";
@@ -1221,6 +1258,42 @@ const {
     return params;
   }),
 });
+
+watch([selectedStatus, selectedUserFilter, limit], () => {
+  currentPage.value = 1;
+});
+
+const totalPages = computed(() => {
+  if (response.value?.data?.totalPages) return response.value?.data?.totalPages;
+  const total = response.value?.data?.total || 0;
+  return Math.ceil(total / limit.value) || 1;
+});
+
+const visiblePages = computed(() => {
+  const total = totalPages.value;
+  const current = currentPage.value;
+  const pages = [];
+  
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    if (current > 3) {
+      pages.push("...");
+    }
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    if (current < total - 2) {
+      pages.push("...");
+    }
+    pages.push(total);
+  }
+  return pages;
+});
+
 const orders = computed(() => {
   const res = response.value;
   if (!res) return [];
@@ -1265,7 +1338,7 @@ const filteredOrders = computed(() => {
 const paginationText = computed(() => {
   const total = response.value?.data?.total || filteredOrders.value.length;
   const page = response.value?.data?.page || 1;
-  const limit = response.value?.data?.limit || 20;
+  const limitVal = response.value?.data?.limit || limit.value;
 
   if (filteredOrders.value.length === 0) {
     return "Hiển thị 0 kết quả";
@@ -1275,8 +1348,8 @@ const paginationText = computed(() => {
     return `Hiển thị 1 - ${filteredOrders.value.length} của ${filteredOrders.value.length} kết quả tìm kiếm`;
   }
 
-  const from = (page - 1) * limit + 1;
-  const to = Math.min(page * limit, total);
+  const from = (page - 1) * limitVal + 1;
+  const to = Math.min(page * limitVal, total);
   return `Hiển thị ${from} - ${to} của ${total} kết quả`;
 });
 
