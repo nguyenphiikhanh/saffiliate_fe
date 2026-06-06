@@ -72,7 +72,7 @@
           <span class="truncate max-w-[150px]">{{
             selectedUserFilter
               ? selectedUserFilter.name || selectedUserFilter.email
-              : "Tất cả người dùng"
+              : "Tìm theo người dùng"
           }}</span>
           <div
             v-if="selectedUserFilter"
@@ -114,8 +114,8 @@
         <!-- Limit Selection -->
         <div class="flex items-center gap-2 ml-auto sm:ml-0">
           <span class="text-sm font-medium text-slate-500">Hiển thị:</span>
-          <select 
-            v-model="limit" 
+          <select
+            v-model="limit"
             class="px-2 py-1.5 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-sm font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-slate-400 cursor-pointer"
           >
             <option :value="10">10</option>
@@ -494,9 +494,12 @@
                 />
                 <button
                   @click="showUserModal = false"
-                  class="shrink-0 text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded uppercase tracking-wider hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                  class="shrink-0 p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                  title="Đóng (Esc)"
                 >
-                  ESC
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
 
@@ -791,9 +794,24 @@ watch(userSearchQuery, (newVal) => {
   }, 350);
 });
 
+const handleEscKey = (e) => {
+  if (e.key === "Escape") {
+    showUserModal.value = false;
+  }
+};
+
 watch(showUserModal, (newVal) => {
-  if (newVal && usersList.value.length === 0) {
-    fetchUsers(1);
+  if (newVal) {
+    if (usersList.value.length === 0) {
+      fetchUsers(1);
+    }
+    if (typeof window !== "undefined") {
+      window.addEventListener("keydown", handleEscKey);
+    }
+  } else {
+    if (typeof window !== "undefined") {
+      window.removeEventListener("keydown", handleEscKey);
+    }
   }
 });
 
