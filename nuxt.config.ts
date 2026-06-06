@@ -58,6 +58,7 @@ export default defineNuxtConfig({
       appURL: process.env.NUXT_PUBLIC_APP_URL,
       vietQRApi: process.env.NUXT_PUBLIC_VIETQR_API,
       mainSiteURL: process.env.NUXT_PUBLIC_MAIN_SITE_URL,
+      zaloGroup: process.env.NUXT_PUBLIC_ZALO_GROUP,
     },
   },
 
