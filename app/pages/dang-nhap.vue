@@ -171,7 +171,7 @@
         <!-- Terms and Conditions Agreement -->
         <p class="text-xs text-slate-400 dark:text-slate-500 text-center leading-relaxed border-b border-slate-200/50 dark:border-slate-800/50 pb-6 mb-6">
           Bằng việc tiếp tục, bạn đồng ý với 
-          <a href="#" class="text-shopee-orange dark:text-orange-400 font-semibold hover:underline">Điều khoản & Chính sách</a> 
+          <a :href="`${config.public.mainSiteURL}/privacy-policy`" target="_blank" rel="noopener noreferrer" class="text-shopee-orange dark:text-orange-400 font-semibold hover:underline">Điều khoản & Chính sách</a> 
           của chúng tôi.
         </p>
 
