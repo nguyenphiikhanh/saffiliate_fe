@@ -8,11 +8,15 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: "icon", type: "image/png", href: "/saficon.png" }
+        { rel: "icon", type: "image/png", href: "/saficon.png" },
+        { rel: "apple-touch-icon", href: "/saficon.png" },
+        { rel: "manifest", href: "/manifest.json" }
       ],
       meta: [
         { property: "og:image", content: "/saffi_logo.png" },
-        { name: "color-scheme", content: "light" }
+        { name: "color-scheme", content: "light" },
+        { name: "apple-mobile-web-app-title", content: "Saffi" },
+        { name: "application-name", content: "Saffi" }
       ]
     }
   },
