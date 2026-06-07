@@ -740,9 +740,12 @@ const mapOrder = (item) => {
   // Normalize status cho UI hiển thị đẹp tiếng Việt
   let normStatus = "Chờ duyệt";
   const s = order.orderStatus?.toLowerCase() || "";
-  if (s.includes("thành công") || s.includes("completed"))
+
+  if (s.includes("completed") || s.includes("Completed")) {
     normStatus = "Thành công";
-  else if (s.includes("hủy") || s.includes("cancelled")) normStatus = "Đã hủy";
+  } else if (s.includes("cancelled") || s.includes("Cancelled")) {
+    normStatus = "Đã hủy";
+  }
 
   return {
     code: order.orderId || "N/A",
