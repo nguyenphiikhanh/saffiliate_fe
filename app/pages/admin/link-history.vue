@@ -470,10 +470,11 @@
             >
               <!-- Search Header (Seamless) -->
               <div
-                class="relative flex items-center px-4 py-4 border-b border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900"
+                class="relative flex items-center gap-3 px-4 py-4 border-b border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900"
               >
+                <!-- Search Icon/Indicator -->
                 <svg
-                  class="h-5 w-5 text-slate-400 shrink-0"
+                  class="h-5 w-5 text-slate-400 shrink-0 ml-1"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -485,13 +486,48 @@
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   />
                 </svg>
-                <input
-                  v-model="userSearchQuery"
-                  type="text"
-                  placeholder="Tìm kiếm người dùng theo tên, email..."
-                  class="w-full pl-3 pr-4 py-2 bg-transparent text-base sm:text-lg focus:outline-none font-medium text-slate-800 dark:text-slate-100 placeholder-slate-400"
-                  autofocus
-                />
+
+                <!-- Input wrapper containing Input + Clear Button + Search Button -->
+                <div class="relative flex-1 flex items-center">
+                  <input
+                    v-model="userSearchQuery"
+                    type="text"
+                    placeholder="Tìm kiếm người dùng theo tên, email..."
+                    class="w-full pl-2 pr-24 py-2 bg-transparent text-base sm:text-lg focus:outline-none font-medium text-slate-800 dark:text-slate-100 placeholder-slate-400"
+                    autofocus
+                    @keydown.enter="handleUserSearch"
+                  />
+
+                  <!-- Action buttons inside the right edge of input -->
+                  <div class="absolute right-0 flex items-center gap-2">
+                    <!-- Clear button -->
+                    <button
+                      v-if="userSearchQuery"
+                      @click="clearUserSearch"
+                      class="p-1 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                      title="Xóa tìm kiếm"
+                      type="button"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+
+                    <!-- Search button -->
+                    <button
+                      @click="handleUserSearch"
+                      class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-200 font-semibold text-xs transition-colors duration-200 shadow-sm"
+                      type="button"
+                    >
+                      <span>Tìm</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 shrink-0"></div>
+
+                <!-- Close Button -->
                 <button
                   @click="showUserModal = false"
                   class="shrink-0 p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
@@ -786,13 +822,14 @@ const {
   fetchUsers,
 } = useAdminUsers();
 
-let searchTimeout = null;
-watch(userSearchQuery, (newVal) => {
-  if (searchTimeout) clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    fetchUsers(1, newVal.trim());
-  }, 350);
-});
+const handleUserSearch = () => {
+  fetchUsers(1, userSearchQuery.value.trim());
+};
+
+const clearUserSearch = () => {
+  userSearchQuery.value = "";
+  fetchUsers(1, "");
+};
 
 const handleEscKey = (e) => {
   if (e.key === "Escape") {
