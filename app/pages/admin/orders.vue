@@ -951,11 +951,19 @@
                 </svg>
                 <input
                   v-model="userSearchQuery"
+                  @keyup.enter="handleUserSearch"
                   type="text"
                   placeholder="Tìm kiếm người dùng theo tên, email..."
                   class="w-full pl-3 pr-4 py-2 bg-transparent text-base sm:text-lg focus:outline-none font-medium text-slate-800 dark:text-slate-100 placeholder-slate-400"
                   autofocus
                 />
+                <button
+                  @click="handleUserSearch"
+                  class="shrink-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-1.5 rounded-lg text-sm font-semibold hover:opacity-90 mr-2 transition-opacity"
+                  type="button"
+                >
+                  Tìm kiếm
+                </button>
                 <button
                   @click="showUserModal = false"
                   class="shrink-0 p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
@@ -1583,13 +1591,9 @@ const {
   fetchUsers,
 } = useAdminUsers();
 
-let userSearchTimeout = null;
-watch(userSearchQuery, (newVal) => {
-  if (userSearchTimeout) clearTimeout(userSearchTimeout);
-  userSearchTimeout = setTimeout(() => {
-    fetchUsers(1, newVal.trim());
-  }, 350);
-});
+const handleUserSearch = () => {
+  fetchUsers(1, userSearchQuery.value.trim());
+};
 
 const handleEscKey = (e) => {
   if (e.key === "Escape") {
