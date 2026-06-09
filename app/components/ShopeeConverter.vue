@@ -3,9 +3,10 @@
     <!-- Main Converter Card -->
     <div
       class="glass-panel rounded-3xl p-6 md:p-8 shadow-2xl transition-all duration-500"
-      :class="
-        currentType === AFFILIATE_TYPES.SHOPEE ? 'glow-orange' : 'glow-tiktok'
-      "
+      :class="[
+        currentType === AFFILIATE_TYPES.SHOPEE ? 'glow-orange' : 
+        currentType === AFFILIATE_TYPES.TIKTOK ? 'glow-tiktok' : 'glow-lazada'
+      ]"
     >
       <!-- Premium Creative Brand Selection Grid -->
       <div class="mb-8 select-none">
@@ -20,6 +21,7 @@
         <div class="grid grid-cols-1 gap-4 max-w-xs mx-auto">
           <!-- Shopee Card -->
           <button
+            v-if="platforms.shopee"
             @click="selectType(AFFILIATE_TYPES.SHOPEE)"
             class="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer outline-none relative overflow-hidden group active:scale-[0.98] w-full"
             :class="[
@@ -28,8 +30,6 @@
                 : 'bg-white dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-850/50 hover:border-slate-300 dark:hover:border-slate-700',
             ]"
           >
-
-
             <!-- Brand Logo Frame -->
             <div
               class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0"
@@ -73,8 +73,8 @@
           </button>
 
           <!-- TikTok Card -->
-          <!--
           <button
+            v-if="platforms.tiktok"
             @click="selectType(AFFILIATE_TYPES.TIKTOK)"
             class="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer outline-none relative overflow-hidden group active:scale-[0.98] w-full"
             :class="[
@@ -83,8 +83,6 @@
                 : 'bg-white dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-850/50 hover:border-slate-300 dark:hover:border-slate-700',
             ]"
           >
-
-
             <div
               class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0"
               :class="[
@@ -123,7 +121,54 @@
               </div>
             </div>
           </button>
-          -->
+
+          <!-- Lazada Card -->
+          <button
+            v-if="platforms.lazada"
+            @click="selectType(AFFILIATE_TYPES.LAZADA)"
+            class="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer outline-none relative overflow-hidden group active:scale-[0.98] w-full"
+            :class="[
+              currentType === AFFILIATE_TYPES.LAZADA
+                ? 'bg-blue-500/[0.04] dark:bg-blue-500/[0.08] border-blue-600 shadow-lg shadow-blue-500/[0.04] scale-[1.02]'
+                : 'bg-white dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-850/50 hover:border-slate-300 dark:hover:border-slate-700',
+            ]"
+          >
+            <div
+              class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0"
+              :class="[
+                currentType === AFFILIATE_TYPES.LAZADA
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-400 group-hover:scale-105',
+              ]"
+            >
+              <svg viewBox="0 0 24 24" class="h-5.5 w-5.5" fill="currentColor">
+                <path d="M12 2L2 22h20L12 2zm0 3.99L19.01 20H4.99L12 5.99z" />
+              </svg>
+            </div>
+
+            <div>
+              <div
+                class="text-[9px] font-black tracking-wider uppercase transition-colors"
+                :class="
+                  currentType === AFFILIATE_TYPES.LAZADA
+                    ? 'text-blue-600'
+                    : 'text-slate-400'
+                "
+              >
+                Hoàn tiền
+              </div>
+              <div
+                class="text-sm sm:text-base font-extrabold tracking-tight mt-0.5"
+                :class="
+                  currentType === AFFILIATE_TYPES.LAZADA
+                    ? 'text-blue-600 dark:text-white'
+                    : 'text-slate-600 dark:text-slate-400'
+                "
+              >
+                Lazada
+              </div>
+            </div>
+          </button>
         </div>
       </div>
 
@@ -152,7 +197,7 @@
         >
           Dán link sản phẩm
           <span class="font-bold">{{
-            currentType === AFFILIATE_TYPES.SHOPEE ? "Shopee" : "TikTok"
+            currentType === AFFILIATE_TYPES.SHOPEE ? "Shopee" : currentType === AFFILIATE_TYPES.TIKTOK ? "TikTok" : "Lazada"
           }}</span>
           của bạn vào bên dưới để mua sắm và nhận hoàn tiền.
         </p>
@@ -169,7 +214,9 @@
             :placeholder="
               currentType === AFFILIATE_TYPES.SHOPEE
                 ? 'Dán link Shopee vào đây... (Ví dụ: https://shopee.vn/product/...)'
-                : 'Dán link TikTok vào đây... (Ví dụ: https://vt.tiktok.com/...)'
+                : currentType === AFFILIATE_TYPES.TIKTOK
+                ? 'Dán link TikTok vào đây... (Ví dụ: https://vt.tiktok.com/...)'
+                : 'Dán link Lazada vào đây... (Ví dụ: https://s.lazada.vn/...)'
             "
             class="w-full bg-white dark:bg-slate-950/85 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-2xl py-4 pl-12 pr-12 text-sm font-medium transition-all duration-300 input-focus-glow"
             :class="{
@@ -181,6 +228,10 @@
                 isValidating &&
                 isUrlValid &&
                 currentType === AFFILIATE_TYPES.TIKTOK,
+              'border-blue-500/50':
+                isValidating &&
+                isUrlValid &&
+                currentType === AFFILIATE_TYPES.LAZADA,
               'border-yellow-600/50':
                 isValidating && !isUrlValid && rawUrl.length > 0,
             }"
@@ -271,7 +322,9 @@
               ? 'bg-slate-100 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/60 text-slate-500 dark:text-slate-400 cursor-not-allowed shadow-none'
               : currentType === AFFILIATE_TYPES.SHOPEE
               ? 'bg-shopee-orange border-shopee-orange text-white glow-orange-button ' + (isLoading ? 'opacity-80 !cursor-wait' : 'hover:bg-shopee-orange-hover active:scale-98 cursor-pointer')
-              : 'bg-slate-900 dark:bg-slate-850 border-slate-900 dark:border-slate-850 text-white glow-tiktok-button ' + (isLoading ? 'opacity-80 !cursor-wait' : 'hover:bg-slate-950 dark:hover:bg-slate-800 hover:text-cyan-400 dark:hover:text-cyan-400 active:scale-98 cursor-pointer'),
+              : currentType === AFFILIATE_TYPES.TIKTOK
+              ? 'bg-slate-900 dark:bg-slate-850 border-slate-900 dark:border-slate-850 text-white glow-tiktok-button ' + (isLoading ? 'opacity-80 !cursor-wait' : 'hover:bg-slate-950 dark:hover:bg-slate-800 hover:text-cyan-400 dark:hover:text-cyan-400 active:scale-98 cursor-pointer')
+              : 'bg-blue-600 border-blue-600 text-white glow-lazada-button ' + (isLoading ? 'opacity-80 !cursor-wait' : 'hover:bg-blue-700 active:scale-98 cursor-pointer'),
           ]"
         >
           <!-- Loading Spinner -->
@@ -353,9 +406,19 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from "vue";
+import { ref, computed, nextTick, watch, onMounted } from "vue";
 import { useShopeeApi } from "@/composables/useShopeeApi";
 import { AFFILIATE_TYPES } from "@/utils/constants";
+import { authClient } from "@/utils/auth-client";
+
+const { data: session } = await authClient.useSession(useFetch);
+const platforms = computed(() => {
+  return session.value?.systemConfig?.platforms || {
+    shopee: true,
+    tiktok: true,
+    lazada: false,
+  };
+});
 
 const currentType = ref(AFFILIATE_TYPES.SHOPEE);
 const rawUrl = ref("");
@@ -372,12 +435,37 @@ const {
   clearStates,
   validateShopeeUrl,
   validateTiktokUrl,
+  validateLazadaUrl,
 } = useShopeeApi();
+
+// Set default active channel based on active system platforms
+const initDefaultTab = () => {
+  if (platforms.value) {
+    if (!platforms.value.shopee && platforms.value.tiktok) {
+      currentType.value = AFFILIATE_TYPES.TIKTOK;
+    } else if (!platforms.value.shopee && !platforms.value.tiktok && platforms.value.lazada) {
+      currentType.value = AFFILIATE_TYPES.LAZADA;
+    } else {
+      currentType.value = AFFILIATE_TYPES.SHOPEE;
+    }
+  }
+};
+
+onMounted(() => {
+  initDefaultTab();
+});
+
+watch(platforms, () => {
+  initDefaultTab();
+}, { deep: true });
 
 // Check link validity as user types based on current platform type
 const isUrlValid = computed(() => {
   if (currentType.value === AFFILIATE_TYPES.TIKTOK) {
     return validateTiktokUrl(rawUrl.value);
+  }
+  if (currentType.value === AFFILIATE_TYPES.LAZADA) {
+    return validateLazadaUrl(rawUrl.value);
   }
   return validateShopeeUrl(rawUrl.value);
 });
@@ -449,6 +537,25 @@ const selectType = (type) => {
 }
 
 .glow-tiktok-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.glow-lazada {
+  box-shadow: 0 10px 40px -10px rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.glow-lazada-button {
+  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-lazada-button:hover:not(:disabled) {
+  box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+.glow-lazada-button:active:not(:disabled) {
   transform: scale(0.98);
 }
 

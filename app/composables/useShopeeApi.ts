@@ -87,6 +87,16 @@ export function useShopeeApi() {
     return tiktokRegex.test(url);
   };
 
+  // Validation function for Lazada link formats
+  const validateLazadaUrl = (url: string): boolean => {
+    if (!url || url.trim() === "") return false;
+
+    // Check if it's a valid Lazada domain pattern
+    const lazadaRegex = /(lazada\.vn|s\.lazada\.vn)/i;
+
+    return lazadaRegex.test(url);
+  };
+
   const convertUrl = async (rawUrl: string, type?: number) => {
     // Reset states
     resultLink.value = "";
@@ -99,6 +109,11 @@ export function useShopeeApi() {
     if (type === 2) {
       if (!validateTiktokUrl(trimmedUrl)) {
         error.value = "Vui lòng nhập đường dẫn TikTok hợp lệ! (Ví dụ: tiktok.com/... hoặc vt.tiktok.com/...)";
+        return false;
+      }
+    } else if (type === 3) {
+      if (!validateLazadaUrl(trimmedUrl)) {
+        error.value = "Vui lòng nhập đường dẫn Lazada hợp lệ! (Ví dụ: lazada.vn/... hoặc s.lazada.vn/...)";
         return false;
       }
     } else {
@@ -118,7 +133,7 @@ export function useShopeeApi() {
         originalLink: trimmedUrl,
       };
 
-      // Only send type if it's not Shopee (type 1) or is explicitly requested (TikTok type 2)
+      // Only send type if it's not Shopee (type 1) or is explicitly requested (TikTok type 2, Lazada type 3)
       if (type && type !== 1) {
         payload.type = type;
       }
@@ -195,5 +210,6 @@ export function useShopeeApi() {
     clearStates,
     validateShopeeUrl,
     validateTiktokUrl,
+    validateLazadaUrl,
   };
 }
