@@ -196,20 +196,6 @@
             <span>{{ rankInfo.name }}</span>
           </div>
 
-          <!-- Nút Chuông Thông Báo -->
-          <button class="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer shrink-0 group relative" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-            <span class="absolute top-1.5 right-1.5 flex h-1.5 w-1.5 rounded-full bg-red-500 ring-1 ring-white dark:ring-slate-900 animate-pulse"></span>
-            <!-- Tooltip -->
-            <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
-              <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"></div>
-              <div class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl">
-                Thông Báo
-              </div>
-            </div>
-          </button>
 
           <!-- Phân cách dọc 2 (Ẩn trên mobile) -->
           <div class="hidden sm:block h-5 w-px bg-slate-200 dark:bg-slate-800 mx-1 shrink-0"></div>

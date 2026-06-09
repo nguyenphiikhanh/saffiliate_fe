@@ -183,17 +183,6 @@
             class="inline-flex bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl shadow-inner"
           >
             <button
-              @click="activeTab = 'monthly'"
-              :class="[
-                'px-4 py-2 text-[13px] font-bold rounded-lg transition-all duration-300',
-                activeTab === 'monthly'
-                  ? 'bg-white dark:bg-slate-700 text-shopee-orange shadow-sm'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200',
-              ]"
-            >
-              Tháng Này
-            </button>
-            <button
               @click="activeTab = 'allTime'"
               :class="[
                 'px-4 py-2 text-[13px] font-bold rounded-lg transition-all duration-300',
@@ -203,6 +192,17 @@
               ]"
             >
               Tất Cả
+            </button>
+            <button
+              @click="activeTab = 'monthly'"
+              :class="[
+                'px-4 py-2 text-[13px] font-bold rounded-lg transition-all duration-300',
+                activeTab === 'monthly'
+                  ? 'bg-white dark:bg-slate-700 text-shopee-orange shadow-sm'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200',
+              ]"
+            >
+              Tháng Này
             </button>
           </div>
         </div>
@@ -388,7 +388,7 @@ import { useAppFetch } from "@/composables/useAppFetch";
 
 const { walletData, fetchWallet } = useWallet();
 
-const activeTab = ref("monthly");
+const activeTab = ref("allTime");
 const leaderboardData = ref({ allTime: [], monthly: [] });
 
 const fetchLeaderboard = async () => {
