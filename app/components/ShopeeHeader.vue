@@ -487,11 +487,11 @@ onUnmounted(() => {
 
 // Dynamic values from Better-Auth Session
 const userName = computed(() => {
-  return session.value.user.name || "User";
+  return session.value?.user?.name || "User";
 });
 
 const userAvatar = computed(() => {
-  return session.value.user.image || "";
+  return session.value?.user?.image || "";
 });
 
 const firstLetter = computed(() => {
@@ -500,7 +500,7 @@ const firstLetter = computed(() => {
 });
 
 const userEmail = computed(() => {
-  return session.value.user.email || "mailunlockcuakhanh2@gmail.com";
+  return session.value?.user?.email || "mailunlockcuakhanh2@gmail.com";
 });
 
 const rankInfo = computed(() => {
