@@ -348,7 +348,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { authClient } from "@/utils/auth-client";
 import { usePromiseTracker } from "@/composables/usePromiseTracker";
 
 const { isLoading: isApiLoading } = usePromiseTracker();
@@ -363,20 +362,20 @@ useSeoMeta({
 });
 
 const { walletData, isLoading, error, fetchWallet } = useWallet();
-const { data: session } = await authClient.useSession(useFetch);
+const { user } = useAuth();
 const { api } = useAppFetch();
 
 const bankAccountInfo = ref(null);
 const isBankLoading = ref(true);
 
 const fetchBankAccount = async () => {
-  if (!session.value?.user?.id) {
+  if (!user.value?.id) {
     isBankLoading.value = false;
     return;
   }
   isBankLoading.value = true;
   try {
-    const res = await api.get(`/bank-account/${session.value.user.id}`);
+    const res = await api.get(`/bank-account/${user.value.id}`);
     if (res.data) {
       bankAccountInfo.value = res.data;
     }

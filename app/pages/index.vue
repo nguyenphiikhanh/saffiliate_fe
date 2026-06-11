@@ -383,7 +383,6 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import { authClient } from "@/utils/auth-client";
 import { useAppFetch } from "@/composables/useAppFetch";
 
 const { walletData, fetchWallet } = useWallet();
@@ -432,9 +431,10 @@ useSeoMeta({
   twitterCard: "summary_large_image",
 });
 
-const { data: session } = await authClient.useSession(useFetch);
-const userName = computed(() => session.value?.user?.name || "bạn");
-const userAvatar = computed(() => session.value?.user?.image || "");
+const { user } = useAuth();
+const session = computed(() => user.value ? { user: user.value } : null);
+const userName = computed(() => user.value?.name || "bạn");
+const userAvatar = computed(() => user.value?.image || "");
 const firstLetter = computed(() => userName.value.charAt(0).toUpperCase());
 
 const rankInfo = computed(() => {

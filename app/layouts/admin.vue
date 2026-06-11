@@ -168,25 +168,22 @@
 <script setup>
 import { onMounted, computed, ref } from "vue";
 import { useTheme } from "@/composables/useTheme";
-import { authClient } from "@/utils/auth-client";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
 const { initTheme } = useTheme();
-const { data: session } = await authClient.useSession(useFetch);
+const { user, logout } = useAuth();
+const session = computed(() => user.value ? { user: user.value } : null);
 
 const isSidebarOpen = ref(false);
 
-const userName = computed(() => session.value?.user?.name || "Admin");
-const userAvatar = computed(() => session.value?.user?.image || "");
+const userName = computed(() => user.value?.name || "Admin");
+const userAvatar = computed(() => user.value?.image || "");
 const firstLetter = computed(() => userName.value.charAt(0).toUpperCase());
 
 const handleSignOut = async () => {
   try {
-    await authClient.signOut();
-    if (typeof window !== "undefined") {
-      window.location.href = "/dang-nhap";
-    }
+    await logout();
   } catch (err) {
     console.error("Lỗi khi đăng xuất:", err);
   }

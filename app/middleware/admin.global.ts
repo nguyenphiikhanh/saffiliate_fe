@@ -1,10 +1,9 @@
-import { authClient } from '~/utils/auth-client'
 import { ROLES } from '../utils/role'
 
-export default defineNuxtRouteMiddleware(async (to) => {
-	const { data: session } = await authClient.useSession(useFetch);
+export default defineNuxtRouteMiddleware((to) => {
+	const { user } = useAuth();
 
-	if (session.value && session.value.user?.role === ROLES.ADMIN) {
+	if (user.value && user.value.role === ROLES.ADMIN) {
 		// Logged in as Admin: Only allow access to admin routes
 		if (!to.path.startsWith('/admin')) {
 			return navigateTo('/admin');

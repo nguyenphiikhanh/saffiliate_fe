@@ -447,10 +447,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRoute } from "vue-router";
-import { authClient } from "@/utils/auth-client";
 
 const route = useRoute();
-const { data: session } = await authClient.useSession(useFetch);
+const { user, logout } = useAuth();
+const session = computed(() => user.value ? { user: user.value } : null);
 
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);
@@ -499,13 +499,13 @@ onUnmounted(() => {
   window.removeEventListener("click", handleClickOutside);
 });
 
-// Dynamic values from Better-Auth Session
+// Dynamic values from Custom useAuth Session
 const userName = computed(() => {
-  return session.value.user.name || "User";
+  return user.value?.name || "User";
 });
 
 const userAvatar = computed(() => {
-  return session.value.user.image || "";
+  return user.value?.image || "";
 });
 
 const firstLetter = computed(() => {
@@ -514,11 +514,11 @@ const firstLetter = computed(() => {
 });
 
 const userEmail = computed(() => {
-  return session.value.user.email || "mailunlockcuakhanh2@gmail.com";
+  return user.value?.email || "mailunlockcuakhanh2@gmail.com";
 });
 
 const rankInfo = computed(() => {
-  const rank = session.value?.user?.rank || "silver";
+  const rank = user.value?.rank || "silver";
   if (rank === "obsidian") {
     return {
       name: "TINH HOA",
@@ -545,10 +545,7 @@ const rankInfo = computed(() => {
 
 const handleLogout = async () => {
   try {
-    await authClient.signOut();
-    if (typeof window !== "undefined") {
-      window.location.reload();
-    }
+    await logout();
   } catch (error) {
     console.error("Đăng xuất thất bại:", error);
   }

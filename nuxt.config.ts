@@ -19,9 +19,7 @@ export default defineNuxtConfig({
 
   css: ["~/assets/css/main.css"],
 
-  modules: [
-    "@nuxt/icon",
-  ],
+  modules: ["@nuxt/icon", "nuxt-vue3-google-signin"],
 
   vite: {
     plugins: [
@@ -30,15 +28,13 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: [
         '@vue/devtools-core',
-        '@vue/devtools-kit',
-        'better-auth',
-        'better-auth/vue'
+        '@vue/devtools-kit'
       ]
     }
   },
 
   build: {
-    transpile: ['better-auth', '@vue/devtools-core', '@vue/devtools-kit']
+    transpile: ['@vue/devtools-core', '@vue/devtools-kit']
   },
 
   // Server-side route rules (Proxying /api calls to backend to completely bypass browser CORS)
@@ -54,7 +50,11 @@ export default defineNuxtConfig({
       appURL: process.env.NUXT_PUBLIC_APP_URL,
       vietQRApi: process.env.NUXT_PUBLIC_VIETQR_API,
       mainSiteURL: process.env.NUXT_PUBLIC_MAIN_SITE_URL,
+      googleClientId: process.env.NUXT_PUBLIC_GOOGLE_CLIENT_ID,
     },
+  },
+  googleSignIn: {
+    clientId: process.env.NUXT_PUBLIC_GOOGLE_CLIENT_ID
   },
 
   // for cloudflare pages

@@ -756,7 +756,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { authClient } from "@/utils/auth-client";
 import { usePromiseTracker } from "@/composables/usePromiseTracker";
 
 const { isLoading } = usePromiseTracker();
@@ -770,8 +769,9 @@ useSeoMeta({
   twitterCard: "summary_large_image",
 });
 
-const { data: session } = await authClient.useSession(useFetch);
-const { api } = useAppFetch();
+const { user } = useAuth();
+const session = computed(() => user.value ? { user: user.value } : null);
+const api = useAppFetch().api;
 const config = useRuntimeConfig();
 
 const userName = computed(() => session.value?.user?.name || "User");
@@ -1070,8 +1070,8 @@ const saveProfile = async () => {
 
     profileMsg.value = "Cập nhật họ và tên thành công!";
     // Reactively sync the session state on client side
-    if (session.value?.user) {
-      session.value.user.name = trimmedName;
+    if (user.value) {
+      user.value.name = trimmedName;
     }
     isEditingProfile.value = false; // Close editing mode on successful save!
     setTimeout(() => {

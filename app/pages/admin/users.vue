@@ -242,9 +242,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, onUnmounted } from "vue";
+import { ref, onMounted, watch, onUnmounted, computed } from "vue";
 import { useAdminUsers } from "~/composables/useAdminUsers";
-import { authClient } from "~/utils/auth-client";
 import { useRouter } from "vue-router";
 
 definePageMeta({
@@ -255,7 +254,8 @@ useHead({
   title: 'Quản lý Thành Viên | Admin Saffiliate'
 });
 
-const { data: session } = await authClient.useSession(useFetch);
+const { user } = useAuth();
+const session = computed(() => user.value ? { user: user.value } : null);
 const router = useRouter();
 
 // Route Protection: verify if current logged in user is admin
