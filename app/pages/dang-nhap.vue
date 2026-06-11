@@ -766,6 +766,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
+import { useCodeClient } from "vue3-google-signin";
 
 // Disable default layout (Nuxt 4 property)
 definePageMeta({
@@ -945,6 +946,7 @@ const isLoggingIn = ref(false);
 
 // Google One-Tap integration
 useOneTap({
+  use_fedcm: true,
   onSuccess: async (response) => {
     if (response.credential) {
       await handleLoginWithToken(response.credential);
@@ -955,14 +957,14 @@ useOneTap({
   },
 });
 
-const handleLoginWithToken = async (id_token) => {
+const handleLoginWithToken = async (credential) => {
   errorMessage.value = "";
   isLoggingIn.value = true;
 
   try {
     const { api } = useAppFetch();
     const res = await api.post(`/auth/google`, {
-      id_token: id_token,
+      id_token: credential,
     });
 
     if (res && res.data && res.data.token) {
@@ -990,6 +992,48 @@ const handleLoginWithToken = async (id_token) => {
   }
 };
 
+const { isReady, login: triggerGoogleLogin } = useCodeClient({
+  onSuccess: async (response) => {
+    errorMessage.value = "";
+    isLoggingIn.value = true;
+    try {
+      const { api } = useAppFetch();
+      const res = await api.post(`/auth/google`, {
+        code: response.code,
+      });
+
+      if (res && res.data && res.data.token) {
+        const sanctumToken = res.data.token;
+        const authUser = res.data.user;
+
+        // Lưu thông tin xác thực vào Cookie & State
+        login(sanctumToken, authUser);
+
+        // Đồng bộ dữ liệu mới nhất
+        await fetchUser();
+
+        // Chuyển hướng về trang chủ
+        router.push("/");
+      } else {
+        throw new Error("Không thể trích xuất token đăng nhập từ hệ thống.");
+      }
+    } catch (error) {
+      console.error("Lỗi xác thực Google:", error);
+      errorMessage.value = getFriendlyErrorMessage(
+        error,
+        "Xác thực với tài khoản Google thất bại. Vui lòng thử lại."
+      );
+      isLoggingIn.value = false;
+    }
+  },
+  onError: (errorResponse) => {
+    console.error("Lỗi Google Sign-In:", errorResponse);
+    errorMessage.value =
+      "Không thể kết nối hoặc xác thực với tài khoản Google. Vui lòng thử lại.";
+    isLoggingIn.value = false;
+  },
+});
+
 // Google login redirect trigger
 const handleGoogleLogin = () => {
   if (webViewInfo.value.isInApp) {
@@ -998,24 +1042,10 @@ const handleGoogleLogin = () => {
     return;
   }
 
-  if (isLoggingIn.value) return;
+  if (isLoggingIn.value || !isReady.value) return;
   errorMessage.value = "";
-  isLoggingIn.value = true;
 
-  const config = useRuntimeConfig();
-  const clientId = config.public.googleClientId;
-  const redirectUri = window.location.origin + "/dang-nhap";
-  const scope = "openid profile email";
-  const responseType = "id_token";
-
-  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(
-    redirectUri
-  )}&response_type=${responseType}&scope=${encodeURIComponent(
-    scope
-  )}&access_type=offline&prompt=consent`;
-
-  // Chuyển hướng tới màn hình OAuth của Google
-  window.location.href = googleAuthUrl;
+  triggerGoogleLogin();
 };
 </script>
 

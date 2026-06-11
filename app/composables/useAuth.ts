@@ -26,12 +26,12 @@ export function useAuth() {
       return null;
     }
     try {
-      const { data } = await api.get<User>("/user");
+      const { data } = await api.get<User>("/auth/user");
       user.value = data;
       return data;
     } catch (err) {
       console.error("Lỗi khi tải thông tin user:", err);
-      logoutLocal();
+      // logoutLocal();
       return null;
     }
   };
@@ -52,7 +52,7 @@ export function useAuth() {
   const logout = async () => {
     try {
       if (token.value) {
-        await api.get("/auth/logout").catch(() => {});
+        await api.post("/auth/logout").catch(() => { });
       }
     } catch (e) {
       console.error("Lỗi gọi API logout:", e);

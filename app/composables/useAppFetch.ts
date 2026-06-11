@@ -17,23 +17,14 @@ export function useAppFetch() {
     },
     onRequest({ options }) {
       const token = useCookie("auth_token").value;
+      
+      const headers = new Headers(options.headers || {});
+      headers.set('Accept', 'application/json');
       if (token) {
-        options.headers = options.headers || {};
-        if (options.headers instanceof Headers) {
-          if (!options.headers.has('Authorization')) {
-            options.headers.set('Authorization', `Bearer ${token}`);
-          }
-        } else if (Array.isArray(options.headers)) {
-          const hasAuth = options.headers.some(([k]) => k.toLowerCase() === 'authorization');
-          if (!hasAuth) {
-            options.headers.push(['Authorization', `Bearer ${token}`]);
-          }
-        } else {
-          if (!options.headers['Authorization']) {
-            options.headers['Authorization'] = `Bearer ${token}`;
-          }
-        }
+        headers.set('Authorization', `Bearer ${token}`);
       }
+      options.headers = headers;
+
       if (process.client) startLoading();
     },
     onRequestError() {
