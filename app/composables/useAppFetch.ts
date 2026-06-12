@@ -1,5 +1,11 @@
 import { usePromiseTracker } from "./usePromiseTracker";
 
+export interface ApiResponse<T = any> {
+  success: boolean;
+  data: T;
+  message: string;
+}
+
 export function useAppFetch() {
   const config = useRuntimeConfig();
   const { startLoading, stopLoading } = usePromiseTracker();
@@ -31,7 +37,9 @@ export function useAppFetch() {
     },
     onResponse({ request, response, options }) {
       if (process.client) stopLoading();
-      response._data = response._data.data;
+      if (response._data && typeof response._data === 'object' && 'data' in response._data) {
+        response._data = response._data.data;
+      }
     },
     onResponseError({ request, response, options }) {
       if (process.client) stopLoading();

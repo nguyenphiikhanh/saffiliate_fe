@@ -770,7 +770,7 @@ useSeoMeta({
 });
 
 const { user } = useAuth();
-const session = computed(() => user.value ? { user: user.value } : null);
+const session = computed(() => (user.value ? { user: user.value } : null));
 const api = useAppFetch().api;
 const config = useRuntimeConfig();
 
@@ -985,9 +985,9 @@ const fetchUserBankAccount = async () => {
   try {
     const res = await api.get(`/bank-account/${session.value.user.id}`);
     if (res.data) {
-      linkedBank.value = res.data.bankId;
-      bankAccount.value = res.data.accountNo;
-      bankOwner.value = res.data.accountName;
+      linkedBank.value = res.data.bank_id;
+      bankAccount.value = res.data.account_no;
+      bankOwner.value = res.data.account_name;
     }
   } catch (err) {
     console.error("Lỗi khi lấy thông tin tài khoản ngân hàng:", err);
@@ -1064,7 +1064,7 @@ const saveProfile = async () => {
   }
 
   try {
-    await api.post("/user/update", {
+    await api.put("/user/update", {
       name: trimmedName,
     });
 
@@ -1129,11 +1129,11 @@ const saveBank = async () => {
     : "Ngân hàng";
 
   try {
-    await api.post(`/bank-account/${session.value.user.id}`, {
-      bankId: linkedBank.value,
-      bankName: bankNameVal,
-      accountNo: bankAccount.value.trim(),
-      accountName: trimmedOwner.toUpperCase(),
+    await api.put(`/bank-account/${session.value.user.id}`, {
+      bank_id: linkedBank.value,
+      bank_name: bankNameVal,
+      account_no: bankAccount.value.trim(),
+      account_name: trimmedOwner.toUpperCase(),
     });
 
     bankMsg.value =

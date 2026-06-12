@@ -8,7 +8,7 @@ export interface WalletData {
 
 export function useWallet() {
   const { api } = useAppFetch();
-  
+
   const walletData = ref<WalletData>({
     availableBalance: 0,
     pendingBalance: 0,
@@ -26,9 +26,9 @@ export function useWallet() {
       // nên res.data chính là object { availableBalance, pendingBalance, totalPaid }
       if (res.data) {
         walletData.value = {
-          availableBalance: res.data.availableBalance || 0,
-          pendingBalance: res.data.pendingBalance || 0,
-          totalPaid: res.data.totalPaid || 0,
+          availableBalance: res.data.available_balance || 0,
+          pendingBalance: res.data.pending_balance || 0,
+          totalPaid: res.data.total_paid || 0,
         };
       }
     } catch (err: any) {
