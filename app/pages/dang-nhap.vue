@@ -905,7 +905,7 @@ onMounted(async () => {
         login(sanctumToken, authUser);
 
         // Đồng bộ dữ liệu mới nhất
-        await fetchUser();
+        await fetchUser(sanctumToken);
 
         // Xóa id_token khỏi query URL và chuyển hướng về trang chủ
         router.replace({ query: { ...route.query, id_token: undefined } });
@@ -975,7 +975,7 @@ const handleLoginWithToken = async (credential) => {
       login(sanctumToken, authUser);
 
       // Đồng bộ dữ liệu mới nhất
-      await fetchUser();
+      await fetchUser(sanctumToken);
 
       // Chuyển hướng về trang chủ
       router.push("/");
@@ -1010,7 +1010,7 @@ const { isReady, login: triggerGoogleLogin } = useCodeClient({
         login(sanctumToken, authUser);
 
         // Đồng bộ dữ liệu mới nhất
-        await fetchUser();
+        await fetchUser(sanctumToken);
 
         // Chuyển hướng về trang chủ
         router.push("/");

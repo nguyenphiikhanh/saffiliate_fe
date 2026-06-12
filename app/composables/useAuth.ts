@@ -20,13 +20,18 @@ export function useAuth() {
 
   const { api } = useAppFetch();
 
-  const fetchUser = async () => {
-    if (!token.value) {
+  const fetchUser = async (explicitToken?: string) => {
+    const activeToken = explicitToken || token.value;
+    if (!activeToken) {
       user.value = null;
       return null;
     }
     try {
-      const { data } = await api.get<User>("/auth/user");
+      const { data } = await api.get<User>("/auth/user", {
+        headers: {
+          Authorization: `Bearer ${activeToken}`,
+        },
+      });
       user.value = data;
       return data;
     } catch (err) {

@@ -17,10 +17,9 @@ export function useAppFetch() {
     },
     onRequest({ options }) {
       const token = useCookie("auth_token").value;
-      
       const headers = new Headers(options.headers || {});
       headers.set('Accept', 'application/json');
-      if (token) {
+      if (token && !headers.has('Authorization')) {
         headers.set('Authorization', `Bearer ${token}`);
       }
       options.headers = headers;
