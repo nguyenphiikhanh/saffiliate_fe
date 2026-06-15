@@ -139,7 +139,7 @@ export function useShopeeApi() {
       }
 
       // Call Elysia API via Axios instance (relative path triggers Nitro proxy to bypass CORS)
-      const response = await api.post<ConvertResponse>("/convert", payload);
+      const response = await api.post<ConvertResponse>("/link/convert", payload);
 
       const responseData = response.data;
 
@@ -157,13 +157,13 @@ export function useShopeeApi() {
       }
     } catch (err: any) {
       console.error("API error:", err);
-      
+
       let errMsg = "Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng hoặc thử lại sau!";
-      
+
       if (err?.response) {
         const status = err.response.status;
         const responseData = err.response.data;
-        
+
         if (status === 500) {
           errMsg = "Hệ thống đang gặp sự cố nhỏ khi xử lý liên kết này. Bạn vui lòng kiểm tra lại đường dẫn sản phẩm hoặc thử lại sau ít phút nhé!";
         } else if (status === 404) {
@@ -176,10 +176,10 @@ export function useShopeeApi() {
       } else if (err?.message) {
         errMsg = getFriendlyErrorMessage(err.message, err.message);
       }
-      
+
       // Xử lý tiền tố cho một số thông báo lỗi cũ
       if (
-        errMsg === err?.message || 
+        errMsg === err?.message ||
         (err?.response && (err.response.status === 400 || err.response.status === 422))
       ) {
         error.value = `Lỗi: ${errMsg}`;
