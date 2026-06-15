@@ -187,7 +187,7 @@
           
           <!-- Rank Badge -->
           <div 
-            v-if="session?.user"
+            v-if="user"
             class="flex items-center gap-1.5 px-3 py-1 rounded-full border select-none shrink-0 font-extrabold text-[11px] tracking-widest"
             :class="rankInfo.badgeClass"
             :title="`Hạng thành viên: ${rankInfo.fullName}`"
@@ -238,7 +238,7 @@
               >
                 <!-- 1. User Info -->
                 <div class="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800/60">
-                  <NuxtLink v-if="session?.user?.role === 1" to="/admin/orders" @click="isMenuOpen = false" class="h-12 w-12 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-slate-100 dark:border-slate-800 shadow-sm hover:scale-105 transition-transform" title="Vào trang quản trị">
+                  <NuxtLink v-if="user?.role === 1" to="/admin/orders" @click="isMenuOpen = false" class="h-12 w-12 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-slate-100 dark:border-slate-800 shadow-sm hover:scale-105 transition-transform" title="Vào trang quản trị">
                     <img v-if="userAvatar" :src="userAvatar" class="h-full w-full object-cover" referrerpolicy="no-referrer" />
                     <div v-else class="h-full w-full bg-[#EC407A] text-white font-black text-lg flex items-center justify-center uppercase">
                       {{ firstLetter }}
@@ -261,7 +261,7 @@
                 </div>
 
                 <!-- 2. Rank Badge -->
-                <div v-if="session?.user" class="flex items-center justify-between py-3 border-b border-slate-100 dark:border-slate-800/60">
+                <div v-if="user" class="flex items-center justify-between py-3 border-b border-slate-100 dark:border-slate-800/60">
                   <div 
                     class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border font-extrabold text-[10px] tracking-widest select-none shrink-0"
                     :class="rankInfo.badgeClass"
@@ -276,7 +276,7 @@
                 <div class="flex flex-col gap-1 py-3 border-b border-slate-100 dark:border-slate-800/60">
                   <!-- Quản trị viên (Chỉ hiển thị nếu role là Admin) -->
                   <NuxtLink 
-                    v-if="session?.user?.role === 1"
+                    v-if="user?.role === 1"
                     to="/admin/orders" 
                     @click="isMenuOpen = false"
                     class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
@@ -292,7 +292,7 @@
 
                   <!-- Quản lý thành viên (Admin) -->
                   <NuxtLink 
-                    v-if="session?.user?.role === 1"
+                    v-if="user?.role === 1"
                     to="/admin/users" 
                     @click="isMenuOpen = false"
                     class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
@@ -436,7 +436,6 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const { user, logout } = useAuth();
-const session = computed(() => user.value ? { user: user.value } : null);
 
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);
@@ -485,13 +484,13 @@ onUnmounted(() => {
   window.removeEventListener("click", handleClickOutside);
 });
 
-// Dynamic values from Custom useAuth Session
+// Dynamic values from Custom useAuth user info
 const userName = computed(() => {
-  return session.value?.user?.name || "User";
+  return user.value?.name || "User";
 });
 
 const userAvatar = computed(() => {
-  return session.value?.user?.image || "";
+  return user.value?.image || "";
 });
 
 const firstLetter = computed(() => {
@@ -500,7 +499,7 @@ const firstLetter = computed(() => {
 });
 
 const userEmail = computed(() => {
-  return session.value?.user?.email || "youremail@saffi.com";
+  return user.value?.email || "youremail@saffi.com";
 });
 
 const rankInfo = computed(() => {

@@ -2,7 +2,7 @@
   <div class="w-full flex flex-col gap-6 animate-fade-in-up">
     <!-- User Welcome & Rank Status Section (Visible to logged in users) -->
     <div
-      v-if="session?.user"
+      v-if="user"
       class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6"
     >
       <!-- Card 1: Welcome & Actions -->
@@ -123,27 +123,27 @@
           >
             Đơn hàng:
             <span
-              v-if="session?.user?.rank === 'obsidian'"
+              v-if="user.rank === 'obsidian'"
               class="font-bold text-[#1e293b] dark:text-white"
-              >{{ session?.user?.completedOrdersCount ?? 0 }}</span
+              >{{ user.completedOrdersCount ?? 0 }}</span
             >
             <span v-else class="font-bold text-[#1e293b] dark:text-white"
-              >{{ session?.user?.completedOrdersCount ?? 0 }} /
+              >{{ user.completedOrdersCount ?? 0 }} /
               {{ rankProgress.nextThreshold }}</span
             >
           </div>
 
           <div class="text-[13px] text-[#8c9eb4] dark:text-slate-500">
-            <span v-if="session?.user?.rank === 'obsidian'">
+            <span v-if="user.rank === 'obsidian'">
               Đã đạt cấp bậc
               <strong class="text-[#ea580c] font-bold uppercase tracking-tight"
                 >TỐI ĐA</strong
               >
             </span>
-            <span v-else-if="(session?.user?.ordersToNextRank ?? 0) > 0">
+            <span v-else-if="(user.ordersToNextRank ?? 0) > 0">
               Hoàn thành
               <strong class="text-[#1e293b] dark:text-white font-bold">{{
-                session.user.ordersToNextRank
+                user.ordersToNextRank
               }}</strong>
               đơn hàng nữa để lên hạng
               <strong
@@ -158,7 +158,7 @@
 
     <!-- Leaderboard Dashboard -->
     <div
-      v-if="session?.user"
+      v-if="user"
       class="w-full mt-6 mb-12 animate-fade-in-up"
       style="animation-delay: 0.1s"
     >
@@ -432,13 +432,12 @@ useSeoMeta({
 });
 
 const { user } = useAuth();
-const session = computed(() => user.value ? { user: user.value } : null);
 const userName = computed(() => user.value?.name || "bạn");
 const userAvatar = computed(() => user.value?.image || "");
 const firstLetter = computed(() => userName.value.charAt(0).toUpperCase());
 
 const rankInfo = computed(() => {
-  const rank = session.value?.user?.rank || "silver";
+  const rank = user.value?.rank || "silver";
   if (rank === "obsidian") {
     return {
       name: "TINH HOA",
@@ -458,8 +457,8 @@ const rankInfo = computed(() => {
 });
 
 const rankProgress = computed(() => {
-  const count = session.value?.user?.completedOrdersCount ?? 0;
-  const rank = session.value?.user?.rank || "silver";
+  const count = user.value?.completedOrdersCount ?? 0;
+  const rank = user.value?.rank || "silver";
 
   let nextRankName = "";
   let nextThreshold = 0;

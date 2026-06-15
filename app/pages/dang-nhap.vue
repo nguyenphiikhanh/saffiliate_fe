@@ -716,6 +716,7 @@ useSeoMeta({
 
 const route = useRoute();
 const router = useRouter();
+const config = useRuntimeConfig();
 const { login, fetchUser } = useAuth();
 const errorMessage = ref("");
 

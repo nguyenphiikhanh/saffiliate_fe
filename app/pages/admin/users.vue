@@ -255,12 +255,11 @@ useHead({
 });
 
 const { user } = useAuth();
-const session = computed(() => user.value ? { user: user.value } : null);
 const router = useRouter();
 
 // Route Protection: verify if current logged in user is admin
 onMounted(() => {
-  if (!session.value || session.value.user?.role !== 1) {
+  if (!user.value || user.value.role !== 1) {
     // Redirect non-admin back to home
     router.replace("/");
   }
@@ -360,7 +359,7 @@ const isNewUser = (createdAt) => {
 
 // Initial Load
 onMounted(async () => {
-  if (session.value && session.value.user?.role === 1) {
+  if (user.value && user.value.role === 1) {
     await fetchUsers(1);
   }
 });

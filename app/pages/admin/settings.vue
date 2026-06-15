@@ -349,8 +349,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { authClient } from "~/utils/auth-client";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAppFetch } from "@/composables/useAppFetch";
 
@@ -362,13 +361,13 @@ useHead({
   title: "Cấu hình hệ thống | Admin Saffiliate",
 });
 
-const { data: session } = await authClient.useSession(useFetch);
+const { user } = useAuth();
 const router = useRouter();
 const { api } = useAppFetch();
 
 // Route Protection: verify if current logged in user is admin
 onMounted(() => {
-  if (!session.value || session.value.user?.role !== 1) {
+  if (!user.value || user.value.role !== 1) {
     router.replace("/");
   }
 });

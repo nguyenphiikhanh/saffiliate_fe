@@ -190,7 +190,6 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 const { initTheme } = useTheme();
 const { user, logout } = useAuth();
-const session = computed(() => user.value ? { user: user.value } : null);
 
 const isSidebarOpen = ref(false);
 

@@ -16,7 +16,7 @@
     </div>
     <!-- Dynamic Member Rank Progress Card -->
     <div
-      v-if="session?.user"
+      v-if="user"
       class="w-full rounded-[2rem] border border-slate-100 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/60 p-6 md:p-8 mt-6 shadow-xl shadow-slate-900/[0.01] dark:shadow-slate-950/10 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden backdrop-blur-md"
     >
       <!-- Decorative rank-colored glow on background -->
@@ -74,34 +74,34 @@
             class="flex flex-col sm:flex-row items-center justify-between gap-2 mt-2"
           >
             <p class="text-slate-400 dark:text-slate-550 text-[11px] font-bold">
-              <span v-if="session?.user?.rank === 'obsidian'">
+              <span v-if="user.rank === 'obsidian'">
                 Tổng đơn tích lũy:
                 <span class="text-slate-700 dark:text-slate-300 font-extrabold"
-                  >{{ session?.user?.completedOrdersCount ?? 0 }} đơn</span
+                  >{{ user.completedOrdersCount ?? 0 }} đơn</span
                 >
               </span>
               <span v-else>
                 <span
                   class="text-slate-700 dark:text-slate-300 font-extrabold"
-                  >{{ session?.user?.completedOrdersCount ?? 0 }}</span
+                  >{{ user.completedOrdersCount ?? 0 }}</span
                 >
                 / {{ rankProgress.nextThreshold }} đơn hàng •
               </span>
             </p>
             <p
-              v-if="session?.user?.rank === 'obsidian'"
+              v-if="user.rank === 'obsidian'"
               class="text-[11px] font-extrabold text-emerald-500"
             >
               💎 Hạng Tinh Hoa tối thượng! Hãy duy trì mua sắm để bảo vệ đặc
               quyền chiết khấu cao nhất nhé.
             </p>
             <p
-              v-else-if="(session?.user?.ordersToNextRank ?? 0) > 0"
+              v-else-if="(user.ordersToNextRank ?? 0) > 0"
               class="text-[11px] font-bold text-slate-400 dark:text-slate-500"
             >
               Hoàn thành
               <span class="text-shopee-orange font-black">{{
-                session.user.ordersToNextRank
+                user.ordersToNextRank
               }}</span>
               đơn nữa để thăng hạng
             </p>
@@ -770,18 +770,17 @@ useSeoMeta({
 });
 
 const { user } = useAuth();
-const session = computed(() => (user.value ? { user: user.value } : null));
 const api = useAppFetch().api;
 const config = useRuntimeConfig();
 
-const userName = computed(() => session.value?.user?.name || "User");
-const userAvatar = computed(() => session.value?.user?.image || "");
+const userName = computed(() => user.value?.name || "User");
+const userAvatar = computed(() => user.value?.image || "");
 const userEmail = computed(
-  () => session.value?.user?.email || "mailunlockcuakhanh2@gmail.com"
+  () => user.value?.email || "mailunlockcuakhanh2@gmail.com"
 );
 
 const rankInfo = computed(() => {
-  const rank = session.value?.user?.rank || "silver";
+  const rank = user.value?.rank || "silver";
   if (rank === "obsidian") {
     return {
       name: "TINH HOA",
@@ -819,8 +818,8 @@ const rankInfo = computed(() => {
 });
 
 const rankProgress = computed(() => {
-  const count = session.value?.user?.completedOrdersCount ?? 0;
-  const rank = session.value?.user?.rank || "silver";
+  const count = user.value?.completedOrdersCount ?? 0;
+  const rank = user.value?.rank || "silver";
 
   let nextRankName = "";
   let nextThreshold = 0;
@@ -873,7 +872,7 @@ const profileError = ref("");
 const originalProfileName = ref("");
 
 const joinDate = computed(() => {
-  const dateVal = session.value?.user?.createdAt;
+  const dateVal = user.value?.createdAt;
   if (!dateVal) return "N/A";
   const dateObj = new Date(dateVal);
   const day = String(dateObj.getDate()).padStart(2, "0");
@@ -980,10 +979,10 @@ const fetchBanksList = async () => {
 };
 
 const fetchUserBankAccount = async () => {
-  if (!session.value?.user?.id) return;
+  if (!user.value?.id) return;
   isBankLoading.value = true;
   try {
-    const res = await api.get(`/bank-account/${session.value.user.id}`);
+    const res = await api.get(`/bank-account/${user.value.id}`);
     if (res.data) {
       linkedBank.value = res.data.bank_id;
       bankAccount.value = res.data.account_no;
@@ -1090,7 +1089,7 @@ const saveProfile = async () => {
 };
 
 const saveBank = async () => {
-  if (!session.value?.user?.id) return;
+  if (!user.value?.id) return;
   bankMsg.value = "";
   isBankError.value = false;
 
@@ -1129,7 +1128,7 @@ const saveBank = async () => {
     : "Ngân hàng";
 
   try {
-    await api.put(`/bank-account/${session.value.user.id}`, {
+    await api.put(`/bank-account/${user.value.id}`, {
       bank_id: linkedBank.value,
       bank_name: bankNameVal,
       account_no: bankAccount.value.trim(),

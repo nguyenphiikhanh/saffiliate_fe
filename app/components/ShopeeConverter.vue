@@ -142,7 +142,7 @@
                 <span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/15 text-[8px] font-black uppercase tracking-wider shrink-0 select-none">BETA</span>
               </div>
             </div>
-          </button> -->
+          </button>
         </div>
       </div>
 
@@ -379,11 +379,10 @@
 import { ref, computed, nextTick, watch, onMounted } from "vue";
 import { useShopeeApi } from "@/composables/useShopeeApi";
 import { AFFILIATE_TYPES } from "@/utils/constants";
-import { authClient } from "@/utils/auth-client";
 
-const { data: session } = await authClient.useSession(useFetch);
+const { user } = useAuth();
 const platforms = computed(() => {
-  return session.value?.systemConfig?.platforms || {
+  return user.value?.platforms || {
     shopee: true,
     tiktok: true,
     lazada: false,

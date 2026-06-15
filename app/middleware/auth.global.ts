@@ -1,8 +1,8 @@
 export default defineNuxtRouteMiddleware(async (to) => {
 	const { token, user, fetchUser } = useAuth();
 
-	// 1. Phục hồi thông tin người dùng nếu có token nhưng chưa có state user (khi reload F5)
-	if (token.value && !user.value) {
+	// 1. Phục hồi thông tin người dùng nếu có token (khi reload F5 hoặc chuyển trang để giữ session mới nhất)
+	if (token.value) {
 		await fetchUser();
 	}
 
