@@ -2,10 +2,7 @@
   <div class="w-full animate-fade-in-up">
     <!-- Main Converter Card -->
     <div
-      class="glass-panel rounded-3xl p-6 md:p-8 shadow-2xl transition-all duration-500"
-      :class="
-        currentType === AFFILIATE_TYPES.SHOPEE ? 'glow-orange' : 'glow-tiktok'
-      "
+      class="glass-panel rounded-3xl p-6 md:p-8 shadow-2xl transition-all duration-500 glow-orange"
     >
       <!-- Premium Creative Brand Selection Grid -->
       <div class="mb-8 select-none">
@@ -17,34 +14,23 @@
           </h3>
         </div>
 
-        <div class="grid grid-cols-1 max-w-xs mx-auto gap-4">
+        <div class="flex flex-col sm:flex-row justify-center gap-4 max-w-xs sm:max-w-3xl mx-auto w-full">
           <!-- Shopee Card -->
           <button
+            v-if="platforms.shopee"
             @click="selectType(AFFILIATE_TYPES.SHOPEE)"
-            class="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer outline-none relative overflow-hidden group active:scale-[0.98] w-full"
+            class="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border-2 text-left transition-all duration-300 cursor-pointer outline-none relative overflow-hidden group active:scale-[0.98] w-full sm:flex-1 sm:max-w-[240px]"
             :class="[
               currentType === AFFILIATE_TYPES.SHOPEE
-                ? 'bg-orange-500/[0.04] dark:bg-orange-500/[0.08] border-shopee-orange shadow-lg shadow-orange-500/[0.04] scale-[1.02]'
+                ? 'bg-white dark:bg-slate-900/40 border-shopee-orange shadow-md scale-[1.02]'
                 : 'bg-white dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-850/50 hover:border-slate-300 dark:hover:border-slate-700',
             ]"
           >
-
-
             <!-- Brand Logo Frame -->
             <div
-              class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0"
-              :class="[
-                currentType === AFFILIATE_TYPES.SHOPEE
-                  ? 'bg-shopee-orange text-white'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-400 group-hover:scale-105',
-              ]"
+              class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800 group-hover:scale-105"
             >
-              <!-- Official Shopee Icon -->
-              <svg viewBox="0 0 24 24" class="h-5.5 w-5.5" fill="currentColor">
-                <path
-                  d="M19.124 5.922h-3.415a4.296 4.296 0 0 0-7.418 0H4.876A1.88 1.88 0 0 0 3 7.802v12.316C3 21.157 3.842 22 4.876 22h14.248C20.158 22 21 21.157 21 20.118V7.802a1.88 1.88 0 0 0-1.876-1.88zM12 3.766a2.417 2.417 0 0 1 2.414 2.156h-4.828A2.417 2.417 0 0 1 12 3.766zm4.843 8.358c-.563.856-1.524 1.425-2.613 1.55a4.93 4.93 0 0 1-1.343.036c-.958-.163-1.785-.688-2.3-1.464-.323-.487-.492-1.077-.492-1.7v-2.09c0-.422.342-.764.764-.764h.024c.421 0 .763.342.763.764v2.09c0 .762.392 1.4 1.054 1.708.355.166.757.228 1.15.176.452-.06.848-.28 1.12-.622.378-.475.578-1.08.578-1.74v-1.612c0-.422.342-.764.764-.764h.024c.421 0 .763.342.763.764v1.612c0 .903-.238 1.71-.633 2.31z"
-                />
-              </svg>
+              <img src="/icon/shopee.png" class="h-5.5 w-5.5 object-contain" alt="Shopee Logo" />
             </div>
 
             <!-- Brand Meta -->
@@ -64,7 +50,7 @@
                 :class="
                   currentType === AFFILIATE_TYPES.SHOPEE
                     ? 'text-slate-900 dark:text-white'
-                    : 'text-slate-600 dark:text-slate-400'
+                    : 'text-slate-650 dark:text-slate-400'
                 "
               >
                 Shopee
@@ -72,29 +58,22 @@
             </div>
           </button>
 
-          <!-- TikTok Card (Temporarily disabled because API has errors) -->
-          <!-- <button
+          <!-- TikTok Card -->
+          <button
+            v-if="platforms.tiktok"
             @click="selectType(AFFILIATE_TYPES.TIKTOK)"
-            class="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer outline-none relative overflow-hidden group active:scale-[0.98] w-full"
+            class="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border-2 text-left transition-all duration-300 cursor-pointer outline-none relative overflow-hidden group active:scale-[0.98] w-full sm:flex-1 sm:max-w-[240px]"
             :class="[
               currentType === AFFILIATE_TYPES.TIKTOK
-                ? 'bg-slate-950/[0.02] dark:bg-cyan-500/[0.08] border-slate-950 dark:border-cyan-500 shadow-lg shadow-slate-950/[0.04] dark:shadow-cyan-500/[0.04] scale-[1.02]'
+                ? 'bg-white dark:bg-slate-900/40 border-shopee-orange shadow-md scale-[1.02]'
                 : 'bg-white dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-850/50 hover:border-slate-300 dark:hover:border-slate-700',
             ]"
           >
+            <!-- Brand Logo Frame -->
             <div
-              class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0"
-              :class="[
-                currentType === AFFILIATE_TYPES.TIKTOK
-                  ? 'bg-slate-950 text-white dark:bg-slate-850 dark:text-cyan-400'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-400 group-hover:scale-105',
-              ]"
+              class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800 group-hover:scale-105"
             >
-              <svg viewBox="0 0 24 24" class="h-5.5 w-5.5" fill="currentColor">
-                <path
-                  d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.07-2.89-.52-4.09-1.33a8.16 8.16 0 0 1-2.22-2.14v7.41c.07 2.11-.84 4.31-2.54 5.54-1.76 1.34-4.22 1.73-6.26 1.07-2.45-.76-4.39-2.9-4.75-5.46-.46-3.08 1.16-6.38 4.09-7.46 1.25-.47 2.6-.52 3.89-.2v4.09c-1-.26-2.1-.2-3 .34a3.84 3.84 0 0 0-2 3.25c-.09 1.64 1 3.26 2.6 3.63 1.48.36 3.2-.23 3.84-1.61.27-.57.34-1.22.32-1.85V.02z"
-                />
-              </svg>
+              <img src="/icon/tiktok.png" class="h-5.5 w-5.5 object-contain" alt="TikTok Logo" />
             </div>
 
             <div>
@@ -102,11 +81,65 @@
                 class="text-[9px] font-black tracking-wider uppercase transition-colors"
                 :class="
                   currentType === AFFILIATE_TYPES.TIKTOK
-                    ? 'text-slate-950 dark:text-cyan-400'
+                    ? 'text-shopee-orange'
                     : 'text-slate-400'
                 "
               >
                 Hoàn tiền
+              </div>
+              <div
+                class="text-sm sm:text-base font-extrabold tracking-tight mt-0.5 flex items-center gap-1.5"
+                :class="
+                  currentType === AFFILIATE_TYPES.TIKTOK
+                    ? 'text-slate-900 dark:text-white'
+                    : 'text-slate-650 dark:text-slate-400'
+                "
+              >
+                <span>TikTok</span>
+                <span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/15 text-[8px] font-black uppercase tracking-wider shrink-0 select-none">BETA</span>
+              </div>
+            </div>
+          </button>
+
+          <!-- Lazada Card -->
+          <button
+            v-if="platforms.lazada"
+            @click="selectType(AFFILIATE_TYPES.LAZADA)"
+            class="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl border-2 text-left transition-all duration-300 cursor-pointer outline-none relative overflow-hidden group active:scale-[0.98] w-full sm:flex-1 sm:max-w-[240px]"
+            :class="[
+              currentType === AFFILIATE_TYPES.LAZADA
+                ? 'bg-white dark:bg-slate-900/40 border-shopee-orange shadow-md scale-[1.02]'
+                : 'bg-white dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-850/50 hover:border-slate-300 dark:hover:border-slate-700',
+            ]"
+          >
+            <!-- Brand Logo Frame -->
+            <div
+              class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800 group-hover:scale-105"
+            >
+              <img src="/icon/lazada.png" class="h-5.5 w-5.5 object-contain" alt="Lazada Logo" />
+            </div>
+
+            <div>
+              <div
+                class="text-[9px] font-black tracking-wider uppercase transition-colors"
+                :class="
+                  currentType === AFFILIATE_TYPES.LAZADA
+                    ? 'text-shopee-orange'
+                    : 'text-slate-400'
+                "
+              >
+                Hoàn tiền
+              </div>
+              <div
+                class="text-sm sm:text-base font-extrabold tracking-tight mt-0.5 flex items-center gap-1.5"
+                :class="
+                  currentType === AFFILIATE_TYPES.LAZADA
+                    ? 'text-slate-900 dark:text-white'
+                    : 'text-slate-655 dark:text-slate-400'
+                "
+              >
+                <span>Lazada</span>
+                <span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/15 text-[8px] font-black uppercase tracking-wider shrink-0 select-none">BETA</span>
               </div>
             </div>
           </button> -->
@@ -138,7 +171,7 @@
         >
           Dán link sản phẩm
           <span class="font-bold">{{
-            currentType === AFFILIATE_TYPES.SHOPEE ? "Shopee" : "TikTok"
+            currentType === AFFILIATE_TYPES.SHOPEE ? "Shopee" : currentType === AFFILIATE_TYPES.TIKTOK ? "TikTok" : "Lazada"
           }}</span>
           của bạn vào bên dưới để mua sắm và nhận hoàn tiền.
         </p>
@@ -155,7 +188,9 @@
             :placeholder="
               currentType === AFFILIATE_TYPES.SHOPEE
                 ? 'Dán link Shopee vào đây... (Ví dụ: https://shopee.vn/product/...)'
-                : 'Dán link TikTok vào đây... (Ví dụ: https://vt.tiktok.com/...)'
+                : currentType === AFFILIATE_TYPES.TIKTOK
+                ? 'Dán link TikTok vào đây... (Ví dụ: https://vt.tiktok.com/...)'
+                : 'Dán link Lazada vào đây... (Ví dụ: https://s.lazada.vn/...)'
             "
             class="w-full bg-white dark:bg-slate-950/85 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-2xl py-4 pl-12 pr-12 text-sm font-medium transition-all duration-300 input-focus-glow"
             :class="{
@@ -167,6 +202,10 @@
                 isValidating &&
                 isUrlValid &&
                 currentType === AFFILIATE_TYPES.TIKTOK,
+              'border-blue-500/50':
+                isValidating &&
+                isUrlValid &&
+                currentType === AFFILIATE_TYPES.LAZADA,
               'border-yellow-600/50':
                 isValidating && !isUrlValid && rawUrl.length > 0,
             }"
@@ -255,9 +294,7 @@
           :class="[
             !rawUrl && !isLoading
               ? 'bg-slate-100 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/60 text-slate-500 dark:text-slate-400 cursor-not-allowed shadow-none'
-              : currentType === AFFILIATE_TYPES.SHOPEE
-              ? 'bg-shopee-orange border-shopee-orange text-white glow-orange-button ' + (isLoading ? 'opacity-80 !cursor-wait' : 'hover:bg-shopee-orange-hover active:scale-98 cursor-pointer')
-              : 'bg-slate-900 dark:bg-slate-850 border-slate-900 dark:border-slate-850 text-white glow-tiktok-button ' + (isLoading ? 'opacity-80 !cursor-wait' : 'hover:bg-slate-950 dark:hover:bg-slate-800 hover:text-cyan-400 dark:hover:text-cyan-400 active:scale-98 cursor-pointer'),
+              : 'bg-shopee-orange border-shopee-orange text-white glow-orange-button ' + (isLoading ? 'opacity-80 !cursor-wait' : 'hover:bg-shopee-orange-hover active:scale-98 cursor-pointer'),
           ]"
         >
           <!-- Loading Spinner -->
@@ -339,9 +376,19 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from "vue";
+import { ref, computed, nextTick, watch, onMounted } from "vue";
 import { useShopeeApi } from "@/composables/useShopeeApi";
 import { AFFILIATE_TYPES } from "@/utils/constants";
+import { authClient } from "@/utils/auth-client";
+
+const { data: session } = await authClient.useSession(useFetch);
+const platforms = computed(() => {
+  return session.value?.systemConfig?.platforms || {
+    shopee: true,
+    tiktok: true,
+    lazada: false,
+  };
+});
 
 const currentType = ref(AFFILIATE_TYPES.SHOPEE);
 const rawUrl = ref("");
@@ -358,12 +405,37 @@ const {
   clearStates,
   validateShopeeUrl,
   validateTiktokUrl,
+  validateLazadaUrl,
 } = useShopeeApi();
+
+// Set default active channel based on active system platforms
+const initDefaultTab = () => {
+  if (platforms.value) {
+    if (!platforms.value.shopee && platforms.value.tiktok) {
+      currentType.value = AFFILIATE_TYPES.TIKTOK;
+    } else if (!platforms.value.shopee && !platforms.value.tiktok && platforms.value.lazada) {
+      currentType.value = AFFILIATE_TYPES.LAZADA;
+    } else {
+      currentType.value = AFFILIATE_TYPES.SHOPEE;
+    }
+  }
+};
+
+onMounted(() => {
+  initDefaultTab();
+});
+
+watch(platforms, () => {
+  initDefaultTab();
+}, { deep: true });
 
 // Check link validity as user types based on current platform type
 const isUrlValid = computed(() => {
   if (currentType.value === AFFILIATE_TYPES.TIKTOK) {
     return validateTiktokUrl(rawUrl.value);
+  }
+  if (currentType.value === AFFILIATE_TYPES.LAZADA) {
+    return validateLazadaUrl(rawUrl.value);
   }
   return validateShopeeUrl(rawUrl.value);
 });
@@ -435,6 +507,25 @@ const selectType = (type) => {
 }
 
 .glow-tiktok-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.glow-lazada {
+  box-shadow: 0 10px 40px -10px rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.glow-lazada-button {
+  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-lazada-button:hover:not(:disabled) {
+  box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+.glow-lazada-button:active:not(:disabled) {
   transform: scale(0.98);
 }
 

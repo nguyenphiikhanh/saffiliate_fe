@@ -388,93 +388,22 @@
             Kết nối với chúng tôi
           </span>
           <div class="flex items-center justify-center gap-4">
-            <!-- Icon 1: Group -->
-            <a
-              href="#"
-              class="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/40 text-blue-600 dark:text-blue-400 shadow-sm hover:shadow-md hover:bg-blue-100 dark:hover:bg-blue-900/50 hover:scale-105 active:scale-95 transition-premium"
-              title="Facebook Group"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5.5 w-5.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                />
+            
+            <!-- Zalo Group -->
+            <a :href="config.public.zaloGroup || '#'" target="_blank" rel="noopener noreferrer" class="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/40 text-[#0068FF] dark:text-blue-400 shadow-sm hover:shadow-md hover:bg-blue-100 dark:hover:bg-blue-900/50 hover:scale-105 active:scale-95 transition-premium" title="Nhóm Zalo hỗ trợ">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5.5 w-5.5">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                <text x="12" y="14" fill="currentColor" stroke="none" font-size="6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" text-anchor="middle">zalo</text>
               </svg>
             </a>
 
-            <!-- Icon 2: Megaphone -->
-            <a
-              href="#"
-              class="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-50 dark:bg-orange-950/20 border border-orange-100 dark:border-orange-900/30 text-orange-600 dark:text-orange-400 shadow-sm hover:shadow-md hover:bg-orange-100 dark:hover:bg-orange-900/40 hover:scale-105 active:scale-95 transition-premium"
-              title="Telegram Channel"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5.5 w-5.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
-                />
+            <!-- Email Support -->
+            <a href="mailto:support@saffi.vn" class="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 text-red-600 dark:text-red-400 shadow-sm hover:shadow-md hover:bg-red-100 dark:hover:bg-red-900/40 hover:scale-105 active:scale-95 transition-premium" title="Email Hỗ trợ">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5.5 w-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </a>
 
-            <!-- Icon 3: Email Support -->
-            <a
-              href="mailto:support@Saffi.com"
-              class="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 text-red-600 dark:text-red-400 shadow-sm hover:shadow-md hover:bg-red-100 dark:hover:bg-red-900/40 hover:scale-105 active:scale-95 transition-premium"
-              title="Email Hỗ trợ"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5.5 w-5.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-            </a>
-
-            <!-- Icon 4: Website -->
-            <a
-              href="#"
-              class="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 text-emerald-600 dark:text-emerald-400 shadow-sm hover:shadow-md hover:bg-emerald-100 dark:hover:bg-emerald-900/40 hover:scale-105 active:scale-95 transition-premium"
-              title="Trang chủ Saffi"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5.5 w-5.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-                />
-              </svg>
-            </a>
           </div>
         </div>
       </div>

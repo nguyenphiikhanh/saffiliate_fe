@@ -106,18 +106,18 @@
           <!-- Pill Tabs -->
           <div class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-full border border-slate-200/50 dark:border-slate-700/50 relative z-20 shrink-0">
             <button 
-              @click="activeTab = 'monthly'"
-              class="flex-1 sm:flex-none px-6 py-2 text-sm font-bold rounded-full transition-all duration-300"
-              :class="activeTab === 'monthly' ? 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-500 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
-            >
-              Tháng Này
-            </button>
-            <button 
               @click="activeTab = 'allTime'"
               class="flex-1 sm:flex-none px-6 py-2 text-sm font-bold rounded-full transition-all duration-300"
               :class="activeTab === 'allTime' ? 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-500 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
             >
               Tất Cả
+            </button>
+            <button 
+              @click="activeTab = 'monthly'"
+              class="flex-1 sm:flex-none px-6 py-2 text-sm font-bold rounded-full transition-all duration-300"
+              :class="activeTab === 'monthly' ? 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-500 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
+            >
+              Tháng Này
             </button>
           </div>
         </div>
@@ -206,7 +206,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useAppFetch } from '@/composables/useAppFetch';
 
 definePageMeta({
   layout: "admin"
@@ -216,26 +217,41 @@ useHead({
   title: 'Tổng quan | Admin Saffiliate'
 });
 
-const headers = useRequestHeaders(["cookie"]);
-
 // State
-const activeTab = ref('monthly'); // 'monthly' or 'allTime'
+const activeTab = ref('allTime'); // 'monthly' or 'allTime'
 const now = new Date();
 const currentMonthStr = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}`;
 const selectedMonth = ref(currentMonthStr);
 
+const pendingLeaderboard = ref(true);
+const leaderboardData = ref({ allTime: [], monthly: [] });
+
 // Fetch
-const { data: leaderboardResponse, pending: pendingLeaderboard } = useFetch("/api/stat/leaderboard", {
-  headers,
-  query: computed(() => ({ month: selectedMonth.value })),
-  watch: [selectedMonth]
+const fetchLeaderboard = async () => {
+  pendingLeaderboard.value = true;
+  try {
+    const res = await useAppFetch().api.get("/stat/leaderboard", {
+      query: { month: selectedMonth.value }
+    });
+    if (res.data) {
+      leaderboardData.value = res.data;
+    }
+  } catch (err) {
+    console.error("Failed to fetch leaderboard", err);
+  } finally {
+    pendingLeaderboard.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchLeaderboard();
+});
+
+watch(selectedMonth, () => {
+  fetchLeaderboard();
 });
 
 // Computed Data
-const leaderboardData = computed(() => {
-  return leaderboardResponse.value?.data || { allTime: [], monthly: [] };
-});
-
 const currentData = computed(() => {
   if (activeTab.value === 'monthly') return leaderboardData.value.monthly || [];
   return leaderboardData.value.allTime || [];

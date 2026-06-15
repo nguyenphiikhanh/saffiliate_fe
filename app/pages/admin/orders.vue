@@ -36,7 +36,7 @@
     </div>
 
     <!-- Stats Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
       <div
         class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm"
       >
@@ -62,7 +62,23 @@
         <div
           class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
         >
-          Hoa hồng tạm tính
+          Chờ duyệt
+        </div>
+        <div
+          v-if="pending && !response"
+          class="h-8 w-16 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"
+        ></div>
+        <div v-else class="text-xl font-bold text-amber-500 mt-1">
+          {{ pendingCount }}
+        </div>
+      </div>
+      <div
+        class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm"
+      >
+        <div
+          class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
+        >
+          Hoa hồng sàn
         </div>
         <div
           v-if="pending && !response"
@@ -70,7 +86,7 @@
         ></div>
         <div
           v-else
-          class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-1"
+          class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mt-1"
         >
           {{ formatMoney(totalCommission) }}
         </div>
@@ -81,14 +97,36 @@
         <div
           class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
         >
-          Chờ duyệt
+          Hoa hồng User nhận
         </div>
         <div
           v-if="pending && !response"
-          class="h-8 w-16 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"
+          class="h-8 w-32 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"
         ></div>
-        <div v-else class="text-xl font-bold text-amber-500 mt-1">
-          {{ pendingCount }}
+        <div
+          v-else
+          class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-1"
+        >
+          {{ formatMoney(totalUserCommission) }}
+        </div>
+      </div>
+      <div
+        class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm col-span-2 md:col-span-1"
+      >
+        <div
+          class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
+        >
+          Doanh thu (Lợi nhuận)
+        </div>
+        <div
+          v-if="pending && !response"
+          class="h-8 w-32 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"
+        ></div>
+        <div
+          v-else
+          class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-1"
+        >
+          {{ formatMoney(systemRevenue) }}
         </div>
       </div>
     </div>
@@ -197,14 +235,17 @@
               <tr
                 class="text-[10px] uppercase tracking-wider font-bold text-slate-500 bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800"
               >
-                <th class="px-4 py-3 pl-6 whitespace-nowrap w-[15%]">Mã đơn</th>
-                <th class="px-4 py-3 whitespace-nowrap w-[18%]">Người mua</th>
-                <th class="px-4 py-3 whitespace-nowrap w-[28%]">Sản phẩm</th>
-                <th class="px-4 py-3 whitespace-nowrap w-[12%]">Ngày</th>
-                <th class="px-4 py-3 text-right whitespace-nowrap w-[12%]">
-                  Hoa hồng
+                <th class="px-4 py-3 pl-6 whitespace-nowrap w-[12%]">Mã đơn</th>
+                <th class="px-4 py-3 whitespace-nowrap w-[15%]">Người mua</th>
+                <th class="px-4 py-3 whitespace-nowrap w-[20%]">Sản phẩm</th>
+                <th class="px-4 py-3 whitespace-nowrap w-[10%]">Ngày</th>
+                <th class="px-4 py-3 text-right whitespace-nowrap w-[13%]">
+                  Hoa hồng Sàn
                 </th>
-                <th class="px-4 py-3 whitespace-nowrap text-center w-[10%]">
+                <th class="px-4 py-3 text-right whitespace-nowrap w-[13%]">
+                  Hoa hồng User
+                </th>
+                <th class="px-4 py-3 whitespace-nowrap text-center w-[12%]">
                   Trạng thái
                 </th>
                 <th class="px-4 py-3 whitespace-nowrap text-center w-[5%]"></th>
@@ -268,7 +309,7 @@
                 <!-- Sản phẩm -->
                 <td class="px-4 py-3">
                   <div
-                    class="font-semibold text-slate-700 dark:text-slate-300 text-[13px] truncate max-w-[280px]"
+                    class="font-semibold text-slate-700 dark:text-slate-300 text-[13px] truncate max-w-[180px]"
                     :title="item.order.itemName || item.order.shopName"
                   >
                     {{
@@ -290,14 +331,26 @@
                     }}
                   </div>
                 </td>
-                <!-- Hoa hồng -->
+                <!-- Hoa hồng Sàn -->
+                <td class="px-4 py-3 text-right">
+                  <div
+                    class="font-bold text-indigo-600 dark:text-indigo-500 text-[13px]"
+                  >
+                    {{
+                      Math.round(
+                        item.order.affiliateNetCommission || 0
+                      ).toLocaleString("vi-VN")
+                    }}đ
+                  </div>
+                </td>
+                <!-- Hoa hồng User -->
                 <td class="px-4 py-3 text-right">
                   <div
                     class="font-bold text-emerald-600 dark:text-emerald-500 text-[13px]"
                   >
-                    +{{
+                    {{
                       Math.round(
-                        item.order.affiliateNetCommission || 0
+                        item.order.userCommission || 0
                       ).toLocaleString("vi-VN")
                     }}đ
                   </div>
@@ -402,12 +455,9 @@
                   ).toLocaleDateString("vi-VN")
                 }}
               </div>
-              <div class="font-bold text-emerald-600 dark:text-emerald-500">
-                +{{
-                  Math.round(
-                    item.order.affiliateNetCommission || 0
-                  ).toLocaleString("vi-VN")
-                }}đ
+              <div class="flex gap-2 text-[11px]">
+                <span class="text-slate-400 font-medium">Sàn: <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ Math.round(item.order.affiliateNetCommission || 0).toLocaleString("vi-VN") }}đ</span></span>
+                <span class="text-slate-400 font-medium">User: <span class="font-bold text-emerald-600 dark:text-emerald-400">{{ Math.round(item.order.userCommission || 0).toLocaleString("vi-VN") }}đ</span></span>
               </div>
             </div>
           </div>
@@ -951,11 +1001,19 @@
                 </svg>
                 <input
                   v-model="userSearchQuery"
+                  @keyup.enter="handleUserSearch"
                   type="text"
                   placeholder="Tìm kiếm người dùng theo tên, email..."
                   class="w-full pl-3 pr-4 py-2 bg-transparent text-base sm:text-lg focus:outline-none font-medium text-slate-800 dark:text-slate-100 placeholder-slate-400"
                   autofocus
                 />
+                <button
+                  @click="handleUserSearch"
+                  class="shrink-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-1.5 rounded-lg text-sm font-semibold hover:opacity-90 mr-2 transition-opacity"
+                  type="button"
+                >
+                  Tìm kiếm
+                </button>
                 <button
                   @click="showUserModal = false"
                   class="shrink-0 p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
@@ -1360,6 +1418,23 @@ const totalCommission = computed(() => {
   );
 });
 
+const totalUserCommission = computed(() => {
+  return orders.value.reduce(
+    (sum, item) => sum + (item.order.userCommission || 0),
+    0
+  );
+});
+
+const systemRevenue = computed(() => {
+  return orders.value.reduce(
+    (sum, item) =>
+      sum +
+      ((item.order.affiliateNetCommission || 0) -
+        (item.order.userCommission || 0)),
+    0
+  );
+});
+
 const pendingCount = computed(() => {
   return orders.value.filter(
     (item) =>
@@ -1583,13 +1658,9 @@ const {
   fetchUsers,
 } = useAdminUsers();
 
-let userSearchTimeout = null;
-watch(userSearchQuery, (newVal) => {
-  if (userSearchTimeout) clearTimeout(userSearchTimeout);
-  userSearchTimeout = setTimeout(() => {
-    fetchUsers(1, newVal.trim());
-  }, 350);
-});
+const handleUserSearch = () => {
+  fetchUsers(1, userSearchQuery.value.trim());
+};
 
 const handleEscKey = (e) => {
   if (e.key === "Escape") {

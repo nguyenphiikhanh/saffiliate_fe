@@ -8,11 +8,15 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: "icon", type: "image/png", href: "/saficon.png" }
+        { rel: "icon", type: "image/png", href: "/saficon.png" },
+        { rel: "apple-touch-icon", href: "/saficon.png" },
+        { rel: "manifest", href: "/manifest.json" }
       ],
       meta: [
         { property: "og:image", content: "/saffi_logo.png" },
-        { name: "color-scheme", content: "light" }
+        { name: "color-scheme", content: "light" },
+        { name: "apple-mobile-web-app-title", content: "Saffi" },
+        { name: "application-name", content: "Saffi" }
       ]
     }
   },
@@ -50,6 +54,7 @@ export default defineNuxtConfig({
       appURL: process.env.NUXT_PUBLIC_APP_URL,
       vietQRApi: process.env.NUXT_PUBLIC_VIETQR_API,
       mainSiteURL: process.env.NUXT_PUBLIC_MAIN_SITE_URL,
+      zaloGroup: process.env.NUXT_PUBLIC_ZALO_GROUP,
       googleClientId: process.env.NUXT_PUBLIC_GOOGLE_CLIENT_ID,
     },
   },
