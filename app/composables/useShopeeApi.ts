@@ -163,22 +163,36 @@ export function useShopeeApi() {
       if (err?.response) {
         const status = err.response.status;
         const responseData = err.response.data;
+        const responseMessage = responseData?.message || "";
 
-        if (status === 500) {
-          errMsg = "Hệ thống đang gặp sự cố nhỏ khi xử lý liên kết này. Bạn vui lòng kiểm tra lại đường dẫn sản phẩm hoặc thử lại sau ít phút nhé!";
+        if (
+          responseMessage.toLowerCase().includes("internal server error") ||
+          err.message?.toLowerCase().includes("internal server error")
+        ) {
+          errMsg = "Đã xảy ra lỗi, vui lòng thử lại hoặc sử dụng link sản phẩm khác";
+        } else if (status === 500) {
+          errMsg = "Đã xảy ra lỗi, vui lòng thử lại hoặc sử dụng link sản phẩm khác";
         } else if (status === 404) {
           errMsg = "Không tìm thấy máy chủ xử lý quy đổi. Vui lòng liên hệ quản trị viên!";
         } else if (status === 400 || status === 422) {
-          errMsg = responseData?.message || "Đường dẫn sản phẩm không hợp lệ hoặc không được hỗ trợ.";
+          errMsg = responseMessage || "Đường dẫn sản phẩm không hợp lệ hoặc không được hỗ trợ.";
         } else {
-          errMsg = responseData?.message || err.message || "Đã xảy ra lỗi không xác định trong quá trình xử lý.";
+          errMsg = responseMessage || err.message || "Đã xảy ra lỗi không xác định trong quá trình xử lý.";
         }
       } else if (err?.message) {
         errMsg = getFriendlyErrorMessage(err.message, err.message);
       }
 
+      if (errMsg.toLowerCase().includes("internal server error")) {
+        errMsg = "Đã xảy ra lỗi, vui lòng thử lại hoặc sử dụng link sản phẩm khác";
+      }
+
       // Xử lý tiền tố cho một số thông báo lỗi cũ
       if (
+        errMsg === "Đã xảy ra lỗi, vui lòng thử lại hoặc sử dụng link sản phẩm khác"
+      ) {
+        error.value = errMsg;
+      } else if (
         errMsg === err?.message ||
         (err?.response && (err.response.status === 400 || err.response.status === 422))
       ) {
