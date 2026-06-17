@@ -1290,33 +1290,31 @@ const selectedStatus = ref("all");
 const selectedUserFilter = ref(null);
 const currentPage = ref(1);
 const limit = ref(20);
+const { api } = useAppFetch();
 
-const headers = useRequestHeaders(["cookie"]);
-const {
+const queryParams = computed(() => {
+  const params = {
+    page: currentPage.value,
+    limit: limit.value,
+  };
+  if (selectedStatus.value !== "all") {
+    if (selectedStatus.value === "pending") params.status = "Pending";
+    else if (selectedStatus.value === "success") params.status = "Completed";
+    else if (selectedStatus.value === "cancelled")
+      params.status = "Cancelled";
+  }
+  if (selectedUserFilter.value) {
+    params.userId = selectedUserFilter.value.id;
+  }
+  return params;
+});const {
   data: response,
   refresh,
   pending,
-} = useFetch("/api/order", {
-  headers,
-  lazy: true,
-  query: computed(() => {
-    const params = {
-      page: currentPage.value,
-      limit: limit.value,
-    };
-    if (selectedStatus.value !== "all") {
-      if (selectedStatus.value === "pending") params.status = "Pending";
-      else if (selectedStatus.value === "success") params.status = "Completed";
-      else if (selectedStatus.value === "cancelled")
-        params.status = "Cancelled";
-    }
-    if (selectedUserFilter.value) {
-      params.userId = selectedUserFilter.value.id;
-    }
-    return params;
-  }),
+} = useLazyAsyncData("admin-orders", () => api.get("/order", { query: queryParams.value }), {
+  watch: [queryParams],
+  server: false,
 });
-
 watch([selectedStatus, selectedUserFilter, limit], () => {
   currentPage.value = 1;
 });

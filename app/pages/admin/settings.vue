@@ -361,13 +361,13 @@ useHead({
   title: "Cấu hình hệ thống | Admin Saffiliate",
 });
 
-const { user } = useAuth();
+const { user, isAdmin } = useAuth();
 const router = useRouter();
 const { api } = useAppFetch();
 
 // Route Protection: verify if current logged in user is admin
 onMounted(() => {
-  if (!user.value || user.value.role !== 1) {
+  if (!isAdmin.value) {
     router.replace("/");
   }
 });

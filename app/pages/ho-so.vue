@@ -872,7 +872,7 @@ const profileError = ref("");
 const originalProfileName = ref("");
 
 const joinDate = computed(() => {
-  const dateVal = user.value?.createdAt;
+  const dateVal = user.value?.created_at;
   if (!dateVal) return "N/A";
   const dateObj = new Date(dateVal);
   const day = String(dateObj.getDate()).padStart(2, "0");

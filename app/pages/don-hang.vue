@@ -691,15 +691,14 @@ const statusMap = {
   cancelled: "Cancelled",
 };
 
-const headers = useRequestHeaders(["cookie"]);
+const { api } = useAppFetch();
 const queryParams = computed(() => ({
   status: statusMap[activeTab.value],
 }));
 
-const { data: response, status } = useLazyFetch("/api/order", {
-  headers,
-  query: queryParams,
+const { data: response, status } = useLazyAsyncData("user-orders", () => api.get("/order", { query: queryParams.value }), {
   watch: [activeTab], // Tự động gọi lại API khi chuyển tab
+  server: false,
 });
 
 const rawOrders = computed(() => {

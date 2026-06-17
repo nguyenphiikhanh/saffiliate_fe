@@ -417,7 +417,7 @@ onMounted(() => {
 
 const formatMoney = (val) => {
   if (!val && val !== 0) return "0đ";
-  return val.toLocaleString("vi-VN") + "đ";
+  return Math.round(Number(val)).toLocaleString("vi-VN") + "đ";
 };
 
 useSeoMeta({

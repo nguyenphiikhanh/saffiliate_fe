@@ -238,7 +238,7 @@
               >
                 <!-- 1. User Info -->
                 <div class="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800/60">
-                  <NuxtLink v-if="user?.role === 1" to="/admin/orders" @click="isMenuOpen = false" class="h-12 w-12 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-slate-100 dark:border-slate-800 shadow-sm hover:scale-105 transition-transform" title="Vào trang quản trị">
+                  <NuxtLink v-if="isAdmin" to="/admin/orders" @click="isMenuOpen = false" class="h-12 w-12 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-slate-100 dark:border-slate-800 shadow-sm hover:scale-105 transition-transform" title="Vào trang quản trị">
                     <img v-if="userAvatar" :src="userAvatar" class="h-full w-full object-cover" referrerpolicy="no-referrer" />
                     <div v-else class="h-full w-full bg-[#EC407A] text-white font-black text-lg flex items-center justify-center uppercase">
                       {{ firstLetter }}
@@ -276,7 +276,7 @@
                 <div class="flex flex-col gap-1 py-3 border-b border-slate-100 dark:border-slate-800/60">
                   <!-- Quản trị viên (Chỉ hiển thị nếu role là Admin) -->
                   <NuxtLink 
-                    v-if="user?.role === 1"
+                    v-if="isAdmin"
                     to="/admin/orders" 
                     @click="isMenuOpen = false"
                     class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
@@ -292,7 +292,7 @@
 
                   <!-- Quản lý thành viên (Admin) -->
                   <NuxtLink 
-                    v-if="user?.role === 1"
+                    v-if="isAdmin"
                     to="/admin/users" 
                     @click="isMenuOpen = false"
                     class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
@@ -435,7 +435,7 @@ import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const { user, logout } = useAuth();
+const { user, logout, isAdmin } = useAuth();
 
 const isScrolled = ref(false);
 const isMenuOpen = ref(false);

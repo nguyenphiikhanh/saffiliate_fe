@@ -1,9 +1,7 @@
-import { ROLES } from '../utils/role'
-
 export default defineNuxtRouteMiddleware((to) => {
-	const { user } = useAuth();
+	const { isAdmin } = useAuth();
 
-	if (user.value && user.value.role === ROLES.ADMIN) {
+	if (isAdmin.value) {
 		// Logged in as Admin: Only allow access to admin routes
 		if (!to.path.startsWith('/admin')) {
 			return navigateTo('/admin');

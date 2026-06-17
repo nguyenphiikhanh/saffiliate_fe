@@ -1,11 +1,12 @@
 import { useState } from "#app";
+import { computed } from "vue";
 
 export interface User {
   id: number;
   name: string;
   email: string;
   image?: string;
-  role: string;
+  role: "admin" | "user";
   created_at?: string;
   updated_at?: string;
 }
@@ -66,11 +67,14 @@ export function useAuth() {
     }
   };
 
+  const isAdmin = computed(() => user.value?.role === "admin");
+
   return {
     user,
     token,
     fetchUser,
     login,
     logout,
+    isAdmin,
   };
 }

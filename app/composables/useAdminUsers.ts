@@ -5,7 +5,7 @@ export interface AdminUser {
   name: string | null;
   email: string;
   image: string | null;
-  role: number;
+  role: string;
   rank: string;
   completedOrdersCount: number;
   ordersToNextRank: number;

@@ -230,7 +230,7 @@
 
               <!-- Meta info -->
               <div class="pt-4 flex items-center justify-between text-xs text-slate-400 font-medium border-t border-slate-200 dark:border-slate-800">
-                <span>Vai trò: {{ selectedUser.role === 1 ? 'ADMIN' : 'MEMBER' }}</span>
+                <span>Vai trò: {{ selectedUser.role === 'admin' ? 'ADMIN' : 'MEMBER' }}</span>
                 <span class="select-all">UID: {{ selectedUser.id }}</span>
               </div>
             </div>
@@ -254,12 +254,12 @@ useHead({
   title: 'Quản lý Thành Viên | Admin Saffiliate'
 });
 
-const { user } = useAuth();
+const { user, isAdmin } = useAuth();
 const router = useRouter();
 
 // Route Protection: verify if current logged in user is admin
 onMounted(() => {
-  if (!user.value || user.value.role !== 1) {
+  if (!isAdmin.value) {
     // Redirect non-admin back to home
     router.replace("/");
   }
@@ -359,7 +359,7 @@ const isNewUser = (createdAt) => {
 
 // Initial Load
 onMounted(async () => {
-  if (user.value && user.value.role === 1) {
+  if (isAdmin.value) {
     await fetchUsers(1);
   }
 });
