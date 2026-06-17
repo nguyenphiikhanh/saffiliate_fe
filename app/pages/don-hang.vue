@@ -405,7 +405,36 @@
             </div>
           </div>
         </div>
+
+      <!-- Pagination -->
+      <div v-if="lastPage > 1" class="flex items-center justify-center gap-2 mt-6">
+        <button
+          @click="changePage(currentPage - 1)"
+          :disabled="currentPage === 1"
+          class="h-9 w-9 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer"
+          type="button"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 px-2">
+          Trang {{ currentPage }} / {{ lastPage }}
+        </span>
+
+        <button
+          @click="changePage(currentPage + 1)"
+          :disabled="currentPage === lastPage"
+          class="h-9 w-9 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer"
+          type="button"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
+    </div>
 
       <!-- Empty state -->
       <div
@@ -699,6 +728,7 @@ useSeoMeta({
 });
 
 const activeTab = ref("pending");
+const currentPage = ref(1);
 
 const tabs = [
   {
@@ -736,16 +766,29 @@ const statusMap = {
 const { api } = useAppFetch();
 const queryParams = computed(() => ({
   status: statusMap[activeTab.value],
+  page: currentPage.value,
 }));
 
 const { data: response, status } = useLazyAsyncData(
   "user-orders",
   () => api.get("/order", { query: queryParams.value }),
   {
-    watch: [activeTab], // Tự động gọi lại API khi chuyển tab
+    watch: [activeTab, currentPage], // Tự động gọi lại API khi chuyển tab hoặc trang
     server: false,
   }
 );
+
+const lastPage = computed(() => response.value?.data?.last_page || 1);
+const totalOrders = computed(() => response.value?.data?.total || 0);
+
+const changePage = (page) => {
+  if (page < 1 || page > lastPage.value) return;
+  currentPage.value = page;
+};
+
+watch(activeTab, () => {
+  currentPage.value = 1;
+});
 
 const rawOrders = computed(() => {
   const res = response.value;
