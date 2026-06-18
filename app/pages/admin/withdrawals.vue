@@ -321,6 +321,7 @@ const { data: response, refresh, pending } = await useFetch('/api/wallet/withdra
 const withdrawals = computed(() => {
   const res = response.value;
   if (!res) return [];
+  if (res.data?.data && Array.isArray(res.data.data)) return res.data.data;
   if (res.data?.items) return res.data.items;
   if (res.data && Array.isArray(res.data)) return res.data;
   if (Array.isArray(res)) return res;

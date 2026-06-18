@@ -43,6 +43,15 @@ export function useAppFetch() {
     },
     onResponseError({ request, response, options }) {
       if (process.client) stopLoading();
+
+      if (response.status === 401) {
+        const tokenCookie = useCookie("auth_token");
+        tokenCookie.value = null;
+        if (process.client) {
+          window.location.href = "/dang-nhap";
+        }
+      }
+
       const parsedError = {
         message: response._data?.message || response.statusText || "Kết nối mạng hoặc API gặp sự cố.",
         status: response.status || 500,

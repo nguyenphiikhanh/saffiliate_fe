@@ -809,20 +809,25 @@ const fetchHistory = async () => {
   try {
     const res = await api.get("/wallet/withdrawals");
     if (res.data) {
-      // Hỗ trợ cả 2 format: có pagination (res.data.items) hoặc mảng (res.data)
-      const dataArray = Array.isArray(res.data)
-        ? res.data
-        : res.data.items || [];
+      // Hỗ trợ cả 3 format: có pagination (res.data.items), Laravel (res.data.data), hoặc mảng (res.data)
+      let dataArray = [];
+      if (Array.isArray(res.data)) {
+        dataArray = res.data;
+      } else if (res.data && Array.isArray(res.data.data)) {
+        dataArray = res.data.data;
+      } else if (res.data && Array.isArray(res.data.items)) {
+        dataArray = res.data.items;
+      }
 
       historyList.value = dataArray.map((item) => {
         return {
           id: item.id || Math.random(),
           bankCode: "Tài khoản đối soát",
-          account: item.referenceId,
+          account: item.reference_id,
           amount: Math.abs(item.amount),
-          date: new Date(item.createdAt).toLocaleString("vi-VN"),
+          date: new Date(item.created_at).toLocaleString("vi-VN"),
           status: item.status,
-          rejectReason: item.rejectReason,
+          rejectReason: item.reject_reason,
           showReason: false,
         };
       });
