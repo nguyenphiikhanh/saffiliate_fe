@@ -276,7 +276,7 @@
               <tr
                 v-else
                 v-for="item in filteredOrders"
-                :key="item.order.orderId"
+                :key="item.order_id"
                 class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer"
                 @click="openOrderDetails(item)"
               >
@@ -285,21 +285,21 @@
                   <div class="flex items-center gap-2">
                     <span
                       class="font-bold text-slate-700 dark:text-slate-200 text-xs"
-                      >#{{ item.order.orderId }}</span
+                      >#{{ item.order_id }}</span
                     >
                   </div>
                 </td>
                 <!-- Người mua -->
                 <td class="px-4 py-3">
-                  <div v-if="item.user" class="flex flex-col">
+                  <div v-if="item.user_id" class="flex flex-col">
                     <span
                       class="font-bold text-slate-800 dark:text-slate-200 text-xs truncate max-w-[140px]"
-                      >{{ item.user.name || "N/A" }}</span
+                      >{{ item.user_name || "N/A" }}</span
                     >
                     <span
                       class="text-[11px] text-slate-500 truncate max-w-[140px] font-medium mt-0.5"
-                      :title="item.user.email"
-                      >{{ item.user.email }}</span
+                      :title="item.user_email"
+                      >{{ item.user_email }}</span
                     >
                   </div>
                   <div class="text-xs text-slate-400 italic" v-else>
@@ -310,13 +310,9 @@
                 <td class="px-4 py-3">
                   <div
                     class="font-semibold text-slate-700 dark:text-slate-300 text-[13px] truncate max-w-[180px]"
-                    :title="item.order.itemName || item.order.shopName"
+                    :title="item.product_name"
                   >
-                    {{
-                      item.order.itemName ||
-                      item.order.shopName ||
-                      "Sản phẩm từ Shopee"
-                    }}
+                    {{ item.product_name || "Sản phẩm từ Shopee" }}
                   </div>
                 </td>
                 <!-- Ngày -->
@@ -324,9 +320,7 @@
                   <div class="text-xs text-slate-500 font-medium">
                     {{
                       new Date(
-                        item.order.orderTime ||
-                          item.order.clickTime ||
-                          Date.now()
+                        item.order_time || Date.now()
                       ).toLocaleDateString("vi-VN")
                     }}
                   </div>
@@ -337,9 +331,9 @@
                     class="font-bold text-indigo-600 dark:text-indigo-500 text-[13px]"
                   >
                     {{
-                      Math.round(
-                        item.order.affiliateNetCommission || 0
-                      ).toLocaleString("vi-VN")
+                      Math.round(item.actual_commission || 0).toLocaleString(
+                        "vi-VN"
+                      )
                     }}đ
                   </div>
                 </td>
@@ -349,9 +343,9 @@
                     class="font-bold text-emerald-600 dark:text-emerald-500 text-[13px]"
                   >
                     {{
-                      Math.round(
-                        item.order.userCommission || 0
-                      ).toLocaleString("vi-VN")
+                      Math.round(item.user_commission || 0).toLocaleString(
+                        "vi-VN"
+                      )
                     }}đ
                   </div>
                 </td>
@@ -359,13 +353,12 @@
                 <td class="px-4 py-3 text-center">
                   <span
                     class="inline-block px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider"
-                    :class="getStatusClass(item.order.orderStatus)"
+                    :class="getStatusClass(item.order_status)"
                   >
                     {{
-                      item.order.orderStatus === "Completed" ||
-                      item.order.orderStatus === "Thành công"
+                      item.order_status === "Completed"
                         ? "HOÀN THÀNH"
-                        : item.order.orderStatus
+                        : item.order_status
                     }}
                   </span>
                 </td>
@@ -416,23 +409,22 @@
           <div
             v-else
             v-for="item in filteredOrders"
-            :key="item.order.orderId"
+            :key="item.order_id"
             @click="openOrderDetails(item)"
             class="p-4 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer"
           >
             <div class="flex items-center justify-between mb-2">
               <span class="font-bold text-slate-800 dark:text-slate-200 text-xs"
-                >#{{ item.order.orderId }}</span
+                >#{{ item.order_id }}</span
               >
               <span
                 class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider"
-                :class="getStatusClass(item.order.orderStatus)"
+                :class="getStatusClass(item.order_status)"
               >
                 {{
-                  item.order.orderStatus === "Completed" ||
-                  item.order.orderStatus === "Thành công"
+                  item.order_status === "Completed"
                     ? "HOÀN THÀNH"
-                    : item.order.orderStatus
+                    : item.order_status
                 }}
               </span>
             </div>
@@ -440,24 +432,38 @@
             <div
               class="font-semibold text-slate-700 dark:text-slate-300 text-xs line-clamp-2 mb-3 leading-relaxed"
             >
-              {{
-                item.order.itemName ||
-                item.order.shopName ||
-                "Sản phẩm từ Shopee"
-              }}
+              {{ item.product_name || "Sản phẩm từ Shopee" }}
             </div>
 
             <div class="flex items-center justify-between text-xs">
               <div class="text-slate-500 font-medium">
                 {{
-                  new Date(
-                    item.order.orderTime || item.order.clickTime || Date.now()
-                  ).toLocaleDateString("vi-VN")
+                  new Date(item.order_time || Date.now()).toLocaleDateString(
+                    "vi-VN"
+                  )
                 }}
               </div>
               <div class="flex gap-2 text-[11px]">
-                <span class="text-slate-400 font-medium">Sàn: <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ Math.round(item.order.affiliateNetCommission || 0).toLocaleString("vi-VN") }}đ</span></span>
-                <span class="text-slate-400 font-medium">User: <span class="font-bold text-emerald-600 dark:text-emerald-400">{{ Math.round(item.order.userCommission || 0).toLocaleString("vi-VN") }}đ</span></span>
+                <span class="text-slate-400 font-medium"
+                  >Sàn:
+                  <span class="font-bold text-indigo-600 dark:text-indigo-400"
+                    >{{
+                      Math.round(item.actual_commission || 0).toLocaleString(
+                        "vi-VN"
+                      )
+                    }}đ</span
+                  ></span
+                >
+                <span class="text-slate-400 font-medium"
+                  >User:
+                  <span class="font-bold text-emerald-600 dark:text-emerald-400"
+                    >{{
+                      Math.round(item.user_commission || 0).toLocaleString(
+                        "vi-VN"
+                      )
+                    }}đ</span
+                  ></span
+                >
               </div>
             </div>
           </div>
@@ -472,7 +478,9 @@
           <div class="text-xs text-slate-500 font-medium">
             {{ paginationText }}
           </div>
-          <div class="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+          <div
+            class="flex items-center gap-1.5 text-xs text-slate-500 font-medium"
+          >
             <span>Hiển thị:</span>
             <select
               v-model="limit"
@@ -486,7 +494,7 @@
         </div>
         <div class="flex gap-1" v-if="totalPages > 1">
           <button
-            @click="currentPage > 1 && (currentPage--)"
+            @click="currentPage > 1 && currentPage--"
             :disabled="currentPage === 1"
             class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
           >
@@ -513,7 +521,7 @@
             </button>
           </template>
           <button
-            @click="currentPage < totalPages && (currentPage++)"
+            @click="currentPage < totalPages && currentPage++"
             :disabled="currentPage === totalPages"
             class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
           >
@@ -748,22 +756,21 @@
             <div>
               <span
                 class="inline-block px-2.5 py-1 rounded text-[9px] font-bold uppercase tracking-wider mb-2"
-                :class="getStatusClass(selectedOrder.order.orderStatus)"
+                :class="getStatusClass(selectedOrder.order_status)"
               >
                 {{
-                  selectedOrder.order.orderStatus === "Completed" ||
-                  selectedOrder.order.orderStatus === "Thành công"
+                  selectedOrder.order_status === "Completed"
                     ? "HOÀN THÀNH"
-                    : selectedOrder.order.orderStatus
+                    : selectedOrder.order_status
                 }}
               </span>
               <h3
                 class="text-base font-bold text-slate-800 dark:text-slate-100"
               >
-                Chi tiết đơn hàng #{{ selectedOrder.order.orderId }}
+                Chi tiết đơn hàng #{{ selectedOrder.order_id }}
               </h3>
               <p class="text-xs text-slate-500 mt-1">
-                Cửa hàng: {{ selectedOrder.order.shopName || "Shopee Store" }}
+                Cửa hàng: {{ selectedOrder.shop_name || "Shopee Store" }}
               </p>
             </div>
             <button
@@ -800,16 +807,16 @@
               <div
                 class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
               >
-                <div v-if="selectedOrder.user">
+                <div v-if="selectedOrder.user_id">
                   <h4
                     class="text-sm font-bold text-slate-800 dark:text-slate-200"
                   >
-                    {{ selectedOrder.user.name || "Người dùng Saffi" }}
+                    {{ selectedOrder.user_name || "Người dùng Saffi" }}
                   </h4>
                   <p
                     class="text-[11px] text-slate-500 font-medium select-all mt-0.5"
                   >
-                    {{ selectedOrder.user.email }}
+                    {{ selectedOrder.user_email }}
                   </p>
                 </div>
                 <div v-else class="text-xs text-slate-400 italic">
@@ -818,11 +825,11 @@
 
                 <!-- Rank at purchase -->
                 <div
-                  v-if="selectedOrder.order.userRank"
+                  v-if="selectedOrder.user_rank"
                   class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-white dark:bg-slate-800 border text-[10px] font-bold tracking-wider border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 self-start sm:self-auto"
                 >
-                  Hạng: {{ getRankName(selectedOrder.order.userRank) }} ({{
-                    selectedOrder.order.commissionRate
+                  Hạng: {{ getRankName(selectedOrder.user_rank) }} ({{
+                    selectedOrder.commission_rate
                   }}%)
                 </div>
               </div>
@@ -840,21 +847,7 @@
                 <div
                   class="text-sm font-semibold text-slate-700 dark:text-slate-200 leading-relaxed"
                 >
-                  {{ selectedOrder.order.itemName || "Sản phẩm từ Shopee" }}
-                </div>
-                <div
-                  class="flex items-center gap-2 text-[11px] text-slate-500 font-medium"
-                >
-                  <span>Mã SP: {{ selectedOrder.order.itemId }}</span>
-                  <span
-                    class="h-1 w-1 bg-slate-300 dark:bg-slate-700 rounded-full"
-                  ></span>
-                  <span
-                    >Ngành hàng:
-                    {{
-                      selectedOrder.order.l1GlobalCategory || "Chưa phân loại"
-                    }}</span
-                  >
+                  {{ selectedOrder.product_name || "Sản phẩm từ Shopee" }}
                 </div>
               </div>
             </div>
@@ -875,7 +868,7 @@
                   >
                   <span
                     class="text-sm font-bold text-slate-800 dark:text-slate-200 block mt-1"
-                    >{{ formatMoney(selectedOrder.order.purchaseValue) }}</span
+                    >{{ formatMoney(selectedOrder.purchase_value) }}</span
                   >
                 </div>
                 <div
@@ -887,9 +880,7 @@
                   >
                   <span
                     class="text-sm font-bold text-indigo-600 dark:text-indigo-400 block mt-1"
-                    >+{{
-                      formatMoney(selectedOrder.order.affiliateNetCommission)
-                    }}</span
+                    >+{{ formatMoney(selectedOrder.actual_commission) }}</span
                   >
                 </div>
                 <div
@@ -901,9 +892,7 @@
                   >
                   <span
                     class="text-sm font-bold text-emerald-600 dark:text-emerald-400 block mt-1"
-                    >+{{
-                      formatMoney(selectedOrder.order.userCommission)
-                    }}</span
+                    >+{{ formatMoney(selectedOrder.user_commission) }}</span
                   >
                 </div>
               </div>
@@ -914,34 +903,24 @@
               class="pt-4 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-[11px] text-slate-500 font-medium"
             >
               <div>
-                Conversion ID:
+                Sub ID Tracking:
                 <span class="text-slate-700 dark:text-slate-300 select-all">{{
-                  selectedOrder.order.conversionId || "N/A"
-                }}</span>
-              </div>
-              <div>
-                UID Link:
-                <span class="text-slate-700 dark:text-slate-300 select-all">{{
-                  selectedOrder.order.subId1
+                  selectedOrder.sub_id
                 }}</span>
               </div>
               <div>
                 Giờ click:
                 <span class="text-slate-700 dark:text-slate-300">{{
-                  selectedOrder.order.clickTime
-                    ? new Date(selectedOrder.order.clickTime).toLocaleString(
-                        "vi-VN"
-                      )
+                  selectedOrder.click_time
+                    ? new Date(selectedOrder.click_time).toLocaleString("vi-VN")
                     : "N/A"
                 }}</span>
               </div>
               <div>
                 Giờ đặt:
                 <span class="text-slate-700 dark:text-slate-300">{{
-                  selectedOrder.order.orderTime
-                    ? new Date(selectedOrder.order.orderTime).toLocaleString(
-                        "vi-VN"
-                      )
+                  selectedOrder.order_time
+                    ? new Date(selectedOrder.order_time).toLocaleString("vi-VN")
                     : "N/A"
                 }}</span>
               </div>
@@ -1150,7 +1129,7 @@
                 <div class="flex gap-1">
                   <button
                     @click="
-                      fetchUsers(userPagination.page - 1, userSearchQuery)
+                      fetchUsers(userPagination.page - 1, userSearchQuery, 20)
                     "
                     :disabled="userPagination.page === 1"
                     class="w-8 h-8 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
@@ -1173,7 +1152,7 @@
                   </button>
                   <button
                     @click="
-                      fetchUsers(userPagination.page + 1, userSearchQuery)
+                      fetchUsers(userPagination.page + 1, userSearchQuery, 20)
                     "
                     :disabled="
                       userPagination.page === userPagination.totalPages
@@ -1296,32 +1275,41 @@ const queryParams = computed(() => {
   const params = {
     page: currentPage.value,
     limit: limit.value,
+    per_page: limit.value,
   };
   if (selectedStatus.value !== "all") {
     if (selectedStatus.value === "pending") params.status = "Pending";
     else if (selectedStatus.value === "success") params.status = "Completed";
-    else if (selectedStatus.value === "cancelled")
-      params.status = "Cancelled";
+    else if (selectedStatus.value === "cancelled") params.status = "Cancelled";
   }
   if (selectedUserFilter.value) {
     params.userId = selectedUserFilter.value.id;
   }
   return params;
-});const {
+});
+const {
   data: response,
   refresh,
   pending,
-} = useLazyAsyncData("admin-orders", () => api.get("/order", { query: queryParams.value }), {
-  watch: [queryParams],
-  server: false,
-});
+} = useLazyAsyncData(
+  "admin-orders",
+  () => api.get("/order", { query: queryParams.value }),
+  {
+    watch: [queryParams],
+    server: false,
+  }
+);
 watch([selectedStatus, selectedUserFilter, limit], () => {
   currentPage.value = 1;
 });
 
 const totalPages = computed(() => {
-  if (response.value?.data?.totalPages) return response.value?.data?.totalPages;
-  const total = response.value?.data?.total || 0;
+  const res = response.value;
+  if (!res) return 1;
+  if (res.last_page !== undefined) return res.last_page;
+  if (res.data?.totalPages !== undefined) return res.data.totalPages;
+  if (res.data?.last_page !== undefined) return res.data.last_page;
+  const total = res.total !== undefined ? res.total : res.data?.total || 0;
   return Math.ceil(total / limit.value) || 1;
 });
 
@@ -1329,7 +1317,7 @@ const visiblePages = computed(() => {
   const total = totalPages.value;
   const current = currentPage.value;
   const pages = [];
-  
+
   if (total <= 7) {
     for (let i = 1; i <= total; i++) pages.push(i);
   } else {
@@ -1353,6 +1341,8 @@ const visiblePages = computed(() => {
 const orders = computed(() => {
   const res = response.value;
   if (!res) return [];
+  if (res.data && Array.isArray(res.data) && !res.data.hasOwnProperty("data"))
+    return res.data;
   if (res.data && Array.isArray(res.data.data)) return res.data.data;
   if (Array.isArray(res.data)) return res.data;
   if (Array.isArray(res)) return res;
@@ -1364,20 +1354,18 @@ const filteredOrders = computed(() => {
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.trim().toLowerCase();
     list = list.filter((item) => {
-      const orderId = item.order.orderId
-        ? String(item.order.orderId).toLowerCase()
+      const orderId = item.order_id ? String(item.order_id).toLowerCase() : "";
+      const itemName = item.product_name
+        ? String(item.product_name).toLowerCase()
         : "";
-      const itemName = item.order.itemName
-        ? String(item.order.itemName).toLowerCase()
+      const shopName = item.shop_name
+        ? String(item.shop_name).toLowerCase()
         : "";
-      const shopName = item.order.shopName
-        ? String(item.order.shopName).toLowerCase()
+      const buyerName = item.user_name
+        ? String(item.user_name).toLowerCase()
         : "";
-      const buyerName = item.user?.name
-        ? String(item.user.name).toLowerCase()
-        : "";
-      const buyerEmail = item.user?.email
-        ? String(item.user.email).toLowerCase()
+      const buyerEmail = item.user_email
+        ? String(item.user_email).toLowerCase()
         : "";
       return (
         orderId.includes(q) ||
@@ -1392,9 +1380,25 @@ const filteredOrders = computed(() => {
 });
 
 const paginationText = computed(() => {
-  const total = response.value?.data?.total || filteredOrders.value.length;
-  const page = response.value?.data?.page || 1;
-  const limitVal = response.value?.data?.limit || limit.value;
+  const res = response.value;
+  const total =
+    res?.total !== undefined
+      ? res.total
+      : res?.data?.total !== undefined
+      ? res.data.total
+      : filteredOrders.value.length;
+  const page =
+    res?.current_page !== undefined
+      ? res.current_page
+      : res?.data?.page !== undefined
+      ? res.data.page
+      : res?.data?.current_page || 1;
+  const limitVal =
+    res?.per_page !== undefined
+      ? res.per_page
+      : res?.data?.limit !== undefined
+      ? res.data.limit
+      : res?.data?.per_page || limit.value;
 
   if (filteredOrders.value.length === 0) {
     return "Hiển thị 0 kết quả";
@@ -1411,14 +1415,14 @@ const paginationText = computed(() => {
 
 const totalCommission = computed(() => {
   return orders.value.reduce(
-    (sum, item) => sum + (item.order.affiliateNetCommission || 0),
+    (sum, item) => sum + (item.actual_commission || 0),
     0
   );
 });
 
 const totalUserCommission = computed(() => {
   return orders.value.reduce(
-    (sum, item) => sum + (item.order.userCommission || 0),
+    (sum, item) => sum + (item.user_commission || 0),
     0
   );
 });
@@ -1426,9 +1430,7 @@ const totalUserCommission = computed(() => {
 const systemRevenue = computed(() => {
   return orders.value.reduce(
     (sum, item) =>
-      sum +
-      ((item.order.affiliateNetCommission || 0) -
-        (item.order.userCommission || 0)),
+      sum + ((item.actual_commission || 0) - (item.user_commission || 0)),
     0
   );
 });
@@ -1436,8 +1438,7 @@ const systemRevenue = computed(() => {
 const pendingCount = computed(() => {
   return orders.value.filter(
     (item) =>
-      item.order.orderStatus === "Chờ duyệt" ||
-      item.order.orderStatus === "Pending"
+      item.order_status === "Chờ duyệt" || item.order_status === "Pending"
   ).length;
 });
 
@@ -1524,27 +1525,17 @@ const parseCSVFile = (file) => {
         return;
       }
 
-      const { data: uploadRes, error } = await useFetch("/api/order/import", {
-        method: "POST",
-        body: data,
-        watch: false,
-      });
+      await api.post("/order/import", { data });
 
-      if (error.value) {
-        showToast(
-          "Có lỗi xảy ra: " +
-            (error.value?.data?.message || error.value.message),
-          "error"
-        );
-      } else {
-        showToast("Cập nhật dữ liệu thành công!", "success");
-        showUploadModal.value = false;
-        selectedFile.value = null; // reset state
-        refresh(); // reload list
-      }
+      showToast("Cập nhật dữ liệu thành công!", "success");
+      showUploadModal.value = false;
+      selectedFile.value = null; // reset state
+      refresh(); // reload list
     } catch (err) {
       console.error(err);
-      showToast("Lỗi khi đọc file CSV.", "error");
+      const errMsg =
+        err.data?.message || err.message || "Lỗi khi upload file CSV.";
+      showToast("Có lỗi xảy ra: " + errMsg, "error");
     } finally {
       isUploading.value = false;
       if (fileInput.value) fileInput.value.value = "";
@@ -1657,7 +1648,7 @@ const {
 } = useAdminUsers();
 
 const handleUserSearch = () => {
-  fetchUsers(1, userSearchQuery.value.trim());
+  fetchUsers(1, userSearchQuery.value.trim(), 20);
 };
 
 const handleEscKey = (e) => {
@@ -1669,7 +1660,7 @@ const handleEscKey = (e) => {
 watch(showUserModal, (newVal) => {
   if (newVal) {
     if (usersList.value.length === 0) {
-      fetchUsers(1);
+      fetchUsers(1, "", 20);
     }
     if (typeof window !== "undefined") {
       window.addEventListener("keydown", handleEscKey);
