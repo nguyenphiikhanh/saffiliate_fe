@@ -201,10 +201,10 @@
                 <div
                   class="text-xs text-slate-700 dark:text-slate-300 font-bold"
                 >
-                  {{ new Date(item.createdAt).toLocaleDateString("vi-VN") }}
+                  {{ new Date(item.created_at).toLocaleDateString("vi-VN") }}
                 </div>
                 <div class="text-[10px] text-slate-400 font-medium">
-                  {{ new Date(item.createdAt).toLocaleTimeString("vi-VN") }}
+                  {{ new Date(item.created_at).toLocaleTimeString("vi-VN") }}
                 </div>
               </td>
               <!-- Người Dùng -->
@@ -225,8 +225,8 @@
                       >{{
                         item.user?.name
                           ? item.user.name.charAt(0)
-                          : item.userId
-                          ? item.userId.charAt(0)
+                          : item.user_id
+                          ? item.user_id.charAt(0)
                           : "U"
                       }}</span
                     >
@@ -238,8 +238,8 @@
                     >
                     <span
                       class="text-[11px] text-slate-500 font-medium mt-0.5 truncate max-w-[140px]"
-                      :title="item.user?.email || item.userId"
-                      >{{ item.user?.email || item.userId }}</span
+                      :title="item.user?.email || item.user_id"
+                      >{{ item.user?.email || item.user_id }}</span
                     >
                   </div>
                 </div>
@@ -261,7 +261,7 @@
                   <div
                     class="bg-slate-50 dark:bg-[#0D1117] border border-slate-200 dark:border-slate-800 px-2 py-1.5 rounded-md text-[11px] font-mono text-emerald-600 dark:text-emerald-400 truncate"
                   >
-                    {{ formatMiniJson(item.productInfo) }}
+                    {{ formatMiniJson(item.product_info) }}
                   </div>
                 </div>
               </td>
@@ -370,7 +370,7 @@
               </h3>
               <p class="text-xs text-slate-500 mt-1 font-medium">
                 Lưu lúc:
-                {{ new Date(selectedItem.createdAt).toLocaleString("vi-VN") }}
+                {{ new Date(selectedItem.created_at).toLocaleString("vi-VN") }}
               </p>
             </div>
             <button
@@ -405,7 +405,7 @@
                   >JSON Response</span
                 >
                 <button
-                  @click="copyJson(selectedItem.productInfo)"
+                  @click="copyJson(selectedItem.product_info)"
                   class="text-xs font-bold text-slate-400 hover:text-white transition-colors flex items-center gap-1.5"
                 >
                   <svg
@@ -428,7 +428,7 @@
               <div class="p-4 overflow-x-auto">
                 <pre
                   class="text-[13px] leading-relaxed text-emerald-400 font-mono"
-                  >{{ formatJson(selectedItem.productInfo) }}</pre
+                  >{{ formatJson(selectedItem.product_info) }}</pre
                 >
               </div>
             </div>
@@ -508,8 +508,19 @@
                       title="Xóa tìm kiếm"
                       type="button"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
                       </svg>
                     </button>
 
@@ -525,7 +536,9 @@
                 </div>
 
                 <!-- Divider -->
-                <div class="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 shrink-0"></div>
+                <div
+                  class="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 shrink-0"
+                ></div>
 
                 <!-- Close Button -->
                 <button
@@ -533,8 +546,19 @@
                   class="shrink-0 p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
                   title="Đóng (Esc)"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
@@ -645,16 +669,16 @@
               >
                 <span
                   class="text-[11px] font-bold text-slate-400 tracking-wider uppercase"
-                  >Trang {{ userPagination.page }} /
-                  {{ userPagination.totalPages }}</span
                 >
+                  Trang {{ userPagination.page }} /
+                  {{ userPagination.totalPages }}
+                </span>
                 <div class="flex gap-1">
                   <button
-                    @click="
-                      fetchUsers(userPagination.page - 1, userSearchQuery)
-                    "
+                    @click="changeUserPage(userPagination.page - 1)"
                     :disabled="userPagination.page === 1"
                     class="w-8 h-8 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    type="button"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -672,13 +696,12 @@
                     </svg>
                   </button>
                   <button
-                    @click="
-                      fetchUsers(userPagination.page + 1, userSearchQuery)
-                    "
+                    @click="changeUserPage(userPagination.page + 1)"
                     :disabled="
                       userPagination.page === userPagination.totalPages
                     "
                     class="w-8 h-8 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    type="button"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -724,6 +747,7 @@ const limit = ref(20);
 const startDate = ref("");
 const endDate = ref("");
 const selectedUserFilter = ref(null);
+const { api } = useAppFetch();
 
 // Build query dynamically
 const queryParams = computed(() => {
@@ -737,28 +761,31 @@ const queryParams = computed(() => {
   return params;
 });
 
-// We must manually pass headers due to server side API call requiring auth
-const headers = useRequestHeaders(["cookie"]);
 const {
   data: response,
   refresh,
   pending,
-} = useFetch("/api/admin/link-history", {
-  headers,
-  query: queryParams,
-  lazy: true,
-  watch: [page, limit, startDate, endDate, selectedUserFilter], // auto refetch when these change
-});
+} = useLazyAsyncData(
+  "admin-link-history",
+  () => api.get("/admin/link-history", { query: queryParams.value }),
+  {
+    watch: [queryParams],
+    server: false,
+  }
+);
 
 const links = computed(() => {
-  if (!response.value) return [];
-  if (response.value.data) return response.value.data;
+  const res = response.value?.data;
+  if (!res) return [];
+  if (res.data) return res.data;
+  if (Array.isArray(res)) return res;
   return [];
 });
 
 const totalPages = computed(() => {
-  if (!response.value || !response.value.meta) return 1;
-  return Math.ceil(response.value.meta.total / limit.value);
+  const res = response.value?.data;
+  if (!res || !res.meta) return 1;
+  return Math.ceil(res.meta.total / limit.value);
 });
 
 // Reset page when filters or limit change
@@ -822,13 +849,17 @@ const {
   fetchUsers,
 } = useAdminUsers();
 
+const changeUserPage = (targetPage) => {
+  fetchUsers(targetPage, userSearchQuery.value.trim(), 20);
+};
+
 const handleUserSearch = () => {
-  fetchUsers(1, userSearchQuery.value.trim());
+  fetchUsers(1, userSearchQuery.value.trim(), 20);
 };
 
 const clearUserSearch = () => {
   userSearchQuery.value = "";
-  fetchUsers(1, "");
+  fetchUsers(1, "", 20);
 };
 
 const handleEscKey = (e) => {
@@ -840,7 +871,7 @@ const handleEscKey = (e) => {
 watch(showUserModal, (newVal) => {
   if (newVal) {
     if (usersList.value.length === 0) {
-      fetchUsers(1);
+      fetchUsers(1, "", 20);
     }
     if (typeof window !== "undefined") {
       window.addEventListener("keydown", handleEscKey);
