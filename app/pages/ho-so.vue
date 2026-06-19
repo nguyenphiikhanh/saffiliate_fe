@@ -77,13 +77,13 @@
               <span v-if="user.rank === 'obsidian'">
                 Tổng đơn tích lũy:
                 <span class="text-slate-700 dark:text-slate-300 font-extrabold"
-                  >{{ user.completedOrdersCount ?? 0 }} đơn</span
+                  >{{ user.completed_orders_count ?? 0 }} đơn</span
                 >
               </span>
               <span v-else>
                 <span
                   class="text-slate-700 dark:text-slate-300 font-extrabold"
-                  >{{ user.completedOrdersCount ?? 0 }}</span
+                  >{{ user.completed_orders_count ?? 0 }}</span
                 >
                 / {{ rankProgress.nextThreshold }} đơn hàng •
               </span>
@@ -96,12 +96,12 @@
               quyền chiết khấu cao nhất nhé.
             </p>
             <p
-              v-else-if="(user.ordersToNextRank ?? 0) > 0"
+              v-else-if="(user.orders_to_next_rank ?? 0) > 0"
               class="text-[11px] font-bold text-slate-400 dark:text-slate-500"
             >
               Hoàn thành
               <span class="text-shopee-orange font-black">{{
-                user.ordersToNextRank
+                user.orders_to_next_rank
               }}</span>
               đơn nữa để thăng hạng
             </p>
@@ -266,7 +266,11 @@
             >
               <UAlert
                 v-if="profileMsg || profileError"
-                :icon="profileError ? 'i-lucide-alert-triangle' : 'i-lucide-circle-check'"
+                :icon="
+                  profileError
+                    ? 'i-lucide-alert-triangle'
+                    : 'i-lucide-circle-check'
+                "
                 :color="profileError ? 'danger' : 'success'"
                 variant="soft"
                 :title="profileError || profileMsg"
@@ -283,27 +287,27 @@
               leave-from-class="transform translate-y-0 opacity-100"
               leave-to-class="transform -translate-y-2 opacity-0"
             >
-            <transition
-              enter-active-class="transition duration-200 ease-out"
-              enter-from-class="transform -translate-y-2 opacity-0"
-              enter-to-class="transform translate-y-0 opacity-100"
-              leave-active-class="transition duration-150 ease-in"
-              leave-from-class="transform translate-y-0 opacity-100"
-              leave-to-class="transform -translate-y-2 opacity-0"
-            >
-              <UButton
-                v-if="isEditingProfile"
-                type="submit"
-                :loading="isUpdatingProfile"
-                :disabled="isLoading || isProfileUnchanged"
-                size="md"
-                color="primary"
-                variant="solid"
-                class="self-start px-6 font-bold text-xs shadow-md shadow-orange-500/10 cursor-pointer rounded-2xl"
+              <transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="transform -translate-y-2 opacity-0"
+                enter-to-class="transform translate-y-0 opacity-100"
+                leave-active-class="transition duration-150 ease-in"
+                leave-from-class="transform translate-y-0 opacity-100"
+                leave-to-class="transform -translate-y-2 opacity-0"
               >
-                Lưu thay đổi
-              </UButton>
-            </transition>
+                <UButton
+                  v-if="isEditingProfile"
+                  type="submit"
+                  :loading="isUpdatingProfile"
+                  :disabled="isLoading || isProfileUnchanged"
+                  size="md"
+                  color="primary"
+                  variant="solid"
+                  class="self-start px-6 font-bold text-xs shadow-md shadow-orange-500/10 cursor-pointer rounded-2xl"
+                >
+                  Lưu thay đổi
+                </UButton>
+              </transition>
             </transition>
           </form>
         </div>
@@ -336,170 +340,61 @@
           </div>
 
           <form @submit.prevent="saveBank" class="mt-6 flex flex-col gap-5">
-            <!-- Ngân hàng liên kết (Rộng toàn bộ trên cả mobile và desktop) -->
             <div class="flex flex-col gap-2 relative">
               <label
                 class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase"
                 >Ngân hàng liên kết</label
               >
 
-              <!-- Custom Searchable Dropdown Trigger Button -->
-              <div class="relative">
-                <button
-                  type="button"
+              <!-- Searchable USelectMenu from NuxtUI v3 -->
+              <div class="relative w-full">
+                <USelectMenu
+                  v-model="linkedBank"
+                  :items="selectMenuBanksList"
+                  value-key="bin"
+                  label-key="label"
+                  placeholder="Chọn ngân hàng..."
+                  :filter-fields="['label', 'bin', 'shortName', 'name']"
                   :disabled="!isEditingBank || isBankLoading || isUpdatingBank"
-                  @click="toggleDropdown"
-                  class="w-full flex items-center justify-between rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 px-4 py-3.5 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-shopee-orange/20 focus:border-shopee-orange transition-all disabled:opacity-50 text-left select-none"
-                  :class="[
-                    isEditingBank && !isBankLoading && !isUpdatingBank
-                      ? 'cursor-pointer'
-                      : 'cursor-not-allowed',
-                  ]"
+                  size="md"
+                  :ui="{
+                    base: 'w-full flex items-center gap-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 px-4 py-3.5 text-xs font-semibold text-slate-800 dark:text-slate-200 focus-within:ring-2 focus-within:ring-shopee-orange/20 focus-within:border-shopee-orange transition-all disabled:opacity-50 text-left cursor-pointer shadow-none ring-0',
+                  }"
                 >
-                  <div
-                    v-if="selectedBankDetails"
-                    class="flex items-center gap-2 min-w-0"
-                  >
-                    <span
-                      class="font-extrabold text-[10px] text-shopee-orange bg-shopee-orange/5 px-2 py-0.5 rounded-lg border border-shopee-orange/10 shrink-0"
-                    >
-                      {{
-                        selectedBankDetails.shortName ||
-                        selectedBankDetails.short_name ||
-                        selectedBankDetails.code
-                      }}
-                    </span>
-                    <span
-                      class="truncate text-slate-700 dark:text-slate-300"
-                      :title="selectedBankDetails.name"
-                    >
-                      {{ selectedBankDetails.name }}
-                    </span>
-                  </div>
-                  <span v-else class="text-slate-400">Chọn ngân hàng...</span>
-
-                  <!-- Chevron icon -->
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 text-slate-400 transition-transform duration-300 shrink-0"
-                    :class="{ 'rotate-180': isDropdownOpen }"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-
-                <!-- Invisible Fullscreen Backdrop to close dropdown on click outside -->
-                <div
-                  v-if="isDropdownOpen"
-                  @click="isDropdownOpen = false"
-                  class="fixed inset-0 z-40 cursor-default"
-                ></div>
-
-                <!-- Dropdown Popover Menu -->
-                <transition
-                  enter-active-class="transition duration-150 ease-out"
-                  enter-from-class="transform scale-95 opacity-0 -translate-y-2"
-                  enter-to-class="transform scale-100 opacity-100 translate-y-0"
-                  leave-active-class="transition duration-100 ease-in"
-                  leave-from-class="transform scale-100 opacity-100 translate-y-0"
-                  leave-to-class="transform scale-95 opacity-0 -translate-y-2"
-                >
-                  <div
-                    v-if="isDropdownOpen"
-                    class="absolute left-0 right-0 mt-2 z-50 rounded-2xl border border-slate-150 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl shadow-slate-900/10 dark:shadow-slate-950/40 p-3 max-h-[300px] flex flex-col gap-2 overflow-hidden animate-fade-in"
-                  >
-                    <!-- Search Input inside dropdown popover -->
-                    <div class="relative shrink-0">
-                      <UInput
-                        v-model="searchQuery"
-                        type="text"
-                        placeholder="Tìm theo tên, viết tắt hoặc mã BIN..."
-                        size="md"
-                        icon="i-lucide-search"
-                        :ui="{ rounded: 'rounded-xl' }"
-                        class="w-full"
-                      />
-                    </div>
-
-                    <!-- Scrollable Options List -->
-                    <div
-                      class="flex-1 overflow-y-auto pr-1 flex flex-col gap-1 select-none"
-                    >
-                      <div
-                        v-for="bank in filteredBanks"
-                        :key="bank.bin"
-                        @click="selectBank(bank.bin)"
-                        class="flex items-center justify-between px-3 py-2 rounded-xl cursor-pointer transition-all hover:bg-slate-50 dark:hover:bg-slate-800/50 group"
-                        :class="{
-                          'bg-orange-500/[0.03] dark:bg-orange-500/[0.05]':
-                            linkedBank === bank.bin,
-                        }"
+                  <template #default>
+                    <div class="flex items-center gap-2.5 min-w-0">
+                      <span
+                        v-if="selectedBankDetails"
+                        class="font-extrabold text-[10px] text-shopee-orange bg-shopee-orange/5 px-2 py-0.5 rounded-lg border border-shopee-orange/10 shrink-0 select-none"
                       >
-                        <div class="flex items-center gap-2.5 min-w-0">
-                          <!-- Short Abbreviation Badge -->
-                          <span
-                            class="font-black text-[10px] tracking-tight px-1.5 py-0.5 rounded border transition-colors shrink-0"
-                            :class="[
-                              linkedBank === bank.bin
-                                ? 'text-shopee-orange border-shopee-orange/20 bg-shopee-orange/[0.03]'
-                                : 'text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/20 group-hover:border-slate-300 dark:group-hover:border-slate-700',
-                            ]"
-                          >
-                            {{ bank.shortName || bank.short_name || bank.code }}
-                          </span>
-                          <div class="min-w-0">
-                            <p
-                              class="text-[11px] font-bold text-slate-700 dark:text-slate-300 truncate"
-                            >
-                              {{ bank.name }}
-                            </p>
-                            <span
-                              class="text-[8.5px] font-semibold text-slate-400 dark:text-slate-500 mt-0.5 block uppercase tracking-wide select-all"
-                              >BIN: {{ bank.bin }}</span
-                            >
-                          </div>
-                        </div>
-
-                        <!-- Checkmark icon -->
-                        <div
-                          v-if="linkedBank === bank.bin"
-                          class="shrink-0 text-shopee-orange"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-4 w-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            stroke-width="2.5"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-
-                      <!-- Empty filtered result state -->
-                      <div
-                        v-if="filteredBanks.length === 0"
-                        class="py-6 text-center text-slate-400 dark:text-slate-550 text-[10px] font-bold"
+                        {{
+                          selectedBankDetails.shortName ||
+                          selectedBankDetails.short_name ||
+                          selectedBankDetails.code
+                        }}
+                      </span>
+                      <span
+                        v-if="selectedBankDetails"
+                        class="truncate text-slate-750 dark:text-slate-350"
                       >
-                        Không tìm thấy ngân hàng nào khớp
-                      </div>
+                        {{ selectedBankDetails.name }}
+                      </span>
+                      <span v-else class="text-slate-400">Chọn ngân hàng...</span>
                     </div>
-                  </div>
-                </transition>
+                  </template>
+                  <template #item="{ item }">
+                    <div class="flex items-center gap-2.5 min-w-0 py-0.5 select-none">
+                      <span
+                        class="font-extrabold text-[10px] text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-950/20 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-800 shrink-0"
+                      >
+                        {{ item.shortName }}
+                      </span>
+                      <span class="truncate text-xs font-semibold text-slate-700 dark:text-slate-300">
+                        {{ item.name }}
+                      </span>
+                    </div>
+                  </template>
+                </USelectMenu>
               </div>
             </div>
 
@@ -549,7 +444,11 @@
             >
               <UAlert
                 v-if="bankMsg"
-                :icon="isBankError ? 'i-lucide-alert-triangle' : 'i-lucide-circle-check'"
+                :icon="
+                  isBankError
+                    ? 'i-lucide-alert-triangle'
+                    : 'i-lucide-circle-check'
+                "
                 :color="isBankError ? 'danger' : 'success'"
                 variant="soft"
                 :title="bankMsg"
@@ -566,27 +465,27 @@
               leave-from-class="transform translate-y-0 opacity-100"
               leave-to-class="transform -translate-y-2 opacity-0"
             >
-            <transition
-              enter-active-class="transition duration-200 ease-out"
-              enter-from-class="transform -translate-y-2 opacity-0"
-              enter-to-class="transform translate-y-0 opacity-100"
-              leave-active-class="transition duration-150 ease-in"
-              leave-from-class="transform translate-y-0 opacity-100"
-              leave-to-class="transform -translate-y-2 opacity-0"
-            >
-              <UButton
-                v-if="isEditingBank"
-                type="submit"
-                :loading="isUpdatingBank"
-                :disabled="isLoading || isBankLoading"
-                size="md"
-                color="primary"
-                variant="solid"
-                class="self-start px-6 font-bold text-xs shadow-md shadow-orange-500/10 cursor-pointer rounded-2xl"
+              <transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="transform -translate-y-2 opacity-0"
+                enter-to-class="transform translate-y-0 opacity-100"
+                leave-active-class="transition duration-150 ease-in"
+                leave-from-class="transform translate-y-0 opacity-100"
+                leave-to-class="transform -translate-y-2 opacity-0"
               >
-                {{ isBankLoading ? "Đang tải..." : "Liên kết tài khoản" }}
-              </UButton>
-            </transition>
+                <UButton
+                  v-if="isEditingBank"
+                  type="submit"
+                  :loading="isUpdatingBank"
+                  :disabled="isLoading || isBankLoading"
+                  size="md"
+                  color="primary"
+                  variant="solid"
+                  class="self-start px-6 font-bold text-xs shadow-md shadow-orange-500/10 cursor-pointer rounded-2xl"
+                >
+                  {{ isBankLoading ? "Đang tải..." : "Liên kết tài khoản" }}
+                </UButton>
+              </transition>
             </transition>
           </form>
         </div>
@@ -626,7 +525,7 @@ const rankInfo = computed(() => {
     return {
       name: "TINH HOA",
       fullName: "THÀNH VIÊN TINH HOA",
-      image: "/saffi_obsidian.png",
+      image: "/saffi_obsidian.webp",
       badgeClass:
         "bg-slate-900/10 dark:bg-slate-100/10 border-slate-900/20 text-slate-800 dark:text-slate-200",
       borderClass: "border-slate-200/60 dark:border-slate-800/80",
@@ -637,7 +536,7 @@ const rankInfo = computed(() => {
     return {
       name: "VÀNG",
       fullName: "THÀNH VIÊN VÀNG",
-      image: "/saffi_gold.png",
+      image: "/saffi_gold.webp",
       badgeClass:
         "bg-amber-500/10 dark:bg-amber-500/15 border-amber-500/20 text-amber-600 dark:text-amber-400",
       borderClass: "border-amber-500/20 dark:border-amber-500/20",
@@ -648,7 +547,7 @@ const rankInfo = computed(() => {
     return {
       name: "BẠC",
       fullName: "THÀNH VIÊN BẠC",
-      image: "/saffi_silver.png",
+      image: "/saffi_silver.webp",
       badgeClass:
         "bg-slate-300/10 dark:bg-slate-300/15 border-slate-300/20 text-slate-600 dark:text-slate-400",
       borderClass: "border-slate-200 dark:border-slate-800",
@@ -840,39 +739,14 @@ const fetchUserBankAccount = async () => {
   }
 };
 
-const isDropdownOpen = ref(false);
-const searchQuery = ref("");
-
-const toggleDropdown = () => {
-  if (!isEditingBank.value || isBankLoading.value || isUpdatingBank.value)
-    return;
-  isDropdownOpen.value = !isDropdownOpen.value;
-  if (isDropdownOpen.value) {
-    searchQuery.value = "";
-  }
-};
-
-const selectBank = (bin) => {
-  linkedBank.value = bin;
-  isDropdownOpen.value = false;
-};
-
-const filteredBanks = computed(() => {
-  const query = searchQuery.value.trim().toLowerCase();
+const selectMenuBanksList = computed(() => {
   const list = banks.value.length > 0 ? banks.value : fallbackBanks;
-  if (!query) return list;
-  return list.filter((bank) => {
-    const code = (bank.code || "").toLowerCase();
-    const shortName = (bank.shortName || bank.short_name || "").toLowerCase();
-    const name = (bank.name || "").toLowerCase();
-    const bin = (bank.bin || "").toLowerCase();
-    return (
-      code.includes(query) ||
-      shortName.includes(query) ||
-      name.includes(query) ||
-      bin.includes(query)
-    );
-  });
+  return list.map((b) => ({
+    bin: b.bin,
+    label: `${b.shortName || b.short_name || b.code} - ${b.name}`,
+    shortName: b.shortName || b.short_name || b.code,
+    name: b.name,
+  }));
 });
 
 const selectedBankDetails = computed(() => {

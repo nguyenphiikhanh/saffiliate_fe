@@ -14,7 +14,9 @@
           </h3>
         </div>
 
-        <div class="flex flex-col sm:flex-row justify-center gap-4 max-w-xs sm:max-w-3xl mx-auto w-full">
+        <div
+          class="flex flex-col sm:flex-row justify-center gap-4 max-w-xs sm:max-w-3xl mx-auto w-full"
+        >
           <!-- Shopee Card -->
           <button
             v-if="platforms.shopee"
@@ -30,7 +32,11 @@
             <div
               class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800 group-hover:scale-105"
             >
-              <img src="/icon/shopee.png" class="h-5.5 w-5.5 object-contain" alt="Shopee Logo" />
+              <img
+                src="/icon/shopee.png"
+                class="h-5.5 w-5.5 object-contain"
+                alt="Shopee Logo"
+              />
             </div>
 
             <!-- Brand Meta -->
@@ -73,7 +79,11 @@
             <div
               class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800 group-hover:scale-105"
             >
-              <img src="/icon/tiktok.png" class="h-5.5 w-5.5 object-contain" alt="TikTok Logo" />
+              <img
+                src="/icon/tiktok.png"
+                class="h-5.5 w-5.5 object-contain"
+                alt="TikTok Logo"
+              />
             </div>
 
             <div>
@@ -96,7 +106,10 @@
                 "
               >
                 <span>TikTok</span>
-                <span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/15 text-[8px] font-black uppercase tracking-wider shrink-0 select-none">BETA</span>
+                <span
+                  class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/15 text-[8px] font-black uppercase tracking-wider shrink-0 select-none"
+                  >BETA</span
+                >
               </div>
             </div>
           </button>
@@ -116,7 +129,11 @@
             <div
               class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800 group-hover:scale-105"
             >
-              <img src="/icon/lazada.png" class="h-5.5 w-5.5 object-contain" alt="Lazada Logo" />
+              <img
+                src="/icon/lazada.png"
+                class="h-5.5 w-5.5 object-contain"
+                alt="Lazada Logo"
+              />
             </div>
 
             <div>
@@ -139,7 +156,10 @@
                 "
               >
                 <span>Lazada</span>
-                <span class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/15 text-[8px] font-black uppercase tracking-wider shrink-0 select-none">BETA</span>
+                <span
+                  class="px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/15 text-[8px] font-black uppercase tracking-wider shrink-0 select-none"
+                  >BETA</span
+                >
               </div>
             </div>
           </button>
@@ -149,10 +169,9 @@
       <!-- Friendly Mascot Section -->
       <div class="flex justify-center mb-4 select-none">
         <div class="relative group">
-
           <!-- Cute Bee Mascot Image -->
-          <img
-            src="/saffi_gold.png"
+          <NuxtImg
+            src="/saffi_gold.webp"
             alt="Saffi Bee Mascot"
             class="h-16 w-16 sm:h-20 sm:w-20 object-contain relative z-10 transition-all duration-500 hover:scale-110 hover:-rotate-6 cursor-pointer animate-float"
           />
@@ -171,7 +190,11 @@
         >
           Dán link sản phẩm
           <span class="font-bold">{{
-            currentType === AFFILIATE_TYPES.SHOPEE ? "Shopee" : currentType === AFFILIATE_TYPES.TIKTOK ? "TikTok" : "Lazada"
+            currentType === AFFILIATE_TYPES.SHOPEE
+              ? "Shopee"
+              : currentType === AFFILIATE_TYPES.TIKTOK
+              ? "TikTok"
+              : "Lazada"
           }}</span>
           của bạn vào bên dưới để mua sắm và nhận hoàn tiền.
         </p>
@@ -194,9 +217,9 @@
                 : 'Dán link Lazada tại đây...'
             "
             icon="i-lucide-link"
-            :ui="{ 
+            :ui="{
               rounded: 'rounded-2xl',
-              ring: 'focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-500'
+              ring: 'focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-500',
             }"
             class="w-full font-semibold transition-all duration-300"
             :disabled="isLoading"
@@ -235,7 +258,9 @@
             class="flex items-center gap-2 text-yellow-600 dark:text-yellow-500 text-xs font-semibold px-2"
           >
             <UIcon name="i-lucide-alert-triangle" class="h-4 w-4 shrink-0" />
-            <span>Không nhận dạng được định dạng link. Vui lòng kiểm tra lại.</span>
+            <span
+              >Không nhận dạng được định dạng link. Vui lòng kiểm tra lại.</span
+            >
           </div>
         </transition>
 
@@ -267,8 +292,6 @@
       </transition>
     </div>
 
-
-
     <!-- Converted Result Card Component -->
     <ConvertLinkResult
       v-if="resultLink && !isLoading"
@@ -288,11 +311,13 @@ import { AFFILIATE_TYPES } from "@/utils/constants";
 
 const { user } = useAuth();
 const platforms = computed(() => {
-  return user.value?.platforms || {
-    shopee: true,
-    tiktok: true,
-    lazada: false,
-  };
+  return (
+    user.value?.platforms || {
+      shopee: true,
+      tiktok: true,
+      lazada: false,
+    }
+  );
 });
 
 const currentType = ref(AFFILIATE_TYPES.SHOPEE);
@@ -318,7 +343,11 @@ const initDefaultTab = () => {
   if (platforms.value) {
     if (!platforms.value.shopee && platforms.value.tiktok) {
       currentType.value = AFFILIATE_TYPES.TIKTOK;
-    } else if (!platforms.value.shopee && !platforms.value.tiktok && platforms.value.lazada) {
+    } else if (
+      !platforms.value.shopee &&
+      !platforms.value.tiktok &&
+      platforms.value.lazada
+    ) {
       currentType.value = AFFILIATE_TYPES.LAZADA;
     } else {
       currentType.value = AFFILIATE_TYPES.SHOPEE;
@@ -330,9 +359,13 @@ onMounted(() => {
   initDefaultTab();
 });
 
-watch(platforms, () => {
-  initDefaultTab();
-}, { deep: true });
+watch(
+  platforms,
+  () => {
+    initDefaultTab();
+  },
+  { deep: true }
+);
 
 // Check link validity as user types based on current platform type
 const isUrlValid = computed(() => {

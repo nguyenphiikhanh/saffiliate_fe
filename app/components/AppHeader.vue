@@ -23,7 +23,7 @@
               class="flex h-9 w-9 items-center justify-center shrink-0 transition-transform duration-500 group-hover:rotate-12 select-none"
             >
               <NuxtImg
-                src="/saficon.png"
+                src="/saficon.webp"
                 class="h-9 w-9 object-contain rounded-xl shadow-sm"
                 alt="Saffi Logo"
               />
