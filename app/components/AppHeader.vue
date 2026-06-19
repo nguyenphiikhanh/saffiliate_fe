@@ -45,9 +45,7 @@
                 : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
             ]"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-transform duration-300" :class="{'scale-110': route.path === '/'}" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/' ? '2.2' : '1.8'">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-            </svg>
+            <UIcon name="i-heroicons-squares-2x2-20-solid" class="w-5 h-5 transition-transform duration-300" :class="{'scale-110': route.path === '/'}" />
             <!-- Tooltip -->
             <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
               <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"></div>
@@ -69,14 +67,7 @@
                   : 'h-8 w-8 bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 text-shopee-orange hover:text-shopee-orange hover:bg-orange-500/10 hover:border-orange-500/20 hover:scale-105 active:scale-95'
               ]"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="transition-transform duration-500 group-hover:rotate-12" :class="[route.path === '/hoan-tien' ? 'w-[19px] h-[19px]' : 'w-[18px] h-[18px]']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/hoan-tien' ? '2.2' : '1.8'" stroke-linecap="round" stroke-linejoin="round">
-                <!-- Big curved star -->
-                <path d="M12 3c0 4.5 3.5 8 8 8c-4.5 0-8 3.5-8 8c0-4.5-3.5-8-8-8c4.5 0 8-3.5 8-8Z" />
-                <!-- Small dot -->
-                <circle cx="6" cy="18" r="1" fill="currentColor" />
-                <!-- Small star -->
-                <path d="M19 5c0 1.5 1 2.5 2.5 2.5C20 7.5 19 8.5 19 10c0-1.5-1-2.5-2.5-2.5C18 7.5 19 6.5 19 5Z" />
-              </svg>
+              <UIcon name="i-heroicons-sparkles-20-solid" class="transition-transform duration-500 group-hover:rotate-12" :class="[route.path === '/hoan-tien' ? 'w-[19px] h-[19px]' : 'w-[18px] h-[18px]']" />
               <!-- Glowing dot on desktop Hoàn Tiền to highlight main feature when inactive -->
               <span v-if="route.path !== '/hoan-tien'" class="absolute top-0 right-0 flex h-2 w-2">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -101,9 +92,7 @@
                   : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
               ]"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" :class="{'scale-110': route.path === '/don-hang'}" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/don-hang' ? '2.2' : '1.8'">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
+              <UIcon name="i-heroicons-shopping-bag-20-solid" class="h-5 w-5 transition-transform duration-300" :class="{'scale-110': route.path === '/don-hang'}" />
               <!-- Tooltip -->
               <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
                 <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"></div>
@@ -123,9 +112,7 @@
                   : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
               ]"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" :class="{'scale-110': route.path === '/tai-chinh'}" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/tai-chinh' ? '2.2' : '1.8'">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-              </svg>
+              <UIcon name="i-heroicons-credit-card-20-solid" class="h-5 w-5 transition-transform duration-300" :class="{'scale-110': route.path === '/tai-chinh'}" />
               <!-- Tooltip -->
               <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
                 <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"></div>
@@ -145,9 +132,7 @@
                   : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
               ]"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" :class="{'scale-110': route.path === '/huong-dan'}" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/huong-dan' ? '2.2' : '1.8'">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
+              <UIcon name="i-heroicons-book-open-20-solid" class="h-5 w-5 transition-transform duration-300" :class="{'scale-110': route.path === '/huong-dan'}" />
               <!-- Tooltip -->
               <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
                 <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"></div>
@@ -167,13 +152,11 @@
                   : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95'
               ]"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-300" :class="{'scale-110': route.path === '/ho-tro'}" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/ho-tro' ? '2.2' : '1.8'">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
+              <UIcon name="i-heroicons-question-mark-circle-20-solid" class="h-5 w-5 transition-transform duration-300" :class="{'scale-110': route.path === '/ho-tro'}" />
               <!-- Tooltip -->
               <div class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0">
-                <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-900 absolute -top-1 left-1/2 -translate-x-1/2"></div>
-                <div class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-900 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl">
+                <div class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-950 absolute -top-1 left-1/2 -translate-x-1/2"></div>
+                <div class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-950 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl">
                   Hỗ Trợ
                 </div>
               </div>
@@ -368,9 +351,7 @@
       class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
       :class="[route.path === '/' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400']"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/' ? 'scale-105' : '']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/' ? '2.5' : '2'">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
+      <UIcon name="i-heroicons-home-20-solid" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/' ? 'scale-105' : '']" />
       <span class="text-[10px] font-medium tracking-tight">Home</span>
     </NuxtLink>
 
@@ -380,11 +361,7 @@
       class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200 relative"
       :class="[route.path === '/hoan-tien' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400']"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/hoan-tien' ? 'scale-105 rotate-12' : '']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/hoan-tien' ? '2.5' : '2'" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 3c0 4.5 3.5 8 8 8c-4.5 0-8 3.5-8 8c0-4.5-3.5-8-8-8c4.5 0 8-3.5 8-8Z" />
-        <circle cx="6" cy="18" r="1" fill="currentColor" />
-        <path d="M19 5c0 1.5 1 2.5 2.5 2.5C20 7.5 19 8.5 19 10c0-1.5-1-2.5-2.5-2.5C18 7.5 19 6.5 19 5Z" />
-      </svg>
+      <UIcon name="i-heroicons-sparkles-20-solid" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/hoan-tien' ? 'scale-105 rotate-12' : '']" />
       <span class="text-[10px] font-medium tracking-tight" :class="{'font-bold text-shopee-orange': route.path === '/hoan-tien'}">Hoàn tiền</span>
       <!-- Subtle dot indicator if inactive -->
       <span v-if="route.path !== '/hoan-tien'" class="absolute top-2 right-4 flex h-2 w-2">
@@ -396,11 +373,9 @@
     <NuxtLink 
       to="/don-hang" 
       class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
-      :class="[route.path === '/don-hang' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400']"
+      :class="[route.path === '/don-hang' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-555 hover:text-slate-600 dark:hover:text-slate-400']"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/don-hang' ? 'scale-105' : '']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/don-hang' ? '2.5' : '2'">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-      </svg>
+      <UIcon name="i-heroicons-shopping-bag-20-solid" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/don-hang' ? 'scale-105' : '']" />
       <span class="text-[10px] font-medium tracking-tight">Đơn hàng</span>
     </NuxtLink>
 
@@ -408,11 +383,9 @@
     <NuxtLink 
       to="/tai-chinh" 
       class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
-      :class="[route.path === '/tai-chinh' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400']"
+      :class="[route.path === '/tai-chinh' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-555 hover:text-slate-600 dark:hover:text-slate-400']"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/tai-chinh' ? 'scale-105' : '']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/tai-chinh' ? '2.5' : '2'">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-      </svg>
+      <UIcon name="i-heroicons-credit-card-20-solid" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/tai-chinh' ? 'scale-105' : '']" />
       <span class="text-[10px] font-medium tracking-tight">Tài Chính</span>
     </NuxtLink>
 
@@ -420,11 +393,9 @@
     <NuxtLink 
       to="/ho-so" 
       class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
-      :class="[route.path === '/ho-so' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400']"
+      :class="[route.path === '/ho-so' ? 'text-shopee-orange' : 'text-slate-400 dark:text-slate-555 hover:text-slate-600 dark:hover:text-slate-400']"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/ho-so' ? 'scale-105' : '']" fill="none" viewBox="0 0 24 24" stroke="currentColor" :stroke-width="route.path === '/ho-so' ? '2.5' : '2'">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-      </svg>
+      <UIcon name="i-heroicons-user-20-solid" class="w-6 h-6 transition-transform duration-200" :class="[route.path === '/ho-so' ? 'scale-105' : '']" />
       <span class="text-[10px] font-medium tracking-tight">Cá nhân</span>
     </NuxtLink>
   </div>

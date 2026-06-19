@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6 animate-in fade-in duration-500">
+  <div class="flex flex-col gap-6 animate-in fade-in duration-500 pb-12">
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
@@ -8,76 +8,102 @@
       </div>
     </div>
 
-    <!-- Stats Cards (Mock) -->
+    <!-- Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <!-- Total Users -->
-      <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
-        <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
+      <UCard
+        :ui="{
+          body: 'p-5 flex items-center gap-4',
+          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+          background: 'bg-white dark:bg-slate-900',
+          rounded: 'rounded-xl shadow-sm'
+        }"
+      >
+        <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-650 dark:text-indigo-400 flex items-center justify-center shrink-0">
+          <UIcon name="i-heroicons-users" class="h-5 w-5" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng Users</div>
           <div class="text-xl font-bold text-slate-800 dark:text-white mt-0.5 tracking-tight">1,248</div>
         </div>
-      </div>
+      </UCard>
+
       <!-- Successful Orders -->
-      <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
-        <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+      <UCard
+        :ui="{
+          body: 'p-5 flex items-center gap-4',
+          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+          background: 'bg-white dark:bg-slate-900',
+          rounded: 'rounded-xl shadow-sm'
+        }"
+      >
+        <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-650 dark:text-emerald-400 flex items-center justify-center shrink-0">
+          <UIcon name="i-heroicons-check-circle" class="h-5 w-5" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Đơn thành công</div>
           <div class="text-xl font-bold text-slate-800 dark:text-white mt-0.5 tracking-tight">856</div>
         </div>
-      </div>
+      </UCard>
+
       <!-- Total Commission -->
-      <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
-        <div class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08-.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+      <UCard
+        :ui="{
+          body: 'p-5 flex items-center gap-4',
+          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+          background: 'bg-white dark:bg-slate-900',
+          rounded: 'rounded-xl shadow-sm'
+        }"
+      >
+        <div class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-650 dark:text-amber-400 flex items-center justify-center shrink-0">
+          <UIcon name="i-heroicons-banknotes" class="h-5 w-5" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng Hoa hồng</div>
           <div class="text-xl font-bold text-slate-800 dark:text-white mt-0.5 tracking-tight">42.5M</div>
         </div>
-      </div>
+      </UCard>
+
       <!-- Pending Orders -->
-      <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
-        <div class="w-10 h-10 rounded-lg bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+      <UCard
+        :ui="{
+          body: 'p-5 flex items-center gap-4',
+          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+          background: 'bg-white dark:bg-slate-900',
+          rounded: 'rounded-xl shadow-sm'
+        }"
+      >
+        <div class="w-10 h-10 rounded-lg bg-rose-50 dark:bg-rose-900/30 text-rose-650 dark:text-rose-450 flex items-center justify-center shrink-0">
+          <UIcon name="i-heroicons-clock" class="h-5 w-5" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Đơn chờ duyệt</div>
           <div class="text-xl font-bold text-slate-800 dark:text-white mt-0.5 tracking-tight">142</div>
         </div>
-      </div>
+      </UCard>
     </div>
 
-    <!-- Leaderboard Section (Tab-based) -->
-    <div class="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden mt-2">
-      <!-- Decorative Background SVG -->
+    <!-- Leaderboard Section -->
+    <UCard
+      :ui="{
+        body: 'p-6 md:p-8',
+        ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+        background: 'bg-white dark:bg-slate-900',
+        rounded: 'rounded-2xl shadow-sm'
+      }"
+      class="relative overflow-hidden mt-2"
+    >
+      <!-- Decorative Background Icon -->
       <div class="absolute top-0 right-0 p-8 opacity-[0.03] dark:opacity-[0.02] pointer-events-none scale-150 transform translate-x-10 -translate-y-10">
-        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-        </svg>
+        <UIcon name="i-heroicons-sparkles" class="w-[200px] h-[200px]" />
       </div>
 
       <!-- Header & Tabs -->
       <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 relative z-10 gap-5">
-        
         <!-- Title -->
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-amber-50 dark:bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-            </svg>
+            <UIcon name="i-heroicons-sparkles" class="h-6 w-6" />
           </div>
           <h3 class="text-xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">Bảng Xếp Hạng</h3>
         </div>
@@ -95,30 +121,34 @@
             leave-to-class="opacity-0 scale-95 translate-x-4 max-w-0"
           >
             <div v-show="activeTab === 'monthly'" class="relative shrink-0 z-10 w-full sm:w-auto">
-              <input 
+              <UInput 
                 type="month" 
                 v-model="selectedMonth" 
-                class="w-full sm:w-auto px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-full text-sm bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-200 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/50 shadow-sm cursor-pointer"
+                size="md"
+                class="w-full sm:w-auto font-bold"
+                :ui="{ rounded: 'rounded-full' }"
               />
             </div>
           </transition>
 
           <!-- Pill Tabs -->
           <div class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-full border border-slate-200/50 dark:border-slate-700/50 relative z-20 shrink-0">
-            <button 
+            <UButton 
               @click="activeTab = 'allTime'"
-              class="flex-1 sm:flex-none px-6 py-2 text-sm font-bold rounded-full transition-all duration-300"
-              :class="activeTab === 'allTime' ? 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-500 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
+              :variant="activeTab === 'allTime' ? 'solid' : 'ghost'"
+              :color="activeTab === 'allTime' ? 'primary' : 'neutral'"
+              class="px-6 py-2 text-sm font-bold rounded-full"
             >
               Tất Cả
-            </button>
-            <button 
+            </UButton>
+            <UButton 
               @click="activeTab = 'monthly'"
-              class="flex-1 sm:flex-none px-6 py-2 text-sm font-bold rounded-full transition-all duration-300"
-              :class="activeTab === 'monthly' ? 'bg-white dark:bg-slate-900 text-amber-600 dark:text-amber-500 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'"
+              :variant="activeTab === 'monthly' ? 'solid' : 'ghost'"
+              :color="activeTab === 'monthly' ? 'primary' : 'neutral'"
+              class="px-6 py-2 text-sm font-bold rounded-full"
             >
               Tháng Này
-            </button>
+            </UButton>
           </div>
         </div>
       </div>
@@ -127,15 +157,13 @@
       <div class="relative min-h-[400px]">
         <!-- Loading State -->
         <div v-if="pendingLeaderboard" class="absolute inset-0 flex flex-col gap-3">
-          <div v-for="i in 5" :key="i" class="h-20 bg-slate-100 dark:bg-slate-800/50 rounded-2xl animate-pulse"></div>
+          <USkeleton v-for="i in 5" :key="i" class="h-20 rounded-2xl" />
         </div>
 
         <!-- Empty State -->
         <div v-else-if="!currentData || currentData.length === 0" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 gap-3">
-           <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-slate-300 dark:text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-           </svg>
-           <p class="text-sm font-medium">Chưa có dữ liệu thống kê trong khoảng thời gian này</p>
+          <UIcon name="i-heroicons-arrow-trending-up" class="h-12 w-12 text-slate-300 dark:text-slate-700" />
+          <p class="text-sm font-medium">Chưa có dữ liệu thống kê trong khoảng thời gian này</p>
         </div>
 
         <!-- Data List -->
@@ -143,13 +171,12 @@
           <div 
             v-for="(user, idx) in currentData" 
             :key="user.userId"
-            class="flex items-center justify-between p-4 sm:px-6 rounded-2xl transition-all duration-300"
+            class="flex items-center justify-between p-4 sm:px-6 rounded-2xl transition-all duration-300 border shadow-sm group hover:-translate-y-0.5 hover:shadow-md"
             :class="[
               idx === 0 ? 'bg-gradient-to-r from-amber-100 to-amber-50/50 dark:from-amber-900/30 dark:to-amber-900/10 border-amber-200 dark:border-amber-700/50' :
               idx === 1 ? 'bg-gradient-to-r from-slate-100 to-slate-50/50 dark:from-slate-800/50 dark:to-slate-800/30 border-slate-200 dark:border-slate-700' :
               idx === 2 ? 'bg-gradient-to-r from-orange-100/60 to-orange-50/30 dark:from-orange-900/20 dark:to-orange-900/10 border-orange-200/60 dark:border-orange-800/50' :
               'bg-slate-50/50 dark:bg-slate-800/30 border-transparent hover:border-slate-200 dark:hover:border-slate-700',
-              'border shadow-sm group hover:-translate-y-0.5 hover:shadow-md'
             ]"
           >
             <!-- Left Info -->
@@ -193,21 +220,17 @@
               :class="idx <= 2 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-700 dark:text-slate-300'"
             >
               {{ formatMoney(user.totalCommission) }}
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 opacity-40 text-emerald-600 dark:text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
-                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.736 6.979C9.208 6.193 9.696 6 10 6c.304 0 .792.193 1.264.979a1 1 0 001.715-1.029C12.279 4.784 11.232 4 10 4s-2.279.784-2.979 1.95c-.285.498.026 1.05.571 1.05h1.144zM11 11.5a1 1 0 11-2 0 1 1 0 012 0zm-1.5-3a.5.5 0 000 1h1a.5.5 0 000-1h-1z" clip-rule="evenodd" />
-              </svg>
+              <UIcon name="i-heroicons-currency-dollar" class="h-4 w-4 sm:h-5 sm:w-5 opacity-40 text-emerald-600 dark:text-emerald-400" />
             </div>
           </div>
         </div>
       </div>
-    </div>
-
+    </UCard>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
-import { useAppFetch } from '@/composables/useAppFetch';
 
 definePageMeta({
   layout: "admin"

@@ -59,26 +59,21 @@
         <div
           class="flex flex-row gap-3 w-full md:w-auto shrink-0 relative z-10 mt-1 md:mt-0"
         >
-          <NuxtLink
+          <UButton
             to="/hoan-tien"
-            class="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-[#f05d40] md:hover:bg-[#e0482a] text-white text-[13px] font-bold uppercase tracking-wide rounded-[100px] transition-all shadow-[0_8px_24px_-6px_rgba(240,93,64,0.6)] md:hover:shadow-[0_12px_28px_-6px_rgba(240,93,64,0.7)] active:scale-95 group"
+            size="md"
+            color="primary"
+            variant="solid"
+            class="flex-1 md:flex-none justify-center gap-2 px-6 py-2.5 font-bold uppercase tracking-wide rounded-full transition-all shadow-[0_8px_24px_-6px_rgba(240,93,64,0.6)] hover:shadow-[0_12px_28px_-6px_rgba(240,93,64,0.7)] active:scale-95 group cursor-pointer"
           >
             MUA SẮM HOÀN TIỀN NGAY
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
+            <template #trailing>
+              <UIcon
+                name="i-heroicons-arrow-right-20-solid"
+                class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
               />
-            </svg>
-          </NuxtLink>
+            </template>
+          </UButton>
         </div>
       </div>
 
@@ -90,7 +85,7 @@
         <div
           class="relative w-[100px] h-[100px] shrink-0 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800"
           :style="{
-            background: `conic-gradient(#f97316 ${rankProgress.percent}%, #e2e8f0 ${rankProgress.percent}%)`,
+            background: `conic-gradient(var(--color-shopee-orange) ${rankProgress.percent}%, var(--ui-neutral-200, #e2e8f0) ${rankProgress.percent}%)`,
           }"
         >
           <!-- inner circle cutout -->
@@ -182,32 +177,25 @@
             </h2>
           </div>
 
-          <!-- Tabs -->
           <div
-            class="inline-flex bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl shadow-inner"
+            class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-full border border-slate-200/50 dark:border-slate-700/50 relative z-20 shrink-0"
           >
-            <button
+            <UButton
               @click="activeTab = 'allTime'"
-              :class="[
-                'px-4 py-2 text-[13px] font-bold rounded-lg transition-all duration-300',
-                activeTab === 'allTime'
-                  ? 'bg-white dark:bg-slate-700 text-shopee-orange shadow-sm'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200',
-              ]"
+              :variant="activeTab === 'allTime' ? 'solid' : 'ghost'"
+              :color="activeTab === 'allTime' ? 'primary' : 'neutral'"
+              class="px-5 py-2 text-xs font-bold rounded-full cursor-pointer"
             >
               Tất Cả
-            </button>
-            <button
+            </UButton>
+            <UButton
               @click="activeTab = 'monthly'"
-              :class="[
-                'px-4 py-2 text-[13px] font-bold rounded-lg transition-all duration-300',
-                activeTab === 'monthly'
-                  ? 'bg-white dark:bg-slate-700 text-shopee-orange shadow-sm'
-                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200',
-              ]"
+              :variant="activeTab === 'monthly' ? 'solid' : 'ghost'"
+              :color="activeTab === 'monthly' ? 'primary' : 'neutral'"
+              class="px-5 py-2 text-xs font-bold rounded-full cursor-pointer"
             >
               Tháng Này
-            </button>
+            </UButton>
           </div>
         </div>
 
@@ -348,20 +336,10 @@
               <div
                 class="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-emerald-500/30 text-emerald-500 dark:text-emerald-400 mb-1 shadow-sm bg-white dark:bg-slate-900"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
+                <UIcon
+                  name="i-heroicons-check-20-solid"
                   class="h-4 w-4 md:h-5 md:w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="3"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+                />
               </div>
               <div
                 class="font-black text-slate-700 dark:text-slate-200 text-[14px] md:text-[15px]"

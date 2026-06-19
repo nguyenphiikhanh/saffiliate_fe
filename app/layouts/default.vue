@@ -5,7 +5,7 @@
     <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-amber-500/5 blur-[120px] pointer-events-none"></div>
 
     <!-- Header -->
-    <ShopeeHeader />
+    <AppHeader />
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-10 z-10 relative">
@@ -19,7 +19,7 @@
     </main>
 
     <!-- Footer -->
-    <ShopeeFooter />
+    <AppFooter />
   </div>
 </template>
 

@@ -230,141 +230,63 @@
       </div>
 
       <!-- Main Login Card -->
-      <div
-        class="w-full max-w-md rounded-3xl p-6 md:p-8 glass-panel border border-slate-200/60 dark:border-slate-800/80 shadow-xl bg-white/90 dark:bg-slate-900/90 transition-all duration-400"
+      <UCard
+        class="w-full max-w-md shadow-xl bg-white/90 dark:bg-slate-900/90 transition-all duration-400"
+        :ui="{
+          body: 'p-6 md:p-8',
+          background: 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md',
+          ring: 'ring-1 ring-slate-200/60 dark:ring-slate-800/80',
+          rounded: 'rounded-3xl'
+        }"
       >
         <!-- Error Alert (Professional UI) -->
-        <Transition
-          enter-active-class="transition duration-300 ease-out"
-          enter-from-class="transform -translate-y-2 opacity-0"
-          enter-to-class="transform translate-y-0 opacity-100"
-          leave-active-class="transition duration-200 ease-in"
-          leave-from-class="transform translate-y-0 opacity-100"
-          leave-to-class="transform -translate-y-2 opacity-0"
-        >
-          <div
-            v-if="errorMessage"
-            class="mb-5 flex items-start gap-3 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-700 dark:text-red-300 text-sm"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 text-red-500 shrink-0 mt-0.5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <div class="flex-1">
-              <h4
-                class="font-bold text-red-800 dark:text-red-200 text-2xs uppercase tracking-wider"
-              >
-                Đăng nhập thất bại
-              </h4>
-              <p class="text-xs mt-1 leading-relaxed opacity-95">
-                {{ errorMessage }}
-              </p>
-            </div>
-            <button
-              @click="errorMessage = ''"
-              class="text-red-500 hover:text-red-700 dark:hover:text-red-100 transition-colors p-0.5 rounded-lg hover:bg-red-500/10 cursor-pointer"
-              type="button"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2.5"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-        </Transition>
+        <UAlert
+          v-if="errorMessage"
+          title="Đăng nhập thất bại"
+          :description="errorMessage"
+          color="red"
+          variant="subtle"
+          icon="i-heroicons-exclamation-triangle"
+          class="mb-5 rounded-2xl"
+          :close="{ onClick: () => errorMessage = '' }"
+        />
 
         <!-- Google Login Action Button -->
         <div class="mb-6">
-          <button
+          <UButton
             @click="handleGoogleLogin"
             :disabled="isLoggingIn"
-            class="w-full flex items-center justify-center gap-3 px-5 py-4 rounded-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-shopee-orange dark:hover:border-shopee-orange hover:shadow-md dark:hover:shadow-shopee-orange/5 active:scale-[0.98] transition-premium cursor-pointer group disabled:opacity-50 disabled:cursor-not-allowed"
+            size="xl"
+            block
+            color="neutral"
+            variant="outline"
+            class="py-4 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-shopee-orange dark:hover:border-shopee-orange"
+            :loading="isLoggingIn"
           >
-            <!-- Google Logo SVG -->
-            <svg
-              class="h-6 w-6 shrink-0"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                fill="#4285F4"
-              />
-              <path
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                fill="#34A853"
-              />
-              <path
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                fill="#EA4335"
-              />
-            </svg>
-            <span
-              class="font-sans text-base font-semibold text-slate-700 dark:text-slate-200"
-            >
-              {{ isLoggingIn ? "Đang kết nối..." : "Tiếp tục với Google" }}
+            <template #leading>
+              <!-- Google Logo SVG -->
+              <svg class="h-6 w-6 shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+              </svg>
+            </template>
+            <span class="font-sans text-base font-semibold text-slate-700 dark:text-slate-200">
+              Tiếp tục với Google
             </span>
-            <!-- Arrow Right Icon -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4.5 w-4.5 text-slate-400 group-hover:text-shopee-orange group-hover:translate-x-1 transition-transform"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
-              />
-            </svg>
-          </button>
+            <template #trailing>
+              <UIcon name="i-heroicons-arrow-right" class="h-4.5 w-4.5 text-slate-400 group-hover:text-shopee-orange group-hover:translate-x-1 transition-transform" />
+            </template>
+          </UButton>
         </div>
 
         <!-- Google Recommendation Notice -->
         <p
           class="text-xs text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1.5 mb-6 font-medium"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-3.5 w-3.5 text-slate-400/80 dark:text-slate-500/80 shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-            />
-          </svg>
-          <span
-            >Google là phương thức đăng nhập chính và được khuyến nghị.</span
-          >
+          <UIcon name="i-heroicons-lock-closed-20-solid" class="h-3.5 w-3.5 text-slate-400/80 dark:text-slate-500/80 shrink-0" />
+          <span>Google là phương thức đăng nhập chính và được khuyến nghị.</span>
         </p>
 
         <!-- Terms and Conditions Agreement -->
@@ -390,23 +312,35 @@
           <div class="flex items-center justify-center gap-4">
             
             <!-- Zalo Group -->
-            <a :href="config.public.zaloGroup || '#'" target="_blank" rel="noopener noreferrer" class="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/40 text-[#0068FF] dark:text-blue-400 shadow-sm hover:shadow-md hover:bg-blue-100 dark:hover:bg-blue-900/50 hover:scale-105 active:scale-95 transition-premium" title="Nhóm Zalo hỗ trợ">
+            <UButton
+              :to="config.public.zaloGroup || '#'"
+              target="_blank"
+              size="lg"
+              color="primary"
+              variant="soft"
+              class="h-11 w-11 rounded-2xl flex items-center justify-center p-0"
+              title="Nhóm Zalo hỗ trợ"
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5.5 w-5.5">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
                 <text x="12" y="14" fill="currentColor" stroke="none" font-size="6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="900" text-anchor="middle">zalo</text>
               </svg>
-            </a>
+            </UButton>
 
             <!-- Email Support -->
-            <a href="mailto:support@saffi.vn" class="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 text-red-600 dark:text-red-400 shadow-sm hover:shadow-md hover:bg-red-100 dark:hover:bg-red-900/40 hover:scale-105 active:scale-95 transition-premium" title="Email Hỗ trợ">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5.5 w-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </a>
+            <UButton
+              to="mailto:support@saffi.vn"
+              size="lg"
+              color="red"
+              variant="soft"
+              class="h-11 w-11 rounded-2xl flex items-center justify-center p-0"
+              title="Email Hỗ trợ"
+              icon="i-heroicons-envelope"
+            />
 
           </div>
         </div>
-      </div>
+      </UCard>
     </div>
   </div>
 
@@ -438,21 +372,7 @@
         <div
           class="h-16 w-16 flex items-center justify-center rounded-2xl bg-gradient-to-br from-shopee-orange to-amber-500 shadow-lg shadow-shopee-orange/20 mb-6 animate-pulse-slow"
         >
-          <svg
-            class="h-9 w-9 text-white"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
-            />
-            <line x1="12" y1="9" x2="12" y2="13" />
-            <line x1="12" y1="17" x2="12.01" y2="17" />
-          </svg>
+          <UIcon name="i-heroicons-exclamation-triangle" class="h-9 w-9 text-white" />
         </div>
 
         <h3
@@ -628,65 +548,29 @@
         <!-- Actions Area -->
         <div class="w-full mt-6 flex flex-col gap-3">
           <!-- Android Dynamic open chrome action -->
-          <button
+          <UButton
             v-if="webViewInfo.isAndroid"
             @click="redirectToSystemBrowser"
-            class="w-full flex items-center justify-center gap-2.5 px-5 py-4 rounded-2xl bg-gradient-to-r from-shopee-orange to-amber-500 hover:shadow-lg hover:shadow-shopee-orange/25 text-white font-bold text-base active:scale-[0.98] transition-premium cursor-pointer border-0"
+            size="xl"
+            block
+            class="py-4 rounded-2xl bg-gradient-to-r from-shopee-orange to-amber-500 text-white font-bold text-base hover:shadow-lg hover:shadow-shopee-orange/25 border-0"
+            icon="i-heroicons-arrow-top-right-on-square"
           >
-            <svg
-              class="w-5 h-5 shrink-0 animate-bounce"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-              />
-            </svg>
-            <span>Mở trình duyệt mặc định</span>
-          </button>
+            Mở trình duyệt mặc định
+          </UButton>
 
           <!-- IOS Dynamic Copy Link action -->
-          <button
+          <UButton
             @click="copyLink"
-            class="w-full flex items-center justify-center gap-2.5 px-5 py-4 rounded-2xl border border-slate-700 bg-slate-800/50 hover:bg-slate-800 text-slate-200 hover:text-white font-bold text-base active:scale-[0.98] transition-premium cursor-pointer"
+            size="xl"
+            block
+            color="neutral"
+            variant="soft"
+            class="py-4 rounded-2xl font-bold text-base"
+            :icon="isCopied ? 'i-heroicons-check' : 'i-heroicons-document-duplicate'"
           >
-            <!-- Copy or Tick icon -->
-            <svg
-              v-if="!isCopied"
-              class="w-5 h-5 shrink-0 text-slate-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
-              />
-            </svg>
-            <svg
-              v-else
-              class="w-5 h-5 shrink-0 text-emerald-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            <span>{{
-              isCopied ? "Đã sao chép liên kết!" : "Sao chép liên kết"
-            }}</span>
-          </button>
+            {{ isCopied ? "Đã sao chép liên kết!" : "Sao chép liên kết" }}
+          </UButton>
         </div>
       </div>
     </div>

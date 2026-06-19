@@ -181,10 +181,11 @@
       <div class="space-y-5">
         <div class="relative">
           <!-- Input Field -->
-          <input
+          <UInput
             ref="urlInput"
             v-model="rawUrl"
             type="text"
+            size="md"
             :placeholder="
               currentType === AFFILIATE_TYPES.SHOPEE
                 ? 'Dán link Shopee vào đây... (Ví dụ: https://shopee.vn/product/...)'
@@ -192,71 +193,26 @@
                 ? 'Dán link TikTok vào đây... (Ví dụ: https://vt.tiktok.com/...)'
                 : 'Dán link Lazada vào đây... (Ví dụ: https://s.lazada.vn/...)'
             "
-            class="w-full bg-white dark:bg-slate-950/85 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-2xl py-4 pl-12 pr-12 text-sm font-medium transition-all duration-300 input-focus-glow"
-            :class="{
-              'border-shopee-orange/50':
-                isValidating &&
-                isUrlValid &&
-                currentType === AFFILIATE_TYPES.SHOPEE,
-              'border-cyan-500/50':
-                isValidating &&
-                isUrlValid &&
-                currentType === AFFILIATE_TYPES.TIKTOK,
-              'border-blue-500/50':
-                isValidating &&
-                isUrlValid &&
-                currentType === AFFILIATE_TYPES.LAZADA,
-              'border-yellow-600/50':
-                isValidating && !isUrlValid && rawUrl.length > 0,
-            }"
+            icon="i-heroicons-link-20-solid"
+            :ui="{ rounded: 'rounded-2xl' }"
+            class="w-full font-semibold focus-within:ring-2 focus-within:ring-shopee-orange/20"
+            :disabled="isLoading"
             @input="checkUrlInput"
             @keyup.enter="handleConvert"
-            :disabled="isLoading"
-          />
-
-          <!-- Input Left Icon (Link SVG) -->
-          <span
-            class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+            <template #trailing>
+              <UButton
+                v-if="rawUrl"
+                icon="i-heroicons-x-mark-20-solid"
+                color="neutral"
+                variant="link"
+                :padded="false"
+                class="cursor-pointer"
+                @click="handleClear"
+                :disabled="isLoading"
               />
-            </svg>
-          </span>
-
-          <!-- Clear Button -->
-          <button
-            @click="handleClear"
-            v-if="rawUrl"
-            class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-white transition-colors duration-200"
-            :disabled="isLoading"
-            type="button"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+            </template>
+          </UInput>
         </div>
 
         <!-- Inline Validation Warning -->
@@ -265,106 +221,43 @@
             v-if="isValidating && !isUrlValid && rawUrl.length > 0"
             class="flex items-center gap-2 text-yellow-600 dark:text-yellow-500 text-xs font-semibold px-2"
           >
-            <!-- Warning Icon -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 shrink-0"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-            <span
-              >Không nhận dạng được định dạng link. Vui lòng kiểm tra lại.</span
-            >
+            <UIcon name="i-heroicons-exclamation-triangle-20-solid" class="h-4 w-4 shrink-0" />
+            <span>Không nhận dạng được định dạng link. Vui lòng kiểm tra lại.</span>
           </div>
         </transition>
 
         <!-- Convert Button -->
-        <button
+        <UButton
           @click="handleConvert"
           :disabled="isLoading || !rawUrl"
-          class="w-full transition-premium flex items-center justify-center gap-2 rounded-2xl py-4 font-sans text-sm font-bold uppercase tracking-wider select-none border"
-          :class="[
-            !rawUrl && !isLoading
-              ? 'bg-slate-100 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/60 text-slate-500 dark:text-slate-400 cursor-not-allowed shadow-none'
-              : 'bg-shopee-orange border-shopee-orange text-white glow-orange-button ' + (isLoading ? 'opacity-80 !cursor-wait' : 'hover:bg-shopee-orange-hover active:scale-98 cursor-pointer'),
-          ]"
+          :loading="isLoading"
+          size="md"
+          color="primary"
+          variant="solid"
+          class="w-full flex justify-center py-4 font-bold uppercase tracking-wider cursor-pointer rounded-2xl shadow-md shadow-orange-500/10"
         >
-          <!-- Loading Spinner -->
-          <span
-            v-if="isLoading"
-            class="animate-spin h-5 w-5 border-2 border-white/20 border-t-white rounded-full"
-          ></span>
-
-          <!-- Normal Icon -->
-          <svg
-            v-else
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-            />
-          </svg>
-
-          <span>{{ isLoading ? "Đang chuyển đổi..." : "Hoàn tiền" }}</span>
-        </button>
+          Hoàn tiền
+        </UButton>
       </div>
 
       <!-- Error Message Box -->
       <transition name="slide-fade">
-        <div
+        <UAlert
           v-if="error"
-          class="mt-6 flex items-start gap-3 rounded-2xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 p-4 text-sm text-red-700 dark:text-red-300 animate-fade-in-up transition-colors duration-400"
-        >
-          <!-- Error Icon -->
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 shrink-0 text-red-500 dark:text-red-400 mt-0.5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <div>
-            <h4
-              class="font-bold text-red-800 dark:text-red-200 transition-colors duration-400"
-            >
-              Đã xảy ra lỗi
-            </h4>
-            <p
-              class="mt-1 text-xs text-red-700/90 dark:text-red-300/90 leading-relaxed transition-colors duration-400"
-            >
-              {{ error }}
-            </p>
-          </div>
-        </div>
+          icon="i-heroicons-exclamation-circle-20-solid"
+          color="danger"
+          variant="soft"
+          title="Đã xảy ra lỗi"
+          :description="error"
+          class="mt-6 rounded-2xl"
+        />
       </transition>
     </div>
 
 
 
     <!-- Converted Result Card Component -->
-    <ShopeeResult
+    <ConvertLinkResult
       v-if="resultLink && !isLoading"
       :link="resultLink"
       :affiliate-link="affiliateLink"

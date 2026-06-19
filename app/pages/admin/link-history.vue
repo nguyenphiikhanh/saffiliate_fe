@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6 animate-in fade-in duration-500">
+  <div class="flex flex-col gap-6 animate-in fade-in duration-500 pb-12">
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
@@ -13,140 +13,102 @@
         </p>
       </div>
 
-      <button
+      <UButton
         @click="refresh"
-        :disabled="pending"
-        class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2.5 rounded-lg font-semibold text-[13px] transition-colors duration-200 disabled:opacity-50"
+        :loading="pending"
+        icon="i-heroicons-arrow-path"
+        variant="soft"
+        color="neutral"
+        size="sm"
+        class="font-bold text-xs"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-4 h-4"
-          :class="{ 'animate-spin text-slate-400': pending }"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2.5"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          />
-        </svg>
         Làm mới
-      </button>
+      </UButton>
     </div>
 
     <!-- Data Table Container -->
-    <div
-      class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm"
+    <UCard
+      :ui="{
+        body: 'p-0',
+        ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+        background: 'bg-white dark:bg-slate-900',
+        rounded: 'rounded-xl shadow-sm'
+      }"
+      class="overflow-hidden"
     >
       <!-- Filter Toolbar -->
       <div
         class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-4 bg-slate-50/50 dark:bg-slate-900/50"
       >
         <!-- Filter by User Button -->
-        <button
+        <UButton
           @click="showUserModal = true"
-          class="flex items-center gap-2 px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-sm font-medium transition-colors hover:border-slate-300 dark:hover:border-slate-600"
-          :class="
-            selectedUserFilter
-              ? 'text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-900/20'
-              : 'text-slate-700 dark:text-slate-200'
-          "
+          icon="i-heroicons-user"
+          variant="outline"
+          color="neutral"
+          class="font-medium text-xs max-w-[200px]"
+          :class="selectedUserFilter ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 border-emerald-500/20' : ''"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4.5 w-4.5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
-          <span class="truncate max-w-[150px]">{{
+          <span class="truncate">{{
             selectedUserFilter
               ? selectedUserFilter.name || selectedUserFilter.email
               : "Tìm theo người dùng"
           }}</span>
-          <div
-            v-if="selectedUserFilter"
-            @click.stop="clearUserFilter"
-            class="ml-1 p-0.5 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-800 transition-colors"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-3 w-3"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </div>
-        </button>
+          <template #trailing>
+            <UIcon
+              v-if="selectedUserFilter"
+              name="i-heroicons-x-mark"
+              class="h-3 w-3 cursor-pointer hover:text-rose-500"
+              @click.stop="clearUserFilter"
+            />
+          </template>
+        </UButton>
 
         <!-- Date Range Filter -->
         <div class="flex items-center gap-2">
-          <input
+          <UInput
             type="date"
             v-model="startDate"
-            class="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-sm text-slate-700 dark:text-slate-200 font-medium focus:outline-none focus:ring-1 focus:ring-slate-400"
+            size="sm"
+            class="font-medium w-38"
           />
           <span class="text-slate-400 font-medium text-sm">-</span>
-          <input
+          <UInput
             type="date"
             v-model="endDate"
-            class="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-sm text-slate-700 dark:text-slate-200 font-medium focus:outline-none focus:ring-1 focus:ring-slate-400"
+            size="sm"
+            class="font-medium w-38"
           />
         </div>
 
         <!-- Limit Selection -->
         <div class="flex items-center gap-2 ml-auto sm:ml-0">
-          <span class="text-sm font-medium text-slate-500">Hiển thị:</span>
-          <select
+          <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Hiển thị:</span>
+          <USelect
             v-model="limit"
-            class="px-2 py-1.5 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-sm font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-slate-400 cursor-pointer"
-          >
-            <option :value="10">10</option>
-            <option :value="20">20</option>
-            <option :value="50">50</option>
-            <option :value="100">100</option>
-          </select>
+            :items="[
+              { label: '10', value: 10 },
+              { label: '20', value: 20 },
+              { label: '50', value: 50 },
+              { label: '100', value: 100 }
+            ]"
+            size="xs"
+            class="font-bold w-18"
+          />
         </div>
 
         <!-- Clear Filter Button -->
-        <button
+        <UButton
           v-if="startDate || endDate || selectedUserFilter"
           @click="clearAllFilters"
-          class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors"
+          variant="link"
+          color="danger"
+          icon="i-heroicons-trash"
+          size="xs"
+          class="font-bold text-xs"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
           Xóa bộ lọc
-        </button>
+        </UButton>
       </div>
 
       <!-- Table -->
@@ -156,12 +118,12 @@
             <tr
               class="text-[10px] uppercase tracking-wider font-bold text-slate-500 bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800"
             >
-              <th class="px-4 py-3 pl-6 whitespace-nowrap w-[10%]">
+              <th class="px-4 py-3 pl-6 whitespace-nowrap w-[15%]">
                 Thời Gian
               </th>
-              <th class="px-4 py-3 whitespace-nowrap w-[20%]">Tạo Bởi</th>
-              <th class="px-4 py-3 whitespace-nowrap w-[10%]">Nền Tảng</th>
-              <th class="px-4 py-3 whitespace-nowrap w-[55%]">Sản Phẩm</th>
+              <th class="px-4 py-3 whitespace-nowrap w-[25%]">Tạo Bởi</th>
+              <th class="px-4 py-3 whitespace-nowrap w-[15%]">Nền Tảng</th>
+              <th class="px-4 py-3 whitespace-nowrap w-[40%]">Sản Phẩm</th>
               <th class="px-4 py-3 text-center whitespace-nowrap w-[5%]">
                 Chi Tiết
               </th>
@@ -172,12 +134,8 @@
           >
             <tr v-if="pending && !response">
               <td colspan="5" class="p-4">
-                <div class="flex flex-col gap-2 animate-pulse">
-                  <div
-                    v-for="i in 5"
-                    :key="i"
-                    class="h-10 bg-slate-100 dark:bg-slate-800/50 rounded w-full"
-                  ></div>
+                <div class="flex flex-col gap-2">
+                  <USkeleton v-for="i in 5" :key="i" class="h-10 w-full" />
                 </div>
               </td>
             </tr>
@@ -267,25 +225,10 @@
               </td>
               <!-- Chi tiết -->
               <td class="px-4 py-3 text-center">
-                <button
-                  class="text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200"
-                  type="button"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
+                <UIcon
+                  name="i-heroicons-chevron-right"
+                  class="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200"
+                />
               </td>
             </tr>
           </tbody>
@@ -301,57 +244,38 @@
           Trang {{ page }} / {{ totalPages }}
         </div>
         <div class="flex gap-1">
-          <button
-            @click="page--"
+          <UButton
+            icon="i-heroicons-chevron-left"
             :disabled="page <= 1"
-            class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
-          >
-            &lt;
-          </button>
-          <button
-            @click="page++"
+            variant="outline"
+            color="neutral"
+            size="xs"
+            @click="page--"
+          />
+          <UButton
+            icon="i-heroicons-chevron-right"
             :disabled="page >= totalPages"
-            class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
-          >
-            &gt;
-          </button>
+            variant="outline"
+            color="neutral"
+            size="xs"
+            @click="page++"
+          />
         </div>
       </div>
-    </div>
+    </UCard>
 
     <!-- Detail Drawer -->
-    <Teleport to="body">
-      <transition
-        enter-active-class="transition-opacity duration-300"
-        enter-from-class="opacity-0"
-        enter-to-class="opacity-100"
-        leave-active-class="transition-opacity duration-200"
-        leave-from-class="opacity-100"
-        leave-to-class="opacity-0"
-      >
-        <div
+    <USlideover v-model="isDrawerOpen">
+      <template #content>
+        <UCard
           v-if="selectedItem"
-          class="fixed inset-0 z-[200] bg-slate-900/40 backdrop-blur-sm"
-          @click="closeDetails"
-        ></div>
-      </transition>
-
-      <transition
-        enter-active-class="transition-transform duration-300 ease-out"
-        enter-from-class="translate-x-full"
-        enter-to-class="translate-x-0"
-        leave-active-class="transition-transform duration-200 ease-in"
-        leave-from-class="translate-x-0"
-        leave-to-class="translate-x-full"
-      >
-        <div
-          v-if="selectedItem"
-          class="fixed inset-y-0 right-0 z-[210] w-full max-w-2xl bg-white dark:bg-slate-950 shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col h-full overflow-hidden"
+          :ui="{
+            body: 'p-0 flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900',
+            header: 'p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between shrink-0',
+          }"
+          class="flex flex-col h-full overflow-hidden"
         >
-          <!-- Drawer Header -->
-          <div
-            class="flex items-start justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0"
-          >
+          <template #header>
             <div>
               <span
                 class="inline-block px-2.5 py-1 rounded text-[9px] font-bold uppercase tracking-wider mb-2 border"
@@ -366,34 +290,23 @@
               <h3
                 class="text-base font-bold text-slate-800 dark:text-slate-100"
               >
-                Product Info
+                Thông tin sản phẩm
               </h3>
               <p class="text-xs text-slate-500 mt-1 font-medium">
                 Lưu lúc:
                 {{ new Date(selectedItem.created_at).toLocaleString("vi-VN") }}
               </p>
             </div>
-            <button
+            <UButton
+              color="neutral"
+              variant="ghost"
+              icon="i-heroicons-x-mark"
+              class="rounded-lg"
               @click="closeDetails"
-              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </button>
-          </div>
+            />
+          </template>
 
-          <!-- Drawer Body -->
-          <div class="flex-1 overflow-y-auto p-6 bg-slate-50 dark:bg-slate-900">
+          <div class="p-6">
             <div
               class="bg-[#0D1117] rounded-xl overflow-hidden shadow-sm border border-slate-700"
             >
@@ -404,26 +317,16 @@
                   class="text-xs font-bold text-slate-400 uppercase tracking-widest"
                   >JSON Response</span
                 >
-                <button
+                <UButton
                   @click="copyJson(selectedItem.product_info)"
-                  class="text-xs font-bold text-slate-400 hover:text-white transition-colors flex items-center gap-1.5"
+                  color="neutral"
+                  variant="link"
+                  icon="i-heroicons-clipboard-document"
+                  size="xs"
+                  class="font-semibold text-xs text-slate-400 hover:text-white"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-3.5 w-3.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                  </svg>
                   Copy
-                </button>
+                </UButton>
               </div>
               <div class="p-4 overflow-x-auto">
                 <pre
@@ -433,298 +336,123 @@
               </div>
             </div>
           </div>
-        </div>
-      </transition>
-    </Teleport>
+        </UCard>
+      </template>
+    </USlideover>
 
-    <!-- User Selection Modal (Command Palette Style) -->
-    <Teleport to="body">
-      <transition
-        enter-active-class="transition duration-300 ease-out"
-        enter-from-class="opacity-0"
-        enter-to-class="opacity-100"
-        leave-active-class="transition duration-200 ease-in"
-        leave-from-class="opacity-100"
-        leave-to-class="opacity-0"
-      >
-        <div
-          v-if="showUserModal"
-          class="fixed inset-0 z-[300] flex items-start justify-center pt-[10vh] sm:pt-[15vh] p-4"
+    <!-- User Selection Modal -->
+    <UModal v-model="showUserModal">
+      <template #content>
+        <UCard
+          :ui="{
+            body: 'p-2 flex-1 overflow-y-auto bg-slate-50/50 dark:bg-slate-900/20 min-h-[150px] max-h-[400px]',
+            header: 'p-4 border-b border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900 flex items-center gap-3 shrink-0',
+            footer: 'p-4 border-t border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900 shrink-0'
+          }"
+          class="relative w-full max-w-xl overflow-hidden"
         >
-          <div
-            class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-            @click="showUserModal = false"
-          ></div>
-
-          <transition
-            enter-active-class="transition transform duration-300 ease-out"
-            enter-from-class="opacity-0 scale-95 -translate-y-4"
-            enter-to-class="opacity-100 scale-100 translate-y-0"
-            leave-active-class="transition transform duration-200 ease-in"
-            leave-from-class="opacity-100 scale-100 translate-y-0"
-            leave-to-class="opacity-0 scale-95 -translate-y-4"
-          >
-            <div
-              v-if="showUserModal"
-              class="relative bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200/50 dark:border-slate-800/50 overflow-hidden flex flex-col max-h-[500px]"
+          <template #header>
+            <UIcon name="i-heroicons-magnifying-glass" class="h-5 w-5 text-slate-400 shrink-0 ml-1" />
+            <UInput
+              v-model="userSearchQuery"
+              type="text"
+              placeholder="Tìm kiếm thành viên..."
+              class="flex-1 font-medium"
+              autofocus
+              @keydown.enter="handleUserSearch"
             >
-              <!-- Search Header (Seamless) -->
-              <div
-                class="relative flex items-center gap-3 px-4 py-4 border-b border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900"
-              >
-                <!-- Search Icon/Indicator -->
-                <svg
-                  class="h-5 w-5 text-slate-400 shrink-0 ml-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
+              <template #trailing>
+                <UButton
+                  v-if="userSearchQuery"
+                  color="neutral"
+                  variant="link"
+                  icon="i-heroicons-x-mark"
+                  size="xs"
+                  @click="clearUserSearch"
+                />
+              </template>
+            </UInput>
+            <UButton
+              @click="handleUserSearch"
+              size="sm"
+              class="font-semibold text-xs whitespace-nowrap shrink-0"
+            >
+              Tìm
+            </UButton>
+            <UButton
+              color="neutral"
+              variant="ghost"
+              icon="i-heroicons-x-mark"
+              class="shrink-0"
+              @click="showUserModal = false"
+            />
+          </template>
 
-                <!-- Input wrapper containing Input + Clear Button + Search Button -->
-                <div class="relative flex-1 flex items-center">
-                  <input
-                    v-model="userSearchQuery"
-                    type="text"
-                    placeholder="Tìm kiếm người dùng theo tên, email..."
-                    class="w-full pl-2 pr-24 py-2 bg-transparent text-base sm:text-lg focus:outline-none font-medium text-slate-800 dark:text-slate-100 placeholder-slate-400"
-                    autofocus
-                    @keydown.enter="handleUserSearch"
-                  />
+          <div v-if="usersLoading" class="flex flex-col items-center justify-center py-8 text-slate-400 gap-3">
+            <UIcon name="i-heroicons-arrow-path" class="animate-spin h-6 w-6 text-emerald-500" />
+            <span class="text-xs font-semibold">Đang tải...</span>
+          </div>
 
-                  <!-- Action buttons inside the right edge of input -->
-                  <div class="absolute right-0 flex items-center gap-2">
-                    <!-- Clear button -->
-                    <button
-                      v-if="userSearchQuery"
-                      @click="clearUserSearch"
-                      class="p-1 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                      title="Xóa tìm kiếm"
-                      type="button"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
+          <div v-else-if="usersList.length === 0" class="flex flex-col items-center justify-center py-8 text-slate-500 gap-2">
+            <UIcon name="i-heroicons-users" class="h-10 w-10 text-slate-300 dark:text-slate-700" />
+            <p class="text-sm font-medium">Không tìm thấy người dùng phù hợp</p>
+          </div>
 
-                    <!-- Search button -->
-                    <button
-                      @click="handleUserSearch"
-                      class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-200 font-semibold text-xs transition-colors duration-200 shadow-sm"
-                      type="button"
-                    >
-                      <span>Tìm</span>
-                    </button>
-                  </div>
+          <div v-else class="space-y-1">
+            <button
+              v-for="u in usersList"
+              :key="u.id"
+              @click="applyUserFilter(u)"
+              class="w-full flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-white dark:hover:bg-slate-800 transition-all duration-200 text-left group border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-sm"
+            >
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="h-10 w-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-800/50 overflow-hidden relative group-hover:scale-105 transition-transform">
+                  <img v-if="u.image" :src="u.image" class="h-full w-full object-cover" />
+                  <span v-else class="text-sm font-bold text-indigo-650 dark:text-indigo-400 uppercase">
+                    {{ u.name ? u.name.charAt(0) : "U" }}
+                  </span>
                 </div>
-
-                <!-- Divider -->
-                <div
-                  class="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 shrink-0"
-                ></div>
-
-                <!-- Close Button -->
-                <button
-                  @click="showUserModal = false"
-                  class="shrink-0 p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-                  title="Đóng (Esc)"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-
-              <!-- Users List -->
-              <div
-                class="flex-1 overflow-y-auto p-2 min-h-[150px] bg-slate-50/50 dark:bg-slate-900/20"
-              >
-                <div
-                  v-if="usersLoading"
-                  class="flex flex-col items-center justify-center h-full text-slate-400 gap-3 py-8"
-                >
-                  <svg
-                    class="animate-spin h-6 w-6 text-indigo-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      class="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      stroke-width="4"
-                    ></circle>
-                    <path
-                      class="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  <span class="text-sm font-medium">Đang tìm kiếm...</span>
-                </div>
-
-                <div
-                  v-else-if="usersList.length === 0"
-                  class="flex flex-col items-center justify-center h-full text-slate-500 gap-2 py-8"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-10 w-10 text-slate-300 dark:text-slate-700"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                  <p class="text-sm font-medium">
-                    Không tìm thấy người dùng phù hợp
-                  </p>
-                </div>
-
-                <div v-else class="space-y-1">
-                  <button
-                    v-for="u in usersList"
-                    :key="u.id"
-                    @click="applyUserFilter(u)"
-                    class="w-full flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-white dark:hover:bg-slate-800 transition-all duration-200 text-left group border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-sm"
-                  >
-                    <div class="flex items-center gap-3 min-w-0">
-                      <div
-                        class="h-10 w-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-800/50 overflow-hidden relative group-hover:scale-105 transition-transform"
-                      >
-                        <img
-                          v-if="u.image"
-                          :src="u.image"
-                          class="h-full w-full object-cover"
-                        />
-                        <span
-                          v-else
-                          class="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase"
-                          >{{ u.name ? u.name.charAt(0) : "U" }}</span
-                        >
-                      </div>
-                      <div class="flex flex-col min-w-0">
-                        <span
-                          class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"
-                          >{{ u.name || "Người dùng Saffi" }}</span
-                        >
-                        <span
-                          class="text-[11px] font-medium text-slate-500 truncate mt-0.5"
-                          >{{ u.email }}</span
-                        >
-                      </div>
-                    </div>
-                    <div
-                      class="opacity-0 group-hover:opacity-100 transition-opacity flex items-center shrink-0"
-                    >
-                      <span
-                        class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded"
-                        >CHỌN</span
-                      >
-                    </div>
-                  </button>
+                <div class="flex flex-col min-w-0">
+                  <span class="text-sm font-bold text-slate-850 dark:text-slate-100 truncate group-hover:text-emerald-500 transition-colors">
+                    {{ u.name || "Người dùng Saffi" }}
+                  </span>
+                  <span class="text-[11px] font-medium text-slate-500 truncate mt-0.5">{{ u.email }}</span>
                 </div>
               </div>
+              <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                <UBadge size="xs" color="success" variant="soft" class="font-bold text-[10px]">CHỌN</UBadge>
+              </div>
+            </button>
+          </div>
 
-              <!-- Pagination -->
-              <div
-                v-if="userPagination.totalPages > 1"
-                class="px-4 py-3 border-t border-slate-100 dark:border-slate-800/60 flex justify-between items-center bg-white dark:bg-slate-900"
-              >
-                <span
-                  class="text-[11px] font-bold text-slate-400 tracking-wider uppercase"
-                >
-                  Trang {{ userPagination.page }} /
-                  {{ userPagination.totalPages }}
-                </span>
-                <div class="flex gap-1">
-                  <button
-                    @click="changeUserPage(userPagination.page - 1)"
-                    :disabled="userPagination.page === 1"
-                    class="w-8 h-8 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                    type="button"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    @click="changeUserPage(userPagination.page + 1)"
-                    :disabled="
-                      userPagination.page === userPagination.totalPages
-                    "
-                    class="w-8 h-8 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                    type="button"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
-                </div>
+          <template #footer>
+            <div v-if="userPagination.totalPages > 1" class="flex justify-between items-center w-full">
+              <span class="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
+                Trang {{ userPagination.page }} / {{ userPagination.totalPages }}
+              </span>
+              <div class="flex gap-1">
+                <UButton
+                  icon="i-heroicons-chevron-left"
+                  :disabled="userPagination.page === 1"
+                  variant="outline"
+                  color="neutral"
+                  size="xs"
+                  @click="changeUserPage(userPagination.page - 1)"
+                />
+                <UButton
+                  icon="i-heroicons-chevron-right"
+                  :disabled="userPagination.page === userPagination.totalPages"
+                  variant="outline"
+                  color="neutral"
+                  size="xs"
+                  @click="changeUserPage(userPagination.page + 1)"
+                />
               </div>
             </div>
-          </transition>
-        </div>
-      </transition>
-    </Teleport>
+          </template>
+        </UCard>
+      </template>
+    </UModal>
   </div>
 </template>
 
@@ -796,6 +524,13 @@ watch([limit, startDate, endDate, selectedUserFilter], () => {
 // --- Detail Drawer ---
 const selectedItem = ref(null);
 
+const isDrawerOpen = computed({
+  get: () => !!selectedItem.value,
+  set: (val) => {
+    if (!val) selectedItem.value = null;
+  }
+});
+
 const openDetails = (item) => {
   selectedItem.value = item;
 };
@@ -803,17 +538,6 @@ const openDetails = (item) => {
 const closeDetails = () => {
   selectedItem.value = null;
 };
-
-watch(selectedItem, (newVal) => {
-  if (typeof document !== "undefined") {
-    if (newVal) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
-  }
-});
-
-onUnmounted(() => {
-  if (typeof document !== "undefined") document.body.style.overflow = "";
-});
 
 const formatJson = (obj) => {
   if (!obj) return "{}";
@@ -862,24 +586,9 @@ const clearUserSearch = () => {
   fetchUsers(1, "", 20);
 };
 
-const handleEscKey = (e) => {
-  if (e.key === "Escape") {
-    showUserModal.value = false;
-  }
-};
-
 watch(showUserModal, (newVal) => {
-  if (newVal) {
-    if (usersList.value.length === 0) {
-      fetchUsers(1, "", 20);
-    }
-    if (typeof window !== "undefined") {
-      window.addEventListener("keydown", handleEscKey);
-    }
-  } else {
-    if (typeof window !== "undefined") {
-      window.removeEventListener("keydown", handleEscKey);
-    }
+  if (newVal && usersList.value.length === 0) {
+    fetchUsers(1, "", 20);
   }
 });
 
@@ -896,11 +605,6 @@ const clearAllFilters = () => {
   startDate.value = "";
   endDate.value = "";
   selectedUserFilter.value = null;
-};
-
-const formatMoney = (val) => {
-  if (!val) return "0đ";
-  return Number(val).toLocaleString("vi-VN") + "đ";
 };
 
 const formatMiniJson = (obj) => {

@@ -1,5 +1,3 @@
-import tailwindcss from "@tailwindcss/vite";
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2026-01-01",
@@ -23,12 +21,10 @@ export default defineNuxtConfig({
 
   css: ["~/assets/css/main.css"],
 
-  modules: ["@nuxt/icon", "nuxt-vue3-google-signin", "@nuxt/image", "@nuxtjs/google-fonts"],
+  modules: ["@nuxt/ui", "nuxt-vue3-google-signin", "@nuxt/image", "@nuxtjs/google-fonts"],
 
   vite: {
-    plugins: [
-      tailwindcss(),
-    ],
+    plugins: [],
     optimizeDeps: {
       include: [
         '@vue/devtools-core',

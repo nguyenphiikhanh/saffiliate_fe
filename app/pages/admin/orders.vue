@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-6 animate-in fade-in duration-500 pb-12">
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
@@ -13,217 +13,166 @@
         </p>
       </div>
 
-      <button
+      <UButton
         @click="showUploadModal = true"
-        class="flex items-center gap-2 bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 px-4 py-2.5 rounded-lg font-semibold text-[13px] shadow-sm transition-all duration-200"
+        icon="i-heroicons-arrow-up-tray"
+        class="font-semibold text-xs"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2.5"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-          />
-        </svg>
         Upload CSV
-      </button>
+      </UButton>
     </div>
 
     <!-- Stats Cards -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      <div
-        class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm"
+      <UCard
+        :ui="{
+          body: 'p-5',
+          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+          background: 'bg-white dark:bg-slate-900',
+          rounded: 'rounded-xl shadow-sm'
+        }"
       >
-        <div
-          class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
-        >
+        <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
           Tổng đơn hàng
         </div>
-        <div
-          v-if="pending && !response"
-          class="h-8 w-16 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"
-        ></div>
-        <div
-          v-else
-          class="text-xl font-bold text-slate-800 dark:text-white mt-1"
-        >
+        <USkeleton v-if="pending && !response" class="h-8 w-16 mt-1" />
+        <div v-else class="text-xl font-bold text-slate-800 dark:text-white mt-1">
           {{ orders?.length || 0 }}
         </div>
-      </div>
-      <div
-        class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm"
+      </UCard>
+
+      <UCard
+        :ui="{
+          body: 'p-5',
+          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+          background: 'bg-white dark:bg-slate-900',
+          rounded: 'rounded-xl shadow-sm'
+        }"
       >
-        <div
-          class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
-        >
+        <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
           Chờ duyệt
         </div>
-        <div
-          v-if="pending && !response"
-          class="h-8 w-16 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"
-        ></div>
+        <USkeleton v-if="pending && !response" class="h-8 w-16 mt-1" />
         <div v-else class="text-xl font-bold text-amber-500 mt-1">
           {{ pendingCount }}
         </div>
-      </div>
-      <div
-        class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm"
+      </UCard>
+
+      <UCard
+        :ui="{
+          body: 'p-5',
+          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+          background: 'bg-white dark:bg-slate-900',
+          rounded: 'rounded-xl shadow-sm'
+        }"
       >
-        <div
-          class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
-        >
+        <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
           Hoa hồng sàn
         </div>
-        <div
-          v-if="pending && !response"
-          class="h-8 w-32 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"
-        ></div>
-        <div
-          v-else
-          class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mt-1"
-        >
+        <USkeleton v-if="pending && !response" class="h-8 w-32 mt-1" />
+        <div v-else class="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">
           {{ formatMoney(totalCommission) }}
         </div>
-      </div>
-      <div
-        class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm"
+      </UCard>
+
+      <UCard
+        :ui="{
+          body: 'p-5',
+          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+          background: 'bg-white dark:bg-slate-900',
+          rounded: 'rounded-xl shadow-sm'
+        }"
       >
-        <div
-          class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
-        >
+        <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
           Hoa hồng User nhận
         </div>
-        <div
-          v-if="pending && !response"
-          class="h-8 w-32 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"
-        ></div>
-        <div
-          v-else
-          class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-1"
-        >
+        <USkeleton v-if="pending && !response" class="h-8 w-32 mt-1" />
+        <div v-else class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">
           {{ formatMoney(totalUserCommission) }}
         </div>
-      </div>
-      <div
-        class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm col-span-2 md:col-span-1"
+      </UCard>
+
+      <UCard
+        :ui="{
+          body: 'p-5',
+          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+          background: 'bg-white dark:bg-slate-900',
+          rounded: 'rounded-xl shadow-sm'
+        }"
+        class="col-span-2 md:col-span-1"
       >
-        <div
-          class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider"
-        >
+        <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
           Doanh thu (Lợi nhuận)
         </div>
-        <div
-          v-if="pending && !response"
-          class="h-8 w-32 bg-slate-200 dark:bg-slate-800 rounded mt-1 animate-pulse"
-        ></div>
-        <div
-          v-else
-          class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-1"
-        >
+        <USkeleton v-if="pending && !response" class="h-8 w-32 mt-1" />
+        <div v-else class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-1">
           {{ formatMoney(systemRevenue) }}
         </div>
-      </div>
+      </UCard>
     </div>
 
     <!-- Data Table Container -->
-    <div
-      class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm"
+    <UCard
+      :ui="{
+        body: 'p-0',
+        ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
+        background: 'bg-white dark:bg-slate-900',
+        rounded: 'rounded-xl shadow-sm'
+      }"
+      class="overflow-hidden"
     >
       <!-- Toolbar -->
       <div
         class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-4 bg-slate-50/50 dark:bg-slate-900/50"
       >
         <!-- Filter by User Button -->
-        <button
+        <UButton
           @click="showUserModal = true"
-          class="flex items-center gap-2 px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-950 text-sm font-medium transition-colors hover:border-slate-300 dark:hover:bg-slate-600 cursor-pointer whitespace-nowrap"
-          :class="
-            selectedUserFilter
-              ? 'text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-900/20'
-              : 'text-slate-700 dark:text-slate-200'
-          "
-          type="button"
+          icon="i-heroicons-user"
+          variant="outline"
+          color="neutral"
+          class="font-medium text-xs max-w-[200px]"
+          :class="selectedUserFilter ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 border-emerald-500/20' : ''"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4.5 w-4.5 shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
-          <span class="truncate max-w-[150px] font-medium">{{
+          <span class="truncate">{{
             selectedUserFilter
               ? selectedUserFilter.name || selectedUserFilter.email
               : "Tìm theo người dùng"
           }}</span>
-          <div
-            v-if="selectedUserFilter"
-            @click.stop="clearUserFilter"
-            class="ml-1 p-0.5 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-800 transition-colors"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-3 w-3"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2.5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </div>
-        </button>
+          <template #trailing>
+            <UIcon
+              v-if="selectedUserFilter"
+              name="i-heroicons-x-mark"
+              class="h-3 w-3 cursor-pointer hover:text-rose-500"
+              @click.stop="clearUserFilter"
+            />
+          </template>
+        </UButton>
 
-        <select
+        <USelect
           v-model="selectedStatus"
-          class="block w-full sm:w-48 pl-3 pr-8 py-2 border border-slate-200 dark:border-slate-700 rounded-lg leading-5 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-1 focus:ring-slate-400 transition duration-150 ease-in-out cursor-pointer font-medium"
-        >
-          <option value="all">Tất cả trạng thái</option>
-          <option value="pending">Chờ duyệt</option>
-          <option value="success">Thành công</option>
-          <option value="cancelled">Đã hủy</option>
-        </select>
+          :items="[
+            { label: 'Tất cả trạng thái', value: 'all' },
+            { label: 'Chờ duyệt', value: 'pending' },
+            { label: 'Thành công', value: 'success' },
+            { label: 'Đã hủy', value: 'cancelled' }
+          ]"
+          size="sm"
+          class="font-medium w-48"
+        />
 
         <!-- Clear Filter Button -->
-        <button
+        <UButton
           v-if="selectedStatus !== 'all' || selectedUserFilter"
           @click="clearAllFilters"
-          class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors cursor-pointer whitespace-nowrap"
-          type="button"
+          variant="link"
+          color="danger"
+          icon="i-heroicons-trash"
+          size="xs"
+          class="font-bold text-xs"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
           Xóa bộ lọc
-        </button>
+        </UButton>
       </div>
 
       <!-- Table -->
@@ -235,39 +184,35 @@
               <tr
                 class="text-[10px] uppercase tracking-wider font-bold text-slate-500 bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800"
               >
-                <th class="px-4 py-3 pl-6 whitespace-nowrap w-[12%]">Mã đơn</th>
-                <th class="px-4 py-3 whitespace-nowrap w-[15%]">Người mua</th>
-                <th class="px-4 py-3 whitespace-nowrap w-[20%]">Sản phẩm</th>
-                <th class="px-4 py-3 whitespace-nowrap w-[10%]">Ngày</th>
-                <th class="px-4 py-3 text-right whitespace-nowrap w-[13%]">
+                <th class="px-4 py-3 pl-6 whitespace-nowrap">Mã đơn</th>
+                <th class="px-4 py-3 whitespace-nowrap">Người mua</th>
+                <th class="px-4 py-3 whitespace-nowrap">Sản phẩm</th>
+                <th class="px-4 py-3 whitespace-nowrap">Ngày</th>
+                <th class="px-4 py-3 text-right whitespace-nowrap">
                   Hoa hồng Sàn
                 </th>
-                <th class="px-4 py-3 text-right whitespace-nowrap w-[13%]">
+                <th class="px-4 py-3 text-right whitespace-nowrap">
                   Hoa hồng User
                 </th>
-                <th class="px-4 py-3 whitespace-nowrap text-center w-[12%]">
+                <th class="px-4 py-3 whitespace-nowrap text-center">
                   Trạng thái
                 </th>
-                <th class="px-4 py-3 whitespace-nowrap text-center w-[5%]"></th>
+                <th class="px-4 py-3 whitespace-nowrap text-center"></th>
               </tr>
             </thead>
             <tbody
               class="divide-y divide-slate-100 dark:divide-slate-800 text-sm"
             >
               <tr v-if="pending && !response">
-                <td colspan="7" class="p-4">
-                  <div class="flex flex-col gap-2 animate-pulse">
-                    <div
-                      v-for="i in 5"
-                      :key="i"
-                      class="h-10 bg-slate-100 dark:bg-slate-800/50 rounded w-full"
-                    ></div>
+                <td colspan="8" class="p-4">
+                  <div class="flex flex-col gap-2">
+                    <USkeleton v-for="i in 5" :key="i" class="h-10 w-full" />
                   </div>
                 </td>
               </tr>
               <tr v-else-if="!filteredOrders || filteredOrders.length === 0">
                 <td
-                  colspan="7"
+                  colspan="8"
                   class="p-8 text-center text-slate-500 text-sm font-medium"
                 >
                   Chưa có dữ liệu đơn hàng
@@ -282,12 +227,7 @@
               >
                 <!-- Mã đơn -->
                 <td class="px-4 py-3 pl-6">
-                  <div class="flex items-center gap-2">
-                    <span
-                      class="font-bold text-slate-700 dark:text-slate-200 text-xs"
-                      >#{{ item.order_id }}</span
-                    >
-                  </div>
+                  <span class="font-bold text-slate-700 dark:text-slate-200 text-xs">#{{ item.order_id }}</span>
                 </td>
                 <!-- Người mua -->
                 <td class="px-4 py-3">
@@ -317,7 +257,7 @@
                 </td>
                 <!-- Ngày -->
                 <td class="px-4 py-3">
-                  <div class="text-xs text-slate-500 font-medium">
+                  <div class="text-xs text-slate-505 font-medium">
                     {{
                       new Date(
                         item.order_time || Date.now()
@@ -328,7 +268,7 @@
                 <!-- Hoa hồng Sàn -->
                 <td class="px-4 py-3 text-right">
                   <div
-                    class="font-bold text-indigo-600 dark:text-indigo-500 text-[13px]"
+                    class="font-bold text-slate-805 dark:text-slate-200 text-[13px]"
                   >
                     {{
                       Math.round(item.actual_commission || 0).toLocaleString(
@@ -340,7 +280,7 @@
                 <!-- Hoa hồng User -->
                 <td class="px-4 py-3 text-right">
                   <div
-                    class="font-bold text-emerald-600 dark:text-emerald-500 text-[13px]"
+                    class="font-bold text-emerald-605 dark:text-emerald-500 text-[13px]"
                   >
                     {{
                       Math.round(item.user_commission || 0).toLocaleString(
@@ -351,38 +291,27 @@
                 </td>
                 <!-- Trạng thái -->
                 <td class="px-4 py-3 text-center">
-                  <span
-                    class="inline-block px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider"
-                    :class="getStatusClass(item.order_status)"
+                  <UBadge
+                    size="xs"
+                    variant="soft"
+                    :color="item.order_status === 'Completed' || item.order_status === 'Thành công' ? 'success' : item.order_status === 'Pending' || item.order_status === 'Chờ duyệt' ? 'warning' : 'danger'"
+                    class="font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded-full inline-block"
                   >
                     {{
-                      item.order_status === "Completed"
+                      item.order_status === "Completed" || item.order_status === "Thành công"
                         ? "HOÀN THÀNH"
-                        : item.order_status
+                        : item.order_status === "Pending" || item.order_status === "Chờ duyệt"
+                        ? "CHỜ DUYỆT"
+                        : "ĐÃ HỦY"
                     }}
-                  </span>
+                  </UBadge>
                 </td>
                 <!-- Hành động -->
                 <td class="px-4 py-3 text-center">
-                  <button
-                    class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
-                    type="button"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
+                  <UIcon
+                    name="i-heroicons-chevron-right"
+                    class="h-4 w-4 text-slate-400"
+                  />
                 </td>
               </tr>
             </tbody>
@@ -394,15 +323,11 @@
           class="block md:hidden border-t border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800"
         >
           <div v-if="pending && !response" class="p-4 space-y-3 animate-pulse">
-            <div
-              v-for="i in 3"
-              :key="i"
-              class="h-24 bg-slate-100 dark:bg-slate-800 rounded-lg w-full"
-            ></div>
+            <USkeleton v-for="i in 3" :key="i" class="h-24 w-full rounded-lg" />
           </div>
           <div
             v-else-if="!filteredOrders || filteredOrders.length === 0"
-            class="text-center py-6 text-slate-500 text-xs font-medium"
+            class="text-center py-6 text-slate-505 text-xs font-medium"
           >
             Chưa có dữ liệu đơn hàng
           </div>
@@ -417,16 +342,20 @@
               <span class="font-bold text-slate-800 dark:text-slate-200 text-xs"
                 >#{{ item.order_id }}</span
               >
-              <span
-                class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider"
-                :class="getStatusClass(item.order_status)"
+              <UBadge
+                size="xs"
+                variant="soft"
+                :color="item.order_status === 'Completed' || item.order_status === 'Thành công' ? 'success' : item.order_status === 'Pending' || item.order_status === 'Chờ duyệt' ? 'warning' : 'danger'"
+                class="font-bold uppercase tracking-wider text-[9px] px-2 py-0.5 rounded-full inline-block"
               >
                 {{
-                  item.order_status === "Completed"
+                  item.order_status === "Completed" || item.order_status === "Thành công"
                     ? "HOÀN THÀNH"
-                    : item.order_status
+                    : item.order_status === "Pending" || item.order_status === "Chờ duyệt"
+                    ? "CHỜ DUYỆT"
+                    : "ĐÃ HỦY"
                 }}
-              </span>
+              </UBadge>
             </div>
 
             <div
@@ -446,7 +375,7 @@
               <div class="flex gap-2 text-[11px]">
                 <span class="text-slate-400 font-medium"
                   >Sàn:
-                  <span class="font-bold text-indigo-600 dark:text-indigo-400"
+                  <span class="font-bold text-slate-800 dark:text-slate-200"
                     >{{
                       Math.round(item.actual_commission || 0).toLocaleString(
                         "vi-VN"
@@ -456,7 +385,7 @@
                 >
                 <span class="text-slate-400 font-medium"
                   >User:
-                  <span class="font-bold text-emerald-600 dark:text-emerald-400"
+                  <span class="font-bold text-emerald-600 dark:text-emerald-450"
                     >{{
                       Math.round(item.user_commission || 0).toLocaleString(
                         "vi-VN"
@@ -482,24 +411,27 @@
             class="flex items-center gap-1.5 text-xs text-slate-500 font-medium"
           >
             <span>Hiển thị:</span>
-            <select
+            <USelect
               v-model="limit"
-              class="border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 px-2 py-1 outline-none cursor-pointer font-semibold shadow-sm focus:border-slate-400"
-            >
-              <option :value="20">20</option>
-              <option :value="50">50</option>
-              <option :value="100">100</option>
-            </select>
+              :items="[
+                { label: '20', value: 20 },
+                { label: '50', value: 50 },
+                { label: '100', value: 100 }
+              ]"
+              size="xs"
+              class="font-bold w-18"
+            />
           </div>
         </div>
         <div class="flex gap-1" v-if="totalPages > 1">
-          <button
-            @click="currentPage > 1 && currentPage--"
+          <UButton
+            icon="i-heroicons-chevron-left"
             :disabled="currentPage === 1"
-            class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
-          >
-            &lt;
-          </button>
+            variant="outline"
+            color="neutral"
+            size="xs"
+            @click="currentPage > 1 && currentPage--"
+          />
           <template v-for="(p, index) in visiblePages" :key="index">
             <span
               v-if="p === '...'"
@@ -507,95 +439,57 @@
             >
               ...
             </span>
-            <button
+            <UButton
               v-else
               @click="currentPage = p"
-              :class="
-                currentPage === p
-                  ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold'
-                  : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-750'
-              "
-              class="w-8 h-8 rounded border font-semibold flex items-center justify-center text-xs shadow-sm transition-all duration-200"
+              :variant="currentPage === p ? 'solid' : 'outline'"
+              color="neutral"
+              size="xs"
+              class="w-8 h-8 font-semibold flex items-center justify-center text-xs"
             >
               {{ p }}
-            </button>
+            </UButton>
           </template>
-          <button
-            @click="currentPage < totalPages && currentPage++"
+          <UButton
+            icon="i-heroicons-chevron-right"
             :disabled="currentPage === totalPages"
-            class="w-8 h-8 rounded border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors"
-          >
-            &gt;
-          </button>
+            variant="outline"
+            color="neutral"
+            size="xs"
+            @click="currentPage < totalPages && currentPage++"
+          />
         </div>
       </div>
-    </div>
+    </UCard>
 
     <!-- Upload Modal -->
-    <div
-      v-if="showUploadModal"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4"
-    >
-      <div
-        class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
-        @click="showUploadModal = false"
-      ></div>
-      <div
-        class="relative bg-white dark:bg-slate-900 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden"
-      >
-        <!-- Modal Header -->
-        <div
-          class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/50"
+    <UModal v-model="showUploadModal">
+      <template #content>
+        <UCard
+          :ui="{
+            body: 'p-6 relative',
+            header: 'px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/50'
+          }"
+          class="relative w-full max-w-md overflow-hidden"
         >
-          <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">
-            Upload dữ liệu đối soát
-          </h3>
-          <button
-            @click="showUploadModal = false"
-            class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
-        </div>
+          <template #header>
+            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">
+              Upload dữ liệu đối soát
+            </h3>
+            <UButton
+              color="neutral"
+              variant="ghost"
+              icon="i-heroicons-x-mark"
+              @click="showUploadModal = false"
+            />
+          </template>
 
-        <!-- Modal Body (Drag & Drop) -->
-        <div class="p-6 relative">
           <!-- Loading Overlay -->
           <div
             v-if="isUploading"
             class="absolute inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm z-10 flex flex-col items-center justify-center"
           >
-            <svg
-              class="animate-spin h-8 w-8 text-slate-800 dark:text-white mb-3"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              ></circle>
-              <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
+            <UIcon name="i-heroicons-arrow-path" class="animate-spin h-8 w-8 text-emerald-500 mb-3" />
             <p class="text-sm font-bold text-slate-700 dark:text-slate-300">
               Đang xử lý...
             </p>
@@ -618,20 +512,7 @@
             <div
               class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 mb-3 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
+              <UIcon name="i-heroicons-document-arrow-up" class="h-6 w-6" />
             </div>
             <h4
               class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-1"
@@ -642,11 +523,9 @@
               hoặc click để chọn file từ máy tính
             </p>
 
-            <button
-              class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-lg text-xs font-semibold shadow-sm hover:opacity-90 transition-opacity"
-            >
+            <UButton size="xs" class="font-bold">
               Chọn file
-            </button>
+            </UButton>
           </div>
 
           <div
@@ -656,20 +535,7 @@
             <div
               class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-3"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 12h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
+              <UIcon name="i-heroicons-document-check" class="h-5 w-5" />
             </div>
             <h4
               class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-1 truncate max-w-full"
@@ -681,89 +547,61 @@
             </p>
 
             <div class="flex items-center gap-3 w-full">
-              <button
+              <UButton
                 @click="selectedFile = null"
-                class="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                variant="soft"
+                color="neutral"
+                class="flex-1 font-bold text-xs"
               >
                 Hủy
-              </button>
-              <button
+              </UButton>
+              <UButton
                 @click="confirmUpload"
-                class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-lg text-xs font-semibold shadow-sm hover:opacity-90 transition-opacity"
+                class="flex-1 font-bold text-xs"
               >
                 Upload
-              </button>
+              </UButton>
             </div>
           </div>
 
           <div class="mt-4 flex items-start gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 text-slate-400 mt-0.5 shrink-0"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <UIcon name="i-heroicons-information-circle" class="h-4 w-4 text-slate-400 mt-0.5 shrink-0" />
             <p class="text-[11px] text-slate-500 leading-relaxed">
               File CSV phải được trích xuất từ báo cáo của Shopee Affiliate. Hệ
               thống sẽ so khớp <span class="font-bold">Mã Đơn</span>.
             </p>
           </div>
-        </div>
-      </div>
-    </div>
+        </UCard>
+      </template>
+    </UModal>
 
     <!-- Order Details Drawer -->
-    <Teleport to="body">
-      <transition
-        enter-active-class="transition-opacity duration-300"
-        enter-from-class="opacity-0"
-        enter-to-class="opacity-100"
-        leave-active-class="transition-opacity duration-200"
-        leave-from-class="opacity-100"
-        leave-to-class="opacity-0"
-      >
-        <div
+    <USlideover v-model="isDrawerOpen">
+      <template #content>
+        <UCard
           v-if="selectedOrder"
-          class="fixed inset-0 z-[200] bg-slate-900/40 backdrop-blur-sm"
-          @click="closeOrderDetails"
-        ></div>
-      </transition>
-
-      <transition
-        enter-active-class="transition-transform duration-300 ease-out"
-        enter-from-class="translate-x-full"
-        enter-to-class="translate-x-0"
-        leave-active-class="transition-transform duration-200 ease-in"
-        leave-from-class="translate-x-0"
-        leave-to-class="translate-x-full"
-      >
-        <div
-          v-if="selectedOrder"
-          class="fixed inset-y-0 right-0 z-[210] w-full max-w-md bg-white dark:bg-slate-950 shadow-2xl border-l border-slate-200 dark:border-slate-800 flex flex-col h-full overflow-hidden"
+          :ui="{
+            body: 'p-6 space-y-6 flex-1 overflow-y-auto bg-white dark:bg-slate-950',
+            header: 'flex items-start justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0'
+          }"
+          class="flex flex-col h-full overflow-hidden"
         >
-          <!-- Drawer Header -->
-          <div
-            class="flex items-start justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0"
-          >
+          <template #header>
             <div>
-              <span
-                class="inline-block px-2.5 py-1 rounded text-[9px] font-bold uppercase tracking-wider mb-2"
-                :class="getStatusClass(selectedOrder.order_status)"
+              <UBadge
+                size="xs"
+                variant="soft"
+                :color="selectedOrder.order_status === 'Completed' || selectedOrder.order_status === 'Thành công' ? 'success' : selectedOrder.order_status === 'Pending' || selectedOrder.order_status === 'Chờ duyệt' ? 'warning' : 'danger'"
+                class="font-bold uppercase tracking-wider mb-2 text-[9px] px-2 py-0.5 rounded-full inline-block"
               >
                 {{
-                  selectedOrder.order_status === "Completed"
+                  selectedOrder.order_status === "Completed" || selectedOrder.order_status === "Thành công"
                     ? "HOÀN THÀNH"
-                    : selectedOrder.order_status
+                    : selectedOrder.order_status === "Pending" || selectedOrder.order_status === "Chờ duyệt"
+                    ? "CHỜ DUYỆT"
+                    : "ĐÃ HỦY"
                 }}
-              </span>
+              </UBadge>
               <h3
                 class="text-base font-bold text-slate-800 dark:text-slate-100"
               >
@@ -773,415 +611,262 @@
                 Cửa hàng: {{ selectedOrder.shop_name || "Shopee Store" }}
               </p>
             </div>
-            <button
+            <UButton
+              color="neutral"
+              variant="ghost"
+              icon="i-heroicons-x-mark"
+              class="rounded-lg"
               @click="closeOrderDetails"
-              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+            />
+          </template>
+
+          <!-- 1. Buyer & User Rank Info -->
+          <div
+            class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800"
+          >
+            <span
+              class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
+              >Thông tin người mua</span
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+            >
+              <div v-if="selectedOrder.user_id">
+                <h4
+                  class="text-sm font-bold text-slate-800 dark:text-slate-200"
+                >
+                  {{ selectedOrder.user_name || "Người dùng Saffi" }}
+                </h4>
+                <p
+                  class="text-[11px] text-slate-500 font-medium select-all mt-0.5"
+                >
+                  {{ selectedOrder.user_email }}
+                </p>
+              </div>
+              <div class="text-xs text-slate-400 italic" v-else>
+                Không tìm thấy thông tin người dùng
+              </div>
+
+              <!-- Rank at purchase -->
+              <div
+                v-if="selectedOrder.user_rank"
+                class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-white dark:bg-slate-800 border text-[10px] font-bold tracking-wider border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 self-start sm:self-auto"
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
+                Hạng: {{ getRankName(selectedOrder.user_rank) }} ({{
+                  selectedOrder.commission_rate
+                }}%)
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Product Info -->
+          <div>
+            <span
+              class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
+              >Thông tin sản phẩm</span
+            >
+            <div
+              class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800"
+            >
+              <div
+                class="text-sm font-semibold text-slate-700 dark:text-slate-200 leading-relaxed"
+              >
+                {{ selectedOrder.product_name || "Sản phẩm từ Shopee" }}
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Financial Breakdown Grid -->
+          <div>
+            <span
+              class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
+              >Chi tiết hoa hồng & doanh số</span
+            >
+            <div class="grid grid-cols-2 gap-3">
+              <div
+                class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-center"
+              >
+                <span
+                  class="text-[10px] font-semibold text-slate-500 uppercase block tracking-wider"
+                  >Giá trị</span
+                >
+                <span
+                  class="text-sm font-bold text-slate-800 dark:text-slate-200 block mt-1"
+                  >{{ formatMoney(selectedOrder.purchase_value) }}</span
+                >
+              </div>
+              <div
+                class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-center"
+              >
+                <span
+                  class="text-[10px] font-semibold text-slate-500 uppercase block tracking-wider"
+                  >Hoa hồng (Sàn)</span
+                >
+                <span
+                  class="text-sm font-bold text-slate-800 dark:text-slate-200 block mt-1"
+                  >+{{ formatMoney(selectedOrder.actual_commission) }}</span
+                >
+              </div>
+              <div
+                class="bg-emerald-50/50 dark:bg-emerald-900/10 p-3 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 text-center"
+              >
+                <span
+                  class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-500 uppercase block tracking-wider"
+                  >Hoa hồng (User)</span
+                >
+                <span
+                  class="text-sm font-bold text-emerald-600 dark:text-emerald-400 block mt-1"
+                  >+{{ formatMoney(selectedOrder.user_commission) }}</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Meta & Log Details -->
+          <div
+            class="pt-4 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-[11px] text-slate-550 font-medium"
+          >
+            <div>
+              Sub ID Tracking:
+              <span class="text-slate-700 dark:text-slate-300 select-all">{{
+                selectedOrder.sub_id
+              }}</span>
+            </div>
+            <div>
+              Giờ click:
+              <span class="text-slate-700 dark:text-slate-300">{{
+                selectedOrder.click_time
+                  ? new Date(selectedOrder.click_time).toLocaleString("vi-VN")
+                  : "N/A"
+              }}</span>
+            </div>
+            <div>
+              Giờ đặt:
+              <span class="text-slate-700 dark:text-slate-300">{{
+                selectedOrder.order_time
+                  ? new Date(selectedOrder.order_time).toLocaleString("vi-VN")
+                  : "N/A"
+              }}</span>
+            </div>
+          </div>
+        </UCard>
+      </template>
+    </USlideover>
+
+    <!-- User Selection Modal -->
+    <UModal v-model="showUserModal">
+      <template #content>
+        <UCard
+          :ui="{
+            body: 'p-2 flex-1 overflow-y-auto bg-slate-50/50 dark:bg-slate-900/20 min-h-[150px] max-h-[400px]',
+            header: 'p-4 border-b border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900 flex items-center gap-3 shrink-0',
+            footer: 'p-4 border-t border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900 shrink-0'
+          }"
+          class="relative w-full max-w-xl overflow-hidden"
+        >
+          <template #header>
+            <UIcon name="i-heroicons-magnifying-glass" class="h-5 w-5 text-slate-400 shrink-0 ml-1" />
+            <UInput
+              v-model="userSearchQuery"
+              type="text"
+              placeholder="Tìm kiếm thành viên..."
+              class="flex-1 font-medium"
+              autofocus
+              @keydown.enter="handleUserSearch"
+            >
+              <template #trailing>
+                <UButton
+                  v-if="userSearchQuery"
+                  color="neutral"
+                  variant="link"
+                  icon="i-heroicons-x-mark"
+                  size="xs"
+                  @click="clearUserSearch"
                 />
-              </svg>
+              </template>
+            </UInput>
+            <UButton
+              @click="handleUserSearch"
+              size="sm"
+              class="font-semibold text-xs whitespace-nowrap shrink-0"
+            >
+              Tìm
+            </UButton>
+            <UButton
+              color="neutral"
+              variant="ghost"
+              icon="i-heroicons-x-mark"
+              class="shrink-0"
+              @click="showUserModal = false"
+            />
+          </template>
+
+          <div v-if="usersLoading" class="flex flex-col items-center justify-center py-8 text-slate-400 gap-3">
+            <UIcon name="i-heroicons-arrow-path" class="animate-spin h-6 w-6 text-emerald-500" />
+            <span class="text-xs font-semibold">Đang tải...</span>
+          </div>
+
+          <div v-else-if="usersList.length === 0" class="flex flex-col items-center justify-center py-8 text-slate-500 gap-2">
+            <UIcon name="i-heroicons-users" class="h-10 w-10 text-slate-300 dark:text-slate-700" />
+            <p class="text-sm font-medium">Không tìm thấy người dùng phù hợp</p>
+          </div>
+
+          <div v-else class="space-y-1">
+            <button
+              v-for="u in usersList"
+              :key="u.id"
+              @click="applyUserFilter(u)"
+              class="w-full flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-white dark:hover:bg-slate-800 transition-all duration-200 text-left group border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-sm cursor-pointer"
+              type="button"
+            >
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="h-10 w-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-800/50 overflow-hidden relative group-hover:scale-105 transition-transform">
+                  <img v-if="u.image" :src="u.image" class="h-full w-full object-cover" />
+                  <span v-else class="text-sm font-bold text-indigo-650 dark:text-indigo-400 uppercase">
+                    {{ u.name ? u.name.charAt(0) : "U" }}
+                  </span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="text-sm font-bold text-slate-850 dark:text-slate-100 truncate group-hover:text-emerald-500 transition-colors">
+                    {{ u.name || "Người dùng Saffi" }}
+                  </span>
+                  <span class="text-[11px] font-medium text-slate-500 truncate mt-0.5">{{ u.email }}</span>
+                </div>
+              </div>
+              <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                <UBadge size="xs" color="success" variant="soft" class="font-bold text-[10px]">CHỌN</UBadge>
+              </div>
             </button>
           </div>
 
-          <!-- Drawer Content -->
-          <div
-            class="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide bg-white dark:bg-slate-950"
-          >
-            <!-- 1. Buyer & User Rank Info -->
-            <div
-              class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800"
-            >
-              <span
-                class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
-                >Thông tin người mua</span
-              >
-              <div
-                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
-              >
-                <div v-if="selectedOrder.user_id">
-                  <h4
-                    class="text-sm font-bold text-slate-800 dark:text-slate-200"
-                  >
-                    {{ selectedOrder.user_name || "Người dùng Saffi" }}
-                  </h4>
-                  <p
-                    class="text-[11px] text-slate-500 font-medium select-all mt-0.5"
-                  >
-                    {{ selectedOrder.user_email }}
-                  </p>
-                </div>
-                <div v-else class="text-xs text-slate-400 italic">
-                  Không tìm thấy thông tin người dùng
-                </div>
-
-                <!-- Rank at purchase -->
-                <div
-                  v-if="selectedOrder.user_rank"
-                  class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-white dark:bg-slate-800 border text-[10px] font-bold tracking-wider border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 self-start sm:self-auto"
-                >
-                  Hạng: {{ getRankName(selectedOrder.user_rank) }} ({{
-                    selectedOrder.commission_rate
-                  }}%)
-                </div>
-              </div>
-            </div>
-
-            <!-- 2. Product Info -->
-            <div>
-              <span
-                class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
-                >Thông tin sản phẩm</span
-              >
-              <div
-                class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800"
-              >
-                <div
-                  class="text-sm font-semibold text-slate-700 dark:text-slate-200 leading-relaxed"
-                >
-                  {{ selectedOrder.product_name || "Sản phẩm từ Shopee" }}
-                </div>
-              </div>
-            </div>
-
-            <!-- 3. Financial Breakdown Grid -->
-            <div>
-              <span
-                class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
-                >Chi tiết hoa hồng & doanh số</span
-              >
-              <div class="grid grid-cols-2 gap-3">
-                <div
-                  class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-center"
-                >
-                  <span
-                    class="text-[10px] font-semibold text-slate-500 uppercase block tracking-wider"
-                    >Giá trị</span
-                  >
-                  <span
-                    class="text-sm font-bold text-slate-800 dark:text-slate-200 block mt-1"
-                    >{{ formatMoney(selectedOrder.purchase_value) }}</span
-                  >
-                </div>
-                <div
-                  class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-center"
-                >
-                  <span
-                    class="text-[10px] font-semibold text-indigo-500 uppercase block tracking-wider"
-                    >Hoa hồng (Sàn)</span
-                  >
-                  <span
-                    class="text-sm font-bold text-indigo-600 dark:text-indigo-400 block mt-1"
-                    >+{{ formatMoney(selectedOrder.actual_commission) }}</span
-                  >
-                </div>
-                <div
-                  class="bg-emerald-50/50 dark:bg-emerald-900/10 p-3 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 text-center"
-                >
-                  <span
-                    class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-500 uppercase block tracking-wider"
-                    >Hoa hồng (User)</span
-                  >
-                  <span
-                    class="text-sm font-bold text-emerald-600 dark:text-emerald-400 block mt-1"
-                    >+{{ formatMoney(selectedOrder.user_commission) }}</span
-                  >
-                </div>
-              </div>
-            </div>
-
-            <!-- 4. Meta & Log Details -->
-            <div
-              class="pt-4 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-[11px] text-slate-500 font-medium"
-            >
-              <div>
-                Sub ID Tracking:
-                <span class="text-slate-700 dark:text-slate-300 select-all">{{
-                  selectedOrder.sub_id
-                }}</span>
-              </div>
-              <div>
-                Giờ click:
-                <span class="text-slate-700 dark:text-slate-300">{{
-                  selectedOrder.click_time
-                    ? new Date(selectedOrder.click_time).toLocaleString("vi-VN")
-                    : "N/A"
-                }}</span>
-              </div>
-              <div>
-                Giờ đặt:
-                <span class="text-slate-700 dark:text-slate-300">{{
-                  selectedOrder.order_time
-                    ? new Date(selectedOrder.order_time).toLocaleString("vi-VN")
-                    : "N/A"
-                }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </transition>
-    </Teleport>
-
-    <!-- User Selection Modal (Command Palette Style) -->
-    <Teleport to="body">
-      <transition
-        enter-active-class="transition duration-300 ease-out"
-        enter-from-class="opacity-0"
-        enter-to-class="opacity-100"
-        leave-active-class="transition duration-200 ease-in"
-        leave-from-class="opacity-100"
-        leave-to-class="opacity-0"
-      >
-        <div
-          v-if="showUserModal"
-          class="fixed inset-0 z-[300] flex items-start justify-center pt-[10vh] sm:pt-[15vh] p-4"
-        >
-          <div
-            class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-            @click="showUserModal = false"
-          ></div>
-
-          <transition
-            enter-active-class="transition transform duration-300 ease-out"
-            enter-from-class="opacity-0 scale-95 -translate-y-4"
-            enter-to-class="opacity-100 scale-100 translate-y-0"
-            leave-active-class="transition transform duration-200 ease-in"
-            leave-from-class="opacity-100 scale-100 translate-y-0"
-            leave-to-class="opacity-0 scale-95 -translate-y-4"
-          >
-            <div
-              v-if="showUserModal"
-              class="relative bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200/50 dark:border-slate-800/50 overflow-hidden flex flex-col max-h-[500px]"
-            >
-              <!-- Search Header (Seamless) -->
-              <div
-                class="relative flex items-center px-4 py-4 border-b border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900"
-              >
-                <svg
-                  class="h-5 w-5 text-slate-400 shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-                <input
-                  v-model="userSearchQuery"
-                  @keyup.enter="handleUserSearch"
-                  type="text"
-                  placeholder="Tìm kiếm người dùng theo tên, email..."
-                  class="w-full pl-3 pr-4 py-2 bg-transparent text-base sm:text-lg focus:outline-none font-medium text-slate-800 dark:text-slate-100 placeholder-slate-400"
-                  autofocus
+          <template #footer>
+            <div v-if="userPagination.totalPages > 1" class="flex justify-between items-center w-full">
+              <span class="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
+                Trang {{ userPagination.page }} / {{ userPagination.totalPages }}
+              </span>
+              <div class="flex gap-1">
+                <UButton
+                  icon="i-heroicons-chevron-left"
+                  :disabled="userPagination.page === 1"
+                  variant="outline"
+                  color="neutral"
+                  size="xs"
+                  @click="fetchUsers(userPagination.page - 1, userSearchQuery, 20)"
                 />
-                <button
-                  @click="handleUserSearch"
-                  class="shrink-0 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-1.5 rounded-lg text-sm font-semibold hover:opacity-90 mr-2 transition-opacity"
-                  type="button"
-                >
-                  Tìm kiếm
-                </button>
-                <button
-                  @click="showUserModal = false"
-                  class="shrink-0 p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-                  title="Đóng (Esc)"
-                  type="button"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-
-              <!-- Users List -->
-              <div
-                class="flex-1 overflow-y-auto p-2 min-h-[150px] bg-slate-50/50 dark:bg-slate-900/20"
-              >
-                <div
-                  v-if="usersLoading"
-                  class="flex flex-col items-center justify-center h-full text-slate-400 gap-3 py-8"
-                >
-                  <svg
-                    class="animate-spin h-6 w-6 text-indigo-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      class="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      stroke-width="4"
-                    ></circle>
-                    <path
-                      class="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  <span class="text-sm font-medium">Đang tìm kiếm...</span>
-                </div>
-
-                <div
-                  v-else-if="usersList.length === 0"
-                  class="flex flex-col items-center justify-center h-full text-slate-500 gap-2 py-8"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-10 w-10 text-slate-300 dark:text-slate-700"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                  <p class="text-sm font-medium">
-                    Không tìm thấy người dùng phù hợp
-                  </p>
-                </div>
-
-                <div v-else class="space-y-1">
-                  <button
-                    v-for="u in usersList"
-                    :key="u.id"
-                    @click="applyUserFilter(u)"
-                    class="w-full flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-white dark:hover:bg-slate-800 transition-all duration-200 text-left group border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-sm cursor-pointer"
-                    type="button"
-                  >
-                    <div class="flex items-center gap-3 min-w-0">
-                      <div
-                        class="h-10 w-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-800/50 overflow-hidden relative group-hover:scale-105 transition-transform"
-                      >
-                        <img
-                          v-if="u.image"
-                          :src="u.image"
-                          class="h-full w-full object-cover"
-                        />
-                        <span
-                          v-else
-                          class="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase"
-                          >{{ u.name ? u.name.charAt(0) : "U" }}</span
-                        >
-                      </div>
-                      <div class="flex flex-col min-w-0">
-                        <span
-                          class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"
-                          >{{ u.name || "Người dùng Saffi" }}</span
-                        >
-                        <span
-                          class="text-[11px] font-medium text-slate-500 truncate mt-0.5"
-                          >{{ u.email }}</span
-                        >
-                      </div>
-                    </div>
-                    <div
-                      class="opacity-0 group-hover:opacity-100 transition-opacity flex items-center shrink-0"
-                    >
-                      <span
-                        class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-2 py-1 rounded"
-                        >CHỌN</span
-                      >
-                    </div>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Pagination -->
-              <div
-                v-if="userPagination.totalPages > 1"
-                class="px-4 py-3 border-t border-slate-100 dark:border-slate-800/60 flex justify-between items-center bg-white dark:bg-slate-900"
-              >
-                <span
-                  class="text-[11px] font-bold text-slate-400 tracking-wider uppercase"
-                  >Trang {{ userPagination.page }} /
-                  {{ userPagination.totalPages }}</span
-                >
-                <div class="flex gap-1">
-                  <button
-                    @click="
-                      fetchUsers(userPagination.page - 1, userSearchQuery, 20)
-                    "
-                    :disabled="userPagination.page === 1"
-                    class="w-8 h-8 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
-                    type="button"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    @click="
-                      fetchUsers(userPagination.page + 1, userSearchQuery, 20)
-                    "
-                    :disabled="
-                      userPagination.page === userPagination.totalPages
-                    "
-                    class="w-8 h-8 flex items-center justify-center border border-slate-200 dark:border-slate-700 rounded-lg text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
-                    type="button"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
-                </div>
+                <UButton
+                  icon="i-heroicons-chevron-right"
+                  :disabled="userPagination.page === userPagination.totalPages"
+                  variant="outline"
+                  color="neutral"
+                  size="xs"
+                  @click="fetchUsers(userPagination.page + 1, userSearchQuery, 20)"
+                />
               </div>
             </div>
-          </transition>
-        </div>
-      </transition>
-    </Teleport>
+          </template>
+        </UCard>
+      </template>
+    </UModal>
 
     <!-- Toast Notification -->
     <transition
@@ -1201,36 +886,16 @@
             : 'bg-white dark:bg-slate-900 border-emerald-200 dark:border-emerald-800 text-slate-800 dark:text-slate-200'
         "
       >
-        <svg
+        <UIcon
           v-if="toastMsg.type === 'success'"
-          xmlns="http://www.w3.org/2000/svg"
+          name="i-heroicons-check-circle"
           class="h-5 w-5 text-emerald-500 shrink-0"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        <svg
+        />
+        <UIcon
           v-else
-          xmlns="http://www.w3.org/2000/svg"
+          name="i-heroicons-x-circle"
           class="h-5 w-5 text-rose-500 shrink-0"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
+        />
         <span class="text-sm font-semibold">{{ toastMsg.msg }}</span>
       </div>
     </transition>
@@ -1287,6 +952,7 @@ const queryParams = computed(() => {
   }
   return params;
 });
+
 const {
   data: response,
   refresh,
@@ -1299,6 +965,7 @@ const {
     server: false,
   }
 );
+
 watch([selectedStatus, selectedUserFilter, limit], () => {
   currentPage.value = 1;
 });
@@ -1447,16 +1114,6 @@ const formatMoney = (val) => {
   return Math.round(Number(val)).toLocaleString("vi-VN") + "đ";
 };
 
-const getStatusClass = (status) => {
-  if (status === "Thành công" || status === "Completed")
-    return "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400";
-  if (status === "Chờ duyệt" || status === "Pending")
-    return "bg-amber-500/10 text-amber-600 dark:text-amber-400";
-  if (status === "Đã hủy" || status === "Cancelled")
-    return "bg-rose-500/10 text-rose-600 dark:text-rose-400";
-  return "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400";
-};
-
 // Handle file selection
 const handleFileSelect = (event) => {
   const file = event.target.files[0];
@@ -1545,13 +1202,11 @@ const parseCSVFile = (file) => {
 };
 
 const mapCSVRowToOrderPayload = (row) => {
-  // Helper functions to extract values safely
   const getVal = (key) =>
     row[key] !== undefined && row[key] !== "" ? row[key] : null;
   const getNum = (key) => {
     const val = getVal(key);
     if (!val) return null;
-    // Remove everything except digits, minus sign, and dot
     const num = parseFloat(val.replace(/[^\d.-]/g, ""));
     return isNaN(num) ? null : num;
   };
@@ -1560,7 +1215,7 @@ const mapCSVRowToOrderPayload = (row) => {
     orderId: getVal("Order id"),
     orderStatus: getVal("Order Status"),
     conversionId: getNum("Conversion id"),
-    orderTime: getVal("Order Time"), // Fallback if sometimes provided
+    orderTime: getVal("Order Time"),
     completeTime: getVal("Complete Time"),
     clickTime: getVal("Click Time"),
     shopName: getVal("Shop Name"),
@@ -1577,7 +1232,7 @@ const mapCSVRowToOrderPayload = (row) => {
     price: getNum("Price(₫)"),
     qty: getNum("Qty"),
     offerType: getVal("Offer Type"),
-    campaignPartner: getVal("Campaign"), // Schema is campaignPartner
+    campaignPartner: getVal("Campaign"),
     purchaseValue: getNum("Purchase Value(₫)"),
     refundAmount: getNum("Refund Amount(₫)"),
     itemShopeeCommissionRate: getVal("Item Shopee Commission Rate"),
@@ -1605,6 +1260,13 @@ const mapCSVRowToOrderPayload = (row) => {
 
 const selectedOrder = ref(null);
 
+const isDrawerOpen = computed({
+  get: () => !!selectedOrder.value,
+  set: (val) => {
+    if (!val) selectedOrder.value = null;
+  }
+});
+
 const openOrderDetails = (item) => {
   selectedOrder.value = item;
 };
@@ -1612,22 +1274,6 @@ const openOrderDetails = (item) => {
 const closeOrderDetails = () => {
   selectedOrder.value = null;
 };
-
-watch(selectedOrder, (newVal) => {
-  if (typeof document !== "undefined") {
-    if (newVal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-  }
-});
-
-onUnmounted(() => {
-  if (typeof document !== "undefined") {
-    document.body.style.overflow = "";
-  }
-});
 
 const getRankName = (rank) => {
   if (!rank) return "BẠC";
