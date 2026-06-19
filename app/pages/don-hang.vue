@@ -243,16 +243,11 @@
                     <div
                       class="w-7 h-7 flex items-center justify-center shrink-0"
                     >
-                      <svg
-                        viewBox="0 0 109.59 122.88"
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="w-7 h-7 shrink-0"
-                      >
-                        <path
-                          fill="#EE4D2D"
-                          d="M74.98,91.98C76.15,82.36,69.96,76.22,53.6,71c-7.92-2.7-11.66-6.24-11.57-11.12 c0.33-5.4,5.36-9.34,12.04-9.47c4.63,0.09,9.77,1.22,14.76,4.56c0.59,0.37,1.01,0.32,1.35-0.2c0.46-0.74,1.61-2.53,2-3.17 c0.26-0.42,0.31-0.96-0.35-1.44c-0.95-0.7-3.6-2.13-5.03-2.72c-3.88-1.62-8.23-2.64-12.86-2.63c-9.77,0.04-17.47,6.22-18.12,14.47 c-0.42,5.95,2.53,10.79,8.86,14.47c1.34,0.78,8.6,3.67,11.49,4.57c9.08,2.83,13.8,7.9,12.69,13.81c-1.01,5.36-6.65,8.83-14.43,8.93 c-6.17-0.24-11.71-2.75-16.02-6.1c-0.11-0.08-0.65-0.5-0.72-0.56c-0.53-0.42-1.11-0.39-1.47,0.15c-0.26,0.4-1.92,2.8-2.34,3.43 c-0.39,0.55-0.18,0.86,0.23,1.2c1.8,1.5,4.18,3.14,5.81,3.97c4.47,2.28,9.32,3.53,14.48,3.72c3.32,0.22,7.5-0.49,10.63-1.81 C70.63,102.67,74.25,97.92,74.98,91.98L74.98,91.98z M54.79,7.18c-10.59,0-19.22,9.98-19.62,22.47h39.25 C74.01,17.16,65.38,7.18,54.79,7.18L54.79,7.18z M94.99,122.88l-0.41,0l-80.82-0.01h0c-5.5-0.21-9.54-4.66-10.09-10.19l-0.05-1 l-3.61-79.5v0C0,32.12,0,32.06,0,32c0-1.28,1.03-2.33,2.3-2.35l0,0h25.48C28.41,13.15,40.26,0,54.79,0s26.39,13.15,27.01,29.65 h25.4h0.04c1.3,0,2.35,1.05,2.35,2.35c0,0.04,0,0.08,0,0.12v0l-3.96,79.81l-0.04,0.68C105.12,118.21,100.59,122.73,94.99,122.88 L94.99,122.88z"
-                        />
-                      </svg>
+                      <img
+                        :src="getBrandLogo(order.type)"
+                        class="w-7 h-7 object-contain shrink-0"
+                        alt="Logo"
+                      />
                     </div>
                     <span
                       class="font-bold text-slate-700 dark:text-slate-200 text-xs"
@@ -330,18 +325,13 @@
           >
             <!-- Left Side: Icon & Order Info -->
             <div class="flex items-center gap-3 min-w-0">
-              <!-- Shopee Icon -->
+              <!-- Brand Icon -->
               <div class="w-10 h-10 flex items-center justify-center shrink-0">
-                <svg
-                  viewBox="0 0 109.59 122.88"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-10 h-10 shrink-0"
-                >
-                  <path
-                    fill="#EE4D2D"
-                    d="M74.98,91.98C76.15,82.36,69.96,76.22,53.6,71c-7.92-2.7-11.66-6.24-11.57-11.12 c0.33-5.4,5.36-9.34,12.04-9.47c4.63,0.09,9.77,1.22,14.76,4.56c0.59,0.37,1.01,0.32,1.35-0.2c0.46-0.74,1.61-2.53,2-3.17 c0.26-0.42,0.31-0.96-0.35-1.44c-0.95-0.7-3.6-2.13-5.03-2.72c-3.88-1.62-8.23-2.64-12.86-2.63c-9.77,0.04-17.47,6.22-18.12,14.47 c-0.42,5.95,2.53,10.79,8.86,14.47c1.34,0.78,8.6,3.67,11.49,4.57c9.08,2.83,13.8,7.9,12.69,13.81c-1.01,5.36-6.65,8.83-14.43,8.93 c-6.17-0.24-11.71-2.75-16.02-6.1c-0.11-0.08-0.65-0.5-0.72-0.56c-0.53-0.42-1.11-0.39-1.47,0.15c-0.26,0.4-1.92,2.8-2.34,3.43 c-0.39,0.55-0.18,0.86,0.23,1.2c1.8,1.5,4.18,3.14,5.81,3.97c4.47,2.28,9.32,3.53,14.48,3.72c3.32,0.22,7.5-0.49,10.63-1.81 C70.63,102.67,74.25,97.92,74.98,91.98L74.98,91.98z M54.79,7.18c-10.59,0-19.22,9.98-19.62,22.47h39.25 C74.01,17.16,65.38,7.18,54.79,7.18L54.79,7.18z M94.99,122.88l-0.41,0l-80.82-0.01h0c-5.5-0.21-9.54-4.66-10.09-10.19l-0.05-1 l-3.61-79.5v0C0,32.12,0,32.06,0,32c0-1.28,1.03-2.33,2.3-2.35l0,0h25.48C28.41,13.15,40.26,0,54.79,0s26.39,13.15,27.01,29.65 h25.4h0.04c1.3,0,2.35,1.05,2.35,2.35c0,0.04,0,0.08,0,0.12v0l-3.96,79.81l-0.04,0.68C105.12,118.21,100.59,122.73,94.99,122.88 L94.99,122.88z"
-                  />
-                </svg>
+                <img
+                  :src="getBrandLogo(order.type)"
+                  class="w-10 h-10 object-contain shrink-0"
+                  alt="Logo"
+                />
               </div>
 
               <!-- Order Text Info -->
@@ -406,35 +396,63 @@
           </div>
         </div>
 
-      <!-- Pagination -->
-      <div v-if="lastPage > 1" class="flex items-center justify-center gap-2 mt-6">
-        <button
-          @click="changePage(currentPage - 1)"
-          :disabled="currentPage === 1"
-          class="h-9 w-9 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer"
-          type="button"
+        <!-- Pagination -->
+        <div
+          v-if="lastPage > 1"
+          class="flex items-center justify-center gap-2 mt-6"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+          <button
+            @click="changePage(currentPage - 1)"
+            :disabled="currentPage === 1"
+            class="h-9 w-9 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer"
+            type="button"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4.5 w-4.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
 
-        <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 px-2">
-          Trang {{ currentPage }} / {{ lastPage }}
-        </span>
+          <span
+            class="text-xs font-semibold text-slate-600 dark:text-slate-400 px-2"
+          >
+            Trang {{ currentPage }} / {{ lastPage }}
+          </span>
 
-        <button
-          @click="changePage(currentPage + 1)"
-          :disabled="currentPage === lastPage"
-          class="h-9 w-9 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer"
-          type="button"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-            <path xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+          <button
+            @click="changePage(currentPage + 1)"
+            :disabled="currentPage === lastPage"
+            class="h-9 w-9 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center transition-colors cursor-pointer"
+            type="button"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4.5 w-4.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path
+                xmlns="http://www.w3.org/2000/svg"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
-    </div>
 
       <!-- Empty state -->
       <div
@@ -715,6 +733,13 @@
 
 <script setup>
 import { ref, computed, watch, onUnmounted } from "vue";
+import { AFFILIATE_TYPES } from "~/utils/constants";
+
+const getBrandLogo = (type) => {
+  if (type === AFFILIATE_TYPES.TIKTOK) return "/icon/tiktok.png";
+  if (type === AFFILIATE_TYPES.LAZADA) return "/icon/lazada.png";
+  return "/icon/shopee.png";
+};
 
 useSeoMeta({
   title: "Lịch sử đơn hàng - Saffi",
@@ -817,7 +842,7 @@ const mapOrder = (item) => {
 
   // Normalize status cho UI hiển thị đẹp tiếng Việt
   let normStatus = "Chờ duyệt";
-  const s = order.orderStatus?.toLowerCase() || "";
+  const s = order.order_status?.toLowerCase() || "";
 
   if (s.includes("completed") || s.includes("Completed")) {
     normStatus = "Thành công";
@@ -833,6 +858,7 @@ const mapOrder = (item) => {
     purchaseAmount: order.purchase_value || 0,
     cashbackAmount: order.user_commission || 0,
     status: normStatus,
+    type: order.type || 1,
     rawItem: item,
   };
 };
