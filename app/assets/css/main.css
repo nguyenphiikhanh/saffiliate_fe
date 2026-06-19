@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@nuxt/ui";
 
 /* Bulletproof Kill-Switch for compiled dark mode utility classes across the application */
 @custom-variant dark (&:where(.never-use-dark-mode, .never-use-dark-mode *));
@@ -140,3 +141,83 @@ body {
     transform: translateY(0);
   }
 }
+
+/* --- Nuxt Page & Layout Transitions --- */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.layout-enter-active,
+.layout-leave-active {
+  transition: opacity 0.2s ease;
+}
+.layout-enter-from,
+.layout-leave-to {
+  opacity: 0;
+}
+
+/* Premium UModal Animations (Spring & Fade) */
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes modal-scale-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes modal-scale-out {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+/* Target Dialog Overlays and Contents */
+div[class*="bg-slate-950/20"],
+div[class*="bg-neutral-950/"],
+div[class*="backdrop-blur-"] {
+  &[data-state="open"] {
+    animation: modal-fade-in 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+  &[data-state="closed"] {
+    animation: modal-fade-out 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+}
+
+/* Nuxt UI v3 modal panels */
+div[role="dialog"] {
+  &[data-state="open"] {
+    animation: modal-scale-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+  }
+  &[data-state="closed"] {
+    animation: modal-scale-out 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  }
+}
+
+

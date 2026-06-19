@@ -43,7 +43,7 @@ const shouldShow = computed(() => {
 
 const items = computed(() => {
   const list = [
-    { label: "Trang chủ", icon: "i-heroicons-home", to: "/" }
+    { label: "Trang chủ", icon: "i-lucide-home", to: "/" }
   ];
   
   const fullPath = route.path;

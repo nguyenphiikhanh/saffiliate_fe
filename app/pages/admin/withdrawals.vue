@@ -14,7 +14,7 @@
       <UButton
         @click="refresh"
         :loading="pending"
-        icon="i-heroicons-arrow-path"
+        icon="i-lucide-refresh-cw"
         variant="soft"
         color="neutral"
         size="sm"
@@ -92,7 +92,7 @@
               type="text"
               placeholder="Tìm kiếm mã GD"
               @keydown.enter="handleSearch"
-              icon="i-heroicons-magnifying-glass"
+              icon="i-lucide-search"
               size="md"
               class="w-full sm:w-auto font-medium"
             />
@@ -121,7 +121,7 @@
             @click="clearAllFilters"
             variant="link"
             color="danger"
-            icon="i-heroicons-x-mark"
+            icon="i-lucide-x"
             size="xs"
             class="font-bold text-xs"
           >
@@ -238,7 +238,7 @@
         </div>
         <div class="flex gap-1">
           <UButton
-            icon="i-heroicons-chevron-left"
+            icon="i-lucide-chevron-left"
             :disabled="page <= 1"
             variant="outline"
             color="neutral"
@@ -246,7 +246,7 @@
             @click="page--"
           />
           <UButton
-            icon="i-heroicons-chevron-right"
+            icon="i-lucide-chevron-right"
             :disabled="page >= totalPages"
             variant="outline"
             color="neutral"
@@ -258,7 +258,7 @@
     </UCard>
 
     <!-- Detail Drawer -->
-    <USlideover v-model="isDrawerOpen">
+    <USlideover v-model:open="isDrawerOpen">
       <template #content>
         <UCard
           v-if="selectedItem"
@@ -281,7 +281,7 @@
             <UButton
               color="neutral"
               variant="ghost"
-              icon="i-heroicons-x-mark"
+              icon="i-lucide-x"
               class="rounded-lg"
               @click="closeDetails"
             />

@@ -20,7 +20,7 @@
         }"
       >
         <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-650 dark:text-indigo-400 flex items-center justify-center shrink-0">
-          <UIcon name="i-heroicons-users" class="h-5 w-5" />
+          <UIcon name="i-lucide-users" class="h-5 w-5" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng Users</div>
@@ -38,7 +38,7 @@
         }"
       >
         <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-650 dark:text-emerald-400 flex items-center justify-center shrink-0">
-          <UIcon name="i-heroicons-check-circle" class="h-5 w-5" />
+          <UIcon name="i-lucide-circle-check" class="h-5 w-5" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Đơn thành công</div>
@@ -56,7 +56,7 @@
         }"
       >
         <div class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-650 dark:text-amber-400 flex items-center justify-center shrink-0">
-          <UIcon name="i-heroicons-banknotes" class="h-5 w-5" />
+          <UIcon name="i-lucide-banknote" class="h-5 w-5" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng Hoa hồng</div>
@@ -74,7 +74,7 @@
         }"
       >
         <div class="w-10 h-10 rounded-lg bg-rose-50 dark:bg-rose-900/30 text-rose-650 dark:text-rose-450 flex items-center justify-center shrink-0">
-          <UIcon name="i-heroicons-clock" class="h-5 w-5" />
+          <UIcon name="i-lucide-clock" class="h-5 w-5" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Đơn chờ duyệt</div>
@@ -95,7 +95,7 @@
     >
       <!-- Decorative Background Icon -->
       <div class="absolute top-0 right-0 p-8 opacity-[0.03] dark:opacity-[0.02] pointer-events-none scale-150 transform translate-x-10 -translate-y-10">
-        <UIcon name="i-heroicons-sparkles" class="w-[200px] h-[200px]" />
+        <UIcon name="i-lucide-sparkles" class="w-[200px] h-[200px]" />
       </div>
 
       <!-- Header & Tabs -->
@@ -103,7 +103,7 @@
         <!-- Title -->
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-amber-50 dark:bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center shrink-0">
-            <UIcon name="i-heroicons-sparkles" class="h-6 w-6" />
+            <UIcon name="i-lucide-sparkles" class="h-6 w-6" />
           </div>
           <h3 class="text-xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">Bảng Xếp Hạng</h3>
         </div>
@@ -162,7 +162,7 @@
 
         <!-- Empty State -->
         <div v-else-if="!currentData || currentData.length === 0" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 gap-3">
-          <UIcon name="i-heroicons-arrow-trending-up" class="h-12 w-12 text-slate-300 dark:text-slate-700" />
+          <UIcon name="i-lucide-trending-up" class="h-12 w-12 text-slate-300 dark:text-slate-700" />
           <p class="text-sm font-medium">Chưa có dữ liệu thống kê trong khoảng thời gian này</p>
         </div>
 
@@ -220,7 +220,7 @@
               :class="idx <= 2 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-700 dark:text-slate-300'"
             >
               {{ formatMoney(user.totalCommission) }}
-              <UIcon name="i-heroicons-currency-dollar" class="h-4 w-4 sm:h-5 sm:w-5 opacity-40 text-emerald-600 dark:text-emerald-400" />
+              <UIcon name="i-lucide-dollar-sign" class="h-4 w-4 sm:h-5 sm:w-5 opacity-40 text-emerald-600 dark:text-emerald-400" />
             </div>
           </div>
         </div>

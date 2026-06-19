@@ -16,7 +16,7 @@
       >
         <div class="flex items-start gap-3.5">
           <div class="p-1.5 rounded-lg bg-amber-500/10 text-amber-500 shrink-0 select-none group-hover:scale-105 transition-transform">
-            <UIcon name="i-heroicons-exclamation-triangle" class="h-5 w-5" />
+            <UIcon name="i-lucide-alert-triangle" class="h-5 w-5" />
           </div>
           <div>
             <h4 class="text-[13px] font-black uppercase tracking-widest text-slate-850 dark:text-slate-205 leading-tight">
@@ -34,7 +34,7 @@
           </span>
           <div class="bg-amber-500/10 rounded-full p-1 group-hover:bg-amber-500/20 transition-colors">
             <UIcon
-              name="i-heroicons-chevron-down"
+              name="i-lucide-chevron-down"
               class="w-4 h-4 transition-transform duration-500"
               :class="{ 'rotate-180': isImportantNotesOpen }"
             />
@@ -100,7 +100,7 @@
             <!-- Card 1 -->
             <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/80 transition-all duration-300 hover:scale-[1.01] hover:-translate-y-0.5 group select-none">
               <div class="w-10 h-10 rounded-full bg-yellow-50 dark:bg-yellow-500/10 flex items-center justify-center text-yellow-500 shrink-0 group-hover:scale-105 transition-transform duration-300">
-                <UIcon name="i-heroicons-bolt" class="w-5 h-5 animate-pulse" />
+                <UIcon name="i-lucide-zap" class="w-5 h-5 animate-pulse" />
               </div>
               <div>
                 <div class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mb-0.5">
@@ -113,9 +113,9 @@
             </div>
 
             <!-- Card 2 -->
-            <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/80 transition-all duration-300 hover:scale-[1.01] hover:-translate-y-0.5 group select-none">
+            <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50/70 dark:bg-slate-805/30 border border-slate-100 dark:border-slate-800/80 transition-all duration-300 hover:scale-[1.01] hover:-translate-y-0.5 group select-none">
               <div class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-505 shrink-0 group-hover:scale-105 transition-transform duration-300">
-                <UIcon name="i-heroicons-credit-card" class="w-5 h-5" />
+                <UIcon name="i-lucide-credit-card" class="w-5 h-5" />
               </div>
               <div>
                 <div class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider mb-0.5">
@@ -147,7 +147,7 @@
       >
         <div class="flex items-start gap-3.5">
           <div class="p-1.5 rounded-lg bg-orange-500/10 text-shopee-orange shrink-0 select-none group-hover:scale-105 transition-transform">
-            <UIcon name="i-heroicons-light-bulb" class="h-5 w-5" />
+            <UIcon name="i-lucide-lightbulb" class="h-5 w-5" />
           </div>
           <div>
             <h4 class="text-[13px] font-black uppercase tracking-widest text-slate-850 dark:text-slate-205 leading-tight">
@@ -165,7 +165,7 @@
           </span>
           <div class="bg-orange-500/10 rounded-full p-1 group-hover:bg-orange-500/20 transition-colors">
             <UIcon
-              name="i-heroicons-chevron-down"
+              name="i-lucide-chevron-down"
               class="w-4 h-4 transition-transform duration-500"
               :class="{ 'rotate-180': isQuickGuideOpen }"
             />
@@ -197,7 +197,7 @@
                 :alt="steps[currentStep].title"
               />
               <div v-else class="flex flex-col items-center justify-center">
-                <UIcon name="i-heroicons-photo" class="w-10 h-10 opacity-30 group-hover:scale-110 transition-transform duration-500" />
+                <UIcon name="i-lucide-image" class="w-10 h-10 opacity-30 group-hover:scale-110 transition-transform duration-500" />
                 <span class="text-[10px] font-black opacity-45 uppercase tracking-widest mt-2.5 select-none">
                   Ảnh minh họa Bước {{ currentStep + 1 }}
                 </span>
@@ -257,7 +257,7 @@
               <div class="flex items-center gap-2 select-none">
                 <UButton
                   v-if="currentStep > 0"
-                  icon="i-heroicons-chevron-left"
+                  icon="i-lucide-chevron-left"
                   variant="soft"
                   color="neutral"
                   size="xs"
@@ -268,7 +268,7 @@
                 </UButton>
 
                 <UButton
-                  :icon="currentStep < steps.length - 1 ? 'i-heroicons-chevron-right' : 'i-heroicons-check'"
+                  :icon="currentStep < steps.length - 1 ? 'i-lucide-chevron-right' : 'i-lucide-check'"
                   size="xs"
                   class="font-bold text-xs"
                   @click="
@@ -303,25 +303,25 @@ const steps = [
     title: "Tìm sản phẩm & Chia sẻ",
     desc: "Mở ứng dụng Shopee hoặc TikTok, chọn sản phẩm cần mua và nhấn nút <span class='text-red-550 dark:text-red-400 font-extrabold bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20'>Chia sẻ</span> (hình mũi tên).",
     image: "/step/1.jpg",
-    icon: "i-heroicons-share"
+    icon: "i-lucide-share-2"
   },
   {
     title: "Sao chép đường dẫn",
     desc: "Trong menu chia sẻ hiện ra, chọn nút <span class='text-red-550 dark:text-red-400 font-extrabold bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20'>Sao chép đường dẫn</span>",
     image: "/step/2.jpg",
-    icon: "i-heroicons-link"
+    icon: "i-lucide-link"
   },
   {
     title: "Dán link vào Saffi",
     desc: "Trở lại ứng dụng Saffi, <span class='text-shopee-orange font-extrabold'>Dán link</span> vừa sao chép vào ô nhập bên dưới, nhấn vào nút <span class='text-shopee-orange font-extrabold'>Hoàn Tiền</span> để xem thông tin hoàn tiền.",
     image: "/step/3.jpg",
-    icon: "i-heroicons-clipboard"
+    icon: "i-lucide-clipboard"
   },
   {
     title: "Mua sắm & Nhận hoàn tiền",
     desc: "Nhấn nút đây để mở ứng dụng sàn và mua sắm như bình thường. Tiền hoàn lại sẽ <span class='text-shopee-orange font-extrabold'>tự động được tích lũy vào tài khoản Saffi</span> của bạn!",
     image: "/step/4.jpg",
-    icon: "i-heroicons-shopping-bag"
+    icon: "i-lucide-shopping-bag"
   },
 ];
 

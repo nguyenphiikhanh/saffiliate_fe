@@ -215,7 +215,7 @@
               :variant="isEditingProfile ? 'soft' : 'solid'"
               :color="isEditingProfile ? 'neutral' : 'primary'"
               class="font-extrabold tracking-wider cursor-pointer"
-              :icon="isEditingProfile ? 'i-heroicons-x-mark' : 'i-heroicons-pencil-square'"
+              :icon="isEditingProfile ? 'i-lucide-x' : 'i-lucide-pencil'"
             >
               {{ isEditingProfile ? "HỦY BỎ" : "CHỈNH SỬA" }}
             </UButton>
@@ -266,7 +266,7 @@
             >
               <UAlert
                 v-if="profileMsg || profileError"
-                :icon="profileError ? 'i-heroicons-exclamation-triangle' : 'i-heroicons-check-circle'"
+                :icon="profileError ? 'i-lucide-alert-triangle' : 'i-lucide-circle-check'"
                 :color="profileError ? 'danger' : 'success'"
                 variant="soft"
                 :title="profileError || profileMsg"
@@ -329,7 +329,7 @@
               :variant="isEditingBank ? 'soft' : 'solid'"
               :color="isEditingBank ? 'neutral' : 'primary'"
               class="font-extrabold tracking-wider cursor-pointer"
-              :icon="isEditingBank ? 'i-heroicons-x-mark' : 'i-heroicons-pencil-square'"
+              :icon="isEditingBank ? 'i-lucide-x' : 'i-lucide-pencil'"
             >
               {{ isEditingBank ? "HỦY BỎ" : "CHỈNH SỬA" }}
             </UButton>
@@ -423,7 +423,7 @@
                         type="text"
                         placeholder="Tìm theo tên, viết tắt hoặc mã BIN..."
                         size="md"
-                        icon="i-heroicons-magnifying-glass"
+                        icon="i-lucide-search"
                         :ui="{ rounded: 'rounded-xl' }"
                         class="w-full"
                       />
@@ -549,7 +549,7 @@
             >
               <UAlert
                 v-if="bankMsg"
-                :icon="isBankError ? 'i-heroicons-exclamation-triangle' : 'i-heroicons-check-circle'"
+                :icon="isBankError ? 'i-lucide-alert-triangle' : 'i-lucide-circle-check'"
                 :color="isBankError ? 'danger' : 'success'"
                 variant="soft"
                 :title="bankMsg"

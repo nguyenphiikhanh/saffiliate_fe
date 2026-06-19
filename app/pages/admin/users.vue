@@ -63,7 +63,7 @@
             type="text"
             placeholder="Tìm kiếm tên, email..."
             @keydown.enter="handleSearch"
-            icon="i-heroicons-magnifying-glass"
+            icon="i-lucide-search"
             size="md"
             class="w-full sm:w-auto font-medium"
           >
@@ -72,7 +72,7 @@
                 v-if="searchQuery"
                 color="neutral"
                 variant="link"
-                icon="i-heroicons-x-mark"
+                icon="i-lucide-x"
                 size="xs"
                 @click="clearSearch"
               />
@@ -92,7 +92,7 @@
     <!-- Error State -->
     <UAlert
       v-if="error"
-      icon="i-heroicons-exclamation-triangle"
+      icon="i-lucide-alert-triangle"
       color="danger"
       variant="subtle"
       :title="error"
@@ -127,7 +127,7 @@
       class="bg-white dark:bg-slate-900 p-12 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm text-center"
     >
       <UIcon
-        name="i-heroicons-users"
+        name="i-lucide-users"
         class="h-10 w-10 mx-auto text-slate-400 dark:text-slate-650 mb-3 block"
       />
       <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-1">
@@ -234,7 +234,7 @@
         </div>
         <div class="flex gap-1">
           <UButton
-            icon="i-heroicons-chevron-left"
+            icon="i-lucide-chevron-left"
             :disabled="pagination.page <= 1"
             variant="outline"
             color="neutral"
@@ -242,7 +242,7 @@
             @click="changePage(pagination.page - 1)"
           />
           <UButton
-            icon="i-heroicons-chevron-right"
+            icon="i-lucide-chevron-right"
             :disabled="pagination.page >= pagination.totalPages"
             variant="outline"
             color="neutral"
@@ -341,13 +341,13 @@
         <span class="text-xs text-slate-500">Trang {{ pagination.page }}/{{ pagination.totalPages }}</span>
         <div class="flex gap-2">
           <UButton
-            icon="i-heroicons-chevron-left"
+            icon="i-lucide-chevron-left"
             :disabled="pagination.page <= 1"
             size="sm"
             @click="changePage(pagination.page - 1)"
           />
           <UButton
-            icon="i-heroicons-chevron-right"
+            icon="i-lucide-chevron-right"
             :disabled="pagination.page >= pagination.totalPages"
             size="sm"
             @click="changePage(pagination.page + 1)"
@@ -357,7 +357,7 @@
     </div>
 
     <!-- User Details Drawer -->
-    <USlideover v-model="isDrawerOpen">
+    <USlideover v-model:open="isDrawerOpen">
       <template #content>
         <UCard
           v-if="selectedUser"
@@ -380,7 +380,7 @@
             <UButton
               color="neutral"
               variant="ghost"
-              icon="i-heroicons-x-mark"
+              icon="i-lucide-x"
               class="rounded-lg"
               @click="closeDetails"
             />

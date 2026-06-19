@@ -34,14 +34,14 @@
       <div v-if="alertMessage">
         <UAlert
           v-if="alertType === 'success'"
-          icon="i-heroicons-check-circle"
+          icon="i-lucide-circle-check"
           color="success"
           variant="soft"
           :title="alertMessage"
         />
         <UAlert
           v-else
-          icon="i-heroicons-exclamation-triangle"
+          icon="i-lucide-alert-triangle"
           color="danger"
           variant="soft"
           :title="alertMessage"

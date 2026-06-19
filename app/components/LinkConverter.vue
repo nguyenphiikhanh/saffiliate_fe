@@ -188,14 +188,17 @@
             size="md"
             :placeholder="
               currentType === AFFILIATE_TYPES.SHOPEE
-                ? 'Dán link Shopee vào đây... (Ví dụ: https://shopee.vn/product/...)'
+                ? 'Dán link Shopee tại đây...'
                 : currentType === AFFILIATE_TYPES.TIKTOK
-                ? 'Dán link TikTok vào đây... (Ví dụ: https://vt.tiktok.com/...)'
-                : 'Dán link Lazada vào đây... (Ví dụ: https://s.lazada.vn/...)'
+                ? 'Dán link TikTok tại đây...'
+                : 'Dán link Lazada tại đây...'
             "
-            icon="i-heroicons-link-20-solid"
-            :ui="{ rounded: 'rounded-2xl' }"
-            class="w-full font-semibold focus-within:ring-2 focus-within:ring-shopee-orange/20"
+            icon="i-lucide-link"
+            :ui="{ 
+              rounded: 'rounded-2xl',
+              ring: 'focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-500'
+            }"
+            class="w-full font-semibold transition-all duration-300"
             :disabled="isLoading"
             @input="checkUrlInput"
             @keyup.enter="handleConvert"
@@ -203,12 +206,22 @@
             <template #trailing>
               <UButton
                 v-if="rawUrl"
-                icon="i-heroicons-x-mark-20-solid"
+                icon="i-lucide-x"
                 color="neutral"
                 variant="link"
                 :padded="false"
-                class="cursor-pointer"
+                class="cursor-pointer mr-1"
                 @click="handleClear"
+                :disabled="isLoading"
+              />
+              <UButton
+                v-else
+                label="Dán nhanh"
+                size="xs"
+                color="primary"
+                variant="subtle"
+                class="cursor-pointer rounded-xl font-black text-[10px] px-2.5 py-1.5 transition-all duration-200 hover:scale-105 active:scale-95"
+                @click="handlePaste"
                 :disabled="isLoading"
               />
             </template>
@@ -221,7 +234,7 @@
             v-if="isValidating && !isUrlValid && rawUrl.length > 0"
             class="flex items-center gap-2 text-yellow-600 dark:text-yellow-500 text-xs font-semibold px-2"
           >
-            <UIcon name="i-heroicons-exclamation-triangle-20-solid" class="h-4 w-4 shrink-0" />
+            <UIcon name="i-lucide-alert-triangle" class="h-4 w-4 shrink-0" />
             <span>Không nhận dạng được định dạng link. Vui lòng kiểm tra lại.</span>
           </div>
         </transition>
@@ -244,7 +257,7 @@
       <transition name="slide-fade">
         <UAlert
           v-if="error"
-          icon="i-heroicons-exclamation-circle-20-solid"
+          icon="i-lucide-alert-circle"
           color="danger"
           variant="soft"
           title="Đã xảy ra lỗi"
@@ -350,6 +363,18 @@ const handleClear = () => {
   rawUrl.value = "";
   isValidating.value = false;
   clearStates();
+};
+
+const handlePaste = async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (text) {
+      rawUrl.value = text.trim();
+      isValidating.value = true;
+    }
+  } catch (err) {
+    console.error("Không thể đọc bộ nhớ tạm (clipboard):", err);
+  }
 };
 
 const selectType = (type) => {

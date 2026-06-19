@@ -26,7 +26,7 @@
             Số dư khả dụng
           </span>
           <div class="h-10 w-10 rounded-xl bg-orange-500/10 text-shopee-orange flex items-center justify-center shrink-0">
-            <UIcon name="i-heroicons-banknotes" class="h-5.5 w-5.5" />
+            <UIcon name="i-lucide-banknote" class="h-5.5 w-5.5" />
           </div>
         </div>
         <p class="text-4xl font-black text-slate-800 dark:text-white mt-4 leading-none">
@@ -51,7 +51,7 @@
             Chờ xử lý
           </span>
           <div class="h-10 w-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
-            <UIcon name="i-heroicons-clock" class="h-5.5 w-5.5" />
+            <UIcon name="i-lucide-clock" class="h-5.5 w-5.5" />
           </div>
         </div>
         <p class="text-4xl font-black text-slate-800 dark:text-white mt-4 leading-none">
@@ -76,7 +76,7 @@
             Đã thanh toán
           </span>
           <div class="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
-            <UIcon name="i-heroicons-check-circle" class="h-5.5 w-5.5" />
+            <UIcon name="i-lucide-circle-check" class="h-5.5 w-5.5" />
           </div>
         </div>
         <p class="text-4xl font-black text-slate-800 dark:text-white mt-4 leading-none">
@@ -120,7 +120,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="h-10 w-10 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center border border-slate-100 dark:border-slate-700 shrink-0 text-slate-500 dark:text-slate-400">
-              <UIcon name="i-heroicons-building-library" class="h-5.5 w-5.5" />
+              <UIcon name="i-lucide-landmark" class="h-5.5 w-5.5" />
             </div>
             <h3 class="text-sm font-black text-slate-800 dark:text-slate-200 leading-tight">
               Tài khoản đối soát
@@ -131,7 +131,7 @@
             variant="ghost"
             color="primary"
             size="xs"
-            icon="i-heroicons-pencil-square"
+            icon="i-lucide-pencil"
             class="font-bold text-xs"
           >
             Chỉnh sửa
@@ -163,7 +163,7 @@
       <div v-else class="flex flex-col sm:flex-row items-center justify-between gap-4 py-2 animate-fade-in">
         <div class="flex items-center gap-3.5 text-center sm:text-left flex-col sm:flex-row">
           <div class="h-10 w-10 rounded-full bg-orange-500/10 text-shopee-orange flex items-center justify-center shrink-0">
-            <UIcon name="i-heroicons-exclamation-triangle" class="h-5 w-5" />
+            <UIcon name="i-lucide-alert-triangle" class="h-5 w-5" />
           </div>
           <div>
             <h4 class="text-xs font-black text-slate-800 dark:text-slate-200">
@@ -209,7 +209,7 @@
           >
             <div class="flex items-center gap-2.5 min-w-0">
               <div class="h-8 w-8 rounded-xl bg-orange-500/5 dark:bg-orange-500/10 text-shopee-orange flex items-center justify-center shrink-0">
-                <UIcon name="i-heroicons-building-library" class="h-4.5 w-4.5" />
+                <UIcon name="i-lucide-landmark" class="h-4.5 w-4.5" />
               </div>
               <div class="min-w-0">
                 <span class="block text-[9px] font-extrabold uppercase text-slate-400">Rút về tài khoản đối soát</span>
@@ -226,7 +226,7 @@
           <!-- Alert error when not bank account linked -->
           <UAlert
             v-else
-            icon="i-heroicons-exclamation-triangle"
+            icon="i-lucide-alert-triangle"
             color="warning"
             variant="soft"
             title="Vui lòng liên kết tài khoản ngân hàng đối soát tại trang Hồ Sơ trước khi rút tiền."
@@ -289,14 +289,14 @@
             <div v-if="successMsg || errorMsg">
               <UAlert
                 v-if="errorMsg"
-                icon="i-heroicons-exclamation-triangle"
+                icon="i-lucide-alert-triangle"
                 color="danger"
                 variant="soft"
                 :title="errorMsg"
               />
               <UAlert
                 v-else
-                icon="i-heroicons-check-circle"
+                icon="i-lucide-circle-check"
                 color="success"
                 variant="soft"
                 :title="successMsg"
@@ -376,7 +376,7 @@
               <div class="flex items-start gap-3">
                 <!-- Wallet Icon -->
                 <div class="h-9 w-9 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
-                  <UIcon name="i-heroicons-wallet" class="h-5 w-5" />
+                  <UIcon name="i-lucide-wallet" class="h-5 w-5" />
                 </div>
                 <div>
                   <span class="text-xs font-black text-slate-800 dark:text-slate-100">
@@ -445,7 +445,7 @@
                 "
                 class="px-3 py-2.5 bg-rose-50/80 dark:bg-rose-500/10 rounded-xl border border-rose-100 dark:border-rose-500/20 flex items-start gap-2"
               >
-                <UIcon name="i-heroicons-exclamation-triangle" class="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
+                <UIcon name="i-lucide-alert-triangle" class="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
                 <p class="text-[10px] text-rose-600 dark:text-rose-400 font-bold leading-relaxed">
                   <span class="uppercase tracking-widest text-rose-400 dark:text-rose-500/80 mr-1">Lý do huỷ:</span>
                   {{ item.rejectReason }}

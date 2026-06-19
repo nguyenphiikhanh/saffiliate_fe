@@ -46,7 +46,7 @@
       <!-- Info Box for Pending Tab -->
       <div v-if="activeTab === 'pending'" class="mt-5">
         <UAlert
-          icon="i-heroicons-information-circle"
+          icon="i-lucide-info"
           color="warning"
           variant="soft"
           title="Chờ hoàn: đơn đã ghi nhận hoàn tiền, đang đợi sàn xác nhận hết thời gian hủy, đổi trả. Với Sộp-pe, hãy bấm Đã nhận hàng trong app để được hoàn sớm nhất."
@@ -56,7 +56,7 @@
       <!-- Info Box for Cancelled Tab -->
       <div v-if="activeTab === 'cancelled'" class="mt-5">
         <UAlert
-          icon="i-heroicons-x-circle"
+          icon="i-lucide-circle-x"
           color="danger"
           variant="soft"
         >
@@ -262,12 +262,12 @@
                       ? 'text-emerald-500 dark:text-emerald-400'
                       : order.status === 'Chờ duyệt'
                       ? 'text-amber-500 dark:text-amber-400'
-                      : 'text-rose-500 dark:text-rose-450',
+                      : 'text-rose-500 dark:text-rose-455',
                   ]"
                 >
                   {{ order.status }}
                 </span>
-                <UIcon name="i-heroicons-chevron-right" class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+                <UIcon name="i-lucide-chevron-right" class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
               </div>
             </div>
           </div>
@@ -276,7 +276,7 @@
         <!-- Pagination -->
         <div v-if="lastPage > 1" class="flex items-center justify-center gap-2 mt-6">
           <UButton
-            icon="i-heroicons-chevron-left"
+            icon="i-lucide-chevron-left"
             :disabled="currentPage === 1"
             variant="outline"
             color="neutral"
@@ -286,7 +286,7 @@
             Trang {{ currentPage }} / {{ lastPage }}
           </span>
           <UButton
-            icon="i-heroicons-chevron-right"
+            icon="i-lucide-chevron-right"
             :disabled="currentPage === lastPage"
             variant="outline"
             color="neutral"
@@ -300,10 +300,10 @@
         <template v-if="activeTab === 'pending'">
           <div class="relative">
             <div class="h-16 w-16 rounded-3xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex items-center justify-center text-shopee-orange shadow-inner">
-              <UIcon name="i-heroicons-shopping-bag" class="h-7 w-7" />
+              <UIcon name="i-lucide-shopping-bag" class="h-7 w-7" />
             </div>
             <div class="absolute -top-1.5 -right-1.5 h-6 w-6 rounded-full bg-shopee-orange flex items-center justify-center text-white border-2 border-white dark:border-slate-900 shadow-md">
-              <UIcon name="i-heroicons-gift" class="h-3.5 w-3.5" />
+              <UIcon name="i-lucide-gift" class="h-3.5 w-3.5" />
             </div>
           </div>
           <h3 class="text-[17px] font-black text-slate-800 dark:text-slate-100 mt-5">
@@ -315,7 +315,7 @@
           <UButton
             to="/hoan-tien"
             size="lg"
-            icon="i-heroicons-sparkles"
+            icon="i-lucide-sparkles"
             class="mt-6 font-bold shadow-lg shadow-orange-500/20"
           >
             MUA SẮM HOÀN TIỀN NGAY
@@ -324,7 +324,7 @@
 
         <template v-else>
           <div class="h-16 w-16 rounded-full bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex items-center justify-center text-slate-400">
-            <UIcon name="i-heroicons-face-frown" class="h-8 w-8" />
+            <UIcon name="i-lucide-frown" class="h-8 w-8" />
           </div>
           <h3 class="text-xs font-bold text-slate-700 dark:text-slate-300 mt-4">
             Không tìm thấy đơn hàng nào
@@ -336,23 +336,18 @@
       </div>
     </UCard>
 
-    <!-- User Order Details Modal -->
-    <UModal v-model="isModalOpen">
+    <!-- User Order Details Drawer -->
+    <USlideover v-model:open="isModalOpen" :ui="{ content: 'w-full sm:max-w-md' }">
       <template #content>
         <UCard
           v-if="selectedOrder"
           :ui="{
-            body: 'p-6 md:p-8',
-            ring: 'ring-1 ring-slate-100 dark:ring-slate-800/80',
-            background: 'bg-white dark:bg-slate-900',
-            rounded: 'rounded-[2.5rem]'
+            body: 'p-6 space-y-6 flex-1 overflow-y-auto bg-white dark:bg-slate-950',
+            header: 'flex items-start justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0'
           }"
-          class="relative overflow-hidden border border-slate-100 dark:border-slate-800/80"
+          class="flex flex-col h-full overflow-hidden border border-slate-100 dark:border-slate-800/80"
         >
-          <div class="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-shopee-orange to-rose-500"></div>
-
-          <!-- Modal Header -->
-          <div class="flex items-start justify-between pb-4 border-b border-slate-100 dark:border-slate-800/60 mb-5">
+          <template #header>
             <div>
               <UBadge
                 size="xs"
@@ -376,21 +371,20 @@
                 Chi tiết đơn hàng
                 <span class="text-orange-500 dark:text-orange-400 select-all">#{{ selectedOrder.code }}</span>
               </h3>
-              <p class="text-xs text-slate-400 mt-1">
+              <p class="text-xs text-slate-500 mt-1 font-medium">
                 Cửa hàng: {{ selectedOrder.storeName || "Shopee Store" }}
               </p>
             </div>
             <UButton
               color="neutral"
               variant="ghost"
-              icon="i-heroicons-x-mark"
-              class="rounded-xl"
+              icon="i-lucide-x"
+              class="rounded-lg"
               @click="closeOrderDetails"
             />
-          </div>
+          </template>
 
-          <!-- Modal Content -->
-          <div class="space-y-5 select-none pr-1">
+          <div class="space-y-6 select-none pr-1">
             <!-- 1. Rank Discount rate Info -->
             <div
               v-if="selectedOrder.rawItem?.order?.userRank"
@@ -414,11 +408,11 @@
             <!-- 2. Product Details -->
             <div>
               <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Thông tin sản phẩm</span>
-              <div class="space-y-2">
+              <div class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
                 <div class="text-xs font-bold text-slate-700 dark:text-slate-205 leading-relaxed">
                   {{ selectedOrder.itemName || "Sản phẩm từ Shopee" }}
                 </div>
-                <div class="flex items-center gap-1.5 text-[10px] text-slate-400 dark:text-slate-500">
+                <div class="flex items-center gap-1.5 text-[10px] text-slate-450 dark:text-slate-500 mt-2">
                   <span v-if="selectedOrder.rawItem?.order?.itemId">Mã SP: {{ selectedOrder.rawItem.order.itemId }}</span>
                   <span
                     v-if="selectedOrder.rawItem?.order?.l1GlobalCategory"
@@ -445,14 +439,14 @@
             </div>
 
             <!-- 4. Date Info -->
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500 font-bold">
-              <span>Thời gian đặt hàng: {{ selectedOrder.date }}</span>
-              <span>Trạng thái: {{ selectedOrder.status }}</span>
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800/60 flex flex-col gap-2 text-[10px] text-slate-450 dark:text-slate-500 font-bold">
+              <div>Thời gian đặt hàng: {{ selectedOrder.date }}</div>
+              <div>Trạng thái đối soát: {{ selectedOrder.status }}</div>
             </div>
           </div>
         </UCard>
       </template>
-    </UModal>
+    </USlideover>
   </div>
 </template>
 
@@ -484,17 +478,17 @@ const tabs = [
   {
     label: "Chờ duyệt",
     value: "pending",
-    icon: "i-heroicons-clock",
+    icon: "i-lucide-clock",
   },
   {
     label: "Thành công",
     value: "success",
-    icon: "i-heroicons-check-circle",
+    icon: "i-lucide-circle-check",
   },
   {
     label: "Đã hủy",
     value: "cancelled",
-    icon: "i-heroicons-x-circle",
+    icon: "i-lucide-circle-x",
   },
 ];
 
@@ -613,21 +607,7 @@ const closeOrderDetails = () => {
   selectedOrder.value = null;
 };
 
-watch(selectedOrder, (newVal) => {
-  if (typeof document !== "undefined") {
-    if (newVal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-  }
-});
 
-onUnmounted(() => {
-  if (typeof document !== "undefined") {
-    document.body.style.overflow = "";
-  }
-});
 
 const getRankName = (rank) => {
   if (!rank) return "BẠC";

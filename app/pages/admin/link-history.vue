@@ -16,7 +16,7 @@
       <UButton
         @click="refresh"
         :loading="pending"
-        icon="i-heroicons-arrow-path"
+        icon="i-lucide-refresh-cw"
         variant="soft"
         color="neutral"
         size="sm"
@@ -43,7 +43,7 @@
         <!-- Filter by User Button -->
         <UButton
           @click="showUserModal = true"
-          icon="i-heroicons-user"
+          icon="i-lucide-user"
           variant="outline"
           color="neutral"
           class="font-medium text-xs max-w-[200px]"
@@ -57,7 +57,7 @@
           <template #trailing>
             <UIcon
               v-if="selectedUserFilter"
-              name="i-heroicons-x-mark"
+              name="i-lucide-x"
               class="h-3 w-3 cursor-pointer hover:text-rose-500"
               @click.stop="clearUserFilter"
             />
@@ -103,7 +103,7 @@
           @click="clearAllFilters"
           variant="link"
           color="danger"
-          icon="i-heroicons-trash"
+          icon="i-lucide-trash"
           size="xs"
           class="font-bold text-xs"
         >
@@ -226,7 +226,7 @@
               <!-- Chi tiết -->
               <td class="px-4 py-3 text-center">
                 <UIcon
-                  name="i-heroicons-chevron-right"
+                  name="i-lucide-chevron-right"
                   class="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200"
                 />
               </td>
@@ -245,7 +245,7 @@
         </div>
         <div class="flex gap-1">
           <UButton
-            icon="i-heroicons-chevron-left"
+            icon="i-lucide-chevron-left"
             :disabled="page <= 1"
             variant="outline"
             color="neutral"
@@ -253,7 +253,7 @@
             @click="page--"
           />
           <UButton
-            icon="i-heroicons-chevron-right"
+            icon="i-lucide-chevron-right"
             :disabled="page >= totalPages"
             variant="outline"
             color="neutral"
@@ -265,7 +265,7 @@
     </UCard>
 
     <!-- Detail Drawer -->
-    <USlideover v-model="isDrawerOpen">
+    <USlideover v-model:open="isDrawerOpen">
       <template #content>
         <UCard
           v-if="selectedItem"
@@ -300,7 +300,7 @@
             <UButton
               color="neutral"
               variant="ghost"
-              icon="i-heroicons-x-mark"
+              icon="i-lucide-x"
               class="rounded-lg"
               @click="closeDetails"
             />
@@ -321,7 +321,7 @@
                   @click="copyJson(selectedItem.product_info)"
                   color="neutral"
                   variant="link"
-                  icon="i-heroicons-clipboard-document"
+                  icon="i-lucide-clipboard"
                   size="xs"
                   class="font-semibold text-xs text-slate-400 hover:text-white"
                 >
@@ -341,7 +341,7 @@
     </USlideover>
 
     <!-- User Selection Modal -->
-    <UModal v-model="showUserModal">
+    <UModal v-model:open="showUserModal">
       <template #content>
         <UCard
           :ui="{
@@ -352,7 +352,7 @@
           class="relative w-full max-w-xl overflow-hidden"
         >
           <template #header>
-            <UIcon name="i-heroicons-magnifying-glass" class="h-5 w-5 text-slate-400 shrink-0 ml-1" />
+            <UIcon name="i-lucide-search" class="h-5 w-5 text-slate-400 shrink-0 ml-1" />
             <UInput
               v-model="userSearchQuery"
               type="text"
@@ -366,7 +366,7 @@
                   v-if="userSearchQuery"
                   color="neutral"
                   variant="link"
-                  icon="i-heroicons-x-mark"
+                  icon="i-lucide-x"
                   size="xs"
                   @click="clearUserSearch"
                 />
@@ -382,19 +382,19 @@
             <UButton
               color="neutral"
               variant="ghost"
-              icon="i-heroicons-x-mark"
+              icon="i-lucide-x"
               class="shrink-0"
               @click="showUserModal = false"
             />
           </template>
 
           <div v-if="usersLoading" class="flex flex-col items-center justify-center py-8 text-slate-400 gap-3">
-            <UIcon name="i-heroicons-arrow-path" class="animate-spin h-6 w-6 text-emerald-500" />
+            <UIcon name="i-lucide-refresh-cw" class="animate-spin h-6 w-6 text-emerald-500" />
             <span class="text-xs font-semibold">Đang tải...</span>
           </div>
 
           <div v-else-if="usersList.length === 0" class="flex flex-col items-center justify-center py-8 text-slate-500 gap-2">
-            <UIcon name="i-heroicons-users" class="h-10 w-10 text-slate-300 dark:text-slate-700" />
+            <UIcon name="i-lucide-users" class="h-10 w-10 text-slate-300 dark:text-slate-700" />
             <p class="text-sm font-medium">Không tìm thấy người dùng phù hợp</p>
           </div>
 
@@ -432,7 +432,7 @@
               </span>
               <div class="flex gap-1">
                 <UButton
-                  icon="i-heroicons-chevron-left"
+                  icon="i-lucide-chevron-left"
                   :disabled="userPagination.page === 1"
                   variant="outline"
                   color="neutral"
@@ -440,7 +440,7 @@
                   @click="changeUserPage(userPagination.page - 1)"
                 />
                 <UButton
-                  icon="i-heroicons-chevron-right"
+                  icon="i-lucide-chevron-right"
                   :disabled="userPagination.page === userPagination.totalPages"
                   variant="outline"
                   color="neutral"

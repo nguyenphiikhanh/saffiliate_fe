@@ -37,7 +37,7 @@
               </p>
             </div>
           </div>
-          <UIcon name="i-heroicons-arrow-right" class="h-5 w-5 text-slate-350 dark:text-slate-650 group-hover:text-blue-500 transition-colors shrink-0" />
+          <UIcon name="i-lucide-arrow-right" class="h-5 w-5 text-slate-350 dark:text-slate-655 group-hover:text-blue-500 transition-colors shrink-0" />
         </a>
 
         <!-- Telegram Box -->
@@ -58,7 +58,7 @@
               </p>
             </div>
           </div>
-          <UIcon name="i-heroicons-arrow-right" class="h-5 w-5 text-slate-355 dark:text-slate-655 group-hover:text-sky-500 transition-colors shrink-0" />
+          <UIcon name="i-lucide-arrow-right" class="h-5 w-5 text-slate-355 dark:text-slate-655 group-hover:text-sky-500 transition-colors shrink-0" />
         </a>
 
         <!-- Email Box -->
@@ -73,7 +73,7 @@
           <span class="text-[9.5px] font-extrabold text-slate-400 dark:text-slate-550 uppercase tracking-wider block mb-3">Gửi thư điện tử chính thức</span>
           <div class="flex items-center gap-3 select-all">
             <div class="h-9 w-9 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
-              <UIcon name="i-heroicons-envelope" class="h-4.5 w-4.5" />
+              <UIcon name="i-lucide-mail" class="h-4.5 w-4.5" />
             </div>
             <div class="flex flex-col">
               <span class="text-xs font-black text-slate-800 dark:text-white leading-none">support@saffi.vn</span>
@@ -151,7 +151,7 @@
           >
             <div v-if="successMsg">
               <UAlert
-                icon="i-heroicons-check-circle"
+                icon="i-lucide-circle-check"
                 color="success"
                 variant="soft"
                 :title="successMsg"

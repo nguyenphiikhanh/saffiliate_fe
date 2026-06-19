@@ -15,7 +15,7 @@
 
       <UButton
         @click="showUploadModal = true"
-        icon="i-heroicons-arrow-up-tray"
+        icon="i-lucide-upload"
         class="font-semibold text-xs"
       >
         Upload CSV
@@ -128,7 +128,7 @@
         <!-- Filter by User Button -->
         <UButton
           @click="showUserModal = true"
-          icon="i-heroicons-user"
+          icon="i-lucide-user"
           variant="outline"
           color="neutral"
           class="font-medium text-xs max-w-[200px]"
@@ -142,7 +142,7 @@
           <template #trailing>
             <UIcon
               v-if="selectedUserFilter"
-              name="i-heroicons-x-mark"
+              name="i-lucide-x"
               class="h-3 w-3 cursor-pointer hover:text-rose-500"
               @click.stop="clearUserFilter"
             />
@@ -167,7 +167,7 @@
           @click="clearAllFilters"
           variant="link"
           color="danger"
-          icon="i-heroicons-trash"
+          icon="i-lucide-trash-2"
           size="xs"
           class="font-bold text-xs"
         >
@@ -309,7 +309,7 @@
                 <!-- Hành động -->
                 <td class="px-4 py-3 text-center">
                   <UIcon
-                    name="i-heroicons-chevron-right"
+                    name="i-lucide-chevron-right"
                     class="h-4 w-4 text-slate-400"
                   />
                 </td>
@@ -425,7 +425,7 @@
         </div>
         <div class="flex gap-1" v-if="totalPages > 1">
           <UButton
-            icon="i-heroicons-chevron-left"
+            icon="i-lucide-chevron-left"
             :disabled="currentPage === 1"
             variant="outline"
             color="neutral"
@@ -451,7 +451,7 @@
             </UButton>
           </template>
           <UButton
-            icon="i-heroicons-chevron-right"
+            icon="i-lucide-chevron-right"
             :disabled="currentPage === totalPages"
             variant="outline"
             color="neutral"
@@ -463,7 +463,7 @@
     </UCard>
 
     <!-- Upload Modal -->
-    <UModal v-model="showUploadModal">
+    <UModal v-model:open="showUploadModal">
       <template #content>
         <UCard
           :ui="{
@@ -479,7 +479,7 @@
             <UButton
               color="neutral"
               variant="ghost"
-              icon="i-heroicons-x-mark"
+              icon="i-lucide-x"
               @click="showUploadModal = false"
             />
           </template>
@@ -489,7 +489,7 @@
             v-if="isUploading"
             class="absolute inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm z-10 flex flex-col items-center justify-center"
           >
-            <UIcon name="i-heroicons-arrow-path" class="animate-spin h-8 w-8 text-emerald-500 mb-3" />
+            <UIcon name="i-lucide-refresh-cw" class="animate-spin h-8 w-8 text-emerald-500 mb-3" />
             <p class="text-sm font-bold text-slate-700 dark:text-slate-300">
               Đang xử lý...
             </p>
@@ -512,7 +512,7 @@
             <div
               class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 mb-3 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors"
             >
-              <UIcon name="i-heroicons-document-arrow-up" class="h-6 w-6" />
+              <UIcon name="i-lucide-file-up" class="h-6 w-6" />
             </div>
             <h4
               class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-1"
@@ -535,7 +535,7 @@
             <div
               class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-3"
             >
-              <UIcon name="i-heroicons-document-check" class="h-5 w-5" />
+              <UIcon name="i-lucide-file-check" class="h-5 w-5" />
             </div>
             <h4
               class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-1 truncate max-w-full"
@@ -565,7 +565,7 @@
           </div>
 
           <div class="mt-4 flex items-start gap-2">
-            <UIcon name="i-heroicons-information-circle" class="h-4 w-4 text-slate-400 mt-0.5 shrink-0" />
+            <UIcon name="i-lucide-info" class="h-4 w-4 text-slate-400 mt-0.5 shrink-0" />
             <p class="text-[11px] text-slate-500 leading-relaxed">
               File CSV phải được trích xuất từ báo cáo của Shopee Affiliate. Hệ
               thống sẽ so khớp <span class="font-bold">Mã Đơn</span>.
@@ -576,7 +576,7 @@
     </UModal>
 
     <!-- Order Details Drawer -->
-    <USlideover v-model="isDrawerOpen">
+    <USlideover v-model:open="isDrawerOpen">
       <template #content>
         <UCard
           v-if="selectedOrder"
@@ -614,7 +614,7 @@
             <UButton
               color="neutral"
               variant="ghost"
-              icon="i-heroicons-x-mark"
+              icon="i-lucide-x"
               class="rounded-lg"
               @click="closeOrderDetails"
             />
@@ -754,7 +754,7 @@
     </USlideover>
 
     <!-- User Selection Modal -->
-    <UModal v-model="showUserModal">
+    <UModal v-model:open="showUserModal">
       <template #content>
         <UCard
           :ui="{
@@ -765,7 +765,7 @@
           class="relative w-full max-w-xl overflow-hidden"
         >
           <template #header>
-            <UIcon name="i-heroicons-magnifying-glass" class="h-5 w-5 text-slate-400 shrink-0 ml-1" />
+            <UIcon name="i-lucide-search" class="h-5 w-5 text-slate-400 shrink-0 ml-1" />
             <UInput
               v-model="userSearchQuery"
               type="text"
@@ -779,7 +779,7 @@
                   v-if="userSearchQuery"
                   color="neutral"
                   variant="link"
-                  icon="i-heroicons-x-mark"
+                  icon="i-lucide-x"
                   size="xs"
                   @click="clearUserSearch"
                 />
@@ -795,19 +795,19 @@
             <UButton
               color="neutral"
               variant="ghost"
-              icon="i-heroicons-x-mark"
+              icon="i-lucide-x"
               class="shrink-0"
               @click="showUserModal = false"
             />
           </template>
 
           <div v-if="usersLoading" class="flex flex-col items-center justify-center py-8 text-slate-400 gap-3">
-            <UIcon name="i-heroicons-arrow-path" class="animate-spin h-6 w-6 text-emerald-500" />
+            <UIcon name="i-lucide-refresh-cw" class="animate-spin h-6 w-6 text-emerald-500" />
             <span class="text-xs font-semibold">Đang tải...</span>
           </div>
 
-          <div v-else-if="usersList.length === 0" class="flex flex-col items-center justify-center py-8 text-slate-500 gap-2">
-            <UIcon name="i-heroicons-users" class="h-10 w-10 text-slate-300 dark:text-slate-700" />
+          <div v-else-if="usersList.length === 0" class="flex flex-col items-center justify-center py-8 text-slate-505 gap-2">
+            <UIcon name="i-lucide-users" class="h-10 w-10 text-slate-300 dark:text-slate-700" />
             <p class="text-sm font-medium">Không tìm thấy người dùng phù hợp</p>
           </div>
 
@@ -846,7 +846,7 @@
               </span>
               <div class="flex gap-1">
                 <UButton
-                  icon="i-heroicons-chevron-left"
+                  icon="i-lucide-chevron-left"
                   :disabled="userPagination.page === 1"
                   variant="outline"
                   color="neutral"
@@ -854,7 +854,7 @@
                   @click="fetchUsers(userPagination.page - 1, userSearchQuery, 20)"
                 />
                 <UButton
-                  icon="i-heroicons-chevron-right"
+                  icon="i-lucide-chevron-right"
                   :disabled="userPagination.page === userPagination.totalPages"
                   variant="outline"
                   color="neutral"
@@ -888,12 +888,12 @@
       >
         <UIcon
           v-if="toastMsg.type === 'success'"
-          name="i-heroicons-check-circle"
+          name="i-lucide-circle-check"
           class="h-5 w-5 text-emerald-500 shrink-0"
         />
         <UIcon
           v-else
-          name="i-heroicons-x-circle"
+          name="i-lucide-circle-x"
           class="h-5 w-5 text-rose-500 shrink-0"
         />
         <span class="text-sm font-semibold">{{ toastMsg.msg }}</span>

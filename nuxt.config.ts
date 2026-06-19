@@ -16,12 +16,19 @@ export default defineNuxtConfig({
         { name: "apple-mobile-web-app-title", content: "Saffi" },
         { name: "application-name", content: "Saffi" }
       ]
-    }
+    },
+    pageTransition: { name: "page", mode: "out-in" },
+    layoutTransition: { name: "layout", mode: "out-in" }
   },
 
   css: ["~/assets/css/main.css"],
 
   modules: ["@nuxt/ui", "nuxt-vue3-google-signin", "@nuxt/image", "@nuxtjs/google-fonts"],
+
+  icon: {
+    localApiEndpoint: "/_nuxt_icon",
+    fallbackToApi: false,
+  },
 
   vite: {
     plugins: [],

@@ -69,7 +69,7 @@
             MUA SẮM HOÀN TIỀN NGAY
             <template #trailing>
               <UIcon
-                name="i-heroicons-arrow-right-20-solid"
+                name="i-lucide-arrow-right"
                 class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
               />
             </template>
@@ -337,7 +337,7 @@
                 class="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-emerald-500/30 text-emerald-500 dark:text-emerald-400 mb-1 shadow-sm bg-white dark:bg-slate-900"
               >
                 <UIcon
-                  name="i-heroicons-check-20-solid"
+                  name="i-lucide-check"
                   class="h-4 w-4 md:h-5 md:w-5"
                 />
               </div>

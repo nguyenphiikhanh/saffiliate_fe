@@ -246,7 +246,7 @@
           :description="errorMessage"
           color="red"
           variant="subtle"
-          icon="i-heroicons-exclamation-triangle"
+          icon="i-lucide-alert-triangle"
           class="mb-5 rounded-2xl"
           :close="{ onClick: () => errorMessage = '' }"
         />
@@ -276,7 +276,7 @@
               Tiếp tục với Google
             </span>
             <template #trailing>
-              <UIcon name="i-heroicons-arrow-right" class="h-4.5 w-4.5 text-slate-400 group-hover:text-shopee-orange group-hover:translate-x-1 transition-transform" />
+              <UIcon name="i-lucide-arrow-right" class="h-4.5 w-4.5 text-slate-400 group-hover:text-shopee-orange group-hover:translate-x-1 transition-transform" />
             </template>
           </UButton>
         </div>
@@ -285,7 +285,7 @@
         <p
           class="text-xs text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1.5 mb-6 font-medium"
         >
-          <UIcon name="i-heroicons-lock-closed-20-solid" class="h-3.5 w-3.5 text-slate-400/80 dark:text-slate-500/80 shrink-0" />
+          <UIcon name="i-lucide-lock" class="h-3.5 w-3.5 text-slate-400/80 dark:text-slate-500/80 shrink-0" />
           <span>Google là phương thức đăng nhập chính và được khuyến nghị.</span>
         </p>
 
@@ -335,7 +335,7 @@
               variant="soft"
               class="h-11 w-11 rounded-2xl flex items-center justify-center p-0"
               title="Email Hỗ trợ"
-              icon="i-heroicons-envelope"
+              icon="i-lucide-mail"
             />
 
           </div>
@@ -372,7 +372,7 @@
         <div
           class="h-16 w-16 flex items-center justify-center rounded-2xl bg-gradient-to-br from-shopee-orange to-amber-500 shadow-lg shadow-shopee-orange/20 mb-6 animate-pulse-slow"
         >
-          <UIcon name="i-heroicons-exclamation-triangle" class="h-9 w-9 text-white" />
+          <UIcon name="i-lucide-alert-triangle" class="h-9 w-9 text-white" />
         </div>
 
         <h3
@@ -554,7 +554,7 @@
             size="xl"
             block
             class="py-4 rounded-2xl bg-gradient-to-r from-shopee-orange to-amber-500 text-white font-bold text-base hover:shadow-lg hover:shadow-shopee-orange/25 border-0"
-            icon="i-heroicons-arrow-top-right-on-square"
+            icon="i-lucide-external-link"
           >
             Mở trình duyệt mặc định
           </UButton>
@@ -567,7 +567,7 @@
             color="neutral"
             variant="soft"
             class="py-4 rounded-2xl font-bold text-base"
-            :icon="isCopied ? 'i-heroicons-check' : 'i-heroicons-document-duplicate'"
+            :icon="isCopied ? 'i-lucide-check' : 'i-lucide-copy'"
           >
             {{ isCopied ? "Đã sao chép liên kết!" : "Sao chép liên kết" }}
           </UButton>
