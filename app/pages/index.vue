@@ -1,13 +1,10 @@
 <template>
   <div class="w-full flex flex-col gap-6 animate-fade-in-up">
     <!-- User Welcome & Rank Status Section (Visible to logged in users) -->
-    <div
-      v-if="user"
-      class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6"
-    >
+    <div v-if="user" class="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
       <!-- Card 1: Welcome & Actions -->
       <div
-        class="lg:col-span-2 bg-[#FFFAF3] dark:bg-slate-900 border border-orange-100/50 dark:border-slate-800 rounded-[24px] p-5 sm:p-7 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow"
+        class="lg:col-span-2 bg-[#FFFAF3] dark:bg-slate-900 border border-orange-100/50 dark:border-slate-800 rounded-[24px] p-5 sm:p-7 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between shadow-sm relative overflow-hidden group md:hover:shadow-md transition-shadow"
       >
         <!-- Decorative abstract glow -->
         <div
@@ -21,11 +18,14 @@
           <div
             class="h-14 w-14 shrink-0 rounded-full bg-pink-500 flex items-center justify-center text-white font-bold text-2xl shadow-sm border-[3px] border-white dark:border-slate-800 overflow-hidden"
           >
-            <img
+            <NuxtPicture
               v-if="userAvatar"
               :src="userAvatar"
-              class="h-full w-full object-cover"
-              referrerpolicy="no-referrer"
+              :img-attrs="{
+                class: 'h-full w-full object-cover',
+                referrerpolicy: 'no-referrer',
+                loading: 'lazy',
+              }"
             />
             <span v-else>{{ firstLetter }}</span>
           </div>
@@ -61,7 +61,7 @@
         >
           <NuxtLink
             to="/hoan-tien"
-            class="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-[#f05d40] hover:bg-[#e0482a] text-white text-[13px] font-bold uppercase tracking-wide rounded-[100px] transition-all shadow-[0_8px_24px_-6px_rgba(240,93,64,0.6)] hover:shadow-[0_12px_28px_-6px_rgba(240,93,64,0.7)] active:scale-95 group"
+            class="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-[#f05d40] md:hover:bg-[#e0482a] text-white text-[13px] font-bold uppercase tracking-wide rounded-[100px] transition-all shadow-[0_8px_24px_-6px_rgba(240,93,64,0.6)] md:hover:shadow-[0_12px_28px_-6px_rgba(240,93,64,0.7)] active:scale-95 group"
           >
             MUA SẮM HOÀN TIỀN NGAY
             <svg
@@ -84,7 +84,7 @@
 
       <!-- Card 2: Rank Progress -->
       <div
-        class="lg:col-span-1 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[24px] p-5 flex items-center gap-5 shadow-sm group hover:shadow-md transition-shadow"
+        class="lg:col-span-1 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[24px] p-5 flex items-center gap-5 shadow-sm group md:hover:shadow-md transition-shadow"
       >
         <!-- Circular Progress Chart -->
         <div
@@ -97,10 +97,14 @@
           <div
             class="absolute inset-[10px] bg-white dark:bg-slate-900 rounded-full flex items-center justify-center overflow-hidden border-[2px] border-white dark:border-slate-900"
           >
-            <img
+            <NuxtPicture
               :src="rankInfo.image"
-              :alt="rankInfo.name"
-              class="w-14 h-14 object-contain transition-transform duration-500 group-hover:scale-110"
+              :img-attrs="{
+                alt: rankInfo.name,
+                class:
+                  'w-14 h-14 object-contain transition-transform duration-500 md:group-hover:scale-110',
+                loading: 'lazy',
+              }"
             />
           </div>
         </div>
@@ -125,10 +129,10 @@
             <span
               v-if="user.rank === 'obsidian'"
               class="font-bold text-[#1e293b] dark:text-white"
-              >{{ user.completedOrdersCount ?? 0 }}</span
+              >{{ user.completed_orders_count ?? 0 }}</span
             >
             <span v-else class="font-bold text-[#1e293b] dark:text-white"
-              >{{ user.completedOrdersCount ?? 0 }} /
+              >{{ user.completed_orders_count ?? 0 }} /
               {{ rankProgress.nextThreshold }}</span
             >
           </div>
@@ -214,13 +218,13 @@
             :key="user.userId"
             class="flex items-center justify-between transition-all duration-300 group relative overflow-hidden"
             :class="{
-              'border border-amber-400 dark:border-amber-500/50 bg-gradient-to-r from-amber-50/50 via-amber-50/10 to-transparent dark:from-amber-950/20 dark:via-amber-950/5 dark:to-transparent shadow-lg shadow-amber-500/10 hover:shadow-xl hover:shadow-amber-500/20 hover:-translate-y-1 rounded-[20px] p-5':
+              'border border-amber-400 dark:border-amber-500/50 bg-gradient-to-r from-amber-50/50 via-amber-50/10 to-transparent dark:from-amber-950/20 dark:via-amber-950/5 dark:to-transparent shadow-lg shadow-amber-500/10 md:hover:shadow-xl md:hover:shadow-amber-500/20 md:hover:-translate-y-1 rounded-[20px] p-5':
                 idx === 0,
-              'border border-slate-300 dark:border-slate-700 bg-gradient-to-r from-slate-50 via-slate-50/20 to-transparent dark:from-slate-800/30 dark:via-slate-800/5 dark:to-transparent shadow-md shadow-slate-400/10 hover:shadow-lg hover:shadow-slate-400/15 hover:-translate-y-0.5 rounded-[20px] p-5':
+              'border border-slate-300 dark:border-slate-700 bg-gradient-to-r from-slate-50 via-slate-50/20 to-transparent dark:from-slate-800/30 dark:via-slate-800/5 dark:to-transparent shadow-md shadow-slate-400/10 md:hover:shadow-lg md:hover:shadow-slate-400/15 md:hover:-translate-y-0.5 rounded-[20px] p-5':
                 idx === 1,
-              'border border-orange-300/80 dark:border-orange-900/40 bg-gradient-to-r from-orange-50/30 via-orange-50/5 to-transparent dark:from-orange-950/10 dark:via-orange-950/2 dark:to-transparent shadow-sm hover:shadow-md hover:-translate-y-0.5 rounded-[20px] p-5':
+              'border border-orange-300/80 dark:border-orange-900/40 bg-gradient-to-r from-orange-50/30 via-orange-50/5 to-transparent dark:from-orange-950/10 dark:via-orange-950/2 dark:to-transparent shadow-sm md:hover:shadow-md md:hover:-translate-y-0.5 rounded-[20px] p-5':
                 idx === 2,
-              'border-b border-slate-100 dark:border-slate-800 last:border-0 py-4 px-5 hover:bg-slate-50/60 dark:hover:bg-slate-800/40 rounded-xl transition-all':
+              'border-b border-slate-100 dark:border-slate-800 last:border-0 py-4 px-5 md:hover:bg-slate-50/60 dark:md:hover:bg-slate-800/40 rounded-xl transition-all':
                 idx > 2,
             }"
           >
@@ -457,7 +461,7 @@ const rankInfo = computed(() => {
 });
 
 const rankProgress = computed(() => {
-  const count = user.value?.completedOrdersCount ?? 0;
+  const count = user.value?.completed_orders_count ?? 0;
   const rank = user.value?.rank || "silver";
 
   let nextRankName = "";

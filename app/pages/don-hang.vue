@@ -235,7 +235,7 @@
               <tr
                 v-for="order in filteredOrders"
                 :key="order.code"
-                class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors"
+                class="md:hover:bg-slate-50/50 dark:md:hover:bg-slate-800/40 transition-colors"
               >
                 <!-- Mã đơn -->
                 <td class="p-4 pl-6">
@@ -243,10 +243,14 @@
                     <div
                       class="w-7 h-7 flex items-center justify-center shrink-0"
                     >
-                      <img
+                      <NuxtPicture
                         :src="getBrandLogo(order.type)"
-                        class="w-7 h-7 object-contain shrink-0"
-                        alt="Logo"
+                        :img-attrs="{
+                          class: 'w-7 h-7 object-contain shrink-0',
+                          alt: 'Logo',
+                          width: '28',
+                          height: '28'
+                        }"
                       />
                     </div>
                     <span
@@ -302,7 +306,7 @@
                 <td class="p-4 text-center">
                   <button
                     @click="openOrderDetails(order)"
-                    class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:border-shopee-orange dark:hover:border-shopee-orange bg-slate-50 hover:bg-shopee-orange/5 dark:bg-slate-950/20 text-slate-600 hover:text-shopee-orange dark:text-slate-400 dark:hover:text-shopee-orange font-bold text-xs active:scale-[0.96] transition-all cursor-pointer select-none"
+                    class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 md:hover:border-shopee-orange dark:md:hover:border-shopee-orange bg-slate-50 md:hover:bg-shopee-orange/5 dark:bg-slate-950/20 text-slate-600 md:hover:text-shopee-orange dark:text-slate-400 dark:md:hover:text-shopee-orange font-bold text-xs active:scale-[0.96] transition-all cursor-pointer select-none"
                     type="button"
                   >
                     Xem
@@ -327,10 +331,14 @@
             <div class="flex items-center gap-3 min-w-0">
               <!-- Brand Icon -->
               <div class="w-10 h-10 flex items-center justify-center shrink-0">
-                <img
+                <NuxtPicture
                   :src="getBrandLogo(order.type)"
-                  class="w-10 h-10 object-contain shrink-0"
-                  alt="Logo"
+                  :img-attrs="{
+                    class: 'w-10 h-10 object-contain shrink-0',
+                    alt: 'Logo',
+                    width: '40',
+                    height: '40'
+                  }"
                 />
               </div>
 

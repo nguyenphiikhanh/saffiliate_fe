@@ -2,7 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2025-07-15",
+  compatibilityDate: "2026-01-01",
   devtools: { enabled: true },
 
   app: {
@@ -23,7 +23,7 @@ export default defineNuxtConfig({
 
   css: ["~/assets/css/main.css"],
 
-  modules: ["@nuxt/icon", "nuxt-vue3-google-signin"],
+  modules: ["@nuxt/icon", "nuxt-vue3-google-signin", "@nuxt/image", "@nuxtjs/google-fonts"],
 
   vite: {
     plugins: [
@@ -39,7 +39,7 @@ export default defineNuxtConfig({
   },
 
   build: {
-    transpile: ['@vue/devtools-core', '@vue/devtools-kit']
+    transpile: ['@vue/devtools-core', '@vue/devtools-kit'],
   },
 
   // Server-side route rules (Proxying /api calls to backend to completely bypass browser CORS)
@@ -63,10 +63,23 @@ export default defineNuxtConfig({
     clientId: process.env.NUXT_PUBLIC_GOOGLE_CLIENT_ID
   },
 
+  googleFonts: {
+    families: {
+      Inter: [300, 400, 500, 600, 700],
+      'Plus Jakarta Sans': [300, 400, 500, 600, 700, 800],
+    },
+    download: true,
+    display: 'swap',
+  },
+
   // for cloudflare pages
   nitro: {
     prerender: {
       autoSubfolderIndex: false
+    },
+    compressPublicAssets: {
+      gzip: true,
+      brotli: true,
     }
   }
 });
