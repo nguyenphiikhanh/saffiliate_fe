@@ -51,16 +51,17 @@
             <!-- Socials inside Brand Box -->
             <div class="flex items-center gap-3">
               <a
-                href="#"
+                href="mailto:support@saffi.vn"
                 class="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-sm border border-orange-100/60 dark:border-slate-700 text-slate-400 hover:text-shopee-orange hover:border-shopee-orange transition-all duration-300 hover:scale-110 active:scale-95"
               >
-                <UIcon name="i-lucide-facebook" class="h-5 w-5" />
+                <UIcon name="i-lucide-mail" class="h-5 w-5" />
               </a>
               <a
-                href="#"
+                :href="zaloGroup"
+                target="_blank"
                 class="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-sm border border-orange-100/60 dark:border-slate-700 text-slate-400 hover:text-shopee-orange hover:border-shopee-orange transition-all duration-300 hover:scale-110 active:scale-95"
               >
-                <UIcon name="i-lucide-users" class="h-5 w-5" />
+                <UIcon name="i-arcticons-zalo" class="h-5 w-5" />
               </a>
             </div>
           </div>
@@ -237,4 +238,5 @@
 <script setup>
 const config = useRuntimeConfig();
 const mainSiteURL = config.public.mainSiteURL;
+const zaloGroup = config.public.zaloGroup;
 </script>

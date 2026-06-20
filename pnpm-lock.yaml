@@ -27,6 +27,9 @@ importers:
         specifier: ^4.93.1
         version: 4.93.1
     devDependencies:
+      '@iconify-json/arcticons':
+        specifier: ^1.2.53
+        version: 1.2.53
       '@iconify-json/lucide':
         specifier: ^1.2.114
         version: 1.2.114
@@ -1022,6 +1025,9 @@ packages:
 
   '@floating-ui/vue@1.1.11':
     resolution: {integrity: sha512-HzHKCNVxnGS35r9fCHBc3+uCnjw9IWIlCPL683cGgM9Kgj2BiAl8x1mS7vtvP6F9S/e/q4O6MApwSHj8hNLGfw==}
+
+  '@iconify-json/arcticons@1.2.53':
+    resolution: {integrity: sha512-v0IOJhBWfPO+JvxBczNiVHA9NghrMaFW4Aj4FVnE1/RlvwV94apb3TQ9WJM7SvsmPDlE7krEOjyzkSR+zQzHbA==}
 
   '@iconify-json/lucide@1.2.114':
     resolution: {integrity: sha512-NbvH3B1BYo6wBtS7joLi7f2UVQOqK2dtZodMFf3kkBs+Tnh9TkRuy8oVHr1RM8UK6bUtvAXxfNlGAah0CuvPCw==}
@@ -5677,6 +5683,10 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  '@iconify-json/arcticons@1.2.53':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify-json/lucide@1.2.114':
     dependencies:

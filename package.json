@@ -21,6 +21,7 @@
     "wrangler": "^4.93.1"
   },
   "devDependencies": {
+    "@iconify-json/arcticons": "^1.2.53",
     "@iconify-json/lucide": "^1.2.114",
     "@nuxt/icon": "^2.2.2",
     "@nuxt/image": "^2.0.0",

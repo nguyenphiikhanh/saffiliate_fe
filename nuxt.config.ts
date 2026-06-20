@@ -28,6 +28,10 @@ export default defineNuxtConfig({
   icon: {
     localApiEndpoint: "/_nuxt_icon",
     fallbackToApi: false,
+    clientBundle: {
+      scan: true,
+      icons: ['arcticons:zalo']
+    }
   },
 
   vite: {
@@ -79,10 +83,6 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       autoSubfolderIndex: false
-    },
-    compressPublicAssets: {
-      gzip: true,
-      brotli: true,
     }
   }
 });
