@@ -80,9 +80,5 @@ export default defineNuxtConfig({
   },
 
   // for cloudflare pages
-  nitro: {
-    prerender: {
-      autoSubfolderIndex: false
-    }
-  }
+  nitro: {}
 });
