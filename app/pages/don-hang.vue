@@ -201,7 +201,7 @@
                     size="xs"
                     variant="outline"
                     color="primary"
-                    class="font-bold"
+                    class="font-bold cursor-pointer"
                     @click="openOrderDetails(order)"
                   >
                     Xem

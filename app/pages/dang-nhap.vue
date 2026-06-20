@@ -24,7 +24,7 @@
           class="flex h-28 w-28 items-center justify-center shrink-0 mb-4 transition-transform duration-500 hover:rotate-12 select-none"
         >
           <img
-            src="/saficon.png"
+            src="/saficon.webp"
             class="h-28 w-28 object-contain rounded-3xl shadow-lg"
             alt="Saffi Logo"
           />
@@ -244,7 +244,7 @@
           v-if="errorMessage"
           title="Đăng nhập thất bại"
           :description="errorMessage"
-          color="red"
+          color="danger"
           variant="subtle"
           icon="i-lucide-alert-triangle"
           class="mb-5 rounded-2xl"
@@ -263,7 +263,7 @@
             class="py-4 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-shopee-orange dark:hover:border-shopee-orange"
             :loading="isLoggingIn"
           >
-            <template #leading>
+            <template #leading v-if="!isLoggingIn">
               <!-- Google Logo SVG -->
               <svg class="h-6 w-6 shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -273,9 +273,9 @@
               </svg>
             </template>
             <span class="font-sans text-base font-semibold text-slate-700 dark:text-slate-200">
-              Tiếp tục với Google
+              {{ isLoggingIn ? "Đang đăng nhập" : "Tiếp tục với Google" }}
             </span>
-            <template #trailing>
+            <template #trailing v-if="!isLoggingIn">
               <UIcon name="i-lucide-arrow-right" class="h-4.5 w-4.5 text-slate-400 group-hover:text-shopee-orange group-hover:translate-x-1 transition-transform" />
             </template>
           </UButton>
@@ -699,6 +699,8 @@ onMounted(async () => {
 
   // Check if we got an authorization code from Google redirect callback
   const id_token = route.query.id_token;
+  const code = route.query.code;
+
   if (id_token) {
     errorMessage.value = "";
     isLoggingIn.value = true;
@@ -732,6 +734,40 @@ onMounted(async () => {
       );
       isLoggingIn.value = false;
       router.replace({ query: { ...route.query, id_token: undefined } });
+    }
+  } else if (code) {
+    errorMessage.value = "";
+    isLoggingIn.value = true;
+    try {
+      const { api } = useAppFetch();
+      const res = await api.post(`/auth/google`, {
+        code: code,
+      });
+
+      if (res && res.data && res.data.token) {
+        const sanctumToken = res.data.token;
+        const authUser = res.data.user;
+
+        // Lưu thông tin xác thực vào Cookie & State
+        login(sanctumToken, authUser);
+
+        // Đồng bộ dữ liệu mới nhất
+        await fetchUser(sanctumToken);
+
+        // Xóa code khỏi query URL và chuyển hướng về trang chủ
+        router.replace({ query: { ...route.query, code: undefined } });
+        router.push("/");
+      } else {
+        throw new Error("Không thể trích xuất token đăng nhập từ hệ thống.");
+      }
+    } catch (error) {
+      console.error("Lỗi xác thực Google:", error);
+      errorMessage.value = getFriendlyErrorMessage(
+        error,
+        "Xác thực với tài khoản Google thất bại. Vui lòng thử lại."
+      );
+      isLoggingIn.value = false;
+      router.replace({ query: { ...route.query, code: undefined } });
     }
   }
 
@@ -853,10 +889,14 @@ const handleGoogleLogin = () => {
     return;
   }
 
-  if (isLoggingIn.value || !isReady.value) return;
+  if (isLoggingIn.value) return;
   errorMessage.value = "";
 
-  triggerGoogleLogin();
+  if (typeof window !== "undefined") {
+    const redirectUri = `${window.location.origin}/dang-nhap`;
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${config.public.googleClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=openid%20email%20profile`;
+    window.location.href = googleAuthUrl;
+  }
 };
 </script>
 
