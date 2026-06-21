@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6 animate-in fade-in duration-500 pb-12">
+  <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
@@ -13,309 +13,178 @@
         </p>
       </div>
 
-      <UButton
+      <a-button
+        type="primary"
         @click="showUploadModal = true"
-        icon="i-lucide-upload"
-        class="font-semibold text-xs"
+        class="font-semibold text-xs flex items-center gap-1"
       >
+        <template #icon><UploadOutlined /></template>
         Upload CSV
-      </UButton>
+      </a-button>
     </div>
 
     <!-- Stats Cards -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      <UCard
-        :ui="{
-          body: 'p-5',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
-      >
+      <div class="p-5 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
         <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
           Tổng đơn hàng
         </div>
-        <USkeleton v-if="pending && !response" class="h-8 w-16 mt-1" />
+        <a-skeleton-button active v-if="pending && !response" size="small" class="mt-1" />
         <div v-else class="text-xl font-bold text-slate-800 dark:text-white mt-1">
           {{ orders?.length || 0 }}
         </div>
-      </UCard>
+      </div>
 
-      <UCard
-        :ui="{
-          body: 'p-5',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
-      >
+      <div class="p-5 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
         <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
           Chờ duyệt
         </div>
-        <USkeleton v-if="pending && !response" class="h-8 w-16 mt-1" />
+        <a-skeleton-button active v-if="pending && !response" size="small" class="mt-1" />
         <div v-else class="text-xl font-bold text-amber-500 mt-1">
           {{ pendingCount }}
         </div>
-      </UCard>
+      </div>
 
-      <UCard
-        :ui="{
-          body: 'p-5',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
-      >
+      <div class="p-5 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
         <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
           Hoa hồng sàn
         </div>
-        <USkeleton v-if="pending && !response" class="h-8 w-32 mt-1" />
+        <a-skeleton-button active v-if="pending && !response" size="small" class="mt-1" />
         <div v-else class="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">
           {{ formatMoney(totalCommission) }}
         </div>
-      </UCard>
+      </div>
 
-      <UCard
-        :ui="{
-          body: 'p-5',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
-      >
+      <div class="p-5 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
         <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
           Hoa hồng User nhận
         </div>
-        <USkeleton v-if="pending && !response" class="h-8 w-32 mt-1" />
+        <a-skeleton-button active v-if="pending && !response" size="small" class="mt-1" />
         <div v-else class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">
           {{ formatMoney(totalUserCommission) }}
         </div>
-      </UCard>
+      </div>
 
-      <UCard
-        :ui="{
-          body: 'p-5',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
-        class="col-span-2 md:col-span-1"
-      >
+      <div class="p-5 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm col-span-2 md:col-span-1">
         <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
           Doanh thu (Lợi nhuận)
         </div>
-        <USkeleton v-if="pending && !response" class="h-8 w-32 mt-1" />
+        <a-skeleton-button active v-if="pending && !response" size="small" class="mt-1" />
         <div v-else class="text-xl font-bold text-slate-900 dark:text-slate-100 mt-1">
           {{ formatMoney(systemRevenue) }}
         </div>
-      </UCard>
+      </div>
     </div>
 
     <!-- Data Table Container -->
-    <UCard
-      :ui="{
-        body: 'p-0',
-        ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-        background: 'bg-white dark:bg-slate-900',
-        rounded: 'rounded-xl shadow-sm'
-      }"
-      class="overflow-hidden"
-    >
+    <div class="overflow-hidden ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
       <!-- Toolbar -->
       <div
         class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-4 bg-slate-50/50 dark:bg-slate-900/50"
       >
         <!-- Filter by User Button -->
-        <UButton
+        <a-button
           @click="showUserModal = true"
-          icon="i-lucide-user"
-          variant="outline"
-          color="neutral"
-          class="font-medium text-xs max-w-[200px]"
-          :class="selectedUserFilter ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 border-emerald-500/20' : ''"
+          :type="selectedUserFilter ? 'primary' : 'default'"
+          :ghost="!!selectedUserFilter"
+          class="font-medium text-xs max-w-[200px] flex items-center gap-1"
         >
+          <template #icon><UserOutlined /></template>
           <span class="truncate">{{
             selectedUserFilter
               ? selectedUserFilter.name || selectedUserFilter.email
               : "Tìm theo người dùng"
           }}</span>
-          <template #trailing>
-            <UIcon
-              v-if="selectedUserFilter"
-              name="i-lucide-x"
-              class="h-3 w-3 cursor-pointer hover:text-rose-500"
-              @click.stop="clearUserFilter"
-            />
-          </template>
-        </UButton>
+          <CloseOutlined
+            v-if="selectedUserFilter"
+            class="ml-1 hover:text-rose-500"
+            @click.stop="clearUserFilter"
+          />
+        </a-button>
 
-        <USelect
-          v-model="selectedStatus"
-          :items="[
+        <a-select
+          v-model:value="selectedStatus"
+          :options="[
             { label: 'Tất cả trạng thái', value: 'all' },
             { label: 'Chờ duyệt', value: 'pending' },
             { label: 'Thành công', value: 'success' },
             { label: 'Đã hủy', value: 'cancelled' }
           ]"
-          size="sm"
           class="font-medium w-48"
         />
 
         <!-- Clear Filter Button -->
-        <UButton
+        <a-button
           v-if="selectedStatus !== 'all' || selectedUserFilter"
           @click="clearAllFilters"
-          variant="link"
-          color="danger"
-          icon="i-lucide-trash-2"
-          size="xs"
-          class="font-bold text-xs"
+          type="text"
+          danger
+          class="font-bold text-xs flex items-center gap-1"
         >
+          <template #icon><DeleteOutlined /></template>
           Xóa bộ lọc
-        </UButton>
+        </a-button>
       </div>
 
       <!-- Table -->
       <div class="overflow-x-auto">
         <!-- Desktop Table View -->
         <div class="hidden md:block">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr
-                class="text-[10px] uppercase tracking-wider font-bold text-slate-500 bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800"
-              >
-                <th class="px-4 py-3 pl-6 whitespace-nowrap">Mã đơn</th>
-                <th class="px-4 py-3 whitespace-nowrap">Người mua</th>
-                <th class="px-4 py-3 whitespace-nowrap">Sản phẩm</th>
-                <th class="px-4 py-3 whitespace-nowrap">Ngày</th>
-                <th class="px-4 py-3 text-right whitespace-nowrap">
-                  Hoa hồng Sàn
-                </th>
-                <th class="px-4 py-3 text-right whitespace-nowrap">
-                  Hoa hồng User
-                </th>
-                <th class="px-4 py-3 whitespace-nowrap text-center">
-                  Trạng thái
-                </th>
-                <th class="px-4 py-3 whitespace-nowrap text-center"></th>
-              </tr>
-            </thead>
-            <tbody
-              class="divide-y divide-slate-100 dark:divide-slate-800 text-sm"
-            >
-              <tr v-if="pending && !response">
-                <td colspan="8" class="p-4">
-                  <div class="flex flex-col gap-2">
-                    <USkeleton v-for="i in 5" :key="i" class="h-10 w-full" />
-                  </div>
-                </td>
-              </tr>
-              <tr v-else-if="!filteredOrders || filteredOrders.length === 0">
-                <td
-                  colspan="8"
-                  class="p-8 text-center text-slate-500 text-sm font-medium"
+          <a-table
+            :columns="columns"
+            :dataSource="filteredOrders"
+            :rowKey="(record) => record.order_id"
+            :pagination="false"
+            :loading="pending && !response"
+            :customRow="(record) => ({
+              onClick: () => openOrderDetails(record),
+              class: 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50'
+            })"
+          >
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.key === 'order_id'">
+                <span class="font-bold text-slate-700 dark:text-slate-200 text-xs">#{{ record.order_id }}</span>
+              </template>
+              <template v-else-if="column.key === 'user'">
+                <div v-if="record.user_id" class="flex flex-col">
+                  <span class="font-bold text-slate-800 dark:text-slate-200 text-xs truncate max-w-[140px]">{{ record.user_name || "N/A" }}</span>
+                  <span class="text-[11px] text-slate-500 truncate max-w-[140px] font-medium mt-0.5" :title="record.user_email">{{ record.user_email }}</span>
+                </div>
+                <div class="text-xs text-slate-400 italic" v-else>Không rõ</div>
+              </template>
+              <template v-else-if="column.key === 'product_name'">
+                <div class="font-semibold text-slate-700 dark:text-slate-300 text-[13px] truncate max-w-[180px]" :title="record.product_name">
+                  {{ record.product_name || "Sản phẩm từ Shopee" }}
+                </div>
+              </template>
+              <template v-else-if="column.key === 'order_time'">
+                <div class="text-xs text-slate-500 font-medium">
+                  {{ new Date(record.order_time || Date.now()).toLocaleDateString("vi-VN") }}
+                </div>
+              </template>
+              <template v-else-if="column.key === 'actual_commission'">
+                <div class="font-bold text-slate-800 dark:text-slate-200 text-[13px]">
+                  {{ Math.round(record.actual_commission || 0).toLocaleString("vi-VN") }}đ
+                </div>
+              </template>
+              <template v-else-if="column.key === 'user_commission'">
+                <div class="font-bold text-emerald-600 dark:text-emerald-500 text-[13px]">
+                  {{ Math.round(record.user_commission || 0).toLocaleString("vi-VN") }}đ
+                </div>
+              </template>
+              <template v-else-if="column.key === 'order_status'">
+                <span
+                  class="font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded-full inline-block"
+                  :class="record.order_status === 'Completed' || record.order_status === 'Thành công' ? 'bg-emerald-100 text-emerald-700' : record.order_status === 'Pending' || record.order_status === 'Chờ duyệt' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'"
                 >
-                  Chưa có dữ liệu đơn hàng
-                </td>
-              </tr>
-              <tr
-                v-else
-                v-for="item in filteredOrders"
-                :key="item.order_id"
-                class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer"
-                @click="openOrderDetails(item)"
-              >
-                <!-- Mã đơn -->
-                <td class="px-4 py-3 pl-6">
-                  <span class="font-bold text-slate-700 dark:text-slate-200 text-xs">#{{ item.order_id }}</span>
-                </td>
-                <!-- Người mua -->
-                <td class="px-4 py-3">
-                  <div v-if="item.user_id" class="flex flex-col">
-                    <span
-                      class="font-bold text-slate-800 dark:text-slate-200 text-xs truncate max-w-[140px]"
-                      >{{ item.user_name || "N/A" }}</span
-                    >
-                    <span
-                      class="text-[11px] text-slate-500 truncate max-w-[140px] font-medium mt-0.5"
-                      :title="item.user_email"
-                      >{{ item.user_email }}</span
-                    >
-                  </div>
-                  <div class="text-xs text-slate-400 italic" v-else>
-                    Không rõ
-                  </div>
-                </td>
-                <!-- Sản phẩm -->
-                <td class="px-4 py-3">
-                  <div
-                    class="font-semibold text-slate-700 dark:text-slate-300 text-[13px] truncate max-w-[180px]"
-                    :title="item.product_name"
-                  >
-                    {{ item.product_name || "Sản phẩm từ Shopee" }}
-                  </div>
-                </td>
-                <!-- Ngày -->
-                <td class="px-4 py-3">
-                  <div class="text-xs text-slate-505 font-medium">
-                    {{
-                      new Date(
-                        item.order_time || Date.now()
-                      ).toLocaleDateString("vi-VN")
-                    }}
-                  </div>
-                </td>
-                <!-- Hoa hồng Sàn -->
-                <td class="px-4 py-3 text-right">
-                  <div
-                    class="font-bold text-slate-805 dark:text-slate-200 text-[13px]"
-                  >
-                    {{
-                      Math.round(item.actual_commission || 0).toLocaleString(
-                        "vi-VN"
-                      )
-                    }}đ
-                  </div>
-                </td>
-                <!-- Hoa hồng User -->
-                <td class="px-4 py-3 text-right">
-                  <div
-                    class="font-bold text-emerald-605 dark:text-emerald-500 text-[13px]"
-                  >
-                    {{
-                      Math.round(item.user_commission || 0).toLocaleString(
-                        "vi-VN"
-                      )
-                    }}đ
-                  </div>
-                </td>
-                <!-- Trạng thái -->
-                <td class="px-4 py-3 text-center">
-                  <UBadge
-                    size="xs"
-                    variant="soft"
-                    :color="item.order_status === 'Completed' || item.order_status === 'Thành công' ? 'success' : item.order_status === 'Pending' || item.order_status === 'Chờ duyệt' ? 'warning' : 'danger'"
-                    class="font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded-full inline-block"
-                  >
-                    {{
-                      item.order_status === "Completed" || item.order_status === "Thành công"
-                        ? "HOÀN THÀNH"
-                        : item.order_status === "Pending" || item.order_status === "Chờ duyệt"
-                        ? "CHỜ DUYỆT"
-                        : "ĐÃ HỦY"
-                    }}
-                  </UBadge>
-                </td>
-                <!-- Hành động -->
-                <td class="px-4 py-3 text-center">
-                  <UIcon
-                    name="i-lucide-chevron-right"
-                    class="h-4 w-4 text-slate-400"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  {{ record.order_status === "Completed" || record.order_status === "Thành công" ? "HOÀN THÀNH" : record.order_status === "Pending" || record.order_status === "Chờ duyệt" ? "CHỜ DUYỆT" : "ĐÃ HỦY" }}
+                </span>
+              </template>
+              <template v-else-if="column.key === 'action'">
+                <RightOutlined class="h-4 w-4 text-slate-400" />
+              </template>
+            </template>
+          </a-table>
         </div>
 
         <!-- Mobile Card List View -->
@@ -323,7 +192,7 @@
           class="block md:hidden border-t border-slate-200 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800"
         >
           <div v-if="pending && !response" class="p-4 space-y-3 animate-pulse">
-            <USkeleton v-for="i in 3" :key="i" class="h-24 w-full rounded-lg" />
+            <a-skeleton active :paragraph="{ rows: 2 }" v-for="i in 3" :key="i" class="mb-4" />
           </div>
           <div
             v-else-if="!filteredOrders || filteredOrders.length === 0"
@@ -342,11 +211,9 @@
               <span class="font-bold text-slate-800 dark:text-slate-200 text-xs"
                 >#{{ item.order_id }}</span
               >
-              <UBadge
-                size="xs"
-                variant="soft"
-                :color="item.order_status === 'Completed' || item.order_status === 'Thành công' ? 'success' : item.order_status === 'Pending' || item.order_status === 'Chờ duyệt' ? 'warning' : 'danger'"
+              <span
                 class="font-bold uppercase tracking-wider text-[9px] px-2 py-0.5 rounded-full inline-block"
+                :class="item.order_status === 'Completed' || item.order_status === 'Thành công' ? 'bg-emerald-100 text-emerald-700' : item.order_status === 'Pending' || item.order_status === 'Chờ duyệt' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'"
               >
                 {{
                   item.order_status === "Completed" || item.order_status === "Thành công"
@@ -355,7 +222,7 @@
                     ? "CHỜ DUYỆT"
                     : "ĐÃ HỦY"
                 }}
-              </UBadge>
+              </span>
             </div>
 
             <div
@@ -411,500 +278,393 @@
             class="flex items-center gap-1.5 text-xs text-slate-500 font-medium"
           >
             <span>Hiển thị:</span>
-            <USelect
-              v-model="limit"
-              :items="[
+            <a-select
+              v-model:value="limit"
+              :options="[
                 { label: '20', value: 20 },
                 { label: '50', value: 50 },
                 { label: '100', value: 100 }
               ]"
-              size="xs"
-              class="font-bold w-18"
+              class="font-bold w-20"
             />
           </div>
         </div>
-        <div class="flex gap-1" v-if="totalPages > 1">
-          <UButton
-            icon="i-lucide-chevron-left"
-            :disabled="currentPage === 1"
-            variant="outline"
-            color="neutral"
-            size="xs"
-            @click="currentPage > 1 && currentPage--"
-          />
-          <template v-for="(p, index) in visiblePages" :key="index">
-            <span
-              v-if="p === '...'"
-              class="w-8 h-8 flex items-center justify-center text-slate-400 text-xs select-none"
-            >
-              ...
-            </span>
-            <UButton
-              v-else
-              @click="currentPage = p"
-              :variant="currentPage === p ? 'solid' : 'outline'"
-              color="neutral"
-              size="xs"
-              class="w-8 h-8 font-semibold flex items-center justify-center text-xs"
-            >
-              {{ p }}
-            </UButton>
-          </template>
-          <UButton
-            icon="i-lucide-chevron-right"
-            :disabled="currentPage === totalPages"
-            variant="outline"
-            color="neutral"
-            size="xs"
-            @click="currentPage < totalPages && currentPage++"
+        <div class="flex items-center justify-center" v-if="totalPages > 1">
+          <a-pagination
+            :current="currentPage"
+            :total="totalPages * limit"
+            :pageSize="limit"
+            show-less-items
+            @change="(page) => currentPage = page"
           />
         </div>
       </div>
-    </UCard>
+    </div>
 
     <!-- Upload Modal -->
-    <UModal v-model:open="showUploadModal">
-      <template #content>
-        <UCard
-          :ui="{
-            body: 'p-6 relative',
-            header: 'px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/50'
-          }"
-          class="relative w-full max-w-md overflow-hidden"
+    <a-modal
+      v-model:open="showUploadModal"
+      title="Upload dữ liệu đối soát"
+      :footer="null"
+      :closable="true"
+    >
+      <div class="relative w-full overflow-hidden">
+        <!-- Loading Overlay -->
+        <div
+          v-if="isUploading"
+          class="absolute inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm z-10 flex flex-col items-center justify-center"
         >
-          <template #header>
-            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">
-              Upload dữ liệu đối soát
-            </h3>
-            <UButton
-              color="neutral"
-              variant="ghost"
-              icon="i-lucide-x"
-              @click="showUploadModal = false"
-            />
-          </template>
+          <SyncOutlined spin class="text-3xl text-emerald-500 mb-3" />
+          <p class="text-sm font-bold text-slate-700 dark:text-slate-300">
+            Đang xử lý...
+          </p>
+        </div>
 
-          <!-- Loading Overlay -->
+        <input
+          type="file"
+          ref="fileInput"
+          class="hidden"
+          accept=".csv"
+          @change="handleFileSelect"
+        />
+        <div
+          v-if="!selectedFile"
+          @click="triggerFileInput"
+          @dragover.prevent
+          @drop.prevent="onDrop"
+          class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-8 flex flex-col items-center justify-center text-center transition-colors duration-200 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer group mt-4"
+        >
           <div
-            v-if="isUploading"
-            class="absolute inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm z-10 flex flex-col items-center justify-center"
+            class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 mb-3 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors"
           >
-            <UIcon name="i-lucide-refresh-cw" class="animate-spin h-8 w-8 text-emerald-500 mb-3" />
-            <p class="text-sm font-bold text-slate-700 dark:text-slate-300">
-              Đang xử lý...
-            </p>
+            <UploadOutlined class="text-2xl" />
           </div>
+          <h4
+            class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-1"
+          >
+            Kéo thả file CSV vào đây
+          </h4>
+          <p class="text-[11px] text-slate-500 mb-4">
+            hoặc click để chọn file từ máy tính
+          </p>
 
-          <input
-            type="file"
-            ref="fileInput"
-            class="hidden"
-            accept=".csv"
-            @change="handleFileSelect"
-          />
+          <a-button class="font-bold">
+            Chọn file
+          </a-button>
+        </div>
+
+        <div
+          v-else
+          class="border border-slate-200 dark:border-slate-700 rounded-xl p-5 flex flex-col items-center justify-center text-center bg-slate-50 dark:bg-slate-800/30 mt-4"
+        >
           <div
-            v-if="!selectedFile"
-            @click="triggerFileInput"
-            @dragover.prevent
-            @drop.prevent="onDrop"
-            class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-8 flex flex-col items-center justify-center text-center transition-colors duration-200 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer group"
+            class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-3"
           >
-            <div
-              class="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 mb-3 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors"
-            >
-              <UIcon name="i-lucide-file-up" class="h-6 w-6" />
-            </div>
-            <h4
-              class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-1"
-            >
-              Kéo thả file CSV vào đây
-            </h4>
-            <p class="text-[11px] text-slate-500 mb-4">
-              hoặc click để chọn file từ máy tính
-            </p>
-
-            <UButton size="xs" class="font-bold">
-              Chọn file
-            </UButton>
+            <FileDoneOutlined class="text-xl" />
           </div>
-
-          <div
-            v-else
-            class="border border-slate-200 dark:border-slate-700 rounded-xl p-5 flex flex-col items-center justify-center text-center bg-slate-50 dark:bg-slate-800/30"
+          <h4
+            class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-1 truncate max-w-full"
           >
-            <div
-              class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-3"
-            >
-              <UIcon name="i-lucide-file-check" class="h-5 w-5" />
-            </div>
-            <h4
-              class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-1 truncate max-w-full"
-            >
-              {{ selectedFile.name }}
-            </h4>
-            <p class="text-[11px] text-slate-500 mb-5">
-              {{ (selectedFile.size / 1024).toFixed(2) }} KB
-            </p>
+            {{ selectedFile.name }}
+          </h4>
+          <p class="text-[11px] text-slate-500 mb-5">
+            {{ (selectedFile.size / 1024).toFixed(2) }} KB
+          </p>
 
-            <div class="flex items-center gap-3 w-full">
-              <UButton
-                @click="selectedFile = null"
-                variant="soft"
-                color="neutral"
-                class="flex-1 font-bold text-xs"
-              >
-                Hủy
-              </UButton>
-              <UButton
-                @click="confirmUpload"
-                class="flex-1 font-bold text-xs"
-              >
-                Upload
-              </UButton>
-            </div>
+          <div class="flex items-center gap-3 w-full">
+            <a-button
+              @click="selectedFile = null"
+              class="flex-1 font-bold text-xs"
+            >
+              Hủy
+            </a-button>
+            <a-button
+              type="primary"
+              @click="confirmUpload"
+              class="flex-1 font-bold text-xs"
+            >
+              Upload
+            </a-button>
           </div>
+        </div>
 
-          <div class="mt-4 flex items-start gap-2">
-            <UIcon name="i-lucide-info" class="h-4 w-4 text-slate-400 mt-0.5 shrink-0" />
-            <p class="text-[11px] text-slate-500 leading-relaxed">
-              File CSV phải được trích xuất từ báo cáo của Shopee Affiliate. Hệ
-              thống sẽ so khớp <span class="font-bold">Mã Đơn</span>.
-            </p>
-          </div>
-        </UCard>
-      </template>
-    </UModal>
+        <div class="mt-4 flex items-start gap-2">
+          <InfoCircleOutlined class="text-slate-400 mt-0.5 shrink-0" />
+          <p class="text-[11px] text-slate-500 leading-relaxed">
+            File CSV phải được trích xuất từ báo cáo của Shopee Affiliate. Hệ
+            thống sẽ so khớp <span class="font-bold">Mã Đơn</span>.
+          </p>
+        </div>
+      </div>
+    </a-modal>
 
     <!-- Order Details Drawer -->
-    <USlideover v-model:open="isDrawerOpen">
-      <template #content>
-        <UCard
-          v-if="selectedOrder"
-          :ui="{
-            body: 'p-6 space-y-6 flex-1 overflow-y-auto bg-white dark:bg-slate-950',
-            header: 'flex items-start justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0'
-          }"
-          class="flex flex-col h-full overflow-hidden"
+    <a-drawer
+      v-model:open="isDrawerOpen"
+      placement="right"
+      width="450px"
+      :closable="false"
+      class="bg-white dark:bg-slate-950"
+    >
+      <template #title>
+        <div v-if="selectedOrder" class="flex flex-col">
+          <span
+            class="font-bold uppercase tracking-wider mb-2 text-[9px] px-2 py-0.5 rounded-full inline-block self-start"
+            :class="selectedOrder.order_status === 'Completed' || selectedOrder.order_status === 'Thành công' ? 'bg-emerald-100 text-emerald-700' : selectedOrder.order_status === 'Pending' || selectedOrder.order_status === 'Chờ duyệt' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'"
+          >
+            {{
+              selectedOrder.order_status === "Completed" || selectedOrder.order_status === "Thành công"
+                ? "HOÀN THÀNH"
+                : selectedOrder.order_status === "Pending" || selectedOrder.order_status === "Chờ duyệt"
+                ? "CHỜ DUYỆT"
+                : "ĐÃ HỦY"
+            }}
+          </span>
+          <h3
+            class="text-base font-bold text-slate-800 dark:text-slate-100"
+          >
+            Chi tiết đơn hàng #{{ selectedOrder.order_id }}
+          </h3>
+          <p class="text-xs text-slate-500 mt-1">
+            Cửa hàng: {{ selectedOrder.shop_name || "Shopee Store" }}
+          </p>
+        </div>
+      </template>
+      <template #extra>
+        <a-button type="text" @click="closeOrderDetails"><CloseOutlined /></a-button>
+      </template>
+
+      <div v-if="selectedOrder" class="flex flex-col gap-6">
+        <!-- 1. Buyer & User Rank Info -->
+        <div
+          class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800"
         >
-          <template #header>
-            <div>
-              <UBadge
-                size="xs"
-                variant="soft"
-                :color="selectedOrder.order_status === 'Completed' || selectedOrder.order_status === 'Thành công' ? 'success' : selectedOrder.order_status === 'Pending' || selectedOrder.order_status === 'Chờ duyệt' ? 'warning' : 'danger'"
-                class="font-bold uppercase tracking-wider mb-2 text-[9px] px-2 py-0.5 rounded-full inline-block"
+          <span
+            class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
+            >Thông tin người mua</span
+          >
+          <div
+            class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+          >
+            <div v-if="selectedOrder.user_id">
+              <h4
+                class="text-sm font-bold text-slate-800 dark:text-slate-200"
               >
-                {{
-                  selectedOrder.order_status === "Completed" || selectedOrder.order_status === "Thành công"
-                    ? "HOÀN THÀNH"
-                    : selectedOrder.order_status === "Pending" || selectedOrder.order_status === "Chờ duyệt"
-                    ? "CHỜ DUYỆT"
-                    : "ĐÃ HỦY"
-                }}
-              </UBadge>
-              <h3
-                class="text-base font-bold text-slate-800 dark:text-slate-100"
+                {{ selectedOrder.user_name || "Người dùng Saffi" }}
+              </h4>
+              <p
+                class="text-[11px] text-slate-500 font-medium select-all mt-0.5"
               >
-                Chi tiết đơn hàng #{{ selectedOrder.order_id }}
-              </h3>
-              <p class="text-xs text-slate-500 mt-1">
-                Cửa hàng: {{ selectedOrder.shop_name || "Shopee Store" }}
+                {{ selectedOrder.user_email }}
               </p>
             </div>
-            <UButton
-              color="neutral"
-              variant="ghost"
-              icon="i-lucide-x"
-              class="rounded-lg"
-              @click="closeOrderDetails"
-            />
-          </template>
+            <div class="text-xs text-slate-400 italic" v-else>
+              Không tìm thấy thông tin người dùng
+            </div>
 
-          <!-- 1. Buyer & User Rank Info -->
-          <div
-            class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800"
-          >
-            <span
-              class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
-              >Thông tin người mua</span
-            >
+            <!-- Rank at purchase -->
             <div
-              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+              v-if="selectedOrder.user_rank"
+              class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-white dark:bg-slate-800 border text-[10px] font-bold tracking-wider border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 self-start sm:self-auto"
             >
-              <div v-if="selectedOrder.user_id">
-                <h4
-                  class="text-sm font-bold text-slate-800 dark:text-slate-200"
-                >
-                  {{ selectedOrder.user_name || "Người dùng Saffi" }}
-                </h4>
-                <p
-                  class="text-[11px] text-slate-500 font-medium select-all mt-0.5"
-                >
-                  {{ selectedOrder.user_email }}
-                </p>
-              </div>
-              <div class="text-xs text-slate-400 italic" v-else>
-                Không tìm thấy thông tin người dùng
-              </div>
-
-              <!-- Rank at purchase -->
-              <div
-                v-if="selectedOrder.user_rank"
-                class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-white dark:bg-slate-800 border text-[10px] font-bold tracking-wider border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 self-start sm:self-auto"
-              >
-                Hạng: {{ getRankName(selectedOrder.user_rank) }} ({{
-                  selectedOrder.commission_rate
-                }}%)
-              </div>
+              Hạng: {{ getRankName(selectedOrder.user_rank) }} ({{
+                selectedOrder.commission_rate
+              }}%)
             </div>
           </div>
+        </div>
 
-          <!-- 2. Product Info -->
-          <div>
-            <span
-              class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
-              >Thông tin sản phẩm</span
-            >
-            <div
-              class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800"
-            >
-              <div
-                class="text-sm font-semibold text-slate-700 dark:text-slate-200 leading-relaxed"
-              >
-                {{ selectedOrder.product_name || "Sản phẩm từ Shopee" }}
-              </div>
-            </div>
-          </div>
-
-          <!-- 3. Financial Breakdown Grid -->
-          <div>
-            <span
-              class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
-              >Chi tiết hoa hồng & doanh số</span
-            >
-            <div class="grid grid-cols-2 gap-3">
-              <div
-                class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-center"
-              >
-                <span
-                  class="text-[10px] font-semibold text-slate-500 uppercase block tracking-wider"
-                  >Giá trị</span
-                >
-                <span
-                  class="text-sm font-bold text-slate-800 dark:text-slate-200 block mt-1"
-                  >{{ formatMoney(selectedOrder.purchase_value) }}</span
-                >
-              </div>
-              <div
-                class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-center"
-              >
-                <span
-                  class="text-[10px] font-semibold text-slate-500 uppercase block tracking-wider"
-                  >Hoa hồng (Sàn)</span
-                >
-                <span
-                  class="text-sm font-bold text-slate-800 dark:text-slate-200 block mt-1"
-                  >+{{ formatMoney(selectedOrder.actual_commission) }}</span
-                >
-              </div>
-              <div
-                class="bg-emerald-50/50 dark:bg-emerald-900/10 p-3 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 text-center"
-              >
-                <span
-                  class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-500 uppercase block tracking-wider"
-                  >Hoa hồng (User)</span
-                >
-                <span
-                  class="text-sm font-bold text-emerald-600 dark:text-emerald-400 block mt-1"
-                  >+{{ formatMoney(selectedOrder.user_commission) }}</span
-                >
-              </div>
-            </div>
-          </div>
-
-          <!-- 4. Meta & Log Details -->
-          <div
-            class="pt-4 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-[11px] text-slate-550 font-medium"
+        <!-- 2. Product Info -->
+        <div>
+          <span
+            class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
+            >Thông tin sản phẩm</span
           >
-            <div>
-              Sub ID Tracking:
-              <span class="text-slate-700 dark:text-slate-300 select-all">{{
-                selectedOrder.sub_id
-              }}</span>
-            </div>
-            <div>
-              Giờ click:
-              <span class="text-slate-700 dark:text-slate-300">{{
-                selectedOrder.click_time
-                  ? new Date(selectedOrder.click_time).toLocaleString("vi-VN")
-                  : "N/A"
-              }}</span>
-            </div>
-            <div>
-              Giờ đặt:
-              <span class="text-slate-700 dark:text-slate-300">{{
-                selectedOrder.order_time
-                  ? new Date(selectedOrder.order_time).toLocaleString("vi-VN")
-                  : "N/A"
-              }}</span>
+          <div
+            class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800"
+          >
+            <div
+              class="text-sm font-semibold text-slate-700 dark:text-slate-200 leading-relaxed"
+            >
+              {{ selectedOrder.product_name || "Sản phẩm từ Shopee" }}
             </div>
           </div>
-        </UCard>
-      </template>
-    </USlideover>
+        </div>
+
+        <!-- 3. Financial Breakdown Grid -->
+        <div>
+          <span
+            class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-2"
+            >Chi tiết hoa hồng & doanh số</span
+          >
+          <div class="grid grid-cols-2 gap-3">
+            <div
+              class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-center"
+            >
+              <span
+                class="text-[10px] font-semibold text-slate-500 uppercase block tracking-wider"
+                >Giá trị</span
+              >
+              <span
+                class="text-sm font-bold text-slate-800 dark:text-slate-200 block mt-1"
+                >{{ formatMoney(selectedOrder.purchase_value) }}</span
+              >
+            </div>
+            <div
+              class="bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-center"
+            >
+              <span
+                class="text-[10px] font-semibold text-slate-500 uppercase block tracking-wider"
+                >Hoa hồng (Sàn)</span
+              >
+              <span
+                class="text-sm font-bold text-slate-800 dark:text-slate-200 block mt-1"
+                >+{{ formatMoney(selectedOrder.actual_commission) }}</span
+              >
+            </div>
+            <div
+              class="bg-emerald-50/50 dark:bg-emerald-900/10 p-3 rounded-xl border border-emerald-200/50 dark:border-emerald-800/30 text-center"
+            >
+              <span
+                class="text-[10px] font-semibold text-emerald-600 dark:text-emerald-500 uppercase block tracking-wider"
+                >Hoa hồng (User)</span
+              >
+              <span
+                class="text-sm font-bold text-emerald-600 dark:text-emerald-400 block mt-1"
+                >+{{ formatMoney(selectedOrder.user_commission) }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Meta & Log Details -->
+        <div
+          class="pt-4 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-[11px] text-slate-550 font-medium"
+        >
+          <div>
+            Sub ID Tracking:
+            <span class="text-slate-700 dark:text-slate-300 select-all">{{
+              selectedOrder.sub_id
+            }}</span>
+          </div>
+          <div>
+            Giờ click:
+            <span class="text-slate-700 dark:text-slate-300">{{
+              selectedOrder.click_time
+                ? new Date(selectedOrder.click_time).toLocaleString("vi-VN")
+                : "N/A"
+            }}</span>
+          </div>
+          <div>
+            Giờ đặt:
+            <span class="text-slate-700 dark:text-slate-300">{{
+              selectedOrder.order_time
+                ? new Date(selectedOrder.order_time).toLocaleString("vi-VN")
+                : "N/A"
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </a-drawer>
 
     <!-- User Selection Modal -->
-    <UModal v-model:open="showUserModal">
-      <template #content>
-        <UCard
-          :ui="{
-            body: 'p-2 flex-1 overflow-y-auto bg-slate-50/50 dark:bg-slate-900/20 min-h-[150px] max-h-[400px]',
-            header: 'p-4 border-b border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900 flex items-center gap-3 shrink-0',
-            footer: 'p-4 border-t border-slate-100 dark:border-slate-800/60 bg-white dark:bg-slate-900 shrink-0'
-          }"
-          class="relative w-full max-w-xl overflow-hidden"
-        >
-          <template #header>
-            <UIcon name="i-lucide-search" class="h-5 w-5 text-slate-400 shrink-0 ml-1" />
-            <UInput
-              v-model="userSearchQuery"
-              type="text"
-              placeholder="Tìm kiếm thành viên..."
-              class="flex-1 font-medium"
-              autofocus
-              @keydown.enter="handleUserSearch"
-            >
-              <template #trailing>
-                <UButton
-                  v-if="userSearchQuery"
-                  color="neutral"
-                  variant="link"
-                  icon="i-lucide-x"
-                  size="xs"
-                  @click="clearUserSearch"
-                />
-              </template>
-            </UInput>
-            <UButton
-              @click="handleUserSearch"
-              size="sm"
-              class="font-semibold text-xs whitespace-nowrap shrink-0"
-            >
-              Tìm
-            </UButton>
-            <UButton
-              color="neutral"
-              variant="ghost"
-              icon="i-lucide-x"
-              class="shrink-0"
-              @click="showUserModal = false"
-            />
-          </template>
+    <a-modal
+      v-model:open="showUserModal"
+      title="Tìm kiếm thành viên"
+      :footer="null"
+      :closable="true"
+    >
+      <div class="flex items-center gap-2 mb-4">
+        <a-input-search
+          v-model:value="userSearchQuery"
+          placeholder="Tìm kiếm thành viên..."
+          enter-button="Tìm"
+          @search="handleUserSearch"
+          class="w-full"
+        />
+      </div>
 
-          <div v-if="usersLoading" class="flex flex-col items-center justify-center py-8 text-slate-400 gap-3">
-            <UIcon name="i-lucide-refresh-cw" class="animate-spin h-6 w-6 text-emerald-500" />
-            <span class="text-xs font-semibold">Đang tải...</span>
-          </div>
+      <div class="relative w-full max-w-xl overflow-hidden min-h-[150px] max-h-[400px] overflow-y-auto">
+        <div v-if="usersLoading" class="flex flex-col items-center justify-center py-8 text-slate-400 gap-3">
+          <SyncOutlined spin class="text-2xl text-emerald-500" />
+          <span class="text-xs font-semibold">Đang tải...</span>
+        </div>
 
-          <div v-else-if="usersList.length === 0" class="flex flex-col items-center justify-center py-8 text-slate-505 gap-2">
-            <UIcon name="i-lucide-users" class="h-10 w-10 text-slate-300 dark:text-slate-700" />
-            <p class="text-sm font-medium">Không tìm thấy người dùng phù hợp</p>
-          </div>
+        <div v-else-if="usersList.length === 0" class="flex flex-col items-center justify-center py-8 text-slate-505 gap-2">
+          <TeamOutlined class="text-4xl text-slate-300 dark:text-slate-700" />
+          <p class="text-sm font-medium">Không tìm thấy người dùng phù hợp</p>
+        </div>
 
-          <div v-else class="space-y-1">
-            <button
-              v-for="u in usersList"
-              :key="u.id"
-              @click="applyUserFilter(u)"
-              class="w-full flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-white dark:hover:bg-slate-800 transition-all duration-200 text-left group border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-sm cursor-pointer"
-              type="button"
-            >
-              <div class="flex items-center gap-3 min-w-0">
-                <div class="h-10 w-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-800/50 overflow-hidden relative group-hover:scale-105 transition-transform">
-                  <img v-if="u.image" :src="u.image" class="h-full w-full object-cover" />
-                  <span v-else class="text-sm font-bold text-indigo-650 dark:text-indigo-400 uppercase">
-                    {{ u.name ? u.name.charAt(0) : "U" }}
-                  </span>
-                </div>
-                <div class="flex flex-col min-w-0">
-                  <span class="text-sm font-bold text-slate-850 dark:text-slate-100 truncate group-hover:text-emerald-500 transition-colors">
-                    {{ u.name || "Người dùng Saffi" }}
-                  </span>
-                  <span class="text-[11px] font-medium text-slate-500 truncate mt-0.5">{{ u.email }}</span>
-                </div>
+        <div v-else class="space-y-1">
+          <button
+            v-for="u in usersList"
+            :key="u.id"
+            @click="applyUserFilter(u)"
+            class="w-full flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200 text-left group border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-sm cursor-pointer"
+            type="button"
+          >
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="h-10 w-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-800/50 overflow-hidden relative group-hover:scale-105 transition-transform">
+                <img v-if="u.image" :src="u.image" class="h-full w-full object-cover" />
+                <span v-else class="text-sm font-bold text-indigo-650 dark:text-indigo-400 uppercase">
+                  {{ u.name ? u.name.charAt(0) : "U" }}
+                </span>
               </div>
-              <div class="opacity-0 group-hover:opacity-100 transition-opacity">
-                <UBadge size="xs" color="success" variant="soft" class="font-bold text-[10px]">CHỌN</UBadge>
-              </div>
-            </button>
-          </div>
-
-          <template #footer>
-            <div v-if="userPagination.totalPages > 1" class="flex justify-between items-center w-full">
-              <span class="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
-                Trang {{ userPagination.page }} / {{ userPagination.totalPages }}
-              </span>
-              <div class="flex gap-1">
-                <UButton
-                  icon="i-lucide-chevron-left"
-                  :disabled="userPagination.page === 1"
-                  variant="outline"
-                  color="neutral"
-                  size="xs"
-                  @click="fetchUsers(userPagination.page - 1, userSearchQuery, 20)"
-                />
-                <UButton
-                  icon="i-lucide-chevron-right"
-                  :disabled="userPagination.page === userPagination.totalPages"
-                  variant="outline"
-                  color="neutral"
-                  size="xs"
-                  @click="fetchUsers(userPagination.page + 1, userSearchQuery, 20)"
-                />
+              <div class="flex flex-col min-w-0">
+                <span class="text-sm font-bold text-slate-850 dark:text-slate-100 truncate group-hover:text-emerald-500 transition-colors">
+                  {{ u.name || "Người dùng Saffi" }}
+                </span>
+                <span class="text-[11px] font-medium text-slate-500 truncate mt-0.5">{{ u.email }}</span>
               </div>
             </div>
-          </template>
-        </UCard>
-      </template>
-    </UModal>
+            <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-[10px] font-bold">CHỌN</span>
+            </div>
+          </button>
+        </div>
 
-    <!-- Toast Notification -->
-    <transition
-      enter-active-class="transition duration-300 ease-out"
-      enter-from-class="transform translate-y-4 opacity-0 scale-95"
-      enter-to-class="transform translate-y-0 opacity-100 scale-100"
-      leave-active-class="transition duration-200 ease-in"
-      leave-from-class="transform translate-y-0 opacity-100 scale-100"
-      leave-to-class="transform translate-y-4 opacity-0 scale-95"
-    >
-      <div
-        v-if="toastMsg"
-        class="fixed bottom-6 right-6 z-[300] flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border"
-        :class="
-          toastMsg.type === 'error'
-            ? 'bg-white dark:bg-slate-900 border-rose-200 dark:border-rose-800 text-slate-800 dark:text-slate-200'
-            : 'bg-white dark:bg-slate-900 border-emerald-200 dark:border-emerald-800 text-slate-800 dark:text-slate-200'
-        "
-      >
-        <UIcon
-          v-if="toastMsg.type === 'success'"
-          name="i-lucide-circle-check"
-          class="h-5 w-5 text-emerald-500 shrink-0"
-        />
-        <UIcon
-          v-else
-          name="i-lucide-circle-x"
-          class="h-5 w-5 text-rose-500 shrink-0"
-        />
-        <span class="text-sm font-semibold">{{ toastMsg.msg }}</span>
+        <div v-if="userPagination.totalPages > 1" class="flex justify-between items-center w-full mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/60">
+          <span class="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
+            Trang {{ userPagination.page }} / {{ userPagination.totalPages }}
+          </span>
+          <div class="flex gap-1">
+            <a-button
+              :disabled="userPagination.page === 1"
+              size="small"
+              @click="fetchUsers(userPagination.page - 1, userSearchQuery, 20)"
+            >
+              <template #icon><LeftOutlined /></template>
+            </a-button>
+            <a-button
+              :disabled="userPagination.page === userPagination.totalPages"
+              size="small"
+              @click="fetchUsers(userPagination.page + 1, userSearchQuery, 20)"
+            >
+              <template #icon><RightOutlined /></template>
+            </a-button>
+          </div>
+        </div>
       </div>
-    </transition>
+    </a-modal>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, watch, onUnmounted } from "vue";
 import { useAdminUsers } from "~/composables/useAdminUsers";
+import { UploadOutlined, UserOutlined, CloseOutlined, DeleteOutlined, RightOutlined, SyncOutlined, FileDoneOutlined, InfoCircleOutlined, TeamOutlined, LeftOutlined } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
+
+const columns = [
+  { title: 'Mã đơn', key: 'order_id', width: '15%' },
+  { title: 'Người mua', key: 'user', width: '20%' },
+  { title: 'Sản phẩm', key: 'product_name', width: '25%' },
+  { title: 'Ngày', key: 'order_time', width: '10%' },
+  { title: 'Hoa hồng Sàn', key: 'actual_commission', align: 'right', width: '10%' },
+  { title: 'Hoa hồng User', key: 'user_commission', align: 'right', width: '10%' },
+  { title: 'Trạng thái', key: 'order_status', align: 'center', width: '10%' },
+  { title: '', key: 'action', align: 'center', width: '5%' }
+];
 
 definePageMeta({
   layout: "admin",
@@ -918,15 +678,13 @@ const showUploadModal = ref(false);
 const fileInput = ref(null);
 const isUploading = ref(false);
 const selectedFile = ref(null);
-const toastMsg = ref(null);
 
 const showToast = (msg, type = "success") => {
-  toastMsg.value = { msg, type };
-  setTimeout(() => {
-    if (toastMsg.value && toastMsg.value.msg === msg) {
-      toastMsg.value = null;
-    }
-  }, 4000);
+  if (type === "success") {
+    message.success(msg);
+  } else {
+    message.error(msg);
+  }
 };
 
 const searchQuery = ref("");

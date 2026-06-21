@@ -2,24 +2,15 @@
   <div class="flex h-screen w-full bg-slate-50 dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 overflow-hidden relative font-sans">
     
     <!-- Mobile Sidebar Overlay -->
-    <transition
-      enter-active-class="transition-opacity duration-300"
-      enter-from-class="opacity-0"
-      enter-to-class="opacity-100"
-      leave-active-class="transition-opacity duration-200"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
-    >
-      <div 
-        v-if="isSidebarOpen" 
-        @click="isSidebarOpen = false" 
-        class="fixed inset-0 bg-slate-900/50 z-40 lg:hidden backdrop-blur-sm"
-      ></div>
-    </transition>
+    <div 
+      v-if="isSidebarOpen" 
+      @click="isSidebarOpen = false" 
+      class="fixed inset-0 bg-slate-900/50 z-40 lg:hidden backdrop-blur-sm"
+    ></div>
 
     <!-- Sidebar -->
     <aside 
-      class="fixed inset-y-0 left-0 lg:static w-64 h-full border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col z-50 transition-transform duration-300 ease-in-out lg:translate-x-0"
+      class="fixed inset-y-0 left-0 lg:static w-64 h-full border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col z-50 lg:translate-x-0"
       :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <div class="h-16 flex items-center px-6 border-b border-slate-200 dark:border-slate-800 shrink-0">
@@ -40,7 +31,7 @@
         <NuxtLink 
           to="/admin"
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
           :class="[
             $route.path === '/admin' || $route.path === '/admin/' 
               ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
@@ -56,7 +47,7 @@
         <NuxtLink 
           to="/admin/orders"
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
           :class="[
             $route.path.includes('/admin/orders') 
               ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
@@ -72,7 +63,7 @@
         <NuxtLink 
           to="/admin/withdrawals"
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
           :class="[
             $route.path.includes('/admin/withdrawals') 
               ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
@@ -88,7 +79,7 @@
         <NuxtLink 
           to="/admin/users"
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
           :class="[
             $route.path.includes('/admin/users') 
               ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
@@ -104,7 +95,7 @@
         <NuxtLink 
           to="/admin/link-history"
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
           :class="[
             $route.path.includes('/admin/link-history') 
               ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
@@ -120,7 +111,7 @@
         <NuxtLink 
           to="/admin/settings"
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold transition-all duration-200"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
           :class="[
             $route.path.includes('/admin/settings') 
               ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
@@ -138,7 +129,7 @@
       <div class="p-4 shrink-0 border-t border-slate-200 dark:border-slate-800">
         <button 
           @click="handleSignOut" 
-          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-200 cursor-pointer select-none text-left"
+          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer select-none text-left"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

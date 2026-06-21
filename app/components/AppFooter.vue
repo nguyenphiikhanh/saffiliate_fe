@@ -1,232 +1,281 @@
 <template>
-  <footer
-    class="hidden md:block w-full mt-auto pt-12 pb-6 bg-white dark:bg-slate-950 transition-colors duration-500"
-  >
-    <div class="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-      <!-- BENTO GRID FOOTER -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
-        <!-- BENTO BOX 1: Brand (Span 5) -->
-        <div
-          class="md:col-span-12 lg:col-span-5 relative overflow-hidden rounded-[2rem] bg-orange-50/50 dark:bg-slate-900/40 p-8 md:p-10 shadow-sm hover:shadow-md transition-shadow duration-500 group border border-orange-100/60 dark:border-slate-800/80"
-        >
-          <!-- Background Abstract Shapes -->
-          <div
-            class="absolute -top-32 -right-32 w-80 h-80 bg-shopee-orange/10 dark:bg-shopee-orange/20 rounded-full blur-[80px] group-hover:scale-150 transition-transform duration-1000"
-          ></div>
-          <div
-            class="absolute -bottom-20 -left-20 w-64 h-64 bg-shopee-orange/5 dark:bg-shopee-orange/10 rounded-full blur-[60px] group-hover:translate-x-10 transition-transform duration-700"
-          ></div>
+  <footer class="footer-root">
+    <div class="footer-container">
+      <!-- BENTO GRID -->
+      <div class="footer-grid">
+        <!-- BOX 1: Brand (Span 5) -->
+        <div class="footer-brand-box">
+          <!-- Background blobs -->
+          <div class="footer-brand-blob footer-brand-blob--1"></div>
+          <div class="footer-brand-blob footer-brand-blob--2"></div>
 
-          <div class="relative z-10 flex flex-col h-full justify-between gap-8">
+          <div class="footer-brand-inner">
             <div>
-              <div class="flex items-center gap-3">
-                <div
-                  class="flex h-12 w-12 items-center justify-center shrink-0"
-                >
+              <div class="footer-brand-logo">
+                <div class="footer-logo-icon">
                   <NuxtImg
                     src="/saficon.webp"
-                    class="h-12 w-12 object-contain rounded-2xl shadow-sm"
+                    class="footer-logo-img"
                     alt="Saffi Logo"
                   />
                 </div>
-                <div class="flex flex-col text-slate-800 dark:text-white">
-                  <span
-                    class="font-sans text-3xl font-black tracking-tight leading-none"
-                    >Saffi</span
-                  >
-                  <span
-                    class="text-[9px] font-bold tracking-[0.2em] uppercase text-slate-400 dark:text-slate-500 mt-1"
-                    >Smart Shopping</span
-                  >
+                <div class="footer-brand-title">
+                  <span class="footer-brand-name">Saffi</span>
+                  <span class="footer-brand-tagline">Smart Shopping</span>
                 </div>
               </div>
-              <p
-                class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-relaxed max-w-xs mt-6"
-              >
+              <p class="footer-brand-desc">
                 Trợ lý mua sắm thông minh thế hệ mới. Hoàn tiền tự động, minh
                 bạch và siêu tốc từ các sàn TMĐT.
               </p>
             </div>
 
-            <!-- Socials inside Brand Box -->
-            <div class="flex items-center gap-3">
+            <div class="footer-socials">
               <a
                 href="mailto:support@saffi.vn"
-                class="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-sm border border-orange-100/60 dark:border-slate-700 text-slate-400 hover:text-shopee-orange hover:border-shopee-orange transition-all duration-300 hover:scale-110 active:scale-95"
+                class="footer-social-btn"
+                aria-label="Email"
               >
-                <UIcon name="i-lucide-mail" class="h-5 w-5" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect width="20" height="16" x="2" y="4" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
               </a>
               <a
                 :href="zaloGroup"
                 target="_blank"
-                class="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-slate-800 shadow-sm border border-orange-100/60 dark:border-slate-700 text-slate-400 hover:text-shopee-orange hover:border-shopee-orange transition-all duration-300 hover:scale-110 active:scale-95"
+                rel="noopener noreferrer"
+                class="footer-social-btn"
+                aria-label="Zalo"
               >
-                <UIcon name="i-arcticons-zalo" class="h-5 w-5" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  width="100"
+                  height="100"
+                  viewBox="0 0 48 48"
+                >
+                  <path
+                    fill="#2962ff"
+                    d="M15,36V6.827l-1.211-0.811C8.64,8.083,5,13.112,5,19v10c0,7.732,6.268,14,14,14h10	c4.722,0,8.883-2.348,11.417-5.931V36H15z"
+                  ></path>
+                  <path
+                    fill="#eee"
+                    d="M29,5H19c-1.845,0-3.601,0.366-5.214,1.014C10.453,9.25,8,14.528,8,19	c0,6.771,0.936,10.735,3.712,14.607c0.216,0.301,0.357,0.653,0.376,1.022c0.043,0.835-0.129,2.365-1.634,3.742	c-0.162,0.148-0.059,0.419,0.16,0.428c0.942,0.041,2.843-0.014,4.797-0.877c0.557-0.246,1.191-0.203,1.729,0.083	C20.453,39.764,24.333,40,28,40c4.676,0,9.339-1.04,12.417-2.916C42.038,34.799,43,32.014,43,29V19C43,11.268,36.732,5,29,5z"
+                  ></path>
+                  <path
+                    fill="#2962ff"
+                    d="M36.75,27C34.683,27,33,25.317,33,23.25s1.683-3.75,3.75-3.75s3.75,1.683,3.75,3.75	S38.817,27,36.75,27z M36.75,21c-1.24,0-2.25,1.01-2.25,2.25s1.01,2.25,2.25,2.25S39,24.49,39,23.25S37.99,21,36.75,21z"
+                  ></path>
+                  <path
+                    fill="#2962ff"
+                    d="M31.5,27h-1c-0.276,0-0.5-0.224-0.5-0.5V18h1.5V27z"
+                  ></path>
+                  <path
+                    fill="#2962ff"
+                    d="M27,19.75v0.519c-0.629-0.476-1.403-0.769-2.25-0.769c-2.067,0-3.75,1.683-3.75,3.75	S22.683,27,24.75,27c0.847,0,1.621-0.293,2.25-0.769V26.5c0,0.276,0.224,0.5,0.5,0.5h1v-7.25H27z M24.75,25.5	c-1.24,0-2.25-1.01-2.25-2.25S23.51,21,24.75,21S27,22.01,27,23.25S25.99,25.5,24.75,25.5z"
+                  ></path>
+                  <path
+                    fill="#2962ff"
+                    d="M21.25,18h-8v1.5h5.321L13,26h0.026c-0.163,0.211-0.276,0.463-0.276,0.75V27h7.5	c0.276,0,0.5-0.224,0.5-0.5v-1h-5.321L21,19h-0.026c0.163-0.211,0.276-0.463,0.276-0.75V18z"
+                  ></path>
+                </svg>
               </a>
             </div>
           </div>
         </div>
 
-        <!-- BENTO BOX 2: Navigation (Span 3) -->
-        <div
-          class="md:col-span-6 lg:col-span-3 rounded-[2rem] bg-slate-50 dark:bg-slate-900/40 p-8 border border-slate-100 dark:border-slate-800/80 hover:border-orange-500/30 dark:hover:border-orange-500/30 transition-colors duration-500 flex flex-col justify-between"
-        >
-          <div class="flex items-center gap-3 mb-6">
-            <div
-              class="w-2 h-2 rounded-full bg-slate-800 dark:bg-slate-200"
-            ></div>
-            <span
-              class="text-xs font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none"
-              >Menu</span
-            >
+        <!-- BOX 2: Navigation (Span 3) -->
+        <div class="footer-nav-box">
+          <div class="footer-section-header">
+            <div class="footer-section-dot"></div>
+            <span class="footer-section-title">Menu</span>
           </div>
 
-          <div class="flex flex-col gap-4">
-            <NuxtLink
-              to="/hoan-tien"
-              class="group flex items-center justify-between text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-shopee-orange dark:hover:text-shopee-orange transition-all duration-300"
-            >
-              <span
-                class="group-hover:translate-x-1 transition-transform duration-300"
-                >Hoàn tiền</span
+          <div class="footer-nav-links">
+            <NuxtLink to="/hoan-tien" class="footer-nav-link">
+              <span>Hoàn tiền</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="footer-nav-arrow"
               >
-              <UIcon
-                name="i-lucide-arrow-right"
-                class="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-              />
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
             </NuxtLink>
-            <div class="h-px w-full bg-slate-200/50 dark:bg-slate-800/50"></div>
-
-            <NuxtLink
-              to="/don-hang"
-              class="group flex items-center justify-between text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-shopee-orange dark:hover:text-shopee-orange transition-all duration-300"
-            >
-              <span
-                class="group-hover:translate-x-1 transition-transform duration-300"
-                >Đơn hàng</span
+            <div class="footer-divider"></div>
+            <NuxtLink to="/don-hang" class="footer-nav-link">
+              <span>Đơn hàng</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="footer-nav-arrow"
               >
-              <UIcon
-                name="i-lucide-arrow-right"
-                class="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-              />
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
             </NuxtLink>
-            <div class="h-px w-full bg-slate-200/50 dark:bg-slate-800/50"></div>
-
-            <NuxtLink
-              to="/tai-chinh"
-              class="group flex items-center justify-between text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-shopee-orange dark:hover:text-shopee-orange transition-all duration-300"
-            >
-              <span
-                class="group-hover:translate-x-1 transition-transform duration-300"
-                >Tài chính</span
+            <div class="footer-divider"></div>
+            <NuxtLink to="/tai-chinh" class="footer-nav-link">
+              <span>Tài chính</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="footer-nav-arrow"
               >
-              <UIcon
-                name="i-lucide-arrow-right"
-                class="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-              />
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
             </NuxtLink>
-            <div class="h-px w-full bg-slate-200/50 dark:bg-slate-800/50"></div>
-
-            <NuxtLink
-              to="/huong-dan"
-              class="group flex items-center justify-between text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-shopee-orange dark:hover:text-shopee-orange transition-all duration-300"
-            >
-              <span
-                class="group-hover:translate-x-1 transition-transform duration-300"
-                >Hướng dẫn</span
+            <div class="footer-divider"></div>
+            <NuxtLink to="/huong-dan" class="footer-nav-link">
+              <span>Hướng dẫn</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="footer-nav-arrow"
               >
-              <UIcon
-                name="i-lucide-arrow-right"
-                class="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-              />
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
             </NuxtLink>
           </div>
         </div>
 
-        <!-- BENTO BOX 3: Contact & Support Grid (Span 4) -->
-        <div class="md:col-span-6 lg:col-span-4 flex flex-col gap-4">
-          <!-- Small Box Top -->
+        <!-- BOX 3: Contact & Support -->
+        <div class="footer-contact-col">
+          <!-- Email contact box -->
           <div
-            class="flex-1 rounded-[2rem] bg-slate-50 dark:bg-slate-900/40 p-6 border border-slate-100 dark:border-slate-800/80 flex items-center gap-4 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors duration-300 group cursor-pointer"
+            class="footer-contact-box"
             onclick="window.location.href='mailto:support@saffi.vn'"
           >
-            <div
-              class="h-12 w-12 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300"
-            >
-              <UIcon name="i-lucide-mail" class="h-5 w-5" />
+            <div class="footer-contact-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
             </div>
             <div>
-              <span
-                class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-0.5"
-                >Hỗ trợ 24/7</span
-              >
-              <span
-                class="block text-sm font-bold text-slate-800 dark:text-slate-200"
-                >support@saffi.vn</span
-              >
+              <span class="footer-contact-label">Hỗ trợ 24/7</span>
+              <span class="footer-contact-value">support@saffi.vn</span>
             </div>
           </div>
 
-          <!-- Small Box Bottom Grid -->
-          <div class="grid grid-cols-2 gap-4 flex-1">
-            <div
-              class="rounded-[2rem] bg-slate-50 dark:bg-slate-900/40 p-5 border border-slate-100 dark:border-slate-800/80 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300"
-            >
-              <div class="text-emerald-500 mb-2">
-                <UIcon name="i-lucide-clock" class="h-6 w-6" />
+          <!-- Stats mini grid -->
+          <div class="footer-stats-grid">
+            <div class="footer-stat-card">
+              <div class="footer-stat-icon footer-stat-icon--emerald">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
               </div>
-              <span class="text-xs font-bold text-slate-800 dark:text-slate-200"
-                >08:00 - 22:00</span
-              >
-              <span class="text-[10px] font-medium text-slate-500 mt-0.5"
-                >Hàng ngày</span
-              >
+              <span class="footer-stat-value">08:00 - 22:00</span>
+              <span class="footer-stat-label">Hàng ngày</span>
             </div>
 
-            <div
-              class="rounded-[2rem] bg-slate-50 dark:bg-slate-900/40 p-5 border border-slate-100 dark:border-slate-800/80 flex flex-col items-center justify-center text-center hover:-translate-y-1 transition-transform duration-300"
-            >
-              <div class="text-amber-500 mb-2">
-                <UIcon name="i-lucide-zap" class="h-6 w-6" />
+            <div class="footer-stat-card">
+              <div class="footer-stat-icon footer-stat-icon--amber">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
               </div>
-              <span class="text-xs font-bold text-slate-800 dark:text-slate-200"
-                >&lt; 60 Phút</span
-              >
-              <span class="text-[10px] font-medium text-slate-500 mt-0.5"
-                >Rút tiền</span
-              >
+              <span class="footer-stat-value">&lt; 60 Phút</span>
+              <span class="footer-stat-label">Rút tiền</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- BOTTOM PILL -->
-      <div
-        class="mt-5 rounded-full bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800/80 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4"
-      >
-        <p
-          class="text-[11px] font-bold text-slate-500 dark:text-slate-400 select-none uppercase tracking-widest"
-        >
+      <!-- Bottom pill -->
+      <div class="footer-bottom">
+        <p class="footer-copy">
           &copy; 2026 Saffi Platform. All Rights Reserved.
         </p>
-        <div
-          class="flex items-center gap-6 text-[11px] font-bold text-slate-500 dark:text-slate-400"
-        >
+        <div class="footer-legal">
           <a
             :href="`${mainSiteURL}/privacy-policy`"
             target="_blank"
             rel="noopener noreferrer"
-            class="hover:text-shopee-orange dark:hover:text-shopee-orange transition-colors"
+            class="footer-legal-link"
             >Privacy Policy</a
           >
-          <div
-            class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"
-          ></div>
+          <div class="footer-legal-dot"></div>
           <a
             :href="`${mainSiteURL}/terms-of-service`"
             target="_blank"
             rel="noopener noreferrer"
-            class="hover:text-shopee-orange dark:hover:text-shopee-orange transition-colors"
+            class="footer-legal-link"
             >Terms of Service</a
           >
         </div>
@@ -240,3 +289,476 @@ const config = useRuntimeConfig();
 const mainSiteURL = config.public.mainSiteURL;
 const zaloGroup = config.public.zaloGroup;
 </script>
+
+<style scoped>
+.footer-root {
+  display: none;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 3rem;
+  padding-bottom: 1.5rem;
+  background: white;
+}
+
+@media (min-width: 768px) {
+  .footer-root {
+    display: block;
+  }
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .footer-container {
+    padding: 0 1.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .footer-container {
+    padding: 0 2rem;
+  }
+}
+
+/* GRID */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* BRAND BOX */
+.footer-brand-box {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2rem;
+  background: rgba(255, 237, 231, 0.5);
+  padding: 2.5rem;
+  border: 1px solid rgba(238, 77, 45, 0.1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.5s ease;
+}
+
+@media (min-width: 768px) {
+  .footer-brand-box {
+    grid-column: span 12;
+  }
+}
+@media (min-width: 1024px) {
+  .footer-brand-box {
+    grid-column: span 5;
+  }
+}
+
+.footer-brand-box:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.footer-brand-blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: transform 1s ease;
+}
+
+.footer-brand-blob--1 {
+  top: -8rem;
+  right: -8rem;
+  width: 20rem;
+  height: 20rem;
+  background: rgba(238, 77, 45, 0.1);
+  filter: blur(80px);
+}
+
+.footer-brand-blob--2 {
+  bottom: -5rem;
+  left: -5rem;
+  width: 16rem;
+  height: 16rem;
+  background: rgba(238, 77, 45, 0.05);
+  filter: blur(60px);
+}
+
+.footer-brand-box:hover .footer-brand-blob--1 {
+  transform: scale(1.5);
+}
+.footer-brand-box:hover .footer-brand-blob--2 {
+  transform: translateX(40px);
+}
+
+.footer-brand-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.footer-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.footer-logo-img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.footer-brand-title {
+  display: flex;
+  flex-direction: column;
+  color: #1e293b;
+}
+
+.footer-brand-name {
+  font-size: 1.875rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.footer-brand-tagline {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+.footer-brand-desc {
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 20rem;
+  margin-top: 1.5rem;
+}
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid rgba(238, 77, 45, 0.15);
+  color: #94a3b8;
+  text-decoration: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.footer-social-btn:hover {
+  color: #ee4d2d;
+  border-color: #ee4d2d;
+  transform: scale(1.1);
+}
+
+/* NAV BOX */
+.footer-nav-box {
+  border-radius: 2rem;
+  background: #f8fafc;
+  padding: 2rem;
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.4s ease;
+}
+
+@media (min-width: 768px) {
+  .footer-nav-box {
+    grid-column: span 6;
+  }
+}
+@media (min-width: 1024px) {
+  .footer-nav-box {
+    grid-column: span 3;
+  }
+}
+
+.footer-nav-box:hover {
+  border-color: rgba(238, 77, 45, 0.3);
+}
+
+.footer-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-section-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1e293b;
+}
+
+.footer-section-title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #1e293b;
+  user-select: none;
+}
+
+.footer-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.footer-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #64748b;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-nav-link:hover {
+  color: #ee4d2d;
+}
+
+.footer-nav-arrow {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.3s ease;
+}
+
+.footer-nav-link:hover .footer-nav-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.footer-nav-link:hover span {
+  transform: translateX(4px);
+}
+
+.footer-nav-link span {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.footer-divider {
+  height: 1px;
+  background: rgba(226, 232, 240, 0.5);
+}
+
+/* CONTACT COL */
+.footer-contact-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .footer-contact-col {
+    grid-column: span 6;
+  }
+}
+@media (min-width: 1024px) {
+  .footer-contact-col {
+    grid-column: span 4;
+  }
+}
+
+.footer-contact-box {
+  flex: 1;
+  border-radius: 2rem;
+  background: #f8fafc;
+  padding: 1.5rem;
+  border: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.footer-contact-box:hover {
+  background: #f1f5f9;
+}
+
+.footer-contact-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 1rem;
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.footer-contact-box:hover .footer-contact-icon {
+  background: #3b82f6;
+  color: white;
+  transform: scale(1.1);
+}
+
+.footer-contact-box > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-contact-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #94a3b8;
+  margin-bottom: 2px;
+}
+
+.footer-contact-value {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.footer-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  flex: 1;
+}
+
+.footer-stat-card {
+  border-radius: 2rem;
+  background: #f8fafc;
+  padding: 1.25rem;
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.footer-stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.footer-stat-icon {
+  margin-bottom: 0.5rem;
+}
+
+.footer-stat-icon--emerald {
+  color: #10b981;
+}
+.footer-stat-icon--amber {
+  color: #f59e0b;
+}
+
+.footer-stat-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.footer-stat-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* BOTTOM */
+.footer-bottom {
+  margin-top: 1.25rem;
+  border-radius: 9999px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .footer-bottom {
+    flex-direction: row;
+  }
+}
+
+.footer-copy {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  user-select: none;
+}
+
+.footer-legal {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.footer-legal-link {
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-legal-link:hover {
+  color: #ee4d2d;
+}
+
+.footer-legal-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #cbd5e1;
+}
+</style>

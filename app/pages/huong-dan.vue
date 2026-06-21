@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full animate-fade-in space-y-12">
+  <div class="w-full space-y-12">
     <!-- Page Title & Header -->
     <div class="mt-6 text-center max-w-2xl mx-auto space-y-2">
       <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
@@ -16,16 +16,10 @@
       <div class="hidden md:block absolute top-1/2 left-[10%] right-[10%] h-0.5 bg-slate-100 dark:bg-slate-800/80 -translate-y-12 z-0"></div>
 
       <!-- Step Cards -->
-      <UCard
+      <div
         v-for="(step, idx) in steps"
         :key="idx"
-        :ui="{
-          body: 'p-8',
-          ring: 'ring-1 ring-slate-100 dark:ring-slate-800/60 hover:ring-slate-200 dark:hover:ring-slate-700',
-          background: 'bg-white dark:bg-slate-900/40 hover:scale-[1.02] transition-all duration-300',
-          rounded: 'rounded-[2rem] shadow-lg shadow-slate-900/[0.01] dark:shadow-slate-950/10'
-        }"
-        class="z-10 group"
+        class="z-10 group p-8 ring-1 ring-slate-100 dark:ring-slate-800/60 hover:ring-slate-200 dark:hover:ring-slate-700 bg-white dark:bg-slate-900/40 hover:scale-[1.02] transition-all duration-300 rounded-[2rem] shadow-lg shadow-slate-900/[0.01] dark:shadow-slate-950/10"
       >
         <!-- Step Icon & Number -->
         <div class="flex items-center justify-between gap-3">
@@ -35,7 +29,7 @@
           </span>
           <!-- Beautiful Icon Badge -->
           <div class="h-10 w-10 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:rotate-12" :class="step.badgeClass">
-            <UIcon :name="step.icon" class="h-5.5 w-5.5" />
+            <component :is="step.icon" class="text-[22px]" />
           </div>
         </div>
 
@@ -45,7 +39,7 @@
         <p class="text-xs text-slate-450 dark:text-slate-400 mt-2 leading-relaxed font-semibold">
           {{ step.desc }}
         </p>
-      </UCard>
+      </div>
     </div>
 
     <!-- Accordion FAQ section -->
@@ -60,26 +54,26 @@
       </div>
 
       <!-- FAQ Accordion -->
-      <UCard
-        :ui="{
-          body: 'p-4 md:p-6',
-          ring: 'ring-1 ring-slate-100 dark:ring-slate-800/80',
-          background: 'bg-white dark:bg-slate-900/60',
-          rounded: 'rounded-2xl'
-        }"
+      <div
+        class="p-4 md:p-6 ring-1 ring-slate-100 dark:ring-slate-800/80 bg-white dark:bg-slate-900/60 rounded-2xl"
       >
-        <UAccordion
-          :items="faqItems"
-          multiple
-          class="divide-y divide-slate-100 dark:divide-slate-800/50"
-        />
-      </UCard>
+        <a-collapse
+          :bordered="false"
+          expand-icon-position="end"
+          class="bg-transparent"
+        >
+          <a-collapse-panel v-for="(item, index) in faqItems" :key="index" :header="item.label" class="border-b border-slate-100 dark:border-slate-800/50">
+            <p class="text-[13px] text-slate-600 dark:text-slate-300 font-medium">{{ item.content }}</p>
+          </a-collapse-panel>
+        </a-collapse>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed } from "vue";
+import { CopyOutlined, SyncOutlined, BankOutlined } from "@ant-design/icons-vue";
 
 useSeoMeta({
   title: "Hướng dẫn sử dụng - Saffi",
@@ -95,7 +89,7 @@ const steps = [
     num: "01",
     title: "COPY LINK SHOPEE",
     desc: "Sao chép liên kết sản phẩm bạn yêu thích trực tiếp trên ứng dụng Shopee (hoặc bất kỳ trình duyệt nào).",
-    icon: "i-lucide-clipboard-list",
+    icon: CopyOutlined,
     numberClass: "text-orange-500",
     badgeClass: "bg-orange-50 dark:bg-orange-950/30 text-orange-500",
   },
@@ -103,7 +97,7 @@ const steps = [
     num: "02",
     title: "DÁN & CHUYỂN ĐỔI",
     desc: "Mở Saffi, dán liên kết vừa copy vào ô công cụ. Hệ thống sẽ tự động chuyển đổi thành đường link hoàn tiền thông minh trong 1 giây.",
-    icon: "i-lucide-refresh-cw",
+    icon: SyncOutlined,
     numberClass: "text-amber-500",
     badgeClass: "bg-amber-50 dark:bg-amber-950/20 text-amber-500",
   },
@@ -111,7 +105,7 @@ const steps = [
     num: "03",
     title: "MUA SẮM & NHẬN TIỀN",
     desc: "Click vào link chuyển đổi để mua hàng trên Shopee. Hoa hồng trích lại lên tới 90% sẽ được cộng vào số dư Saffi để bạn rút về tài khoản ngân hàng bất kỳ lúc nào!",
-    icon: "i-lucide-banknote",
+    icon: BankOutlined,
     numberClass: "text-emerald-500",
     badgeClass: "bg-emerald-50 dark:bg-emerald-950/20 text-emerald-500",
   },

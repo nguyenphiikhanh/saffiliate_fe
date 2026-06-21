@@ -23,30 +23,38 @@ export default defineNuxtConfig({
 
   css: ["~/assets/css/main.css"],
 
-  modules: ["@nuxt/ui", "nuxt-vue3-google-signin", "@nuxt/image", "@nuxtjs/google-fonts"],
+  modules: ["@nuxtjs/tailwindcss", "@ant-design-vue/nuxt", "nuxt-vue3-google-signin", "@nuxt/image", "@nuxtjs/google-fonts"],
 
-  icon: {
-    localApiEndpoint: "/_nuxt_icon",
-    fallbackToApi: false,
-    clientBundle: {
-      scan: true,
-      icons: ['arcticons:zalo']
-    }
+  antd: {
+    // Auto-import all components, icons, message/notification methods
   },
 
   vite: {
-    plugins: [],
     optimizeDeps: {
       include: [
+        '@ant-design/icons-vue',
         '@vue/devtools-core',
         '@vue/devtools-kit',
-        'vue3-google-signin'
+        'dayjs',
+        'dayjs/plugin/advancedFormat',
+        'dayjs/plugin/customParseFormat',
+        'dayjs/plugin/localeData',
+        'dayjs/plugin/quarterOfYear',
+        'dayjs/plugin/weekOfYear',
+        'dayjs/plugin/weekYear',
+        'dayjs/plugin/weekday',
       ]
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            "antd-vendor": ["ant-design-vue"],
+            "antd-icons": ["@ant-design/icons-vue"],
+          }
+        }
+      }
     }
-  },
-
-  build: {
-    transpile: ['@vue/devtools-core', '@vue/devtools-kit'],
   },
 
   // Server-side route rules (Proxying /api calls to backend to completely bypass browser CORS)
@@ -58,7 +66,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE, // fallback value, NUXT_PUBLIC_API_BASE in .env takes precedence
+      apiBase: process.env.NUXT_PUBLIC_API_BASE,
       appURL: process.env.NUXT_PUBLIC_APP_URL,
       vietQRApi: process.env.NUXT_PUBLIC_VIETQR_API,
       mainSiteURL: process.env.NUXT_PUBLIC_MAIN_SITE_URL,
@@ -77,6 +85,7 @@ export default defineNuxtConfig({
     },
     download: true,
     display: 'swap',
+    subsets: ['latin', 'latin-ext', 'vietnamese'],
   },
 
   // for cloudflare pages

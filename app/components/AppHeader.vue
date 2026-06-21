@@ -1,311 +1,259 @@
 <template>
-  <header
-    class="fixed top-0 left-0 right-0 z-50 w-full px-4 md:px-6 lg:px-8 pt-2 pb-1"
-  >
-    <div class="mx-auto max-w-7xl">
+  <header class="header-root">
+    <div class="header-inner-wrap">
       <div
-        class="transition-[background-color,border-color,box-shadow] duration-500 ease-out flex items-center justify-between rounded-full border bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl px-4 py-2"
-        :class="[
-          isScrolled
-            ? 'border-slate-200/40 dark:border-slate-800/40 shadow-sm'
-            : 'border-slate-200/60 dark:border-slate-800/60 shadow-md shadow-slate-900/5 dark:shadow-slate-950/20',
-        ]"
+        class="header-capsule"
+        :class="isScrolled ? 'header-capsule--scrolled' : 'header-capsule--top'"
       >
-        <!-- LEFT REGION: Logo, Dashboard Switch, and Hàng Icon Điều Hướng -->
-        <div class="flex items-center gap-1 sm:gap-2">
+        <!-- LEFT: Logo + Desktop Nav -->
+        <div class="header-left">
           <!-- Logo Brand -->
-          <NuxtLink
-            to="/"
-            class="flex items-center gap-2 mr-2 cursor-pointer group shrink-0"
-          >
-            <!-- Brand Icon -->
-            <div
-              class="flex h-9 w-9 items-center justify-center shrink-0 transition-transform duration-500 group-hover:rotate-12 select-none"
-            >
+          <NuxtLink to="/" class="header-logo">
+            <div class="header-logo-icon">
               <NuxtImg
                 src="/saficon.webp"
-                class="h-9 w-9 object-contain rounded-xl shadow-sm"
+                class="header-logo-img"
                 alt="Saffi Logo"
               />
             </div>
-
-            <!-- Logo Text -->
-            <div class="hidden sm:flex flex-col select-none">
-              <span
-                class="font-sans text-[17px] font-black tracking-tight text-slate-900 dark:text-white leading-none"
+            <div class="header-logo-text">
+              <span class="header-logo-name"
+                >S<span class="text-shopee-orange">affi</span></span
               >
-                S<span class="text-shopee-orange">affi</span>
-              </span>
-              <span
-                class="text-[7.5px] font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase mt-0.5 leading-none"
-              >
-                Smart Shopping
-              </span>
+              <span class="header-logo-tagline">Smart Shopping</span>
             </div>
           </NuxtLink>
 
-          <!-- Phân cách dọc 1 -->
-          <div
-            class="hidden md:block h-6 w-px bg-slate-200 dark:bg-slate-800 mx-2"
-          ></div>
+          <!-- Desktop divider -->
+          <div class="header-divider header-divider--desktop"></div>
 
-          <!-- Nút Trang chủ (Dashboard) -->
+          <!-- Desktop: Home button -->
           <NuxtLink
             to="/"
-            class="hidden md:flex items-center justify-center rounded-full transition-spring cursor-pointer shrink-0 group relative"
-            :class="[
-              route.path === '/'
-                ? 'h-9 w-9 bg-gradient-to-br from-shopee-orange to-orange-500 text-white shadow-lg shadow-orange-500/20 scale-108 active:scale-95'
-                : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95',
-            ]"
+            class="nav-icon-btn"
+            :class="
+              route.path === '/' ? 'nav-icon-btn--active' : 'nav-icon-btn--idle'
+            "
+            title="Trang chủ"
           >
-            <UIcon
-              name="i-lucide-layout-grid"
-              class="w-5 h-5 transition-transform duration-300"
-              :class="{ 'scale-110': route.path === '/' }"
-            />
-            <!-- Tooltip -->
-            <div
-              class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             >
-              <div
-                class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"
-              ></div>
-              <div
-                class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl"
-              >
-                Trang chủ
-              </div>
-            </div>
+              <rect width="7" height="7" x="3" y="3" rx="1" />
+              <rect width="7" height="7" x="14" y="3" rx="1" />
+              <rect width="7" height="7" x="14" y="14" rx="1" />
+              <rect width="7" height="7" x="3" y="14" rx="1" />
+            </svg>
+            <span class="nav-tooltip">Trang chủ</span>
           </NuxtLink>
 
-          <!-- Hàng Icon Điều Hướng (Dành cho PC & iPad) -->
-          <div class="hidden md:flex items-center gap-1.5 ml-1">
-            <!-- Sparkles Icon (Hoàn Tiền - Subtle glow outline and badge when inactive) -->
+          <!-- Desktop Nav Icons -->
+          <div class="desktop-nav">
+            <!-- Hoàn Tiền -->
             <NuxtLink
               to="/hoan-tien"
-              class="flex items-center justify-center rounded-full transition-spring cursor-pointer shrink-0 group relative"
-              :class="[
+              class="nav-icon-btn nav-icon-btn--highlight"
+              :class="
                 route.path === '/hoan-tien'
-                  ? 'h-9 w-9 bg-gradient-to-br from-shopee-orange to-orange-500 text-white shadow-lg shadow-orange-500/20 scale-108 active:scale-95 z-10'
-                  : 'h-8 w-8 bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 text-shopee-orange hover:text-shopee-orange hover:bg-orange-500/10 hover:border-orange-500/20 hover:scale-105 active:scale-95',
-              ]"
+                  ? 'nav-icon-btn--active'
+                  : 'nav-icon-btn--idle'
+              "
+              title="Hoàn Tiền"
             >
-              <UIcon
-                name="i-lucide-sparkles"
-                class="transition-transform duration-500 group-hover:rotate-12"
-                :class="[
-                  route.path === '/hoan-tien'
-                    ? 'w-[19px] h-[19px]'
-                    : 'w-[18px] h-[18px]',
-                ]"
-              />
-              <!-- Glowing dot on desktop Hoàn Tiền to highlight main feature when inactive -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M9.937 15.5A2 2 0 0 0 8.5 14.063L2 12l6.5-2.063A2 2 0 0 0 9.937 8.5L12 2l2.063 6.5A2 2 0 0 0 15.5 9.937L22 12l-6.5 2.063A2 2 0 0 0 14.063 15.5L12 22z"
+                />
+                <path d="M20 3v4" />
+                <path d="M22 5h-4" />
+                <path d="M4 17v2" />
+                <path d="M5 18H3" />
+              </svg>
               <span
                 v-if="route.path !== '/hoan-tien'"
-                class="absolute top-0 right-0 flex h-2 w-2"
-              >
-                <span
-                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
-                ></span>
-                <span
-                  class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"
-                ></span>
-              </span>
-              <!-- Tooltip -->
-              <div
-                class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0"
-              >
-                <div
-                  class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"
-                ></div>
-                <div
-                  class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl"
-                >
-                  Hoàn Tiền
-                </div>
-              </div>
+                class="nav-pulse-dot"
+              ></span>
+              <span class="nav-tooltip">Hoàn Tiền</span>
             </NuxtLink>
 
-            <!-- Box Icon (Đơn Hàng) -->
+            <!-- Đơn Hàng -->
             <NuxtLink
               to="/don-hang"
-              class="flex items-center justify-center rounded-full transition-spring cursor-pointer shrink-0 group relative"
-              :class="[
+              class="nav-icon-btn"
+              :class="
                 route.path === '/don-hang'
-                  ? 'h-9 w-9 bg-gradient-to-br from-shopee-orange to-orange-500 text-white shadow-lg shadow-orange-500/20 scale-108 active:scale-95'
-                  : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95',
-              ]"
+                  ? 'nav-icon-btn--active'
+                  : 'nav-icon-btn--idle'
+              "
+              title="Đơn Hàng"
             >
-              <UIcon
-                name="i-lucide-shopping-bag"
-                class="h-5 w-5 transition-transform duration-300"
-                :class="{ 'scale-110': route.path === '/don-hang' }"
-              />
-              <!-- Tooltip -->
-              <div
-                class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <div
-                  class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"
-                ></div>
-                <div
-                  class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl"
-                >
-                  Đơn Hàng
-                </div>
-              </div>
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                <line x1="3" x2="21" y1="6" y2="6" />
+                <path d="M16 10a4 4 0 0 1-8 0" />
+              </svg>
+              <span class="nav-tooltip">Đơn Hàng</span>
             </NuxtLink>
 
-            <!-- Wallet Icon (Tài Chính) -->
+            <!-- Tài Chính -->
             <NuxtLink
               to="/tai-chinh"
-              class="flex items-center justify-center rounded-full transition-spring cursor-pointer shrink-0 group relative"
-              :class="[
+              class="nav-icon-btn"
+              :class="
                 route.path === '/tai-chinh'
-                  ? 'h-9 w-9 bg-gradient-to-br from-shopee-orange to-orange-500 text-white shadow-lg shadow-orange-500/20 scale-108 active:scale-95'
-                  : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95',
-              ]"
+                  ? 'nav-icon-btn--active'
+                  : 'nav-icon-btn--idle'
+              "
+              title="Tài Chính"
             >
-              <UIcon
-                name="i-lucide-credit-card"
-                class="h-5 w-5 transition-transform duration-300"
-                :class="{ 'scale-110': route.path === '/tai-chinh' }"
-              />
-              <!-- Tooltip -->
-              <div
-                class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <div
-                  class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"
-                ></div>
-                <div
-                  class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl"
-                >
-                  Tài Chính
-                </div>
-              </div>
+                <rect width="20" height="14" x="2" y="5" rx="2" />
+                <line x1="2" x2="22" y1="10" y2="10" />
+              </svg>
+              <span class="nav-tooltip">Tài Chính</span>
             </NuxtLink>
 
-            <!-- Book Icon (Hướng Dẫn) -->
+            <!-- Hướng Dẫn -->
             <NuxtLink
               to="/huong-dan"
-              class="flex items-center justify-center rounded-full transition-spring cursor-pointer shrink-0 group relative"
-              :class="[
+              class="nav-icon-btn"
+              :class="
                 route.path === '/huong-dan'
-                  ? 'h-9 w-9 bg-gradient-to-br from-shopee-orange to-orange-500 text-white shadow-lg shadow-orange-500/20 scale-108 active:scale-95'
-                  : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95',
-              ]"
+                  ? 'nav-icon-btn--active'
+                  : 'nav-icon-btn--idle'
+              "
+              title="Hướng Dẫn"
             >
-              <UIcon
-                name="i-lucide-book-open"
-                class="h-5 w-5 transition-transform duration-300"
-                :class="{ 'scale-110': route.path === '/huong-dan' }"
-              />
-              <!-- Tooltip -->
-              <div
-                class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <div
-                  class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-800 absolute -top-1 left-1/2 -translate-x-1/2"
-                ></div>
-                <div
-                  class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl"
-                >
-                  Hướng Dẫn
-                </div>
-              </div>
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+              </svg>
+              <span class="nav-tooltip">Hướng Dẫn</span>
             </NuxtLink>
 
-            <!-- Support Icon (Hỗ Trợ) -->
+            <!-- Hỗ Trợ -->
             <NuxtLink
               to="/ho-tro"
-              class="flex items-center justify-center rounded-full transition-spring cursor-pointer shrink-0 group relative"
-              :class="[
+              class="nav-icon-btn"
+              :class="
                 route.path === '/ho-tro'
-                  ? 'h-9 w-9 bg-gradient-to-br from-shopee-orange to-orange-500 text-white shadow-lg shadow-orange-500/20 scale-108 active:scale-95'
-                  : 'h-8 w-8 text-slate-400 dark:text-slate-500 hover:text-shopee-orange dark:hover:text-shopee-orange hover:bg-slate-50 dark:hover:bg-slate-800 hover:scale-105 active:scale-95',
-              ]"
+                  ? 'nav-icon-btn--active'
+                  : 'nav-icon-btn--idle'
+              "
+              title="Hỗ Trợ"
             >
-              <UIcon
-                name="i-lucide-circle-help"
-                class="h-5 w-5 transition-transform duration-300"
-                :class="{ 'scale-110': route.path === '/ho-tro' }"
-              />
-              <!-- Tooltip -->
-              <div
-                class="absolute top-[135%] left-1/2 -translate-x-1/2 pointer-events-none opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-90 group-hover:scale-100 z-50 shrink-0"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                <div
-                  class="w-2 h-2 rotate-45 bg-slate-900 dark:bg-slate-950 absolute -top-1 left-1/2 -translate-x-1/2"
-                ></div>
-                <div
-                  class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-950 text-white font-bold text-[11px] tracking-wide whitespace-nowrap shadow-xl"
-                >
-                  Hỗ Trợ
-                </div>
-              </div>
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <path d="M12 17h.01" />
+              </svg>
+              <span class="nav-tooltip">Hỗ Trợ</span>
             </NuxtLink>
           </div>
         </div>
 
-        <!-- RIGHT REGION: Rank Badge, Profile Link, Theme Toggle, and User Capsule -->
-        <div class="flex items-center gap-2 sm:gap-3">
+        <!-- RIGHT: Rank Badge + User Capsule -->
+        <div class="header-right">
           <!-- Rank Badge -->
           <div
             v-if="user"
-            class="flex items-center gap-1.5 px-3 py-1 rounded-full border select-none shrink-0 font-extrabold text-[11px] tracking-widest"
+            class="rank-badge"
             :class="rankInfo.badgeClass"
-            :title="`Hạng thành viên: ${rankInfo.fullName}`"
+            :title="`Hạng: ${rankInfo.fullName}`"
           >
             <img
               :src="rankInfo.image"
-              class="h-4.5 w-4.5 object-contain shrink-0"
+              class="rank-badge-img"
               :alt="rankInfo.name"
             />
             <span>{{ rankInfo.name }}</span>
           </div>
 
-          <!-- Phân cách dọc 2 (Ẩn trên mobile) -->
-          <div
-            class="hidden sm:block h-5 w-px bg-slate-200 dark:bg-slate-800 mx-1 shrink-0"
-          ></div>
+          <div class="header-divider header-divider--sm"></div>
 
-          <!-- User Capsule (Better-Auth Session - tối giản không viền/nền và ẩn mũi tên trên mobile/tablet) -->
+          <!-- User Capsule -->
           <div
             ref="capsuleRef"
             @click="toggleMenu"
-            class="flex items-center gap-2 rounded-full border border-transparent lg:border-slate-200 dark:border-transparent lg:dark:border-slate-800 bg-transparent lg:bg-slate-50/50 dark:bg-transparent lg:dark:bg-slate-900/30 p-0 lg:pl-3 lg:pr-2 lg:py-1 select-none hover:border-transparent lg:hover:border-slate-300 dark:hover:border-transparent lg:hover:border-slate-700 transition-colors duration-300 shrink-0 cursor-pointer relative"
+            class="user-capsule"
+            :class="{ 'user-capsule--open': isMenuOpen }"
           >
-            <span
-              class="hidden lg:inline text-xs font-bold text-slate-700 dark:text-slate-200 truncate max-w-[100px] md:max-w-[120px]"
-            >
-              {{ userName }}
-            </span>
-            <!-- Avatar Section -->
-            <div
-              class="h-8.5 w-8.5 rounded-full overflow-hidden flex items-center justify-center shrink-0 shadow-sm border border-slate-200/50 dark:border-slate-800 hover:scale-105 transition-transform"
-            >
+            <span class="user-capsule-name">{{ userName }}</span>
+            <div class="user-avatar">
               <img
                 v-if="userAvatar"
                 :src="userAvatar"
-                class="h-full w-full object-cover"
                 referrerpolicy="no-referrer"
+                alt="Avatar"
               />
-              <div
-                v-else
-                class="h-full w-full bg-[#EC407A] text-white font-black text-sm flex items-center justify-center uppercase select-none"
-              >
-                {{ firstLetter }}
-              </div>
+              <div v-else class="user-avatar-fallback">{{ firstLetter }}</div>
             </div>
-            <!-- Arrow Down SVG (Ẩn trên mobile/tablet) -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="hidden lg:inline h-3 w-3 text-slate-400 dark:text-slate-500 transition-transform duration-300"
+              class="user-capsule-arrow"
               :class="{ 'rotate-180': isMenuOpen }"
-              fill="none"
+              width="12"
+              height="12"
               viewBox="0 0 24 24"
+              fill="none"
               stroke="currentColor"
               stroke-width="2.5"
             >
@@ -316,118 +264,84 @@
               />
             </svg>
 
-            <!-- Dropdown Menu Tài khoản -->
+            <!-- Dropdown Menu -->
             <transition
-              enter-active-class="transition duration-200 ease-out"
-              enter-from-class="transform scale-95 opacity-0"
-              enter-to-class="transform scale-100 opacity-100"
-              leave-active-class="transition duration-75 ease-in"
-              leave-from-class="transform scale-100 opacity-100"
-              leave-to-class="transform scale-95 opacity-0"
+              enter-active-class="menu-enter-active"
+              enter-from-class="menu-enter-from"
+              enter-to-class="menu-enter-to"
+              leave-active-class="menu-leave-active"
+              leave-from-class="menu-leave-from"
+              leave-to-class="menu-leave-to"
             >
               <div
                 v-if="isMenuOpen"
                 ref="menuRef"
                 @click.stop
-                class="absolute right-0 top-[125%] mt-1 w-[290px] bg-white dark:bg-slate-900 rounded-[24px] shadow-2xl border border-slate-100 dark:border-slate-800/80 p-5 flex flex-col origin-top-right z-50 transition-all cursor-default"
+                class="user-menu"
               >
-                <!-- 1. User Info -->
-                <div
-                  class="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800/60"
-                >
-                  <NuxtLink
-                    v-if="isAdmin"
-                    to="/admin/orders"
-                    @click="isMenuOpen = false"
-                    class="h-12 w-12 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-slate-100 dark:border-slate-800 shadow-sm hover:scale-105 transition-transform"
-                    title="Vào trang quản trị"
+                <!-- User Info -->
+                <div class="menu-user-info">
+                  <component
+                    :is="isAdmin ? 'NuxtLink' : 'div'"
+                    v-bind="isAdmin ? { to: '/admin/orders' } : {}"
+                    @click="isAdmin ? (isMenuOpen = false) : null"
+                    class="menu-avatar-wrap"
                   >
                     <img
                       v-if="userAvatar"
                       :src="userAvatar"
-                      class="h-full w-full object-cover"
                       referrerpolicy="no-referrer"
+                      alt="Avatar"
                     />
-                    <div
-                      v-else
-                      class="h-full w-full bg-[#EC407A] text-white font-black text-lg flex items-center justify-center uppercase"
-                    >
+                    <div v-else class="user-avatar-fallback">
                       {{ firstLetter }}
                     </div>
-                  </NuxtLink>
-                  <div
-                    v-else
-                    class="h-12 w-12 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-slate-100 dark:border-slate-800 shadow-sm"
-                  >
-                    <img
-                      v-if="userAvatar"
-                      :src="userAvatar"
-                      class="h-full w-full object-cover"
-                      referrerpolicy="no-referrer"
-                    />
-                    <div
-                      v-else
-                      class="h-full w-full bg-[#EC407A] text-white font-black text-lg flex items-center justify-center uppercase"
-                    >
-                      {{ firstLetter }}
-                    </div>
-                  </div>
-                  <div class="flex flex-col truncate">
-                    <span
-                      class="font-bold text-slate-800 dark:text-slate-100 text-[15px] leading-tight truncate"
-                    >
-                      {{ userName }}
-                    </span>
-                    <span
-                      class="text-[11px] text-slate-400 dark:text-slate-500 truncate mt-0.5"
-                      :title="userEmail"
-                    >
-                      {{ userEmail }}
-                    </span>
+                  </component>
+                  <div class="menu-user-text">
+                    <span class="menu-user-name">{{ userName }}</span>
+                    <span class="menu-user-email" :title="userEmail">{{
+                      userEmail
+                    }}</span>
                   </div>
                 </div>
 
-                <!-- 2. Rank Badge -->
-                <div
-                  v-if="user"
-                  class="flex items-center justify-between py-3 border-b border-slate-100 dark:border-slate-800/60"
-                >
+                <!-- Rank in menu -->
+                <div v-if="user" class="menu-rank">
                   <div
-                    class="flex items-center gap-1.5 px-2.5 py-1 rounded-full border font-extrabold text-[10px] tracking-widest select-none shrink-0"
+                    class="rank-badge rank-badge--sm"
                     :class="rankInfo.badgeClass"
                   >
                     <img
                       :src="rankInfo.image"
-                      class="h-4 w-4 object-contain shrink-0"
+                      class="rank-badge-img"
                       :alt="rankInfo.name"
                     />
                     <span>{{ rankInfo.name }}</span>
                   </div>
-                  <span
-                    class="text-[10px] font-bold text-slate-400 dark:text-slate-550"
-                    >Cấp bậc hiện tại</span
-                  >
+                  <span class="menu-rank-label">Cấp bậc hiện tại</span>
                 </div>
 
-                <!-- 3. Navigation Links List -->
-                <div
-                  class="flex flex-col gap-1 py-3 border-b border-slate-100 dark:border-slate-800/60"
-                >
-                  <!-- Quản trị viên (Chỉ hiển thị nếu role là Admin) -->
+                <!-- Nav Links -->
+                <div class="menu-links">
                   <NuxtLink
                     v-if="isAdmin"
                     to="/admin/orders"
                     @click="isMenuOpen = false"
-                    class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
+                    class="menu-link"
                   >
                     <div
-                      class="h-8.5 w-8.5 rounded-xl bg-purple-500/10 dark:bg-purple-500/15 text-purple-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300"
+                      class="menu-link-icon"
+                      style="
+                        background: rgba(107, 114, 128, 0.1);
+                        color: #6b7280;
+                      "
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4.5 w-4.5"
-                        fill="none"
+                        width="18"
+                        height="18"
                         viewBox="0 0 24 24"
+                        fill="none"
                         stroke="currentColor"
                         stroke-width="2"
                       >
@@ -443,27 +357,28 @@
                         />
                       </svg>
                     </div>
-                    <span
-                      class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors duration-300"
-                      >Quản lý Đơn Hàng</span
-                    >
+                    <span>Quản lý Đơn Hàng</span>
                   </NuxtLink>
 
-                  <!-- Quản lý thành viên (Admin) -->
                   <NuxtLink
                     v-if="isAdmin"
                     to="/admin/users"
                     @click="isMenuOpen = false"
-                    class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
+                    class="menu-link"
                   >
                     <div
-                      class="h-8.5 w-8.5 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/15 text-indigo-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300"
+                      class="menu-link-icon"
+                      style="
+                        background: rgba(99, 102, 241, 0.1);
+                        color: #6366f1;
+                      "
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4.5 w-4.5"
-                        fill="none"
+                        width="18"
+                        height="18"
                         viewBox="0 0 24 24"
+                        fill="none"
                         stroke="currentColor"
                         stroke-width="2"
                       >
@@ -474,26 +389,24 @@
                         />
                       </svg>
                     </div>
-                    <span
-                      class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors duration-300"
-                      >Quản lý Thành Viên</span
-                    >
+                    <span>Quản lý Thành Viên</span>
                   </NuxtLink>
 
-                  <!-- Hồ sơ -->
                   <NuxtLink
                     to="/ho-so"
                     @click="isMenuOpen = false"
-                    class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
+                    class="menu-link"
                   >
                     <div
-                      class="h-8.5 w-8.5 rounded-xl bg-orange-500/10 dark:bg-orange-500/15 text-orange-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300"
+                      class="menu-link-icon"
+                      style="background: rgba(238, 77, 45, 0.1); color: #ee4d2d"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4.5 w-4.5"
-                        fill="none"
+                        width="18"
+                        height="18"
                         viewBox="0 0 24 24"
+                        fill="none"
                         stroke="currentColor"
                         stroke-width="2"
                       >
@@ -504,26 +417,27 @@
                         />
                       </svg>
                     </div>
-                    <span
-                      class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-shopee-orange dark:group-hover:text-shopee-orange transition-colors duration-300"
-                      >Hồ sơ</span
-                    >
+                    <span>Hồ sơ</span>
                   </NuxtLink>
 
-                  <!-- Tài chính -->
                   <NuxtLink
                     to="/tai-chinh"
                     @click="isMenuOpen = false"
-                    class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
+                    class="menu-link"
                   >
                     <div
-                      class="h-8.5 w-8.5 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300"
+                      class="menu-link-icon"
+                      style="
+                        background: rgba(16, 185, 129, 0.1);
+                        color: #10b981;
+                      "
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4.5 w-4.5"
-                        fill="none"
+                        width="18"
+                        height="18"
                         viewBox="0 0 24 24"
+                        fill="none"
                         stroke="currentColor"
                         stroke-width="2"
                       >
@@ -534,27 +448,26 @@
                         />
                       </svg>
                     </div>
-                    <span
-                      class="text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:text-shopee-orange dark:group-hover:text-shopee-orange transition-colors duration-300"
-                      >Tài chính</span
-                    >
+                    <span>Tài chính</span>
                   </NuxtLink>
                 </div>
 
-                <!-- 4. Logout Section -->
-                <div class="pt-3">
-                  <button
-                    @click="handleLogout"
-                    class="flex items-center gap-3 w-full p-1.5 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-300 cursor-pointer select-none text-left group"
-                  >
+                <!-- Logout -->
+                <div class="menu-footer">
+                  <button @click="handleLogout" class="menu-logout">
                     <div
-                      class="h-8.5 w-8.5 rounded-xl bg-slate-500/10 dark:bg-slate-500/15 text-slate-400 dark:text-slate-500 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300"
+                      class="menu-link-icon"
+                      style="
+                        background: rgba(100, 116, 139, 0.1);
+                        color: #94a3b8;
+                      "
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-4.5 w-4.5"
-                        fill="none"
+                        width="18"
+                        height="18"
                         viewBox="0 0 24 24"
+                        fill="none"
                         stroke="currentColor"
                         stroke-width="2"
                       >
@@ -565,11 +478,7 @@
                         />
                       </svg>
                     </div>
-                    <span
-                      class="text-xs font-bold text-slate-400 dark:text-slate-500 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors duration-300"
-                    >
-                      Đăng xuất
-                    </span>
+                    <span>Đăng xuất</span>
                   </button>
                 </div>
               </div>
@@ -579,116 +488,129 @@
       </div>
     </div>
   </header>
-  <!-- Spacer to prevent content overlapping due to fixed header -->
-  <div class="h-20 w-full pointer-events-none"></div>
 
-  <!-- Mobile Bottom Navigation Bar (Apple Tab Bar Style) -->
-  <div
-    class="fixed bottom-0 left-0 right-0 z-[100] h-[72px] bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800/80 flex justify-around items-center px-2 md:hidden pb-safe shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.04)] select-none transition-colors duration-300"
-  >
-    <!-- Tab 1: Home -->
+  <!-- Spacer for fixed header -->
+  <div style="height: 80px; width: 100%; pointer-events: none"></div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav">
     <NuxtLink
       to="/"
-      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
-      :class="[
-        route.path === '/'
-          ? 'text-shopee-orange'
-          : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400',
-      ]"
+      class="mobile-tab"
+      :class="route.path === '/' ? 'mobile-tab--active' : ''"
     >
-      <UIcon
-        name="i-lucide-home"
-        class="w-6 h-6 transition-transform duration-200"
-        :class="[route.path === '/' ? 'scale-105' : '']"
-      />
-      <span class="text-[10px] font-medium tracking-tight">Home</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+      <span>Home</span>
     </NuxtLink>
 
-    <!-- Tab 2: Hoàn Tiền -->
     <NuxtLink
       to="/hoan-tien"
-      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200 relative"
-      :class="[
-        route.path === '/hoan-tien'
-          ? 'text-shopee-orange'
-          : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-400',
-      ]"
+      class="mobile-tab mobile-tab--highlight"
+      :class="route.path === '/hoan-tien' ? 'mobile-tab--active' : ''"
     >
-      <UIcon
-        name="i-lucide-sparkles"
-        class="w-6 h-6 transition-transform duration-200"
-        :class="[route.path === '/hoan-tien' ? 'scale-105 rotate-12' : '']"
-      />
-      <span
-        class="text-[10px] font-medium tracking-tight"
-        :class="{ 'font-bold text-shopee-orange': route.path === '/hoan-tien' }"
-        >Hoàn tiền</span
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       >
-      <!-- Subtle dot indicator if inactive -->
-      <span
-        v-if="route.path !== '/hoan-tien'"
-        class="absolute top-2 right-4 flex h-2 w-2"
-      >
-        <span
-          class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"
-        ></span>
-      </span>
+        <path
+          d="M9.937 15.5A2 2 0 0 0 8.5 14.063L2 12l6.5-2.063A2 2 0 0 0 9.937 8.5L12 2l2.063 6.5A2 2 0 0 0 15.5 9.937L22 12l-6.5 2.063A2 2 0 0 0 14.063 15.5L12 22z"
+        />
+        <path d="M20 3v4" />
+        <path d="M22 5h-4" />
+        <path d="M4 17v2" />
+        <path d="M5 18H3" />
+      </svg>
+      <span>Hoàn tiền</span>
+      <span v-if="route.path !== '/hoan-tien'" class="mobile-tab-dot"></span>
     </NuxtLink>
 
-    <!-- Tab 3: Đơn hàng -->
     <NuxtLink
       to="/don-hang"
-      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
-      :class="[
-        route.path === '/don-hang'
-          ? 'text-shopee-orange'
-          : 'text-slate-400 dark:text-slate-555 hover:text-slate-600 dark:hover:text-slate-400',
-      ]"
+      class="mobile-tab"
+      :class="route.path === '/don-hang' ? 'mobile-tab--active' : ''"
     >
-      <UIcon
-        name="i-lucide-shopping-bag"
-        class="w-6 h-6 transition-transform duration-200"
-        :class="[route.path === '/don-hang' ? 'scale-105' : '']"
-      />
-      <span class="text-[10px] font-medium tracking-tight">Đơn hàng</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+        <line x1="3" x2="21" y1="6" y2="6" />
+        <path d="M16 10a4 4 0 0 1-8 0" />
+      </svg>
+      <span>Đơn hàng</span>
     </NuxtLink>
 
-    <!-- Tab 4: Tài Chính -->
     <NuxtLink
       to="/tai-chinh"
-      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
-      :class="[
-        route.path === '/tai-chinh'
-          ? 'text-shopee-orange'
-          : 'text-slate-400 dark:text-slate-555 hover:text-slate-600 dark:hover:text-slate-400',
-      ]"
+      class="mobile-tab"
+      :class="route.path === '/tai-chinh' ? 'mobile-tab--active' : ''"
     >
-      <UIcon
-        name="i-lucide-credit-card"
-        class="w-6 h-6 transition-transform duration-200"
-        :class="[route.path === '/tai-chinh' ? 'scale-105' : '']"
-      />
-      <span class="text-[10px] font-medium tracking-tight">Tài Chính</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <rect width="20" height="14" x="2" y="5" rx="2" />
+        <line x1="2" x2="22" y1="10" y2="10" />
+      </svg>
+      <span>Tài Chính</span>
     </NuxtLink>
 
-    <!-- Tab 5: Cá nhân -->
     <NuxtLink
       to="/ho-so"
-      class="flex flex-col items-center justify-center gap-1 w-16 h-full transition-colors duration-200"
-      :class="[
-        route.path === '/ho-so'
-          ? 'text-shopee-orange'
-          : 'text-slate-400 dark:text-slate-555 hover:text-slate-600 dark:hover:text-slate-400',
-      ]"
+      class="mobile-tab"
+      :class="route.path === '/ho-so' ? 'mobile-tab--active' : ''"
     >
-      <UIcon
-        name="i-lucide-user"
-        class="w-6 h-6 transition-transform duration-200"
-        :class="[route.path === '/ho-so' ? 'scale-105' : '']"
-      />
-      <span class="text-[10px] font-medium tracking-tight">Cá nhân</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="8" r="5" />
+        <path d="M20 21a8 8 0 1 0-16 0" />
+      </svg>
+      <span>Cá nhân</span>
     </NuxtLink>
-  </div>
+  </nav>
 </template>
 
 <script setup>
@@ -736,7 +658,6 @@ const handleClickOutside = (event) => {
 onMounted(() => {
   window.addEventListener("scroll", handleScroll, { passive: true });
   window.addEventListener("click", handleClickOutside);
-  // Initial check
   handleScroll();
 });
 
@@ -745,23 +666,13 @@ onUnmounted(() => {
   window.removeEventListener("click", handleClickOutside);
 });
 
-// Dynamic values from Custom useAuth user info
-const userName = computed(() => {
-  return user.value?.name || "User";
-});
-
-const userAvatar = computed(() => {
-  return user.value?.image || "";
-});
-
+const userName = computed(() => user.value?.name || "User");
+const userAvatar = computed(() => user.value?.image || "");
 const firstLetter = computed(() => {
   const name = userName.value;
   return name ? name.charAt(0).toUpperCase() : "U";
 });
-
-const userEmail = computed(() => {
-  return user.value?.email || "youremail@saffi.com";
-});
+const userEmail = computed(() => user.value?.email || "youremail@saffi.com");
 
 const rankInfo = computed(() => {
   const rank = user.value?.rank || "silver";
@@ -770,30 +681,28 @@ const rankInfo = computed(() => {
       name: "TINH HOA",
       fullName: "THÀNH VIÊN TINH HOA",
       image: "/saffi_obsidian.webp",
-      badgeClass:
-        "bg-slate-900/10 dark:bg-slate-100/10 border-slate-900/20 text-slate-800 dark:text-slate-200",
+      badgeClass: "rank-badge--obsidian",
     };
   } else if (rank === "gold") {
     return {
       name: "VÀNG",
       fullName: "THÀNH VIÊN VÀNG",
       image: "/saffi_gold.webp",
-      badgeClass:
-        "bg-amber-500/10 dark:bg-amber-500/15 border-amber-500/20 text-amber-600 dark:text-amber-400",
+      badgeClass: "rank-badge--gold",
     };
   } else {
     return {
       name: "BẠC",
       fullName: "THÀNH VIÊN BẠC",
       image: "/saffi_silver.webp",
-      badgeClass:
-        "bg-slate-300/10 dark:bg-slate-300/15 border-slate-300/20 text-slate-600 dark:text-slate-400",
+      badgeClass: "rank-badge--silver",
     };
   }
 });
 
 const handleLogout = async () => {
   try {
+    isMenuOpen.value = false;
     await logout();
   } catch (error) {
     console.error("Đăng xuất thất bại:", error);
@@ -802,23 +711,718 @@ const handleLogout = async () => {
 </script>
 
 <style scoped>
-/* Hover and Premium Transition Utilities */
-.transition-premium {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+/* ============================
+   HEADER ROOT
+   ============================ */
+.header-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0.5rem 1rem 0.25rem;
 }
 
-.glow-orange {
-  box-shadow: 0 4px 14px 0 rgba(239, 83, 80, 0.2);
+@media (min-width: 768px) {
+  .header-root {
+    padding: 0.5rem 1.5rem 0.25rem;
+  }
+}
+@media (min-width: 1024px) {
+  .header-root {
+    padding: 0.5rem 2rem 0.25rem;
+  }
 }
 
-/* Custom spring physics curve for ultra-smooth mobile menu transitions */
-.transition-spring {
-  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-    color 0.25s ease-out,
-    background-color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-    border-color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-    width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-    height 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+.header-inner-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.header-capsule {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 9999px;
+  border: 1px solid;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 0.375rem 1rem;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+}
+
+@media (max-width: 1024px) {
+  .header-capsule {
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+.header-capsule--scrolled {
+  border-color: rgba(226, 232, 240, 0.4);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.header-capsule--top {
+  border-color: rgba(226, 232, 240, 0.6);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================
+   LEFT REGION
+   ============================ */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .header-left {
+    gap: 0.5rem;
+  }
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.header-logo:hover .header-logo-icon {
+  transform: rotate(12deg);
+}
+
+.header-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  transition: transform 0.5s ease;
+}
+
+.header-logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.header-logo-text {
+  display: none;
+  flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .header-logo-text {
+    display: flex;
+  }
+}
+
+.header-logo-name {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.header-logo-tagline {
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-top: 2px;
+  line-height: 1;
+}
+
+.header-divider {
+  background: #e2e8f0;
+  flex-shrink: 0;
+}
+
+.header-divider--desktop {
+  display: none;
+  width: 1px;
+  height: 24px;
+  margin: 0 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .header-divider--desktop {
+    display: block;
+  }
+}
+
+.header-divider--sm {
+  display: none;
+  width: 1px;
+  height: 20px;
+  margin: 0 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .header-divider--sm {
+    display: block;
+  }
+}
+
+/* ============================
+   DESKTOP NAV ICON BUTTONS
+   ============================ */
+.desktop-nav {
+  display: none;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+  }
+}
+
+.nav-icon-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (min-width: 768px) {
+  .nav-icon-btn {
+    display: flex;
+  }
+}
+
+.nav-icon-btn--active {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #ee4d2d, #f97316);
+  color: white;
+  box-shadow: 0 4px 12px rgba(238, 77, 45, 0.3);
+  transform: scale(1.05);
+}
+
+.nav-icon-btn--idle {
+  width: 32px;
+  height: 32px;
+  color: #94a3b8;
+}
+
+.nav-icon-btn--idle:hover {
+  color: #ee4d2d;
+  background: #f8fafc;
+  transform: scale(1.05);
+}
+
+.nav-icon-btn--highlight.nav-icon-btn--idle {
+  background: rgba(238, 77, 45, 0.05);
+  border: 1px solid rgba(238, 77, 45, 0.1);
+  color: #ee4d2d;
+}
+
+.nav-icon-btn--highlight.nav-icon-btn--idle:hover {
+  background: rgba(238, 77, 45, 0.1);
+}
+
+/* Tooltip */
+.nav-tooltip {
+  position: absolute;
+  top: 135%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: white;
+  background: #0f172a;
+  padding: 4px 10px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  z-index: 50;
+}
+
+.nav-tooltip::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: #0f172a;
+}
+
+.nav-icon-btn:hover .nav-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+}
+
+/* Pulse dot for Hoàn Tiền highlight */
+.nav-pulse-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+/* ============================
+   RIGHT REGION
+   ============================ */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .header-right {
+    gap: 0.75rem;
+  }
+}
+
+/* ============================
+   RANK BADGE
+   ============================ */
+.rank-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.rank-badge--sm {
+  padding: 0.25rem 0.625rem;
+  font-size: 10px;
+}
+
+.rank-badge-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.rank-badge--sm .rank-badge-img {
+  width: 16px;
+  height: 16px;
+}
+
+.rank-badge--gold {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.2);
+  color: #d97706;
+}
+
+.rank-badge--silver {
+  background: rgba(148, 163, 184, 0.1);
+  border-color: rgba(148, 163, 184, 0.2);
+  color: #64748b;
+}
+
+.rank-badge--obsidian {
+  background: rgba(15, 23, 42, 0.1);
+  border-color: rgba(15, 23, 42, 0.2);
+  color: #1e293b;
+}
+
+/* ============================
+   USER CAPSULE
+   ============================ */
+.user-capsule {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  user-select: none;
+  padding: 0 0.5rem 0 0.75rem;
+  height: 36px;
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+  .user-capsule {
+    border-color: #e2e8f0;
+    background: rgba(248, 250, 252, 0.5);
+  }
+  .user-capsule:hover {
+    border-color: #cbd5e1;
+  }
+}
+
+.user-capsule-name {
+  display: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .user-capsule-name {
+    display: inline;
+  }
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(226, 232, 240, 0.5);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  background: #ec407a;
+  color: white;
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.user-capsule-arrow {
+  display: none;
+  color: #94a3b8;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+@media (min-width: 1024px) {
+  .user-capsule-arrow {
+    display: inline;
+  }
+}
+
+/* ============================
+   USER DROPDOWN MENU
+   ============================ */
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: 125%;
+  margin-top: 4px;
+  width: 290px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(241, 245, 249, 0.8);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transform-origin: top right;
+  z-index: 50;
+  cursor: default;
+}
+
+.menu-enter-active {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.menu-enter-from {
+  transform: scale(0.95);
+  opacity: 0;
+}
+.menu-enter-to {
+  transform: scale(1);
+  opacity: 1;
+}
+.menu-leave-active {
+  transition: all 0.1s ease-in;
+}
+.menu-leave-from {
+  transform: scale(1);
+  opacity: 1;
+}
+.menu-leave-to {
+  transform: scale(0.95);
+  opacity: 0;
+}
+
+.menu-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.menu-avatar-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.menu-avatar-wrap:hover {
+  transform: scale(1.05);
+}
+
+.menu-avatar-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu-user-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.menu-user-name {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 15px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-user-email {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-rank {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.menu-rank-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 6px;
+  border-radius: 16px;
+  text-decoration: none;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.menu-link:hover {
+  background: #f8fafc;
+  color: #ee4d2d;
+}
+
+.menu-link-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.menu-link:hover .menu-link-icon {
+  transform: scale(1.05);
+}
+
+.menu-footer {
+  padding-top: 12px;
+}
+
+.menu-logout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 6px;
+  border-radius: 16px;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.menu-logout:hover {
+  background: #f8fafc;
+  color: #64748b;
+}
+
+/* ============================
+   MOBILE BOTTOM NAV
+   ============================ */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 72px;
+  background: rgba(255, 255, 255, 0.99);
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 0.5rem;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  box-shadow: 0 -4px 20px -5px rgba(0, 0, 0, 0.04);
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-bottom-nav {
+    display: none;
+  }
+}
+
+.mobile-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 64px;
+  height: 100%;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  transition: color 0.2s ease;
+  position: relative;
+  touch-action: manipulation;
+}
+
+.mobile-tab--active {
+  color: #ee4d2d;
+}
+
+.mobile-tab svg {
+  transition: transform 0.2s ease;
+}
+
+.mobile-tab--active svg {
+  transform: scale(1.05);
+}
+
+.mobile-tab-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
 }
 </style>

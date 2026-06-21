@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full animate-fade-in">
+  <div class="w-full">
     <!-- Page Title & Header -->
     <div class="mt-6">
       <h1
@@ -208,17 +208,19 @@
             </h3>
 
             <!-- Toggle Edit Button -->
-            <UButton
+            <a-button
               type="button"
               @click="handleEditProfileToggle"
-              size="xs"
-              :variant="isEditingProfile ? 'soft' : 'solid'"
-              :color="isEditingProfile ? 'neutral' : 'primary'"
+              size="small"
+              :type="isEditingProfile ? 'default' : 'primary'"
               class="font-extrabold tracking-wider cursor-pointer"
-              :icon="isEditingProfile ? 'i-lucide-x' : 'i-lucide-pencil'"
             >
+              <template #icon>
+                <CloseOutlined v-if="isEditingProfile" />
+                <EditOutlined v-else />
+              </template>
               {{ isEditingProfile ? "HỦY BỎ" : "CHỈNH SỬA" }}
-            </UButton>
+            </a-button>
           </div>
 
           <form @submit.prevent="saveProfile" class="mt-6 flex flex-col gap-5">
@@ -228,15 +230,14 @@
                   class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase"
                   >Họ tên</label
                 >
-                <UInput
+                <a-input
                   :disabled="!isEditingProfile || isUpdatingProfile"
-                  v-model="profileName"
+                  v-model:value="profileName"
                   type="text"
                   required
                   maxlength="35"
-                  size="md"
-                  :ui="{ rounded: 'rounded-2xl' }"
-                  class="w-full font-semibold focus-within:ring-2 focus-within:ring-shopee-orange/20"
+                  size="large"
+                  class="w-full font-semibold focus-within:ring-2 focus-within:ring-shopee-orange/20 rounded-2xl"
                 />
               </div>
             </div>
@@ -247,13 +248,12 @@
                   class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase"
                   >Địa chỉ email</label
                 >
-                <UInput
+                <a-input
                   :value="userEmail"
                   type="email"
                   disabled
-                  size="md"
-                  :ui="{ rounded: 'rounded-2xl' }"
-                  class="w-full font-semibold opacity-75"
+                  size="large"
+                  class="w-full font-semibold opacity-75 rounded-2xl"
                 />
               </div>
             </div>
@@ -264,18 +264,18 @@
               enter-from-class="transform -translate-y-2 opacity-0"
               enter-to-class="transform translate-y-0 opacity-100"
             >
-              <UAlert
+              <a-alert
                 v-if="profileMsg || profileError"
-                :icon="
-                  profileError
-                    ? 'i-lucide-alert-triangle'
-                    : 'i-lucide-circle-check'
-                "
-                :color="profileError ? 'danger' : 'success'"
-                variant="soft"
-                :title="profileError || profileMsg"
+                :type="profileError ? 'error' : 'success'"
+                show-icon
+                :message="profileError || profileMsg"
                 class="rounded-2xl"
-              />
+              >
+                <template #icon>
+                  <WarningOutlined v-if="profileError" />
+                  <CheckCircleOutlined v-else />
+                </template>
+              </a-alert>
             </transition>
 
             <!-- Submit Button (Trượt hiển thị mượt mà khi bấm Chỉnh sửa) -->
@@ -295,18 +295,17 @@
                 leave-from-class="transform translate-y-0 opacity-100"
                 leave-to-class="transform -translate-y-2 opacity-0"
               >
-                <UButton
+                <a-button
                   v-if="isEditingProfile"
-                  type="submit"
+                  html-type="submit"
                   :loading="isUpdatingProfile"
                   :disabled="isLoading || isProfileUnchanged"
-                  size="md"
-                  color="primary"
-                  variant="solid"
+                  size="large"
+                  type="primary"
                   class="self-start px-6 font-bold text-xs shadow-md shadow-orange-500/10 cursor-pointer rounded-2xl"
                 >
                   Lưu thay đổi
-                </UButton>
+                </a-button>
               </transition>
             </transition>
           </form>
@@ -326,17 +325,19 @@
             </h3>
 
             <!-- Toggle Edit Button -->
-            <UButton
+            <a-button
               type="button"
               @click="handleEditToggle"
-              size="xs"
-              :variant="isEditingBank ? 'soft' : 'solid'"
-              :color="isEditingBank ? 'neutral' : 'primary'"
+              size="small"
+              :type="isEditingBank ? 'default' : 'primary'"
               class="font-extrabold tracking-wider cursor-pointer"
-              :icon="isEditingBank ? 'i-lucide-x' : 'i-lucide-pencil'"
             >
+              <template #icon>
+                <CloseOutlined v-if="isEditingBank" />
+                <EditOutlined v-else />
+              </template>
               {{ isEditingBank ? "HỦY BỎ" : "CHỈNH SỬA" }}
-            </UButton>
+            </a-button>
           </div>
 
           <form @submit.prevent="saveBank" class="mt-6 flex flex-col gap-5">
@@ -346,55 +347,31 @@
                 >Ngân hàng liên kết</label
               >
 
-              <!-- Searchable USelectMenu from NuxtUI v3 -->
+              <!-- Searchable a-select -->
               <div class="relative w-full">
-                <USelectMenu
-                  v-model="linkedBank"
-                  :items="selectMenuBanksList"
-                  value-key="bin"
-                  label-key="label"
+                <a-select
+                  v-model:value="linkedBank"
+                  :options="selectMenuBanksList"
+                  show-search
                   placeholder="Chọn ngân hàng..."
-                  :filter-fields="['label', 'bin', 'shortName', 'name']"
+                  :filterOption="(input, option) => option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0"
                   :disabled="!isEditingBank || isBankLoading || isUpdatingBank"
-                  size="md"
-                  :ui="{
-                    base: 'w-full flex items-center gap-2.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 px-4 py-3.5 text-xs font-semibold text-slate-800 dark:text-slate-200 focus-within:ring-2 focus-within:ring-shopee-orange/20 focus-within:border-shopee-orange transition-all disabled:opacity-50 text-left cursor-pointer shadow-none ring-0',
-                  }"
+                  size="large"
+                  class="w-full"
                 >
-                  <template #default>
-                    <div class="flex items-center gap-2.5 min-w-0">
-                      <span
-                        v-if="selectedBankDetails"
-                        class="font-extrabold text-[10px] text-shopee-orange bg-shopee-orange/5 px-2 py-0.5 rounded-lg border border-shopee-orange/10 shrink-0 select-none"
-                      >
-                        {{
-                          selectedBankDetails.shortName ||
-                          selectedBankDetails.short_name ||
-                          selectedBankDetails.code
-                        }}
-                      </span>
-                      <span
-                        v-if="selectedBankDetails"
-                        class="truncate text-slate-750 dark:text-slate-350"
-                      >
-                        {{ selectedBankDetails.name }}
-                      </span>
-                      <span v-else class="text-slate-400">Chọn ngân hàng...</span>
-                    </div>
-                  </template>
-                  <template #item="{ item }">
+                  <template #option="{ label, shortName, name }">
                     <div class="flex items-center gap-2.5 min-w-0 py-0.5 select-none">
                       <span
                         class="font-extrabold text-[10px] text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-950/20 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-800 shrink-0"
                       >
-                        {{ item.shortName }}
+                        {{ shortName }}
                       </span>
                       <span class="truncate text-xs font-semibold text-slate-700 dark:text-slate-300">
-                        {{ item.name }}
+                        {{ name }}
                       </span>
                     </div>
                   </template>
-                </USelectMenu>
+                </a-select>
               </div>
             </div>
 
@@ -405,15 +382,14 @@
                   class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase sm:h-8 flex items-end pb-1"
                   >Số tài khoản</label
                 >
-                <UInput
+                <a-input
                   :disabled="!isEditingBank || isBankLoading || isUpdatingBank"
-                  v-model="bankAccount"
+                  v-model:value="bankAccount"
                   type="text"
                   required
                   placeholder="Nhập số tài khoản ngân hàng..."
-                  size="md"
-                  :ui="{ rounded: 'rounded-2xl' }"
-                  class="w-full font-semibold focus-within:ring-2 focus-within:ring-shopee-orange/20"
+                  size="large"
+                  class="w-full font-semibold focus-within:ring-2 focus-within:ring-shopee-orange/20 rounded-2xl"
                 />
               </div>
 
@@ -422,16 +398,15 @@
                   class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase sm:h-8 flex items-end pb-1"
                   >Chủ tài Khoản</label
                 >
-                <UInput
+                <a-input
                   :disabled="!isEditingBank || isBankLoading || isUpdatingBank"
-                  v-model="bankOwner"
+                  v-model:value="bankOwner"
                   type="text"
                   required
                   placeholder="Ví dụ: NGUYEN VAN A"
                   maxlength="35"
-                  size="md"
-                  :ui="{ rounded: 'rounded-2xl' }"
-                  class="w-full uppercase font-black focus-within:ring-2 focus-within:ring-shopee-orange/20"
+                  size="large"
+                  class="w-full uppercase font-black focus-within:ring-2 focus-within:ring-shopee-orange/20 rounded-2xl"
                 />
               </div>
             </div>
@@ -442,18 +417,18 @@
               enter-from-class="transform -translate-y-2 opacity-0"
               enter-to-class="transform translate-y-0 opacity-100"
             >
-              <UAlert
+              <a-alert
                 v-if="bankMsg"
-                :icon="
-                  isBankError
-                    ? 'i-lucide-alert-triangle'
-                    : 'i-lucide-circle-check'
-                "
-                :color="isBankError ? 'danger' : 'success'"
-                variant="soft"
-                :title="bankMsg"
+                :type="isBankError ? 'error' : 'success'"
+                show-icon
+                :message="bankMsg"
                 class="rounded-2xl"
-              />
+              >
+                <template #icon>
+                  <WarningOutlined v-if="isBankError" />
+                  <CheckCircleOutlined v-else />
+                </template>
+              </a-alert>
             </transition>
 
             <!-- Submit Button (Trượt hiển thị mượt mà khi bấm Chỉnh sửa) -->
@@ -473,18 +448,17 @@
                 leave-from-class="transform translate-y-0 opacity-100"
                 leave-to-class="transform -translate-y-2 opacity-0"
               >
-                <UButton
+                <a-button
                   v-if="isEditingBank"
-                  type="submit"
+                  html-type="submit"
                   :loading="isUpdatingBank"
                   :disabled="isLoading || isBankLoading"
-                  size="md"
-                  color="primary"
-                  variant="solid"
+                  size="large"
+                  type="primary"
                   class="self-start px-6 font-bold text-xs shadow-md shadow-orange-500/10 cursor-pointer rounded-2xl"
                 >
                   {{ isBankLoading ? "Đang tải..." : "Liên kết tài khoản" }}
-                </UButton>
+                </a-button>
               </transition>
             </transition>
           </form>
@@ -497,6 +471,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { usePromiseTracker } from "@/composables/usePromiseTracker";
+import { EditOutlined, CloseOutlined, WarningOutlined, CheckCircleOutlined } from "@ant-design/icons-vue";
 
 const { isLoading } = usePromiseTracker();
 
@@ -558,7 +533,7 @@ const rankInfo = computed(() => {
 });
 
 const rankProgress = computed(() => {
-  const count = user.value?.completedOrdersCount ?? 0;
+  const count = user.value?.completed_orders_count ?? 0;
   const rank = user.value?.rank || "silver";
 
   let nextRankName = "";
@@ -742,7 +717,7 @@ const fetchUserBankAccount = async () => {
 const selectMenuBanksList = computed(() => {
   const list = banks.value.length > 0 ? banks.value : fallbackBanks;
   return list.map((b) => ({
-    bin: b.bin,
+    value: b.bin,
     label: `${b.shortName || b.short_name || b.code} - ${b.name}`,
     shortName: b.shortName || b.short_name || b.code,
     name: b.name,

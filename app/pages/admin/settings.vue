@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6 animate-in fade-in duration-500 pb-12">
+  <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
@@ -12,14 +12,15 @@
       </div>
 
       <!-- Save Button -->
-      <UButton
+      <a-button
+        type="primary"
         @click="handleSave"
         :loading="isSaving"
-        size="md"
+        size="large"
         class="font-bold text-xs shadow-lg shadow-orange-600/15"
       >
         Lưu cấu hình
-      </UButton>
+      </a-button>
     </div>
 
     <!-- Alert Success/Error -->
@@ -32,20 +33,22 @@
       leave-to-class="opacity-0 -translate-y-2"
     >
       <div v-if="alertMessage">
-        <UAlert
+        <a-alert
           v-if="alertType === 'success'"
-          icon="i-lucide-circle-check"
-          color="success"
-          variant="soft"
-          :title="alertMessage"
-        />
-        <UAlert
+          type="success"
+          show-icon
+          :message="alertMessage"
+        >
+          <template #icon><CheckCircleOutlined /></template>
+        </a-alert>
+        <a-alert
           v-else
-          icon="i-lucide-alert-triangle"
-          color="danger"
-          variant="soft"
-          :title="alertMessage"
-        />
+          type="error"
+          show-icon
+          :message="alertMessage"
+        >
+          <template #icon><WarningOutlined /></template>
+        </a-alert>
       </div>
     </transition>
 
@@ -53,13 +56,8 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Section Left: Cashback Platforms Settings -->
       <div class="lg:col-span-2 space-y-6">
-        <UCard
-          :ui="{
-            body: 'p-6 space-y-5',
-            ring: 'ring-1 ring-slate-200/60 dark:ring-slate-800/80',
-            background: 'bg-white dark:bg-slate-900',
-            rounded: 'rounded-3xl shadow-sm'
-          }"
+        <div
+          class="p-6 space-y-5 ring-1 ring-slate-200/60 dark:ring-slate-800/80 bg-white dark:bg-slate-900 rounded-3xl shadow-sm"
         >
           <div>
             <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider mb-1">
@@ -82,7 +80,7 @@
                   <span class="text-[11px] text-slate-400 mt-0.5 truncate">Dịch vụ liên kết tiếp thị hoàn tiền từ sàn Shopee.</span>
                 </div>
               </div>
-              <USwitch v-model="settings.shopee" size="md" />
+              <a-switch v-model:checked="settings.shopee" />
             </div>
 
             <!-- Tiktok Toggle Row -->
@@ -94,12 +92,12 @@
                 <div class="flex flex-col min-w-0">
                   <div class="flex items-center gap-1.5">
                     <span class="text-[13.5px] font-bold text-slate-800 dark:text-slate-200">Sàn TikTok Shop</span>
-                    <UBadge size="xs" variant="soft" color="warning" class="text-[8px] font-black uppercase tracking-wider select-none leading-none px-1.5 py-0.5 rounded">BETA</UBadge>
+                    <span class="text-[8px] font-black uppercase tracking-wider select-none leading-none px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500">BETA</span>
                   </div>
                   <span class="text-[11px] text-slate-400 mt-0.5 truncate">Dịch vụ liên kết tiếp thị hoàn tiền từ sàn TikTok Shop.</span>
                 </div>
               </div>
-              <USwitch v-model="settings.tiktok" size="md" />
+              <a-switch v-model:checked="settings.tiktok" />
             </div>
 
             <!-- Lazada Toggle Row -->
@@ -111,26 +109,21 @@
                 <div class="flex flex-col min-w-0">
                   <div class="flex items-center gap-1.5">
                     <span class="text-[13.5px] font-bold text-slate-800 dark:text-slate-200">Sàn Lazada Việt Nam</span>
-                    <UBadge size="xs" variant="soft" color="warning" class="text-[8px] font-black uppercase tracking-wider select-none leading-none px-1.5 py-0.5 rounded">BETA</UBadge>
+                    <span class="text-[8px] font-black uppercase tracking-wider select-none leading-none px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500">BETA</span>
                   </div>
                   <span class="text-[11px] text-slate-400 mt-0.5 truncate">Dịch vụ liên kết tiếp thị hoàn tiền từ sàn Lazada.</span>
                 </div>
               </div>
-              <USwitch v-model="settings.lazada" size="md" />
+              <a-switch v-model:checked="settings.lazada" />
             </div>
           </div>
-        </UCard>
+        </div>
       </div>
 
       <!-- Section Right: Preview & Guide -->
       <div class="space-y-6">
-        <UCard
-          :ui="{
-            body: 'p-6 space-y-5',
-            ring: 'ring-1 ring-slate-200/60 dark:ring-slate-800/80',
-            background: 'bg-white dark:bg-slate-900',
-            rounded: 'rounded-3xl shadow-sm'
-          }"
+        <div
+          class="p-6 space-y-5 ring-1 ring-slate-200/60 dark:ring-slate-800/80 bg-white dark:bg-slate-900 rounded-3xl shadow-sm"
         >
           <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">
             Xem trước giao diện
@@ -159,7 +152,7 @@
                 </div>
                 <div class="flex items-center gap-1.5">
                   <span class="text-xs font-bold text-slate-700 dark:text-slate-300">TikTok Shop (Hoàn tiền bật)</span>
-                  <UBadge size="xs" variant="soft" color="warning" class="text-[8px] font-black uppercase tracking-wider select-none leading-none px-1.5 py-0.5 rounded">BETA</UBadge>
+                  <span class="text-[8px] font-black uppercase tracking-wider select-none leading-none px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500">BETA</span>
                 </div>
               </div>
 
@@ -172,7 +165,7 @@
                 </div>
                 <div class="flex items-center gap-1.5">
                   <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Lazada (Hoàn tiền bật)</span>
-                  <UBadge size="xs" variant="soft" color="warning" class="text-[8px] font-black uppercase tracking-wider select-none leading-none px-1.5 py-0.5 rounded">BETA</UBadge>
+                  <span class="text-[8px] font-black uppercase tracking-wider select-none leading-none px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500">BETA</span>
                 </div>
               </div>
 
@@ -184,15 +177,10 @@
               </div>
             </div>
           </div>
-        </UCard>
+        </div>
 
-        <UCard
-          :ui="{
-            body: 'p-6 space-y-4',
-            ring: 'ring-1 ring-slate-200/60 dark:ring-slate-800/80',
-            background: 'bg-white dark:bg-slate-900',
-            rounded: 'rounded-3xl shadow-sm'
-          }"
+        <div
+          class="p-6 space-y-4 ring-1 ring-slate-200/60 dark:ring-slate-800/80 bg-white dark:bg-slate-900 rounded-3xl shadow-sm"
         >
           <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">
             Lưu ý vận hành
@@ -202,7 +190,7 @@
             <li>Link quy đổi thuộc sàn bị ẩn gửi lên hệ thống sẽ tự động bị từ chối chuyển đổi để đảm bảo đồng bộ.</li>
             <li>Hãy đảm bảo bạn đã nhấn nút "Lưu cấu hình" ở góc phải màn hình để áp dụng thay đổi.</li>
           </ul>
-        </UCard>
+        </div>
       </div>
     </div>
   </div>
@@ -211,6 +199,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons-vue";
 
 definePageMeta({
   layout: "admin",

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full animate-fade-in space-y-6">
+  <div class="w-full space-y-6">
     <!-- Page Title & Header -->
     <div class="mt-6 text-center max-w-xl mx-auto space-y-2">
       <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
@@ -37,7 +37,7 @@
               </p>
             </div>
           </div>
-          <UIcon name="i-lucide-arrow-right" class="h-5 w-5 text-slate-350 dark:text-slate-655 group-hover:text-blue-500 transition-colors shrink-0" />
+          <ArrowRightOutlined class="text-[20px] text-slate-350 dark:text-slate-655 group-hover:text-blue-500 transition-colors shrink-0" />
         </a>
 
         <!-- Telegram Box -->
@@ -58,40 +58,29 @@
               </p>
             </div>
           </div>
-          <UIcon name="i-lucide-arrow-right" class="h-5 w-5 text-slate-355 dark:text-slate-655 group-hover:text-sky-500 transition-colors shrink-0" />
+          <ArrowRightOutlined class="text-[20px] text-slate-355 dark:text-slate-655 group-hover:text-sky-500 transition-colors shrink-0" />
         </a>
 
         <!-- Email Box -->
-        <UCard
-          :ui="{
-            body: 'p-5',
-            ring: 'ring-1 ring-slate-100 dark:ring-slate-800/60',
-            background: 'bg-white dark:bg-slate-900/40',
-            rounded: 'rounded-3xl shadow-lg shadow-slate-900/[0.01]'
-          }"
+        <div
+          class="p-5 ring-1 ring-slate-100 dark:ring-slate-800/60 bg-white dark:bg-slate-900/40 rounded-3xl shadow-lg shadow-slate-900/[0.01]"
         >
           <span class="text-[9.5px] font-extrabold text-slate-400 dark:text-slate-550 uppercase tracking-wider block mb-3">Gửi thư điện tử chính thức</span>
           <div class="flex items-center gap-3 select-all">
             <div class="h-9 w-9 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
-              <UIcon name="i-lucide-mail" class="h-4.5 w-4.5" />
+              <MailOutlined class="text-[18px]" />
             </div>
             <div class="flex flex-col">
               <span class="text-xs font-black text-slate-800 dark:text-white leading-none">support@saffi.vn</span>
               <span class="text-[9px] text-slate-400 dark:text-slate-550 mt-1 font-semibold">Đối tác & Hợp tác doanh nghiệp</span>
             </div>
           </div>
-        </UCard>
+        </div>
       </div>
 
       <!-- COLUMN Right: Direct Support Message Form (Span 7) -->
-      <UCard
-        class="lg:col-span-7"
-        :ui="{
-          body: 'p-6',
-          ring: 'ring-1 ring-slate-100 dark:ring-slate-800/80',
-          background: 'bg-white dark:bg-slate-900/60',
-          rounded: 'rounded-3xl shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20'
-        }"
+      <div
+        class="lg:col-span-7 p-6 ring-1 ring-slate-100 dark:ring-slate-800/80 bg-white dark:bg-slate-900/60 rounded-3xl shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20"
       >
         <h3 class="text-xs font-black tracking-widest text-slate-850 dark:text-slate-205 uppercase select-none pb-4 border-b border-slate-100 dark:border-slate-800/60">
           Gửi Yêu Cầu Hỗ Trợ Trực Tiếp
@@ -99,49 +88,40 @@
 
         <form @submit.prevent="handleSubmit" class="mt-6 flex flex-col gap-5">
           <!-- Subject Select -->
-          <UFormField>
-            <template #label>
-              <span class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Chủ đề cần hỗ trợ</span>
-            </template>
-            <USelect
-              v-model="subject"
-              :items="subjectOptions"
-              size="lg"
+          <div class="flex flex-col gap-1">
+            <span class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Chủ đề cần hỗ trợ</span>
+            <a-select
+              v-model:value="subject"
+              :options="subjectOptions"
+              size="large"
               class="w-full font-bold"
-              :ui="{ rounded: 'rounded-2xl' }"
             />
-          </UFormField>
+          </div>
 
           <!-- Phone (Optional) -->
-          <UFormField>
-            <template #label>
-              <span class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Số điện thoại liên lạc</span>
-            </template>
-            <UInput
-              v-model="phone"
+          <div class="flex flex-col gap-1">
+            <span class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Số điện thoại liên lạc</span>
+            <a-input
+              v-model:value="phone"
               type="tel"
               placeholder="Nhập số điện thoại để chúng tôi gọi lại..."
-              size="lg"
-              class="w-full font-semibold"
-              :ui="{ rounded: 'rounded-2xl' }"
+              size="large"
+              class="w-full font-semibold rounded-2xl"
             />
-          </UFormField>
+          </div>
 
           <!-- Message Description -->
-          <UFormField>
-            <template #label>
-              <span class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Nội dung chi tiết</span>
-            </template>
-            <UTextarea
-              v-model="message"
+          <div class="flex flex-col gap-1">
+            <span class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">Nội dung chi tiết</span>
+            <a-textarea
+              v-model:value="message"
               required
               :rows="5"
               placeholder="Hãy miêu tả chi tiết vấn đề bạn đang gặp phải (Ví dụ: Đơn hàng SP20260522-8374 mua lúc 14:30 chưa được ghi nhận tạm duyệt...)"
-              size="lg"
-              class="w-full font-semibold resize-none"
-              :ui="{ rounded: 'rounded-2xl' }"
+              size="large"
+              class="w-full font-semibold resize-none rounded-2xl"
             />
-          </UFormField>
+          </div>
 
           <!-- Alert updated -->
           <transition
@@ -150,28 +130,30 @@
             enter-to-class="transform translate-y-0 opacity-100"
           >
             <div v-if="successMsg">
-              <UAlert
-                icon="i-lucide-circle-check"
-                color="success"
-                variant="soft"
-                :title="successMsg"
-              />
+              <a-alert
+                type="success"
+                show-icon
+                :message="successMsg"
+              >
+                <template #icon><CheckCircleOutlined /></template>
+              </a-alert>
             </div>
           </transition>
 
           <!-- Submit Button -->
-          <UButton
-            type="submit"
+          <a-button
+            html-type="submit"
             :loading="isSubmitting"
             :disabled="!message"
             block
-            size="lg"
-            class="font-bold text-xs py-3.5 rounded-2xl shadow-lg shadow-orange-500/15"
+            type="primary"
+            size="large"
+            class="font-bold text-xs py-5 rounded-2xl shadow-lg shadow-orange-500/15"
           >
             Gửi Yêu Cầu Hỗ Trợ
-          </UButton>
+          </a-button>
         </form>
-      </UCard>
+      </div>
 
     </div>
   </div>
@@ -179,6 +161,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { ArrowRightOutlined, MailOutlined, CheckCircleOutlined } from "@ant-design/icons-vue";
 
 useSeoMeta({
   title: "Trung tâm hỗ trợ - Saffi",

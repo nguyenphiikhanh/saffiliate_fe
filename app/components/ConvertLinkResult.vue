@@ -1,317 +1,168 @@
 <template>
-  <UModal v-model:open="isOpen" :ui="{ content: 'w-full sm:max-w-xl border-0 ring-0 bg-transparent shadow-none' }">
-    <template #content>
-      <!-- 1. PRODUCT DETAILS CARD -->
-      <UCard
-        v-if="productInfo"
-        :ui="{
-          body: 'p-6 space-y-6',
-          header: 'relative flex items-center justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0'
-        }"
-        class="relative overflow-hidden border border-slate-150 dark:border-slate-800/80 rounded-3xl"
-      >
-        <!-- Glowing header line decoration -->
-        <div
-          class="absolute top-0 inset-x-0 h-1.5 transition-all duration-300"
-          :class="
-            platformType === 2
-              ? 'bg-slate-950 dark:bg-cyan-500'
-              : 'bg-gradient-to-r from-orange-500 via-shopee-orange to-yellow-500'
-          "
-        ></div>
+  <!-- Modal thay thế UModal - dùng a-modal của AntD -->
+  <a-modal
+    v-model:open="isOpen"
+    :footer="null"
+    :centered="true"
+    :width="560"
+    :closable="false"
+    :maskClosable="true"
+    wrap-class-name="convert-result-modal"
+    @cancel="closeModal"
+  >
+    <!-- 1. PRODUCT DETAILS CARD -->
+    <div v-if="productInfo" class="result-card">
+      <!-- Header gradient line -->
+      <div class="result-header-line" :class="platformType === 2 ? 'result-header-line--tiktok' : 'result-header-line--shopee'"></div>
 
-        <template #header>
-          <div class="pr-6">
-            <h3 class="text-sm font-black text-slate-800 dark:text-white tracking-wider uppercase">
-              Chi tiết hoàn tiền
-            </h3>
-          </div>
-          <UButton
-            color="neutral"
-            variant="ghost"
-            icon="i-lucide-x"
-            class="rounded-lg absolute top-4 right-4"
-            @click="closeModal"
-          />
-        </template>
+      <!-- Header -->
+      <div class="result-header">
+        <div class="result-header-left">
+          <h3 class="result-title">Chi tiết hoàn tiền</h3>
+        </div>
+        <button @click="closeModal" class="result-close-btn" aria-label="Đóng">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
 
-        <!-- Product detail content info -->
-        <div class="space-y-6">
-          <div class="flex items-start gap-4">
-            <!-- Product Image -->
-            <div
-              class="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border border-slate-200/50 dark:border-slate-800 bg-white shadow-inner flex items-center justify-center p-1.5"
-            >
-              <img
-                :src="productInfo.imageUrl"
-                :alt="productInfo.productName"
-                class="max-w-full max-h-full object-contain"
-              />
-              <div
-                v-if="productInfo.isXtra && platformType !== 2"
-                class="absolute bottom-0 left-0 right-0 bg-shopee-orange text-white text-[9px] font-black text-center py-0.5 uppercase tracking-wider select-none"
-              >
-                Xtra
-              </div>
-            </div>
-
-            <!-- Product info details -->
-            <div class="flex-1 min-w-0 space-y-1.5 pt-0.5">
-              <!-- Shop Badge and Name -->
-              <div class="flex items-center gap-1.5">
-                <span
-                  class="inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider select-none text-white transition-all duration-300"
-                  :class="
-                    platformType === 2
-                      ? 'bg-slate-950 dark:bg-cyan-500'
-                      : 'bg-shopee-orange'
-                  "
-                >
-                  {{ platformType === 2 ? "TÓP-TÓP" : "SỘP-PE" }}
-                </span>
-                <span
-                  class="text-xs text-slate-500 dark:text-slate-400 font-semibold truncate"
-                >
-                  {{ productInfo.shopName }}
-                </span>
-              </div>
-
-              <!-- Product Title -->
-              <h3
-                class="text-sm sm:text-base font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug"
-                :title="productInfo.productName"
-              >
-                {{ productInfo.productName }}
-              </h3>
-            </div>
+      <!-- Body -->
+      <div class="result-body">
+        <!-- Product row -->
+        <div class="product-row">
+          <!-- Image -->
+          <div class="product-image-wrap">
+            <img :src="productInfo.imageUrl" :alt="productInfo.productName" class="product-image" />
+            <div v-if="productInfo.isXtra && platformType !== 2" class="product-xtra-badge">Xtra</div>
           </div>
 
-          <!-- Commission & Cashback Cards -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <!-- Partner Commission -->
-            <div
-              class="flex items-center gap-3 rounded-2xl p-4 border"
-              :class="
-                platformType === 2
-                  ? 'bg-slate-950/[0.02] dark:bg-slate-800/10 border-slate-950/10 dark:border-slate-800'
-                  : 'bg-orange-500/[0.03] dark:bg-orange-500/[0.05] border-orange-500/10'
-              "
-            >
-              <div
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white shadow-md font-black text-base"
-                :class="
-                  platformType === 2
-                    ? 'bg-slate-950 dark:bg-slate-800'
-                    : 'bg-shopee-orange'
-                "
-              >
-                %
-              </div>
-              <div>
-                <div
-                  class="text-[10px] sm:text-xs font-bold uppercase tracking-wider"
-                  :class="
-                    platformType === 2
-                      ? 'text-slate-500 dark:text-slate-400'
-                      : 'text-shopee-orange'
-                  "
-                >
-                  HOA HỒNG ĐỐI TÁC
-                </div>
-                <div
-                  class="text-lg sm:text-xl font-extrabold mt-0.5 tracking-tight"
-                  :class="
-                    platformType === 2
-                      ? 'text-slate-950 dark:text-white'
-                      : 'text-shopee-orange'
-                  "
-                >
-                  {{ formatPartnerCommission(productInfo.commission) }}<span class="underline ml-0.5">đ</span>
-                </div>
-              </div>
+          <!-- Info -->
+          <div class="product-info">
+            <div class="product-platform-row">
+              <span class="product-platform-badge" :class="platformType === 2 ? 'product-platform-badge--tiktok' : 'product-platform-badge--shopee'">
+                {{ platformType === 2 ? "TÓP-TÓP" : "SỘP-PE" }}
+              </span>
+              <span class="product-shop">{{ productInfo.shopName }}</span>
             </div>
-
-            <!-- Saffi Cashback -->
-            <div
-              class="flex items-center gap-3 rounded-2xl bg-emerald-500/[0.03] dark:bg-emerald-500/[0.05] border border-emerald-500/10 p-4 shadow-sm"
-            >
-              <div
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white shadow-md"
-              >
-                <UIcon name="i-lucide-wallet" class="h-5 w-5" />
-              </div>
-              <div>
-                <div
-                  class="text-[10px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider"
-                >
-                  SAFFI HOÀN TIỀN CHO BẠN
-                </div>
-                <div
-                  class="text-xs sm:text-sm font-extrabold text-emerald-600 dark:text-emerald-400 mt-1 tracking-tight"
-                >
-                  Từ
-                  <span class="text-sm sm:text-base">{{
-                    formatCashbackRange(minCashback)
-                  }}<span class="underline ml-0.5">đ</span></span>
-                  đến
-                  <span class="text-sm sm:text-base">{{
-                    formatCashbackRange(maxCashback)
-                  }}<span class="underline ml-0.5">đ</span></span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Main CTA to buy -->
-          <UButton
-            block
-            size="lg"
-            :color="platformType === 2 ? 'neutral' : 'primary'"
-            class="py-4 font-black text-sm tracking-wider uppercase rounded-2xl shadow-lg"
-            :class="platformType === 2 ? 'shadow-slate-500/10' : 'shadow-orange-500/20'"
-            icon="i-lucide-shopping-bag"
-            @click="handleOpenAffiliate"
-          >
-            MỞ ĐỂ MUA HÀNG NGAY
-          </UButton>
-
-          <!-- Extra bottom buttons -->
-          <div class="flex items-center justify-between gap-4 pt-1 border-t border-slate-100 dark:border-slate-800/60">
-            <UButton
-              color="neutral"
-              variant="outline"
-              size="xs"
-              class="font-bold rounded-xl px-4 py-2"
-              icon="i-lucide-refresh-cw"
-              @click="closeModal"
-            >
-              Mua sản phẩm khác
-            </UButton>
-
-            <span
-              class="text-[9.5px] font-semibold text-slate-400 dark:text-slate-500 text-right leading-relaxed max-w-[55%]"
-            >
-              Hệ thống tự động phát hiện và tối ưu hóa hoa hồng tốt nhất cho bạn.
-            </span>
+            <h3 class="product-name" :title="productInfo.productName">{{ productInfo.productName }}</h3>
           </div>
         </div>
-      </UCard>
 
-      <!-- 2. FALLBACK CONVERTED RESULT CARD -->
-      <UCard
-        v-else
-        :ui="{
-          body: 'p-6 space-y-6',
-          header: 'relative flex items-center justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0'
-        }"
-        class="relative overflow-hidden border border-slate-150 dark:border-slate-800/80 rounded-3xl"
-      >
-        <!-- Glowing header line decoration -->
-        <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+        <!-- Cashback cards -->
+        <div class="cashback-grid">
+          <!-- Partner commission -->
+          <div class="cashback-card" :class="platformType === 2 ? 'cashback-card--tiktok' : 'cashback-card--shopee'">
+            <div class="cashback-icon" :class="platformType === 2 ? 'cashback-icon--tiktok' : 'cashback-icon--shopee'">%</div>
+            <div>
+              <div class="cashback-label" :class="platformType === 2 ? 'cashback-label--tiktok' : 'cashback-label--shopee'">HOA HỒNG ĐỐI TÁC</div>
+              <div class="cashback-amount" :class="platformType === 2 ? 'cashback-amount--tiktok' : 'cashback-amount--shopee'">
+                {{ formatPartnerCommission(productInfo.commission) }}<span style="text-decoration:underline;margin-left:2px">đ</span>
+              </div>
+            </div>
+          </div>
 
-        <template #header>
-          <div class="flex items-center gap-3">
-            <div
-              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-450 border border-emerald-500/20 shadow-inner"
-            >
-              <UIcon name="i-lucide-circle-check" class="h-5 w-5" />
+          <!-- Saffi cashback -->
+          <div class="cashback-card cashback-card--saffi">
+            <div class="cashback-icon cashback-icon--saffi">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
             </div>
             <div>
-              <h3 class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-wider">
-                Đã chuyển đổi thành công!
-              </h3>
+              <div class="cashback-label cashback-label--saffi">SAFFI HOÀN TIỀN CHO BẠN</div>
+              <div class="cashback-range">
+                Từ <span class="cashback-range-amount">{{ formatCashbackRange(minCashback) }}<span style="text-decoration:underline;margin-left:2px">đ</span></span>
+                đến <span class="cashback-range-amount">{{ formatCashbackRange(maxCashback) }}<span style="text-decoration:underline;margin-left:2px">đ</span></span>
+              </div>
             </div>
           </div>
-          <UButton
-            color="neutral"
-            variant="ghost"
-            icon="i-lucide-x"
-            class="rounded-lg absolute top-4 right-4"
-            @click="closeModal"
-          />
-        </template>
-
-        <!-- Fallback actions -->
-        <div class="space-y-6">
-          <div class="flex flex-col sm:flex-row items-center gap-4">
-            <UButton
-              block
-              size="md"
-              color="neutral"
-              variant="outline"
-              icon="i-lucide-external-link"
-              class="flex-1 py-3.5 font-bold rounded-2xl"
-              @click="handleOpenAffiliate"
-            >
-              Mở Link Trực Tiếp
-            </UButton>
-
-            <UButton
-              block
-              size="md"
-              color="primary"
-              variant="solid"
-              icon="i-lucide-refresh-cw"
-              class="flex-1 py-3.5 font-bold rounded-2xl shadow-lg shadow-orange-500/15"
-              @click="closeModal"
-            >
-              Tiếp Tục Chuyển Đổi
-            </UButton>
-          </div>
         </div>
-      </UCard>
-    </template>
-  </UModal>
+
+        <!-- CTA Button -->
+        <a-button
+          block
+          type="primary"
+          size="large"
+          class="result-cta-btn"
+          :class="platformType === 2 ? 'result-cta-btn--tiktok' : ''"
+          @click="handleOpenAffiliate"
+        >
+          <div class="flex items-center justify-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="-mt-[1px]"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span>MỞ ĐỂ MUA HÀNG NGAY</span>
+          </div>
+        </a-button>
+
+        <!-- Bottom row -->
+        <div class="result-footer-row">
+          <a-button @click="closeModal" class="result-back-btn">
+            <div class="flex items-center justify-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><path d="M21 3v4h-4"/></svg>
+              <span>Mua sản phẩm khác</span>
+            </div>
+          </a-button>
+          <span class="result-disclaimer">Hệ thống tự động phát hiện và tối ưu hóa hoa hồng tốt nhất cho bạn.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. FALLBACK CONVERTED RESULT CARD -->
+    <div v-else class="result-card">
+      <div class="result-header-line result-header-line--success"></div>
+
+      <div class="result-header">
+        <div class="result-header-icon result-header-icon--success">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3 class="result-title">Đã chuyển đổi thành công!</h3>
+        <button @click="closeModal" class="result-close-btn" aria-label="Đóng">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="result-body">
+        <div class="fallback-actions">
+          <a-button block @click="handleOpenAffiliate" class="fallback-btn-outline">
+            <div class="flex items-center justify-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+              <span>Mở Link Trực Tiếp</span>
+            </div>
+          </a-button>
+          <a-button block type="primary" @click="closeModal" class="fallback-btn-primary">
+            <div class="flex items-center justify-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><path d="M21 3v4h-4"/></svg>
+              <span>Tiếp Tục Chuyển Đổi</span>
+            </div>
+          </a-button>
+        </div>
+      </div>
+    </div>
+  </a-modal>
 </template>
 
 <script setup>
 import { computed } from "vue";
 
 const props = defineProps({
-  link: {
-    type: String,
-    required: true,
-  },
-  affiliateLink: {
-    type: String,
-    default: "",
-  },
-  productInfo: {
-    type: Object,
-    default: null,
-  },
-  platformType: {
-    type: Number,
-    default: 1,
-  },
+  link: { type: String, required: true },
+  affiliateLink: { type: String, default: "" },
+  productInfo: { type: Object, default: null },
+  platformType: { type: Number, default: 1 },
 });
 
 const emit = defineEmits(["reset"]);
 
 const isOpen = computed({
   get: () => true,
-  set: (val) => {
-    if (!val) emit("reset");
-  },
+  set: (val) => { if (!val) emit("reset"); },
 });
 
-const closeModal = () => {
-  emit("reset");
-};
+const closeModal = () => emit("reset");
 
 const minCashback = computed(() => {
-  const rate =
-    props.productInfo?.commission_min_rate !== undefined
-      ? props.productInfo.commission_min_rate
-      : 56;
+  const rate = props.productInfo?.commission_min_rate !== undefined ? props.productInfo.commission_min_rate : 56;
   return (props.productInfo?.commission || 0) * (rate / 100);
 });
 
 const maxCashback = computed(() => {
-  const rate =
-    props.productInfo?.commission_max_rate !== undefined
-      ? props.productInfo.commission_max_rate
-      : 84;
+  const rate = props.productInfo?.commission_max_rate !== undefined ? props.productInfo.commission_max_rate : 84;
   return (props.productInfo?.commission || 0) * (rate / 100);
 });
 
@@ -320,7 +171,6 @@ const handleOpenAffiliate = () => {
   window.open(targetUrl, "_blank", "noopener,noreferrer");
 };
 
-// Formatting helpers for currency values
 const formatPartnerCommission = (value) => {
   if (value === undefined || value === null) return "0";
   return new Intl.NumberFormat("vi-VN").format(Math.round(value));
@@ -331,3 +181,376 @@ const formatCashbackRange = (value) => {
   return new Intl.NumberFormat("vi-VN").format(Math.round(value));
 };
 </script>
+
+<style>
+/* Global modal wrap styling (not scoped) */
+.convert-result-modal .ant-modal-content {
+  padding: 0 !important;
+  border-radius: 1.5rem !important;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.12) !important;
+}
+
+.convert-result-modal .ant-modal-body {
+  padding: 0 !important;
+}
+</style>
+
+<style scoped>
+.result-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.result-header-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+}
+
+.result-header-line--shopee {
+  background: linear-gradient(to right, #F97316, #EE4D2D, #EAB308);
+}
+
+.result-header-line--tiktok {
+  background: #0F172A;
+}
+
+.result-header-line--success {
+  background: linear-gradient(to right, #10B981, #14B8A6);
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid #F1F5F9;
+  background: #F8FAFC;
+  flex-shrink: 0;
+}
+
+.result-header-left {
+  padding-right: 1.5rem;
+}
+
+.result-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: #1E293B;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.result-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.result-header-icon--success {
+  background: rgba(16,185,129,0.1);
+  color: #059669;
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+.result-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  color: #94A3B8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.result-close-btn:hover {
+  background: #F1F5F9;
+  color: #334155;
+}
+
+.result-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Product row */
+.product-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.product-image-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(226,232,240,0.5);
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+
+@media (min-width: 640px) {
+  .product-image-wrap { width: 112px; height: 112px; }
+}
+
+.product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.product-xtra-badge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #EE4D2D;
+  color: white;
+  font-size: 9px;
+  font-weight: 800;
+  text-align: center;
+  padding: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  user-select: none;
+}
+
+.product-info {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.product-platform-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.product-platform-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  user-select: none;
+  color: white;
+}
+
+.product-platform-badge--shopee { background: #EE4D2D; }
+.product-platform-badge--tiktok { background: #0F172A; }
+
+.product-shop {
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0F172A;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .product-name { font-size: 16px; }
+}
+
+/* Cashback grid */
+.cashback-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .cashback-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.cashback-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid;
+}
+
+.cashback-card--shopee {
+  background: rgba(238,77,45,0.03);
+  border-color: rgba(238,77,45,0.1);
+}
+
+.cashback-card--tiktok {
+  background: rgba(15,23,42,0.02);
+  border-color: rgba(15,23,42,0.1);
+}
+
+.cashback-card--saffi {
+  background: rgba(16,185,129,0.03);
+  border-color: rgba(16,185,129,0.1);
+}
+
+.cashback-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-weight: 800;
+  font-size: 16px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.cashback-icon--shopee { background: #EE4D2D; }
+.cashback-icon--tiktok { background: #0F172A; }
+.cashback-icon--saffi { background: #10B981; }
+
+.cashback-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cashback-label--shopee { color: #EE4D2D; }
+.cashback-label--tiktok { color: #64748B; }
+.cashback-label--saffi { color: #059669; }
+
+.cashback-amount {
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 2px;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
+  .cashback-amount { font-size: 20px; }
+}
+
+.cashback-amount--shopee { color: #EE4D2D; }
+.cashback-amount--tiktok { color: #0F172A; }
+
+.cashback-range {
+  font-size: 12px;
+  font-weight: 700;
+  color: #059669;
+  margin-top: 4px;
+}
+
+.cashback-range-amount {
+  font-size: 14px;
+}
+
+/* CTA */
+.result-cta-btn {
+  height: 52px !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase;
+  border-radius: 1rem !important;
+  box-shadow: 0 4px 20px rgba(238,77,45,0.25) !important;
+}
+
+.result-cta-btn--tiktok {
+  background: #0F172A !important;
+  border-color: #0F172A !important;
+}
+
+/* Footer row */
+.result-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 4px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.result-back-btn {
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  font-size: 12px !important;
+}
+
+.result-disclaimer {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #94A3B8;
+  text-align: right;
+  line-height: 1.5;
+  max-width: 55%;
+}
+
+/* Fallback */
+.fallback-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .fallback-actions { flex-direction: row; }
+}
+
+.fallback-btn-outline {
+  flex: 1;
+  height: 52px !important;
+  font-weight: 700 !important;
+  border-radius: 1rem !important;
+  font-size: 13px !important;
+}
+
+.fallback-btn-primary {
+  flex: 1;
+  height: 52px !important;
+  font-weight: 700 !important;
+  border-radius: 1rem !important;
+  font-size: 13px !important;
+  box-shadow: 0 4px 20px rgba(238,77,45,0.15) !important;
+}
+</style>

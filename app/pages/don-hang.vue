@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full animate-fade-in space-y-6">
+  <div class="w-full space-y-6">
     <!-- Page Title & Header -->
     <div class="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
@@ -16,56 +16,53 @@
     <OrderProcessInfo />
 
     <!-- MAIN BODY: Filters, Search & Table -->
-    <UCard
-      :ui="{ 
-        body: 'p-6',
-        ring: 'ring-1 ring-slate-100 dark:ring-slate-800/80',
-        background: 'bg-white dark:bg-slate-900/60',
-        rounded: 'rounded-3xl shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20'
-      }"
-      class="mt-8"
-    >
-      <!-- Filters Container -->
+    <div class="p-6 ring-1 ring-slate-100 dark:ring-slate-800/80 bg-white dark:bg-slate-900/60 rounded-3xl shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20 mt-8">
+      <div class="flex flex-col gap-6">
       <div class="flex items-center w-full">
         <!-- Status Tabs Filters -->
         <div class="flex items-center gap-1 bg-slate-50 dark:bg-slate-950/60 p-1 rounded-2xl border border-slate-200/40 dark:border-slate-800/50 w-full sm:w-auto">
-          <UButton
+          <a-button
             v-for="tab in tabs"
             :key="tab.value"
             @click="activeTab = tab.value"
-            :variant="activeTab === tab.value ? 'solid' : 'ghost'"
-            :color="activeTab === tab.value ? 'primary' : 'neutral'"
+            :type="activeTab === tab.value ? 'primary' : 'text'"
             class="flex-1 sm:flex-initial text-[11px] sm:text-xs font-bold rounded-xl whitespace-nowrap"
-            :icon="tab.icon"
           >
+            <template #icon>
+              <InfoCircleOutlined v-if="tab.icon === 'i-lucide-info'" />
+              <ClockCircleOutlined v-else-if="tab.icon === 'i-lucide-clock'" />
+              <CheckCircleOutlined v-else-if="tab.icon === 'i-lucide-circle-check'" />
+              <CloseCircleOutlined v-else-if="tab.icon === 'i-lucide-circle-x'" />
+            </template>
             {{ tab.label }}
-          </UButton>
+          </a-button>
         </div>
       </div>
 
       <!-- Info Box for Pending Tab -->
       <div v-if="activeTab === 'pending'" class="mt-5">
-        <UAlert
-          icon="i-lucide-info"
-          color="warning"
-          variant="soft"
-          title="Chờ hoàn: đơn đã ghi nhận hoàn tiền, đang đợi sàn xác nhận hết thời gian hủy, đổi trả. Với Sộp-pe, hãy bấm Đã nhận hàng trong app để được hoàn sớm nhất."
-        />
+        <a-alert
+          type="warning"
+          show-icon
+          message="Chờ hoàn: đơn đã ghi nhận hoàn tiền, đang đợi sàn xác nhận hết thời gian hủy, đổi trả. Với Sộp-pe, hãy bấm Đã nhận hàng trong app để được hoàn sớm nhất."
+        >
+          <template #icon><InfoCircleOutlined /></template>
+        </a-alert>
       </div>
 
       <!-- Info Box for Cancelled Tab -->
       <div v-if="activeTab === 'cancelled'" class="mt-5">
-        <UAlert
-          icon="i-lucide-circle-x"
-          color="danger"
-          variant="soft"
+        <a-alert
+          type="error"
+          show-icon
         >
-          <template #title>
+          <template #icon><CloseCircleOutlined /></template>
+          <template #message>
             <div class="text-[13px] leading-relaxed font-semibold">
               <span class="font-black">Đã hủy:</span> đơn có thể do bạn hủy, hoặc cashback bị hủy từ sàn. Saffi là trung gian nên không được cung cấp lý do cụ thể, nhưng luôn sẵn sàng gửi thông tin đối soát từ sàn cho bạn để đảm bảo hệ thống minh bạch. Vui lòng liên hệ <NuxtLink to="/ho-tro" class="text-rose-500 hover:underline font-black transition-all">Hỗ trợ</NuxtLink> để được cung cấp thêm thông tin.
             </div>
           </template>
-        </UAlert>
+        </a-alert>
       </div>
 
       <!-- Skeleton Loading State -->
@@ -88,26 +85,26 @@
             <tr v-for="i in 5" :key="i">
               <td class="p-4 pl-6">
                 <div class="flex items-center gap-2.5">
-                  <USkeleton class="w-7 h-7 rounded shrink-0" />
-                  <USkeleton class="h-3 w-16" />
+                  <div class="w-7 h-7 rounded shrink-0 bg-slate-200 dark:bg-slate-700"></div>
+                  <div class="h-3 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
                 </div>
               </td>
               <td class="p-4">
-                <USkeleton class="h-3.5 w-48 max-w-full" />
+                <div class="h-3.5 w-48 max-w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
               </td>
               <td class="p-4">
-                <USkeleton class="h-3 w-20" />
+                <div class="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
               </td>
               <td class="p-4 text-right">
                 <div class="flex items-center justify-end">
-                  <USkeleton class="h-3.5 w-16" />
+                  <div class="h-3.5 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
                 </div>
               </td>
               <td class="p-4 text-center">
-                <USkeleton class="h-5 w-20 rounded-full mx-auto" />
+                <div class="h-5 w-20 rounded-full mx-auto bg-slate-200 dark:bg-slate-700"></div>
               </td>
               <td class="p-4 text-center">
-                <USkeleton class="h-6.5 w-12 rounded-lg mx-auto" />
+                <div class="h-6.5 w-12 rounded-lg mx-auto bg-slate-200 dark:bg-slate-700"></div>
               </td>
             </tr>
           </tbody>
@@ -176,36 +173,32 @@
                 </td>
                 <!-- Trạng thái -->
                 <td class="p-4 text-center">
-                  <UBadge
-                    size="xs"
-                    variant="soft"
-                    :color="
-                      order.status === 'Thành công' || order.status === 'Completed'
-                        ? 'success'
-                        : order.status === 'Chờ duyệt'
-                        ? 'warning'
-                        : 'danger'
-                    "
+                  <span
                     class="font-bold uppercase tracking-wider text-[10px] px-3 py-1 rounded-full"
+                    :class="
+                      order.status === 'Thành công' || order.status === 'Completed'
+                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                        : order.status === 'Chờ duyệt'
+                        ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                        : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+                    "
                   >
                     {{
                       order.status === "Completed" || order.status === "Thành công"
                         ? "HOÀN THÀNH"
                         : order.status
                     }}
-                  </UBadge>
+                  </span>
                 </td>
                 <!-- Hành động -->
                 <td class="p-4 text-center">
-                  <UButton
-                    size="xs"
-                    variant="outline"
-                    color="primary"
-                    class="font-bold cursor-pointer"
+                  <a-button
+                    size="small"
+                    class="font-bold cursor-pointer text-blue-600 border-blue-600"
                     @click="openOrderDetails(order)"
                   >
                     Xem
-                  </UButton>
+                  </a-button>
                 </td>
               </tr>
             </tbody>
@@ -267,7 +260,7 @@
                 >
                   {{ order.status }}
                 </span>
-                <UIcon name="i-lucide-chevron-right" class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+                <RightOutlined class="text-[14px] text-slate-400 dark:text-slate-500" />
               </div>
             </div>
           </div>
@@ -275,23 +268,21 @@
 
         <!-- Pagination -->
         <div v-if="lastPage > 1" class="flex items-center justify-center gap-2 mt-6">
-          <UButton
-            icon="i-lucide-chevron-left"
+          <a-button
             :disabled="currentPage === 1"
-            variant="outline"
-            color="neutral"
             @click="changePage(currentPage - 1)"
-          />
+          >
+            <template #icon><LeftOutlined /></template>
+          </a-button>
           <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 px-2">
             Trang {{ currentPage }} / {{ lastPage }}
           </span>
-          <UButton
-            icon="i-lucide-chevron-right"
+          <a-button
             :disabled="currentPage === lastPage"
-            variant="outline"
-            color="neutral"
             @click="changePage(currentPage + 1)"
-          />
+          >
+            <template #icon><RightOutlined /></template>
+          </a-button>
         </div>
       </div>
 
@@ -300,10 +291,10 @@
         <template v-if="activeTab === 'pending'">
           <div class="relative">
             <div class="h-16 w-16 rounded-3xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex items-center justify-center text-shopee-orange shadow-inner">
-              <UIcon name="i-lucide-shopping-bag" class="h-7 w-7" />
+              <ShoppingOutlined class="text-[28px]" />
             </div>
             <div class="absolute -top-1.5 -right-1.5 h-6 w-6 rounded-full bg-shopee-orange flex items-center justify-center text-white border-2 border-white dark:border-slate-900 shadow-md">
-              <UIcon name="i-lucide-gift" class="h-3.5 w-3.5" />
+              <GiftOutlined class="text-[14px]" />
             </div>
           </div>
           <h3 class="text-[17px] font-black text-slate-800 dark:text-slate-100 mt-5">
@@ -312,19 +303,20 @@
           <p class="text-sm text-slate-500 dark:text-slate-400 mt-2.5 max-w-[320px] font-medium leading-relaxed">
             Hãy bắt đầu <b>mua sắm qua Saffi</b> để tích điểm hoàn tiền ngay cho đơn mua sắm của bạn.
           </p>
-          <UButton
-            to="/hoan-tien"
-            size="lg"
-            icon="i-lucide-sparkles"
-            class="mt-6 font-bold shadow-lg shadow-orange-500/20"
-          >
-            MUA SẮM HOÀN TIỀN NGAY
-          </UButton>
+          <NuxtLink to="/hoan-tien">
+            <a-button
+              type="primary"
+              size="large"
+              class="mt-6 font-bold shadow-lg shadow-orange-500/20"
+            >
+              MUA SẮM HOÀN TIỀN NGAY
+            </a-button>
+          </NuxtLink>
         </template>
 
         <template v-else>
           <div class="h-16 w-16 rounded-full bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex items-center justify-center text-slate-400">
-            <UIcon name="i-lucide-frown" class="h-8 w-8" />
+            <FrownOutlined class="text-[32px]" />
           </div>
           <h3 class="text-xs font-bold text-slate-700 dark:text-slate-300 mt-4">
             Không tìm thấy đơn hàng nào
@@ -334,119 +326,111 @@
           </p>
         </template>
       </div>
-    </UCard>
+    </div>
+  </div>
 
     <!-- User Order Details Drawer -->
-    <USlideover v-model:open="isModalOpen" :ui="{ content: 'w-full sm:max-w-md' }">
-      <template #content>
-        <UCard
-          v-if="selectedOrder"
-          :ui="{
-            body: 'p-6 space-y-6 flex-1 overflow-y-auto bg-white dark:bg-slate-950',
-            header: 'flex items-start justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0'
-          }"
-          class="flex flex-col h-full overflow-hidden border border-slate-100 dark:border-slate-800/80"
-        >
-          <template #header>
-            <div>
-              <UBadge
-                size="xs"
-                variant="soft"
-                :color="
-                  selectedOrder.status === 'Thành công' || selectedOrder.status === 'Completed'
-                    ? 'success'
-                    : selectedOrder.status === 'Chờ duyệt'
-                    ? 'warning'
-                    : 'danger'
-                "
-                class="font-black uppercase tracking-wider mb-2 text-[9px] px-2.5 py-1 rounded-full"
-              >
-                {{
-                  selectedOrder.status === "Completed" || selectedOrder.status === "Thành công"
-                    ? "HOÀN THÀNH"
-                    : selectedOrder.status
-                }}
-              </UBadge>
-              <h3 class="text-base font-black text-slate-800 dark:text-slate-100">
-                Chi tiết đơn hàng
-                <span class="text-orange-500 dark:text-orange-400 select-all">#{{ selectedOrder.code }}</span>
-              </h3>
-              <p class="text-xs text-slate-500 mt-1 font-medium">
-                Cửa hàng: {{ selectedOrder.storeName || "Shopee Store" }}
-              </p>
-            </div>
-            <UButton
-              color="neutral"
-              variant="ghost"
-              icon="i-lucide-x"
-              class="rounded-lg"
-              @click="closeOrderDetails"
-            />
-          </template>
-
-          <div class="space-y-6 select-none pr-1">
-            <!-- 1. Rank Discount rate Info -->
-            <div
-              v-if="selectedOrder.rawItem?.order?.userRank"
-              class="bg-slate-50/50 dark:bg-slate-955/20 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/80 flex items-center justify-between"
+    <a-drawer
+      :open="isModalOpen"
+      @close="closeOrderDetails"
+      placement="right"
+      :closable="false"
+      :bodyStyle="{ padding: 0 }"
+      class="order-details-drawer"
+    >
+      <div
+        v-if="selectedOrder"
+        class="flex flex-col h-full overflow-hidden border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-950"
+      >
+        <div class="flex items-start justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0">
+          <div>
+            <span
+              class="font-black uppercase tracking-wider mb-2 text-[9px] px-2.5 py-1 rounded-full inline-block"
+              :class="
+                selectedOrder.status === 'Thành công' || selectedOrder.status === 'Completed'
+                  ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                  : selectedOrder.status === 'Chờ duyệt'
+                  ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                  : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+              "
             >
-              <div class="flex flex-col">
-                <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Hạng thành viên mua đơn</span>
-                <span class="text-xs font-black text-slate-800 dark:text-slate-200 mt-1">
-                  Cấp bậc: {{ getRankName(selectedOrder.rawItem.order.userRank) }}
+              {{
+                selectedOrder.status === "Completed" || selectedOrder.status === "Thành công"
+                  ? "HOÀN THÀNH"
+                  : selectedOrder.status
+              }}
+            </span>
+            <h3 class="text-base font-black text-slate-800 dark:text-slate-100">
+              Chi tiết đơn hàng
+              <span class="text-orange-500 dark:text-orange-400 select-all">#{{ selectedOrder.code }}</span>
+            </h3>
+            <p class="text-xs text-slate-500 mt-1 font-medium">
+              Cửa hàng: {{ selectedOrder.storeName || "Shopee Store" }}
+            </p>
+          </div>
+          <a-button type="text" @click="closeOrderDetails">
+            <template #icon><CloseOutlined /></template>
+          </a-button>
+        </div>
+
+        <div class="p-6 space-y-6 flex-1 overflow-y-auto bg-white dark:bg-slate-950 select-none pr-1">
+          <!-- 1. Rank Discount rate Info -->
+          <div
+            v-if="selectedOrder.rawItem?.order?.userRank"
+            class="bg-slate-50/50 dark:bg-slate-955/20 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/80 flex items-center justify-between"
+          >
+            <div class="flex flex-col">
+              <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Hạng thành viên mua đơn</span>
+              <span class="text-xs font-black text-slate-800 dark:text-slate-200 mt-1">
+                Cấp bậc: {{ getRankName(selectedOrder.rawItem.order.userRank) }}
+              </span>
+            </div>
+            <span class="font-extrabold text-[9px] px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+              Nhận {{ selectedOrder.rawItem.order.commissionRate }}% hoa hồng
+            </span>
+          </div>
+
+          <!-- 2. Product Details -->
+          <div>
+            <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Thông tin sản phẩm</span>
+            <div class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+              <div class="text-xs font-bold text-slate-700 dark:text-slate-205 leading-relaxed">
+                {{ selectedOrder.itemName || "Sản phẩm từ Shopee" }}
+              </div>
+              <div class="flex items-center gap-1.5 text-[10px] text-slate-450 dark:text-slate-500 mt-2">
+                <span v-if="selectedOrder.rawItem?.order?.itemId">Mã SP: {{ selectedOrder.rawItem.order.itemId }}</span>
+                <span
+                  v-if="selectedOrder.rawItem?.order?.l1GlobalCategory"
+                  class="h-1 w-1 bg-slate-300 dark:bg-slate-700 rounded-full"
+                ></span>
+                <span v-if="selectedOrder.rawItem?.order?.l1GlobalCategory">
+                  Danh mục: {{ selectedOrder.rawItem.order.l1GlobalCategory }}
                 </span>
               </div>
-              <UBadge
-                size="xs"
-                variant="subtle"
-                class="font-extrabold text-[9px] px-2.5 py-1 rounded-full"
-              >
-                Nhận {{ selectedOrder.rawItem.order.commissionRate }}% hoa hồng
-              </UBadge>
-            </div>
-
-            <!-- 2. Product Details -->
-            <div>
-              <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Thông tin sản phẩm</span>
-              <div class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-                <div class="text-xs font-bold text-slate-700 dark:text-slate-205 leading-relaxed">
-                  {{ selectedOrder.itemName || "Sản phẩm từ Shopee" }}
-                </div>
-                <div class="flex items-center gap-1.5 text-[10px] text-slate-450 dark:text-slate-500 mt-2">
-                  <span v-if="selectedOrder.rawItem?.order?.itemId">Mã SP: {{ selectedOrder.rawItem.order.itemId }}</span>
-                  <span
-                    v-if="selectedOrder.rawItem?.order?.l1GlobalCategory"
-                    class="h-1 w-1 bg-slate-300 dark:bg-slate-700 rounded-full"
-                  ></span>
-                  <span v-if="selectedOrder.rawItem?.order?.l1GlobalCategory">
-                    Danh mục: {{ selectedOrder.rawItem.order.l1GlobalCategory }}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 3. Financial Info Grid -->
-            <div>
-              <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Chi tiết tích lũy hoàn tiền</span>
-              <div class="grid grid-cols-2 gap-3.5">
-                <div class="bg-shopee-orange/5 dark:bg-shopee-orange/10 p-4 rounded-2xl border border-shopee-orange/10 dark:border-shopee-orange/20 text-center col-span-2 shadow-sm">
-                  <span class="text-[9px] font-black text-shopee-orange uppercase block tracking-widest">Tiền hoàn bạn nhận được</span>
-                  <span class="text-base font-black text-shopee-orange block mt-1.5">
-                    +{{ formatMoney(selectedOrder.cashbackAmount) }}đ
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 4. Date Info -->
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800/60 flex flex-col gap-2 text-[10px] text-slate-450 dark:text-slate-500 font-bold">
-              <div>Thời gian đặt hàng: {{ selectedOrder.date }}</div>
-              <div>Trạng thái đối soát: {{ selectedOrder.status }}</div>
             </div>
           </div>
-        </UCard>
-      </template>
-    </USlideover>
+
+          <!-- 3. Financial Info Grid -->
+          <div>
+            <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Chi tiết tích lũy hoàn tiền</span>
+            <div class="grid grid-cols-2 gap-3.5">
+              <div class="bg-shopee-orange/5 dark:bg-shopee-orange/10 p-4 rounded-2xl border border-shopee-orange/10 dark:border-shopee-orange/20 text-center col-span-2 shadow-sm">
+                <span class="text-[9px] font-black text-shopee-orange uppercase block tracking-widest">Tiền hoàn bạn nhận được</span>
+                <span class="text-base font-black text-shopee-orange block mt-1.5">
+                  +{{ formatMoney(selectedOrder.cashbackAmount) }}đ
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Date Info -->
+          <div class="pt-4 border-t border-slate-100 dark:border-slate-800/60 flex flex-col gap-2 text-[10px] text-slate-450 dark:text-slate-500 font-bold">
+            <div>Thời gian đặt hàng: {{ selectedOrder.date }}</div>
+            <div>Trạng thái đối soát: {{ selectedOrder.status }}</div>
+          </div>
+        </div>
+      </div>
+    </a-drawer>
   </div>
 </template>
 

@@ -1,19 +1,19 @@
 <template>
-  <div class="flex flex-col min-h-screen bg-transparent relative overflow-hidden transition-colors duration-400">
-    <!-- Premium background decoration glow rings (Absolute Ban on purple, using amber/orange/slate only) -->
-    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-shopee-orange/5 blur-[120px] pointer-events-none"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-amber-500/5 blur-[120px] pointer-events-none"></div>
+  <div class="layout-root">
+    <!-- Premium background decoration (disabled on mobile via CSS) -->
+    <div class="bg-decoration blur-decoration" style="position:absolute;top:-10%;left:-10%;width:50%;height:50%;border-radius:50%;background:rgba(238,77,45,0.05);filter:blur(120px);pointer-events:none"></div>
+    <div class="bg-decoration blur-decoration" style="position:absolute;bottom:-10%;right:-10%;width:50%;height:50%;border-radius:50%;background:rgba(245,158,11,0.05);filter:blur(120px);pointer-events:none"></div>
 
     <!-- Header -->
     <AppHeader />
 
     <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-10 z-10 relative">
-      <!-- Dynamic Breadcrumb Navigation path -->
+    <main class="layout-main">
+      <!-- Dynamic Breadcrumb Navigation -->
       <Breadcrumb />
-      
+
       <!-- Inner page contents container -->
-      <div class="flex-1 flex flex-col w-full">
+      <div class="layout-content">
         <slot />
       </div>
     </main>
@@ -35,5 +35,43 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Page container transitions */
+.layout-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.layout-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  position: relative;
+  z-index: 10;
+}
+
+@media (min-width: 768px) {
+  .layout-main {
+    padding: 2.5rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout-main {
+    padding: 2.5rem 2rem;
+  }
+}
+
+.layout-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 </style>

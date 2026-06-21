@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6 animate-in fade-in duration-500 pb-12">
+  <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
@@ -11,224 +11,154 @@
         </p>
       </div>
 
-      <UButton
+      <a-button
         @click="refresh"
         :loading="pending"
-        icon="i-lucide-refresh-cw"
-        variant="soft"
-        color="neutral"
-        size="sm"
-        class="font-bold text-xs"
+        class="font-bold text-xs flex items-center gap-1"
       >
+        <template #icon><SyncOutlined /></template>
         Làm mới
-      </UButton>
+      </a-button>
     </div>
 
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <UCard
-        :ui="{
-          body: 'p-5',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
-      >
+      <div class="p-5 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
         <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng Lệnh</div>
-        <USkeleton v-if="pending && !response" class="h-8 w-16 mt-1" />
+        <a-skeleton-button active v-if="pending && !response" size="small" class="mt-1" />
         <div v-else class="text-xl font-bold text-slate-800 dark:text-white mt-1">
           {{ withdrawals.length }}
         </div>
-      </UCard>
+      </div>
 
-      <UCard
-        :ui="{
-          body: 'p-5',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
-      >
+      <div class="p-5 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
         <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Chờ Xử Lý</div>
-        <USkeleton v-if="pending && !response" class="h-8 w-16 mt-1" />
+        <a-skeleton-button active v-if="pending && !response" size="small" class="mt-1" />
         <div v-else class="text-xl font-bold text-amber-500 mt-1">
           {{ pendingCount }}
         </div>
-      </UCard>
+      </div>
 
-      <UCard
-        :ui="{
-          body: 'p-5',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
-      >
+      <div class="p-5 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
         <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng Tiền (Chờ)</div>
-        <USkeleton v-if="pending && !response" class="h-8 w-32 mt-1" />
+        <a-skeleton-button active v-if="pending && !response" size="small" class="mt-1" />
         <div v-else class="text-xl font-bold text-rose-500 mt-1">
           {{ formatMoney(totalPendingAmount) }}
         </div>
-      </UCard>
+      </div>
     </div>
 
     <!-- Data Table Container -->
-    <UCard
-      :ui="{
-        body: 'p-0',
-        ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-        background: 'bg-white dark:bg-slate-900',
-        rounded: 'rounded-xl shadow-sm'
-      }"
-      class="overflow-hidden"
-    >
+    <div class="overflow-hidden ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
       <!-- Toolbar -->
       <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/50 dark:bg-slate-900/50">
         <div class="flex flex-wrap items-center gap-3 flex-1">
           <!-- Tìm kiếm mã GD -->
           <div class="flex items-center gap-2 max-w-sm w-full sm:w-auto">
-            <UInput
-              v-model="searchInput"
-              type="text"
+            <a-input-search
+              v-model:value="searchInput"
               placeholder="Tìm kiếm mã GD"
-              @keydown.enter="handleSearch"
-              icon="i-lucide-search"
-              size="md"
+              enter-button="Tìm"
+              @search="handleSearch"
               class="w-full sm:w-auto font-medium"
             />
-            <UButton
-              @click="handleSearch"
-              size="md"
-              class="font-semibold text-xs whitespace-nowrap"
-            >
-              Tìm
-            </UButton>
           </div>
 
           <!-- Lọc trạng thái -->
           <div class="w-full sm:w-48">
-            <USelect
-              v-model="filterStatus"
-              :items="statusOptions"
-              size="md"
+            <a-select
+              v-model:value="filterStatus"
+              :options="statusOptions"
               class="w-full font-medium"
             />
           </div>
 
           <!-- Xóa bộ lọc -->
-          <UButton
+          <a-button
             v-if="searchQuery || filterStatus !== 'all' || searchInput"
             @click="clearAllFilters"
-            variant="link"
-            color="danger"
-            icon="i-lucide-x"
-            size="xs"
-            class="font-bold text-xs"
+            type="text"
+            danger
+            class="font-bold text-xs flex items-center gap-1"
           >
+            <template #icon><CloseOutlined /></template>
             Xóa bộ lọc
-          </UButton>
+          </a-button>
         </div>
 
         <!-- Limit hiển thị -->
         <div class="flex items-center gap-1.5 whitespace-nowrap self-end sm:self-auto">
           <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Hiển thị:</span>
-          <USelect
-            v-model="limit"
-            :items="[
+          <a-select
+            v-model:value="limit"
+            :options="[
               { label: '10', value: 10 },
               { label: '20', value: 20 },
               { label: '50', value: 50 },
               { label: '100', value: 100 }
             ]"
-            size="xs"
-            class="font-bold"
+            class="font-bold w-20"
           />
         </div>
       </div>
 
       <!-- Table -->
       <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="text-[10px] uppercase tracking-wider font-bold text-slate-500 bg-slate-50 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-800">
-              <th class="px-4 py-3 pl-6 whitespace-nowrap w-[20%]">Mã GD</th>
-              <th class="px-4 py-3 whitespace-nowrap w-[25%]">Người Dùng</th>
-              <th class="px-4 py-3 whitespace-nowrap w-[20%]">Thời Gian</th>
-              <th class="px-4 py-3 text-right whitespace-nowrap w-[20%]">Số Tiền</th>
-              <th class="px-4 py-3 whitespace-nowrap text-center w-[15%]">Trạng Thái</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
-            <tr v-if="pending && !response">
-              <td colspan="5" class="p-4">
-                <div class="flex flex-col gap-2">
-                  <USkeleton v-for="i in 4" :key="i" class="h-10 w-full" />
-                </div>
-              </td>
-            </tr>
-            <tr v-else-if="filteredWithdrawals.length === 0">
-              <td colspan="5" class="p-8 text-center text-slate-500 text-sm font-medium">
-                Chưa có lệnh rút tiền nào
-              </td>
-            </tr>
-            <tr
-              v-else
-              v-for="item in filteredWithdrawals"
-              :key="item.id"
-              @click="openDetails(item)"
-              class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer group"
-            >
-              <!-- Mã GD -->
-              <td class="px-4 py-3 pl-6">
-                <span class="font-bold text-slate-700 dark:text-slate-200 text-xs">#{{ item.reference_id }}</span>
-              </td>
-              <!-- Người Dùng -->
-              <td class="px-4 py-3">
-                <div class="flex flex-col">
-                  <span class="font-bold text-slate-700 dark:text-slate-200 text-xs">{{ item?.wallet?.user?.name || "Ẩn danh" }}</span>
-                  <span class="text-[11px] text-slate-500 font-medium mt-0.5 block truncate max-w-[150px]" :title="item?.wallet?.user?.email || 'N/A'">
-                    {{ item?.wallet?.user?.email || "N/A" }}
-                  </span>
-                </div>
-              </td>
-              <!-- Thời Gian -->
-              <td class="px-4 py-3">
-                <div class="text-xs text-slate-500 font-medium">
-                  {{ new Date(item.created_at).toLocaleString("vi-VN") }}
-                </div>
-              </td>
-              <!-- Số Tiền -->
-              <td class="px-4 py-3 text-right">
-                <div class="font-bold text-rose-500 text-[13px]">
-                  -{{ formatMoney(Math.abs(item.amount)) }}
-                </div>
-              </td>
-              <!-- Trạng thái -->
-              <td class="px-4 py-3 text-center">
-                <UBadge
-                  size="xs"
-                  variant="soft"
-                  :color="
-                    item.status === 'completed' || item.status === 'success' || item.status === 'approved'
-                      ? 'success'
-                      : item.status === 'pending'
-                      ? 'warning'
-                      : 'danger'
-                  "
-                  class="font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded-full"
-                >
-                  {{
-                    item.status === "completed" || item.status === "success" || item.status === "approved"
-                      ? "Thành công"
-                      : item.status === "pending"
-                      ? "Chờ duyệt"
-                      : "Đã hủy"
-                  }}
-                </UBadge>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <a-table
+          :columns="columns"
+          :dataSource="filteredWithdrawals"
+          :rowKey="(record) => record.id"
+          :pagination="false"
+          :loading="pending && !response"
+          :customRow="(record) => ({
+            onClick: () => openDetails(record),
+            class: 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 group'
+          })"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'reference_id'">
+              <span class="font-bold text-slate-700 dark:text-slate-200 text-xs">#{{ record.reference_id }}</span>
+            </template>
+            <template v-else-if="column.key === 'user'">
+              <div class="flex flex-col">
+                <span class="font-bold text-slate-700 dark:text-slate-200 text-xs">{{ record?.wallet?.user?.name || "Ẩn danh" }}</span>
+                <span class="text-[11px] text-slate-500 font-medium mt-0.5 block truncate max-w-[150px]" :title="record?.wallet?.user?.email || 'N/A'">
+                  {{ record?.wallet?.user?.email || "N/A" }}
+                </span>
+              </div>
+            </template>
+            <template v-else-if="column.key === 'created_at'">
+              <div class="text-xs text-slate-500 font-medium">
+                {{ new Date(record.created_at).toLocaleString("vi-VN") }}
+              </div>
+            </template>
+            <template v-else-if="column.key === 'amount'">
+              <div class="font-bold text-rose-500 text-[13px]">
+                -{{ formatMoney(Math.abs(record.amount)) }}
+              </div>
+            </template>
+            <template v-else-if="column.key === 'status'">
+              <span
+                class="font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded-full inline-block"
+                :class="
+                  record.status === 'completed' || record.status === 'success' || record.status === 'approved'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : record.status === 'pending'
+                    ? 'bg-amber-100 text-amber-700'
+                    : 'bg-rose-100 text-rose-700'
+                "
+              >
+                {{
+                  record.status === "completed" || record.status === "success" || record.status === "approved"
+                    ? "Thành công"
+                    : record.status === "pending"
+                    ? "Chờ duyệt"
+                    : "Đã hủy"
+                }}
+              </span>
+            </template>
+          </template>
+        </a-table>
       </div>
 
       <!-- Pagination -->
@@ -236,204 +166,192 @@
         <div class="text-xs text-slate-500 font-medium">
           Trang {{ page }} / {{ totalPages }}
         </div>
-        <div class="flex gap-1">
-          <UButton
-            icon="i-lucide-chevron-left"
-            :disabled="page <= 1"
-            variant="outline"
-            color="neutral"
-            size="xs"
-            @click="page--"
-          />
-          <UButton
-            icon="i-lucide-chevron-right"
-            :disabled="page >= totalPages"
-            variant="outline"
-            color="neutral"
-            size="xs"
-            @click="page++"
-          />
-        </div>
+        <a-pagination
+          :current="page"
+          :total="totalPages * limit"
+          :pageSize="limit"
+          show-less-items
+          @change="(p) => page = p"
+        />
       </div>
-    </UCard>
+    </div>
 
     <!-- Detail Drawer -->
-    <USlideover v-model:open="isDrawerOpen">
-      <template #content>
-        <UCard
-          v-if="selectedItem"
-          :ui="{
-            body: 'p-6 flex-1 overflow-y-auto',
-            header: 'p-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between shrink-0',
-            footer: 'p-6 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shrink-0'
-          }"
-          class="flex flex-col h-full overflow-hidden"
+    <a-drawer
+      v-model:open="isDrawerOpen"
+      placement="right"
+      width="450px"
+      :closable="false"
+      class="bg-white dark:bg-slate-950"
+    >
+      <template #title>
+        <div v-if="selectedItem">
+          <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">
+            Chi Tiết Rút Tiền
+          </h3>
+          <p class="text-[11px] text-slate-500 font-medium mt-0.5">
+            {{ selectedItem.reference_id || selectedItem.referenceId }}
+          </p>
+        </div>
+      </template>
+      <template #extra>
+        <a-button type="text" @click="closeDetails"><CloseOutlined /></a-button>
+      </template>
+
+      <div v-if="selectedItem" class="flex flex-col gap-6">
+        <!-- QR Code Section -->
+        <div
+          v-if="selectedItem.qr_code_url"
+          class="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-5 flex flex-col items-center justify-center border border-slate-200 dark:border-slate-800"
         >
-          <template #header>
-            <div>
-              <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">
-                Chi Tiết Rút Tiền
-              </h3>
-              <p class="text-[11px] text-slate-500 font-medium mt-0.5">
-                {{ selectedItem.referenceId }}
-              </p>
-            </div>
-            <UButton
-              color="neutral"
-              variant="ghost"
-              icon="i-lucide-x"
-              class="rounded-lg"
-              @click="closeDetails"
+          <h4 class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-4">
+            Quét QR chuyển khoản
+          </h4>
+          <div class="p-2 bg-white rounded-lg shadow-sm border border-slate-200">
+            <img
+              :src="selectedItem.qr_code_url"
+              alt="QR Code"
+              class="w-40 h-40 object-contain"
             />
-          </template>
+          </div>
+          <p class="text-[11px] text-slate-505 mt-4 text-center max-w-[250px]">
+            Sử dụng App Ngân hàng để quét mã QR. Nội dung chuyển khoản đã được điền tự động.
+          </p>
+        </div>
 
-          <div class="flex flex-col gap-6">
-            <!-- QR Code Section -->
-            <div
-              v-if="selectedItem.qr_code_url"
-              class="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-5 flex flex-col items-center justify-center border border-slate-200 dark:border-slate-800"
+        <!-- Detail Grid -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1">
+            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Trạng Thái</span>
+            <span
+              class="text-xs font-bold uppercase"
+              :class="{
+                'text-emerald-500': selectedItem.status === 'completed' || selectedItem.status === 'success',
+                'text-amber-500': selectedItem.status === 'pending',
+                'text-rose-500': selectedItem.status === 'rejected' || selectedItem.status === 'failed',
+              }"
             >
-              <h4 class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-4">
-                Quét QR chuyển khoản
-              </h4>
-              <div class="p-2 bg-white rounded-lg shadow-sm border border-slate-200">
-                <img
-                  :src="selectedItem.qr_code_url"
-                  alt="QR Code"
-                  class="w-40 h-40 object-contain"
-                />
-              </div>
-              <p class="text-[11px] text-slate-505 mt-4 text-center max-w-[250px]">
-                Sử dụng App Ngân hàng để quét mã QR. Nội dung chuyển khoản đã được điền tự động.
-              </p>
+              {{
+                selectedItem.status === "completed" || selectedItem.status === "success"
+                  ? "HOÀN THÀNH"
+                  : selectedItem.status === "pending"
+                  ? "CHỜ DUYỆT"
+                  : "Đã HỦY"
+              }}
+            </span>
+          </div>
+          <div class="flex flex-col gap-1">
+            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Số Tiền</span>
+            <span class="text-sm font-bold text-rose-550">{{ formatMoney(Math.abs(selectedItem.amount)) }}</span>
+          </div>
+
+          <div class="col-span-2 border-t border-slate-200 dark:border-slate-800 my-1"></div>
+
+          <div class="flex flex-col gap-1">
+            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Khách Hàng</span>
+            <span class="text-sm font-bold text-slate-800 dark:text-slate-200">{{ selectedItem?.wallet?.user?.name || "Ẩn danh" }}</span>
+          </div>
+          <div class="flex flex-col gap-1 min-w-0">
+            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Email</span>
+            <span class="text-sm font-bold text-slate-800 dark:text-slate-200 block truncate max-w-full" :title="selectedItem?.wallet?.user?.email || 'N/A'">
+              {{ selectedItem?.wallet?.user?.email || "N/A" }}
+            </span>
+          </div>
+
+          <div class="col-span-2 border-t border-slate-200 dark:border-slate-800 my-1"></div>
+
+          <div class="col-span-2 flex flex-col gap-2">
+            <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Mô Tả</span>
+            <div class="text-sm font-medium text-slate-700 dark:text-slate-300 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl leading-relaxed">
+              {{ selectedItem.description || "Không có mô tả" }}
             </div>
+          </div>
+        </div>
+      </div>
 
-            <!-- Detail Grid -->
-            <div class="grid grid-cols-2 gap-4">
-              <div class="flex flex-col gap-1">
-                <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Trạng Thái</span>
-                <span
-                  class="text-xs font-bold uppercase"
-                  :class="{
-                    'text-emerald-500': selectedItem.status === 'completed' || selectedItem.status === 'success',
-                    'text-amber-500': selectedItem.status === 'pending',
-                    'text-rose-500': selectedItem.status === 'rejected' || selectedItem.status === 'failed',
-                  }"
-                >
-                  {{
-                    selectedItem.status === "completed" || selectedItem.status === "success"
-                      ? "HOÀN THÀNH"
-                      : selectedItem.status === "pending"
-                      ? "CHỜ DUYỆT"
-                      : "ĐÃ HỦY"
-                  }}
-                </span>
+      <template #footer>
+        <div v-if="selectedItem">
+          <!-- Reject Input Area -->
+          <div v-if="showRejectInput" class="flex flex-col gap-3 w-full">
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[11px] font-bold text-slate-755 dark:text-slate-355">
+                Lý do từ chối <span class="text-rose-500">*</span>
+              </label>
+              <a-textarea
+                v-model:value="rejectReason"
+                :maxlength="100"
+                :rows="2"
+                placeholder="Nhập lý do từ chối lệnh rút tiền này..."
+                class="w-full text-xs font-medium"
+              />
+              <div class="flex justify-between items-center text-[10px]">
+                <span v-if="rejectError" class="text-rose-500 font-medium">{{ rejectError }}</span>
+                <span v-else class="text-slate-400"></span>
+                <span class="text-slate-400">{{ rejectReason.length }}/100</span>
               </div>
-              <div class="flex flex-col gap-1">
-                <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Số Tiền</span>
-                <span class="text-sm font-bold text-rose-550">{{ formatMoney(Math.abs(selectedItem.amount)) }}</span>
-              </div>
-
-              <div class="col-span-2 border-t border-slate-200 dark:border-slate-800 my-1"></div>
-
-              <div class="flex flex-col gap-1">
-                <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Khách Hàng</span>
-                <span class="text-sm font-bold text-slate-800 dark:text-slate-200">{{ selectedItem?.wallet?.user?.name || "Ẩn danh" }}</span>
-              </div>
-              <div class="flex flex-col gap-1 min-w-0">
-                <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Email</span>
-                <span class="text-sm font-bold text-slate-800 dark:text-slate-200 block truncate max-w-full" :title="selectedItem?.wallet?.user?.email || 'N/A'">
-                  {{ selectedItem?.wallet?.user?.email || "N/A" }}
-                </span>
-              </div>
-
-              <div class="col-span-2 border-t border-slate-200 dark:border-slate-800 my-1"></div>
-
-              <div class="col-span-2 flex flex-col gap-2">
-                <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Mô Tả</span>
-                <div class="text-sm font-medium text-slate-700 dark:text-slate-300 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl leading-relaxed">
-                  {{ selectedItem.description || "Không có mô tả" }}
-                </div>
-              </div>
+            </div>
+            <div class="flex items-center gap-3 w-full mt-2">
+              <a-button
+                @click="showRejectInput = false"
+                class="flex-1 font-bold text-xs"
+              >
+                Hủy
+              </a-button>
+              <a-button
+                @click="submitUpdateStatus('rejected')"
+                :loading="isUpdating"
+                danger
+                type="primary"
+                class="flex-1 font-bold text-xs"
+              >
+                Xác nhận từ chối
+              </a-button>
             </div>
           </div>
 
-          <template #footer>
-            <!-- Reject Input Area -->
-            <div v-if="showRejectInput" class="flex flex-col gap-3 w-full">
-              <div class="flex flex-col gap-1.5">
-                <label class="text-[11px] font-bold text-slate-755 dark:text-slate-355">
-                  Lý do từ chối <span class="text-rose-500">*</span>
-                </label>
-                <UTextarea
-                  v-model="rejectReason"
-                  maxlength="100"
-                  rows="2"
-                  placeholder="Nhập lý do từ chối lệnh rút tiền này..."
-                  class="w-full text-xs font-medium"
-                />
-                <div class="flex justify-between items-center text-[10px]">
-                  <span v-if="rejectError" class="text-rose-500 font-medium">{{ rejectError }}</span>
-                  <span v-else class="text-slate-400"></span>
-                  <span class="text-slate-400">{{ rejectReason.length }}/100</span>
-                </div>
+          <!-- Normal Actions -->
+          <div v-else class="flex items-center justify-end gap-3 w-full">
+            <template v-if="selectedItem.status === 'pending'">
+              <a-button
+                @click="showRejectInput = true"
+                danger
+                class="flex-1 font-bold text-xs"
+              >
+                Từ Chối
+              </a-button>
+              <a-button
+                @click="submitUpdateStatus('success')"
+                :loading="isUpdating"
+                type="primary"
+                class="flex-1 font-bold text-xs bg-emerald-500 hover:bg-emerald-600 border-transparent"
+              >
+                Duyệt Lệnh
+              </a-button>
+            </template>
+            <template v-else-if="selectedItem.status === 'rejected'">
+              <div class="w-full p-4 rounded-xl bg-rose-50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-800/30 text-xs font-medium text-rose-600 dark:text-rose-400">
+                <span class="font-bold block mb-1">Lý do từ chối:</span>
+                {{ selectedItem.rejectReason || "Không có lý do cụ thể" }}
               </div>
-              <div class="flex items-center gap-3 w-full">
-                <UButton
-                  @click="showRejectInput = false"
-                  variant="soft"
-                  color="neutral"
-                  class="flex-1 font-bold text-xs"
-                >
-                  Hủy
-                </UButton>
-                <UButton
-                  @click="submitUpdateStatus('rejected')"
-                  :loading="isUpdating"
-                  color="danger"
-                  class="flex-1 font-bold text-xs"
-                >
-                  Xác nhận từ chối
-                </UButton>
-              </div>
-            </div>
-
-            <!-- Normal Actions -->
-            <div v-else class="flex items-center justify-end gap-3 w-full">
-              <template v-if="selectedItem.status === 'pending'">
-                <UButton
-                  @click="showRejectInput = true"
-                  variant="soft"
-                  color="danger"
-                  class="flex-1 font-bold text-xs"
-                >
-                  Từ Chối
-                </UButton>
-                <UButton
-                  @click="submitUpdateStatus('success')"
-                  :loading="isUpdating"
-                  color="success"
-                  class="flex-1 font-bold text-xs"
-                >
-                  Duyệt Lệnh
-                </UButton>
-              </template>
-              <template v-else-if="selectedItem.status === 'rejected'">
-                <div class="w-full p-4 rounded-xl bg-rose-50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-800/30 text-xs font-medium text-rose-600 dark:text-rose-400">
-                  <span class="font-bold block mb-1">Lý do từ chối:</span>
-                  {{ selectedItem.rejectReason || "Không có lý do cụ thể" }}
-                </div>
-              </template>
-            </div>
-          </template>
-        </UCard>
+            </template>
+          </div>
+        </div>
       </template>
-    </USlideover>
+    </a-drawer>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, watch, onUnmounted } from "vue";
+import { SyncOutlined, CloseOutlined } from "@ant-design/icons-vue";
+
+const columns = [
+  { title: 'Mã GD', key: 'reference_id', width: '20%' },
+  { title: 'Người Dùng', key: 'user', width: '25%' },
+  { title: 'Thời Gian', key: 'created_at', width: '20%' },
+  { title: 'Số Tiền', key: 'amount', align: 'right', width: '20%' },
+  { title: 'Trạng Thái', key: 'status', align: 'center', width: '15%' }
+];
 
 definePageMeta({
   layout: "admin",

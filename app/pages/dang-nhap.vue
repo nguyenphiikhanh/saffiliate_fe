@@ -1,71 +1,40 @@
 <template>
-  <div
-    class="relative min-h-screen w-full flex flex-col items-center justify-center p-4 md:p-8 overflow-x-hidden transition-colors duration-400 bg-[#F8FAFC] dark:bg-[#090D16]"
-  >
-    <!-- Dotted grid background pattern -->
-    <div class="absolute inset-0 dotted-grid pointer-events-none z-0"></div>
+  <div class="login-page">
+    <!-- Dotted grid background -->
+    <div class="login-dotted-grid"></div>
 
-    <!-- Radial decorative glow (Slate / Orange) -->
+    <!-- Radial decorative glows -->
     <div
-      class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-shopee-orange/5 dark:bg-shopee-orange/8 blur-[120px] pointer-events-none z-0"
+      class="login-glow login-glow--orange bg-decoration blur-decoration"
     ></div>
     <div
-      class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-amber-500/5 dark:bg-amber-500/8 blur-[120px] pointer-events-none z-0"
+      class="login-glow login-glow--amber bg-decoration blur-decoration"
     ></div>
 
     <!-- Main Container -->
-    <div
-      class="w-full max-w-lg flex flex-col items-center z-10 relative animate-fade-in-up"
-    >
+    <div class="login-container animate-fade-in-up">
       <!-- Logo and Branding -->
-      <div class="flex flex-col items-center text-center mb-8">
-        <!-- Brand Logo Icon -->
-        <div
-          class="flex h-28 w-28 items-center justify-center shrink-0 mb-4 transition-transform duration-500 hover:rotate-12 select-none"
-        >
-          <img
-            src="/saficon.webp"
-            class="h-28 w-28 object-contain rounded-3xl shadow-lg"
-            alt="Saffi Logo"
-          />
+      <div class="login-brand">
+        <div class="login-logo" @click="null">
+          <img src="/saficon.webp" class="login-logo-img" alt="Saffi Logo" />
         </div>
-
-        <!-- Dynamic Slogan -->
-        <h2
-          class="text-2xl md:text-3xl font-extrabold text-slate-800 dark:text-slate-200 mt-6 tracking-tight"
-        >
-          Mua sắm,
-          <span
-            class="bg-gradient-to-r from-shopee-orange to-amber-500 bg-clip-text text-transparent"
-            >Hoàn Tiền Thật</span
-          >
+        <h2 class="login-slogan">
+          Mua sắm, <span class="login-slogan-highlight">Hoàn Tiền Thật</span>
         </h2>
-        <p
-          class="text-sm md:text-base font-medium text-slate-500 dark:text-slate-400 mt-2"
-        >
+        <p class="login-tagline">
           Tiết kiệm thông minh với mỗi đơn hàng mua sắm online
         </p>
       </div>
 
-      <!-- Core Value Badges (Horizontal marquee scrolling left-to-right) -->
-      <div class="w-full max-w-md overflow-hidden mb-8 relative">
-        <!-- Fade gradient overlays -->
-        <div
-          class="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#F8FAFC] dark:from-[#090D16] to-transparent z-10 pointer-events-none transition-colors duration-400"
-        ></div>
-        <div
-          class="absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[#F8FAFC] dark:from-[#090D16] to-transparent z-10 pointer-events-none transition-colors duration-400"
-        ></div>
-
-        <div class="flex overflow-hidden select-none py-1 group">
-          <!-- Marquee Track 1 -->
-          <div class="flex gap-3 shrink-0 pr-3 animate-marquee-left">
-            <!-- Badge 1 -->
-            <div
-              class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm"
-            >
+      <!-- Marquee Badges -->
+      <div class="marquee-wrap">
+        <div class="marquee-fade marquee-fade--left"></div>
+        <div class="marquee-fade marquee-fade--right"></div>
+        <div class="marquee-track">
+          <div class="marquee-row marquee-scroll">
+            <div class="badge-chip" v-for="badge in badges" :key="badge.text">
               <svg
-                class="w-4 h-4 text-orange-500"
+                :class="['badge-chip-icon', badge.iconColor]"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
@@ -74,84 +43,20 @@
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                  :d="badge.icon"
                 />
               </svg>
-              <span>Hoàn tiền cực nhanh</span>
-            </div>
-
-            <!-- Badge 2 -->
-            <div
-              class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm"
-            >
-              <svg
-                class="w-4 h-4 text-emerald-500"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <span>Mua sắm tiết kiệm</span>
-            </div>
-
-            <!-- Badge 3 -->
-            <div
-              class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm"
-            >
-              <svg
-                class="w-4 h-4 text-emerald-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                />
-              </svg>
-              <span>Bảo mật tuyệt đối</span>
-            </div>
-
-            <!-- Badge 4 -->
-            <div
-              class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm"
-            >
-              <svg
-                class="w-4 h-4 text-amber-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-              <span>Tích điểm nhanh</span>
+              <span>{{ badge.text }}</span>
             </div>
           </div>
-
-          <!-- Marquee Track 2 (Duplicated for seamless looping) -->
-          <div
-            class="flex gap-3 shrink-0 pr-3 animate-marquee-left"
-            aria-hidden="true"
-          >
-            <!-- Badge 1 -->
+          <div class="marquee-row marquee-scroll" aria-hidden="true">
             <div
-              class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm"
+              class="badge-chip"
+              v-for="badge in badges"
+              :key="badge.text + '-2'"
             >
               <svg
-                class="w-4 h-4 text-orange-500"
+                :class="['badge-chip-icon', badge.iconColor]"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
@@ -160,414 +65,291 @@
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                  :d="badge.icon"
                 />
               </svg>
-              <span>Hoàn tiền cực nhanh</span>
-            </div>
-
-            <!-- Badge 2 -->
-            <div
-              class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm"
-            >
-              <svg
-                class="w-4 h-4 text-emerald-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <span>Mua sắm tiết kiệm</span>
-            </div>
-
-            <!-- Badge 3 -->
-            <div
-              class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm"
-            >
-              <svg
-                class="w-4 h-4 text-emerald-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                />
-              </svg>
-              <span>Bảo mật tuyệt đối</span>
-            </div>
-
-            <!-- Badge 4 -->
-            <div
-              class="flex items-center gap-1.5 shrink-0 px-3.5 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 shadow-sm"
-            >
-              <svg
-                class="w-4 h-4 text-amber-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-              <span>Tích điểm nhanh</span>
+              <span>{{ badge.text }}</span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Main Login Card -->
-      <UCard
-        class="w-full max-w-md shadow-xl bg-white/90 dark:bg-slate-900/90 transition-all duration-400"
-        :ui="{
-          body: 'p-6 md:p-8',
-          background: 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md',
-          ring: 'ring-1 ring-slate-200/60 dark:ring-slate-800/80',
-          rounded: 'rounded-3xl'
-        }"
-      >
-        <!-- Error Alert (Professional UI) -->
-        <UAlert
+      <div class="login-card">
+        <!-- Error Alert -->
+        <a-alert
           v-if="errorMessage"
-          title="Đăng nhập thất bại"
+          type="error"
+          :message="'Đăng nhập thất bại'"
           :description="errorMessage"
-          color="danger"
-          variant="subtle"
-          icon="i-lucide-alert-triangle"
-          class="mb-5 rounded-2xl"
-          :close="{ onClick: () => errorMessage = '' }"
+          show-icon
+          closable
+          class="login-alert"
+          @close="errorMessage = ''"
         />
 
-        <!-- Google Login Action Button -->
-        <div class="mb-6">
-          <UButton
+        <!-- Google Login Button -->
+        <div class="login-btn-wrap">
+          <button
             @click="handleGoogleLogin"
             :disabled="isLoggingIn"
-            size="xl"
-            block
-            color="neutral"
-            variant="outline"
-            class="py-4 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-shopee-orange dark:hover:border-shopee-orange"
-            :loading="isLoggingIn"
+            class="login-google-btn w-full cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            <template #leading v-if="!isLoggingIn">
-              <!-- Google Logo SVG -->
-              <svg class="h-6 w-6 shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
-              </svg>
-            </template>
-            <span class="font-sans text-base font-semibold text-slate-700 dark:text-slate-200">
-              {{ isLoggingIn ? "Đang đăng nhập" : "Tiếp tục với Google" }}
-            </span>
-            <template #trailing v-if="!isLoggingIn">
-              <UIcon name="i-lucide-arrow-right" class="h-4.5 w-4.5 text-slate-400 group-hover:text-shopee-orange group-hover:translate-x-1 transition-transform" />
-            </template>
-          </UButton>
+            <svg v-if="isLoggingIn" class="animate-spin text-slate-500" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg
+              v-else
+              class="google-logo"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                fill="#4285F4"
+              />
+              <path
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                fill="#34A853"
+              />
+              <path
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                fill="#FBBC05"
+              />
+              <path
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                fill="#EA4335"
+              />
+            </svg>
+            <span class="login-google-btn-text">{{
+              isLoggingIn ? "Đang đăng nhập" : "Tiếp tục với Google"
+            }}</span>
+          </button>
         </div>
 
-        <!-- Google Recommendation Notice -->
-        <p
-          class="text-xs text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1.5 mb-6 font-medium"
-        >
-          <UIcon name="i-lucide-lock" class="h-3.5 w-3.5 text-slate-400/80 dark:text-slate-500/80 shrink-0" />
-          <span>Google là phương thức đăng nhập chính và được khuyến nghị.</span>
+        <!-- Google recommendation notice -->
+        <p class="login-security-note">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            style="flex-shrink: 0"
+          >
+            <rect width="11" height="11" x="3" y="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+          Google là phương thức đăng nhập chính và được khuyến nghị.
         </p>
 
-        <!-- Terms and Conditions Agreement -->
-        <p
-          class="text-xs text-slate-400 dark:text-slate-500 text-center leading-relaxed border-b border-slate-200/50 dark:border-slate-800/50 pb-6 mb-6"
-        >
+        <!-- Terms -->
+        <p class="login-terms">
           Bằng việc tiếp tục, bạn đồng ý với
-          <a
-            href="#"
-            class="text-shopee-orange dark:text-orange-400 font-semibold hover:underline"
-            >Điều khoản & Chính sách</a
-          >
-          của chúng tôi.
+          <a href="#" class="login-terms-link">Điều khoản & Chính sách</a> của
+          chúng tôi.
         </p>
 
-        <!-- Social Connect Section -->
-        <div class="flex flex-col items-center mb-6">
-          <span
-            class="text-2xs uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-4 bg-white dark:bg-[#1E293B] px-3 z-10"
-          >
-            Kết nối với chúng tôi
-          </span>
-          <div class="flex items-center justify-center gap-4">
-            
+        <!-- Social Connect -->
+        <div class="login-socials">
+          <span class="login-socials-label">Kết nối với chúng tôi</span>
+          <div class="login-socials-row">
             <!-- Zalo Group -->
-            <UButton
-              :to="config.public.zaloGroup || '#'"
+            <a
+              :href="config.public.zaloGroup || '#'"
               target="_blank"
-              size="lg"
-              color="primary"
-              variant="soft"
-              class="h-11 w-11 rounded-2xl flex items-center justify-center p-0"
+              rel="noopener noreferrer"
+              class="login-social-btn login-social-btn--primary"
               title="Nhóm Zalo hỗ trợ"
             >
-              <UIcon name="i-arcticons-zalo" class="h-5 w-5" />
-            </UButton>
-
-            <!-- Email Support -->
-            <UButton
-              to="mailto:support@saffi.vn"
-              size="lg"
-              color="red"
-              variant="soft"
-              class="h-11 w-11 rounded-2xl flex items-center justify-center p-0"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="100"
+                height="100"
+                viewBox="0 0 48 48"
+              >
+                <path
+                  fill="#2962ff"
+                  d="M15,36V6.827l-1.211-0.811C8.64,8.083,5,13.112,5,19v10c0,7.732,6.268,14,14,14h10	c4.722,0,8.883-2.348,11.417-5.931V36H15z"
+                ></path>
+                <path
+                  fill="#eee"
+                  d="M29,5H19c-1.845,0-3.601,0.366-5.214,1.014C10.453,9.25,8,14.528,8,19	c0,6.771,0.936,10.735,3.712,14.607c0.216,0.301,0.357,0.653,0.376,1.022c0.043,0.835-0.129,2.365-1.634,3.742	c-0.162,0.148-0.059,0.419,0.16,0.428c0.942,0.041,2.843-0.014,4.797-0.877c0.557-0.246,1.191-0.203,1.729,0.083	C20.453,39.764,24.333,40,28,40c4.676,0,9.339-1.04,12.417-2.916C42.038,34.799,43,32.014,43,29V19C43,11.268,36.732,5,29,5z"
+                ></path>
+                <path
+                  fill="#2962ff"
+                  d="M36.75,27C34.683,27,33,25.317,33,23.25s1.683-3.75,3.75-3.75s3.75,1.683,3.75,3.75	S38.817,27,36.75,27z M36.75,21c-1.24,0-2.25,1.01-2.25,2.25s1.01,2.25,2.25,2.25S39,24.49,39,23.25S37.99,21,36.75,21z"
+                ></path>
+                <path
+                  fill="#2962ff"
+                  d="M31.5,27h-1c-0.276,0-0.5-0.224-0.5-0.5V18h1.5V27z"
+                ></path>
+                <path
+                  fill="#2962ff"
+                  d="M27,19.75v0.519c-0.629-0.476-1.403-0.769-2.25-0.769c-2.067,0-3.75,1.683-3.75,3.75	S22.683,27,24.75,27c0.847,0,1.621-0.293,2.25-0.769V26.5c0,0.276,0.224,0.5,0.5,0.5h1v-7.25H27z M24.75,25.5	c-1.24,0-2.25-1.01-2.25-2.25S23.51,21,24.75,21S27,22.01,27,23.25S25.99,25.5,24.75,25.5z"
+                ></path>
+                <path
+                  fill="#2962ff"
+                  d="M21.25,18h-8v1.5h5.321L13,26h0.026c-0.163,0.211-0.276,0.463-0.276,0.75V27h7.5	c0.276,0,0.5-0.224,0.5-0.5v-1h-5.321L21,19h-0.026c0.163-0.211,0.276-0.463,0.276-0.75V18z"
+                ></path>
+              </svg>
+            </a>
+            <!-- Email -->
+            <a
+              href="mailto:support@saffi.vn"
+              class="login-social-btn login-social-btn--red"
               title="Email Hỗ trợ"
-              icon="i-lucide-mail"
-            />
-
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+            </a>
           </div>
         </div>
-      </UCard>
+      </div>
     </div>
   </div>
 
   <!-- In-App Browser Blocker Overlay -->
   <Transition
-    enter-active-class="transition duration-400 ease-out"
-    enter-from-class="opacity-0 scale-95"
-    enter-to-class="opacity-100 scale-100"
-    leave-active-class="transition duration-300 ease-in"
-    leave-from-class="opacity-100 scale-100"
-    leave-to-class="opacity-0 scale-95"
+    enter-active-class="overlay-enter-active"
+    enter-from-class="overlay-enter-from"
+    enter-to-class="overlay-enter-to"
+    leave-active-class="overlay-leave-active"
+    leave-from-class="overlay-leave-from"
+    leave-to-class="overlay-leave-to"
   >
-    <div
-      v-if="webViewInfo.isInApp"
-      class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-2xl overflow-y-auto"
-    >
-      <!-- Radial dynamic background glow -->
+    <div v-if="webViewInfo.isInApp" class="inapp-overlay">
+      <!-- Background glows -->
       <div
-        class="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-shopee-orange/20 blur-[100px] pointer-events-none"
+        class="inapp-glow inapp-glow--orange bg-decoration blur-decoration"
       ></div>
       <div
-        class="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[350px] h-[350px] rounded-full bg-amber-500/20 blur-[100px] pointer-events-none"
+        class="inapp-glow inapp-glow--amber bg-decoration blur-decoration"
       ></div>
 
-      <div
-        class="w-full max-w-md rounded-3xl p-6 md:p-8 bg-slate-900/90 border border-slate-800 shadow-2xl relative z-10 animate-fade-in-up text-center flex flex-col items-center"
-      >
-        <!-- Alert Danger Icon -->
-        <div
-          class="h-16 w-16 flex items-center justify-center rounded-2xl bg-gradient-to-br from-shopee-orange to-amber-500 shadow-lg shadow-shopee-orange/20 mb-6 animate-pulse-slow"
-        >
-          <UIcon name="i-lucide-alert-triangle" class="h-9 w-9 text-white" />
+      <div class="inapp-card animate-fade-in-up">
+        <!-- Alert Icon -->
+        <div class="inapp-alert-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="36"
+            height="36"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="text-white"
+          >
+            <path
+              d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
+            />
+            <path d="M12 9v4" />
+            <path d="M12 17h.01" />
+          </svg>
         </div>
 
-        <h3
-          class="text-xl md:text-2xl font-extrabold text-white tracking-tight leading-tight"
-        >
-          Yêu cầu mở bằng trình duyệt ngoài
-        </h3>
-        <p
-          class="text-xs font-semibold text-shopee-orange uppercase tracking-wider mt-2 bg-shopee-orange/10 px-3 py-1 rounded-full"
-        >
+        <h3 class="inapp-title">Yêu cầu mở bằng trình duyệt ngoài</h3>
+        <p class="inapp-platform">
           Đang mở bằng WebView {{ webViewInfo.platform }}
         </p>
-
-        <p class="text-sm text-slate-300 mt-4 leading-relaxed">
-          Để đảm bảo tính
-          <strong class="text-white">bảo mật tuyệt đối</strong> của tài khoản và
+        <p class="inapp-desc">
+          Để đảm bảo tính <strong>bảo mật tuyệt đối</strong> của tài khoản và
           tránh lỗi chặn liên kết từ Google, vui lòng đăng nhập trực tiếp trên
           trình duyệt Chrome hoặc Safari của thiết bị.
         </p>
 
-        <!-- Step-by-Step Instructions card -->
-        <div
-          class="w-full mt-6 p-5 rounded-2xl bg-slate-950/50 border border-slate-800 text-left"
-        >
-          <h4
-            class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-3"
-          >
-            Hướng dẫn mở nhanh:
-          </h4>
-
-          <!-- Platform Zalo -->
-          <ul
-            v-if="webViewInfo.platform === 'Zalo'"
-            class="space-y-3.5 text-sm text-slate-300 font-medium"
-          >
-            <li class="flex items-start gap-2.5">
-              <span
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold"
-                >1</span
-              >
-              <span
-                >Bấm vào biểu tượng menu
-                <strong class="text-white">Ba chấm &bull;&bull;&bull;</strong> ở
-                góc trên bên phải.</span
-              >
-            </li>
-            <li class="flex items-start gap-2.5">
-              <span
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold"
-                >2</span
-              >
-              <span
-                >Chọn mục
-                <strong class="text-white">Mở bằng trình duyệt</strong> để đăng
-                nhập ngay.</span
-              >
-            </li>
-          </ul>
-
-          <!-- Platform Facebook or Messenger -->
-          <ul
-            v-else-if="
-              webViewInfo.platform === 'Facebook' ||
-              webViewInfo.platform === 'Messenger'
-            "
-            class="space-y-3.5 text-sm text-slate-300 font-medium"
-          >
-            <li class="flex items-start gap-2.5">
-              <span
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold"
-                >1</span
-              >
-              <span
-                >Bấm vào biểu tượng menu
-                <strong class="text-white">Ba chấm &bull;&bull;&bull;</strong> ở
-                góc trên bên phải.</span
-              >
-            </li>
-            <li class="flex items-start gap-2.5">
-              <span
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold"
-                >2</span
-              >
-              <span
-                >Chọn
-                <strong class="text-white">Mở bằng trình duyệt ngoài</strong>
-                hoặc
-                <strong class="text-white">Mở bằng Safari/Chrome</strong>.</span
-              >
-            </li>
-          </ul>
-
-          <!-- Platform Telegram -->
-          <ul
-            v-else-if="webViewInfo.platform === 'Telegram'"
-            class="space-y-3.5 text-sm text-slate-300 font-medium"
-          >
-            <li class="flex items-start gap-2.5">
-              <span
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold"
-                >1</span
-              >
-              <span
-                >Nhấp biểu tượng menu
-                <strong class="text-white">Ba chấm &bull;&bull;&bull;</strong> ở
-                góc trên màn hình.</span
-              >
-            </li>
-            <li class="flex items-start gap-2.5">
-              <span
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold"
-                >2</span
-              >
-              <span
-                >Chọn
-                <strong class="text-white">Mở bằng Safari/Chrome</strong> hoặc
-                nhấp biểu tượng trình duyệt.</span
-              >
-            </li>
-          </ul>
-
-          <!-- Platform TikTok -->
-          <ul
-            v-else-if="webViewInfo.platform === 'TikTok'"
-            class="space-y-3.5 text-sm text-slate-300 font-medium"
-          >
-            <li class="flex items-start gap-2.5">
-              <span
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold"
-                >1</span
-              >
-              <span
-                >Nhấn nút menu chia sẻ hoặc
-                <strong class="text-white">Ba chấm &bull;&bull;&bull;</strong> ở
-                thanh tùy chọn.</span
-              >
-            </li>
-            <li class="flex items-start gap-2.5">
-              <span
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold"
-                >2</span
-              >
-              <span
-                >Chọn
-                <strong class="text-white">Mở bằng trình duyệt</strong>.</span
-              >
-            </li>
-          </ul>
-
-          <!-- Fallback General instruction -->
-          <ul v-else class="space-y-3.5 text-sm text-slate-300 font-medium">
-            <li class="flex items-start gap-2.5">
-              <span
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold"
-                >1</span
-              >
-              <span>Chọn biểu tượng tùy chọn/menu trên ứng dụng của bạn.</span>
-            </li>
-            <li class="flex items-start gap-2.5">
-              <span
-                class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-shopee-orange/20 text-shopee-orange text-xs font-bold"
-                >2</span
-              >
-              <span
-                >Tìm và nhấp vào mục
-                <strong class="text-white">Mở bằng trình duyệt ngoài</strong
-                >.</span
-              >
+        <!-- Step-by-step instructions -->
+        <div class="inapp-steps">
+          <h4 class="inapp-steps-title">Hướng dẫn mở nhanh:</h4>
+          <ul class="inapp-steps-list">
+            <li v-for="(step, i) in platformSteps" :key="i" class="inapp-step">
+              <span class="inapp-step-num">{{ i + 1 }}</span>
+              <span v-html="step"></span>
             </li>
           </ul>
         </div>
 
-        <!-- Actions Area -->
-        <div class="w-full mt-6 flex flex-col gap-3">
-          <!-- Android Dynamic open chrome action -->
-          <UButton
+        <!-- Actions -->
+        <div class="inapp-actions">
+          <a-button
             v-if="webViewInfo.isAndroid"
             @click="redirectToSystemBrowser"
-            size="xl"
             block
-            class="py-4 rounded-2xl bg-gradient-to-r from-shopee-orange to-amber-500 text-white font-bold text-base hover:shadow-lg hover:shadow-shopee-orange/25 border-0"
-            icon="i-lucide-external-link"
+            size="large"
+            class="inapp-btn-primary"
           >
+            <template #icon>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" x2="21" y1="14" y2="3" />
+              </svg>
+            </template>
             Mở trình duyệt mặc định
-          </UButton>
-
-          <!-- IOS Dynamic Copy Link action -->
-          <UButton
-            @click="copyLink"
-            size="xl"
-            block
-            color="neutral"
-            variant="soft"
-            class="py-4 rounded-2xl font-bold text-base"
-            :icon="isCopied ? 'i-lucide-check' : 'i-lucide-copy'"
-          >
+          </a-button>
+          <a-button @click="copyLink" block size="large" class="inapp-btn-copy">
+            <template #icon>
+              <svg
+                v-if="!isCopied"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                <path
+                  d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                />
+              </svg>
+              <svg
+                v-else
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </template>
             {{ isCopied ? "Đã sao chép liên kết!" : "Sao chép liên kết" }}
-          </UButton>
+          </a-button>
         </div>
       </div>
     </div>
@@ -575,16 +357,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useCodeClient } from "vue3-google-signin";
 
-// Disable default layout (Nuxt 4 property)
 definePageMeta({
   layout: false,
   alias: ["/login"],
 });
 
-// SEO Metadata for the login page
 useSeoMeta({
   title: "Đăng nhập | Saffi - Mua hàng, Hoàn Tiền Thật",
   ogTitle: "Đăng nhập | Saffi - Mua hàng, Hoàn Tiền Thật",
@@ -600,8 +380,9 @@ const router = useRouter();
 const config = useRuntimeConfig();
 const { login, fetchUser } = useAuth();
 const errorMessage = ref("");
+const isLoggingIn = ref(false);
+const isCopied = ref(false);
 
-// Reactive state for In-App WebView detection
 const webViewInfo = ref({
   isInApp: false,
   isAndroid: false,
@@ -609,9 +390,57 @@ const webViewInfo = ref({
   platform: "",
 });
 
-const isCopied = ref(false);
+const badges = [
+  {
+    text: "Hoàn tiền cực nhanh",
+    icon: "M13 10V3L4 14h7v7l9-11h-7z",
+    iconColor: "badge-icon--orange",
+  },
+  {
+    text: "Mua sắm tiết kiệm",
+    icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    iconColor: "badge-icon--emerald",
+  },
+  {
+    text: "Bảo mật tuyệt đối",
+    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+    iconColor: "badge-icon--emerald",
+  },
+  {
+    text: "Tích điểm nhanh",
+    icon: "M13 10V3L4 14h7v7l9-11h-7z",
+    iconColor: "badge-icon--amber",
+  },
+];
 
-// Copy link helper for iOS users or fallback
+const platformSteps = computed(() => {
+  const p = webViewInfo.value.platform;
+  if (p === "Zalo")
+    return [
+      "Bấm vào biểu tượng menu <strong>Ba chấm &bull;&bull;&bull;</strong> ở góc trên bên phải.",
+      "Chọn mục <strong>Mở bằng trình duyệt</strong> để đăng nhập ngay.",
+    ];
+  if (p === "Facebook" || p === "Messenger")
+    return [
+      "Bấm vào biểu tượng menu <strong>Ba chấm &bull;&bull;&bull;</strong> ở góc trên bên phải.",
+      "Chọn <strong>Mở bằng trình duyệt ngoài</strong> hoặc <strong>Mở bằng Safari/Chrome</strong>.",
+    ];
+  if (p === "Telegram")
+    return [
+      "Nhấp biểu tượng menu <strong>Ba chấm &bull;&bull;&bull;</strong> ở góc trên màn hình.",
+      "Chọn <strong>Mở bằng Safari/Chrome</strong> hoặc nhấp biểu tượng trình duyệt.",
+    ];
+  if (p === "TikTok")
+    return [
+      "Nhấn nút menu chia sẻ hoặc <strong>Ba chấm &bull;&bull;&bull;</strong> ở thanh tùy chọn.",
+      "Chọn <strong>Mở bằng trình duyệt</strong>.",
+    ];
+  return [
+    "Chọn biểu tượng tùy chọn/menu trên ứng dụng của bạn.",
+    "Tìm và nhấp vào mục <strong>Mở bằng trình duyệt ngoài</strong>.",
+  ];
+});
+
 const copyLink = async () => {
   if (typeof window === "undefined") return;
   try {
@@ -621,7 +450,6 @@ const copyLink = async () => {
       isCopied.value = false;
     }, 2000);
   } catch (err) {
-    // Fallback copy method
     const textArea = document.createElement("textarea");
     textArea.value = window.location.href;
     textArea.style.position = "fixed";
@@ -635,14 +463,13 @@ const copyLink = async () => {
       setTimeout(() => {
         isCopied.value = false;
       }, 2000);
-    } catch (fallbackErr) {
-      console.error("Fallback copy failed: ", fallbackErr);
+    } catch (e) {
+      console.error("Copy failed:", e);
     }
     document.body.removeChild(textArea);
   }
 };
 
-// Auto-redirection helper for Android Chrome
 const redirectToSystemBrowser = () => {
   if (typeof window !== "undefined") {
     const currentUrl = window.location.href.replace(/^https?:\/\//, "");
@@ -651,19 +478,14 @@ const redirectToSystemBrowser = () => {
 };
 
 onMounted(async () => {
-  // Detect if opened inside an In-App Browser (WebView)
   if (typeof window !== "undefined" && window.navigator) {
     const ua = navigator.userAgent || navigator.vendor || window.opera;
-
     const isZalo = ua.indexOf("Zalo") > -1;
     const isFacebook = ua.indexOf("FBAN") > -1 || ua.indexOf("FBAV") > -1;
-    const isMessenger =
-      ua.indexOf("Messenger") > -1 ||
-      (isFacebook && ua.indexOf("Messenger") > -1);
+    const isMessenger = ua.indexOf("Messenger") > -1;
     const isInstagram = ua.indexOf("Instagram") > -1;
     const isTikTok = ua.indexOf("TikTok") > -1;
     const isTelegram = ua.indexOf("Telegram") > -1;
-
     const isInApp =
       isZalo ||
       isFacebook ||
@@ -691,13 +513,9 @@ onMounted(async () => {
         : "In-App Browser",
     };
 
-    // Auto redirect Android users straight to external Chrome browser
-    if (isInApp && webViewInfo.value.isAndroid) {
-      redirectToSystemBrowser();
-    }
+    if (isInApp && webViewInfo.value.isAndroid) redirectToSystemBrowser();
   }
 
-  // Check if we got an authorization code from Google redirect callback
   const id_token = route.query.id_token;
   const code = route.query.code;
 
@@ -706,31 +524,18 @@ onMounted(async () => {
     isLoggingIn.value = true;
     try {
       const { api } = useAppFetch();
-      const res = await api.post(`/auth/google`, {
-        body: { id_token: id_token },
-      });
-
+      const res = await api.post(`/auth/google`, { body: { id_token } });
       if (res && res.data && res.data.token) {
-        const sanctumToken = res.data.token;
-        const authUser = res.data.user;
-
-        // Lưu thông tin xác thực vào Cookie & State
-        login(sanctumToken, authUser);
-
-        // Đồng bộ dữ liệu mới nhất
-        await fetchUser(sanctumToken);
-
-        // Xóa id_token khỏi query URL và chuyển hướng về trang chủ
+        login(res.data.token, res.data.user);
+        await fetchUser(res.data.token);
         router.replace({ query: { ...route.query, id_token: undefined } });
         router.push("/");
-      } else {
-        throw new Error("Không thể trích xuất token đăng nhập từ hệ thống.");
-      }
+      } else throw new Error("Không thể trích xuất token.");
     } catch (error) {
-      console.error("Lỗi xác thực Google:", error);
+      console.error("Lỗi xác thực:", error);
       errorMessage.value = getFriendlyErrorMessage(
         error,
-        "Xác thực với tài khoản Google thất bại. Vui lòng thử lại."
+        "Xác thực thất bại. Vui lòng thử lại."
       );
       isLoggingIn.value = false;
       router.replace({ query: { ...route.query, id_token: undefined } });
@@ -740,100 +545,58 @@ onMounted(async () => {
     isLoggingIn.value = true;
     try {
       const { api } = useAppFetch();
-      const res = await api.post(`/auth/google`, {
-        code: code,
-      });
-
+      const res = await api.post(`/auth/google`, { code });
       if (res && res.data && res.data.token) {
-        const sanctumToken = res.data.token;
-        const authUser = res.data.user;
-
-        // Lưu thông tin xác thực vào Cookie & State
-        login(sanctumToken, authUser);
-
-        // Đồng bộ dữ liệu mới nhất
-        await fetchUser(sanctumToken);
-
-        // Xóa code khỏi query URL và chuyển hướng về trang chủ
+        login(res.data.token, res.data.user);
+        await fetchUser(res.data.token);
         router.replace({ query: { ...route.query, code: undefined } });
         router.push("/");
-      } else {
-        throw new Error("Không thể trích xuất token đăng nhập từ hệ thống.");
-      }
+      } else throw new Error("Không thể trích xuất token.");
     } catch (error) {
-      console.error("Lỗi xác thực Google:", error);
+      console.error("Lỗi xác thực:", error);
       errorMessage.value = getFriendlyErrorMessage(
         error,
-        "Xác thực với tài khoản Google thất bại. Vui lòng thử lại."
+        "Xác thực thất bại. Vui lòng thử lại."
       );
       isLoggingIn.value = false;
       router.replace({ query: { ...route.query, code: undefined } });
     }
   }
 
-  // Check for auth errors passed via callback URL params
   if (route.query.error) {
-    if (
+    errorMessage.value =
       route.query.error === "OAuthCallbackError" ||
       route.query.error === "OAuthError"
-    ) {
-      errorMessage.value =
-        "Không thể kết nối hoặc xác thực với tài khoản Google. Vui lòng thử lại.";
-    } else {
-      errorMessage.value =
-        "Có lỗi xảy ra trong quá trình xác thực đăng nhập. Vui lòng thử lại.";
-    }
-
-    // Xóa tham số error khỏi URL để tránh hiển thị lại khi F5 (làm mới trang)
+        ? "Không thể kết nối hoặc xác thực với tài khoản Google. Vui lòng thử lại."
+        : "Có lỗi xảy ra trong quá trình xác thực đăng nhập. Vui lòng thử lại.";
     router.replace({ query: { ...route.query, error: undefined } });
   }
 });
 
-const isLoggingIn = ref(false);
-
-// Google One-Tap integration
 useOneTap({
   use_fedcm: true,
   onSuccess: async (response) => {
-    if (response.credential) {
-      await handleLoginWithToken(response.credential);
-    }
+    if (response.credential) await handleLoginWithToken(response.credential);
   },
-  onError: (error) => {
-    console.error("Google One Tap error:", error);
-  },
+  onError: (error) => console.error("Google One Tap error:", error),
 });
 
 const handleLoginWithToken = async (credential) => {
   errorMessage.value = "";
   isLoggingIn.value = true;
-
   try {
     const { api } = useAppFetch();
-    const res = await api.post(`/auth/google`, {
-      id_token: credential,
-    });
-
+    const res = await api.post(`/auth/google`, { id_token: credential });
     if (res && res.data && res.data.token) {
-      const sanctumToken = res.data.token;
-      const authUser = res.data.user;
-
-      // Lưu thông tin xác thực vào Cookie & State
-      login(sanctumToken, authUser);
-
-      // Đồng bộ dữ liệu mới nhất
-      await fetchUser(sanctumToken);
-
-      // Chuyển hướng về trang chủ
+      login(res.data.token, res.data.user);
+      await fetchUser(res.data.token);
       router.push("/");
-    } else {
-      throw new Error("Không thể trích xuất token đăng nhập từ hệ thống.");
-    }
+    } else throw new Error("Không thể trích xuất token.");
   } catch (error) {
-    console.error("Lỗi xác thực Google:", error);
+    console.error("Lỗi xác thực:", error);
     errorMessage.value = getFriendlyErrorMessage(
       error,
-      "Xác thực với tài khoản Google thất bại. Vui lòng thử lại."
+      "Xác thực thất bại. Vui lòng thử lại."
     );
     isLoggingIn.value = false;
   }
@@ -845,31 +608,16 @@ const { isReady, login: triggerGoogleLogin } = useCodeClient({
     isLoggingIn.value = true;
     try {
       const { api } = useAppFetch();
-      const res = await api.post(`/auth/google`, {
-        code: response.code,
-      });
-
+      const res = await api.post(`/auth/google`, { code: response.code });
       if (res && res.data && res.data.token) {
-        const sanctumToken = res.data.token;
-        const authUser = res.data.user;
-
-        // Lưu thông tin xác thực vào Cookie & State
-        login(sanctumToken, authUser);
-
-        // Đồng bộ dữ liệu mới nhất
-        await fetchUser(sanctumToken);
-
-        // Chuyển hướng về trang chủ
+        login(res.data.token, res.data.user);
+        await fetchUser(res.data.token);
         router.push("/");
-      } else {
-        throw new Error("Không thể trích xuất token đăng nhập từ hệ thống.");
-      }
+      } else throw new Error("Không thể trích xuất token.");
     } catch (error) {
-      console.error("Lỗi xác thực Google:", error);
-      errorMessage.value = getFriendlyErrorMessage(
-        error,
-        "Xác thực với tài khoản Google thất bại. Vui lòng thử lại."
-      );
+      console.error("Lỗi Google Sign-In:", error);
+      errorMessage.value =
+        "Không thể kết nối hoặc xác thực với tài khoản Google. Vui lòng thử lại.";
       isLoggingIn.value = false;
     }
   },
@@ -881,42 +629,52 @@ const { isReady, login: triggerGoogleLogin } = useCodeClient({
   },
 });
 
-// Google login redirect trigger
 const handleGoogleLogin = () => {
   if (webViewInfo.value.isInApp) {
     errorMessage.value =
       "Bạn đang sử dụng trình duyệt in-app. Vui lòng nhấn nút mở trình duyệt ngoài để đăng nhập an toàn.";
     return;
   }
-
   if (isLoggingIn.value) return;
   errorMessage.value = "";
-
   if (typeof window !== "undefined") {
     const redirectUri = `${window.location.origin}/dang-nhap`;
-    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${config.public.googleClientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=openid%20email%20profile`;
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${
+      config.public.googleClientId
+    }&redirect_uri=${encodeURIComponent(
+      redirectUri
+    )}&response_type=code&scope=openid%20email%20profile`;
     window.location.href = googleAuthUrl;
   }
 };
 </script>
 
 <style scoped>
-/* Hidden scrollbar styling for badges slider */
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-none {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow-x: hidden;
+  background: #f8fafc;
 }
 
-/* Custom premium transitions */
-.transition-premium {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+@media (min-width: 768px) {
+  .login-page {
+    padding: 2rem;
+  }
 }
 
-/* Custom grid dots using CSS background variables */
-.dotted-grid {
+/* Dotted grid */
+.login-dotted-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
   background-image: radial-gradient(
     rgba(148, 163, 184, 0.12) 1.5px,
     transparent 1.5px
@@ -934,36 +692,147 @@ const handleGoogleLogin = () => {
   );
 }
 
-.dark .dotted-grid {
-  background-image: radial-gradient(
-    rgba(71, 85, 105, 0.22) 1.5px,
-    transparent 1.5px
-  );
+.login-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.animate-pulse-slow {
-  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.login-glow--orange {
+  top: -10%;
+  left: -10%;
+  width: 60%;
+  height: 60%;
+  background: rgba(238, 77, 45, 0.05);
+  filter: blur(120px);
+}
+.login-glow--amber {
+  bottom: -10%;
+  right: -10%;
+  width: 60%;
+  height: 60%;
+  background: rgba(245, 158, 11, 0.05);
+  filter: blur(120px);
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
+.login-container {
+  width: 100%;
+  max-width: 32rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  position: relative;
+}
+
+/* Brand */
+.login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 112px;
+  height: 112px;
+  margin-bottom: 1rem;
+  transition: transform 0.5s ease;
+  user-select: none;
+}
+
+.login-logo:hover {
+  transform: rotate(12deg);
+}
+
+.login-logo-img {
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.login-slogan {
+  font-size: 26px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 1.5rem 0 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 768px) {
+  .login-slogan {
+    font-size: 32px;
   }
-  50% {
-    opacity: 0.6;
+}
+
+.login-slogan-highlight {
+  background: linear-gradient(to right, #ee4d2d, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-tagline {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .login-tagline {
+    font-size: 16px;
   }
 }
 
-.text-2xs {
-  font-size: 0.78rem;
+/* Marquee */
+.marquee-wrap {
+  width: 100%;
+  max-width: 28rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  position: relative;
 }
 
-.text-3xs {
-  font-size: 0.68rem;
+.marquee-fade {
+  position: absolute;
+  inset-block: 0;
+  width: 2rem;
+  z-index: 10;
+  pointer-events: none;
 }
 
-.animate-marquee-left {
+.marquee-fade--left {
+  left: 0;
+  background: linear-gradient(to right, #f8fafc, transparent);
+}
+.marquee-fade--right {
+  right: 0;
+  background: linear-gradient(to left, #f8fafc, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  padding: 4px 0;
+}
+
+.marquee-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  padding-right: 0.75rem;
+}
+
+.marquee-scroll {
   animation: scroll-left 12s linear infinite;
 }
 
@@ -976,7 +845,417 @@ const handleGoogleLogin = () => {
   }
 }
 
-.group:hover .animate-marquee-left {
+.marquee-track:hover .marquee-scroll {
   animation-play-state: paused;
+}
+
+.badge-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  background: white;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.badge-chip-icon {
+  width: 16px;
+  height: 16px;
+}
+.badge-icon--orange {
+  color: #f97316;
+}
+.badge-icon--emerald {
+  color: #10b981;
+}
+.badge-icon--amber {
+  color: #f59e0b;
+}
+
+/* Login Card */
+.login-card {
+  width: 100%;
+  max-width: 28rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .login-card {
+    backdrop-filter: none;
+    background: white;
+  }
+}
+
+@media (min-width: 768px) {
+  .login-card {
+    padding: 2rem;
+  }
+}
+
+.login-alert {
+  border-radius: 1rem !important;
+}
+
+.login-btn-wrap {
+  /* Google button container */
+}
+
+.login-google-btn {
+  width: 100% !important;
+  height: 52px !important;
+  border-radius: 1rem !important;
+  border: 1px solid #e2e8f0 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #334155 !important;
+  background: white !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+}
+
+.login-google-btn:hover {
+  border-color: #ee4d2d !important;
+}
+
+.google-logo {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.login-google-btn-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.login-security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+  margin: 0;
+}
+
+.login-terms {
+  font-size: 12px;
+  color: #94a3b8;
+  text-align: center;
+  line-height: 1.6;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+  padding-bottom: 1.25rem;
+  margin: 0;
+}
+
+.login-terms-link {
+  color: #ee4d2d;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-terms-link:hover {
+  text-decoration: underline;
+}
+
+.login-socials {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.login-socials-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.login-socials-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.login-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.login-social-btn--primary {
+  background: rgba(238, 77, 45, 0.1);
+  color: #ee4d2d;
+}
+
+.login-social-btn--primary:hover {
+  background: #ee4d2d;
+  color: white;
+  transform: scale(1.1);
+}
+
+.login-social-btn--red {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.login-social-btn--red:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* In-App Browser Overlay */
+.inapp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(9, 13, 22, 0.9);
+  backdrop-filter: blur(20px);
+  overflow-y: auto;
+}
+
+.inapp-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.inapp-glow--orange {
+  top: 25%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 350px;
+  background: rgba(238, 77, 45, 0.2);
+  filter: blur(100px);
+}
+.inapp-glow--amber {
+  bottom: 25%;
+  right: 25%;
+  transform: translate(50%, 50%);
+  width: 350px;
+  height: 350px;
+  background: rgba(245, 158, 11, 0.2);
+  filter: blur(100px);
+}
+
+.inapp-card {
+  width: 100%;
+  max-width: 28rem;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(51, 65, 85, 1);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .inapp-card {
+    padding: 2rem;
+  }
+}
+
+.inapp-alert-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #ee4d2d, #f59e0b);
+  box-shadow: 0 8px 24px rgba(238, 77, 45, 0.2);
+  margin-bottom: 1.5rem;
+  animation: pulse-slow 3s infinite;
+}
+
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.inapp-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -0.025em;
+  margin: 0 0 8px;
+}
+
+@media (min-width: 768px) {
+  .inapp-title {
+    font-size: 24px;
+  }
+}
+
+.inapp-platform {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ee4d2d;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(238, 77, 45, 0.1);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  margin: 0 0 1rem;
+}
+
+.inapp-desc {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.inapp-desc strong {
+  color: white;
+}
+
+.inapp-steps {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  background: rgba(9, 13, 22, 0.5);
+  border: 1px solid rgba(51, 65, 85, 1);
+  text-align: left;
+}
+
+.inapp-steps-title {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #64748b;
+  margin: 0 0 0.75rem;
+}
+
+.inapp-steps-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.inapp-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.inapp-step strong {
+  color: white;
+}
+
+.inapp-step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(238, 77, 45, 0.2);
+  color: #ee4d2d;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.inapp-actions {
+  width: 100%;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.inapp-btn-primary {
+  height: 52px !important;
+  background: linear-gradient(to right, #ee4d2d, #f59e0b) !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  border-radius: 1rem !important;
+}
+
+.inapp-btn-copy {
+  height: 52px !important;
+  border-radius: 1rem !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  background: rgba(30, 41, 59, 0.8) !important;
+  border: 1px solid rgba(51, 65, 85, 1) !important;
+  color: #94a3b8 !important;
+}
+
+/* Transitions */
+.overlay-enter-active {
+  transition: all 0.4s ease;
+}
+.overlay-enter-from {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.overlay-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+.overlay-leave-active {
+  transition: all 0.3s ease-in;
+}
+.overlay-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+.overlay-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
 }
 </style>

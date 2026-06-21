@@ -1,15 +1,10 @@
-@import "tailwindcss";
-@import "@nuxt/ui";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Bulletproof Kill-Switch for compiled dark mode utility classes across the application */
-@custom-variant dark (&:where(.never-use-dark-mode, .never-use-dark-mode *));
 
-@theme {
-  --color-shopee-orange: #EE4D2D;
-  --color-shopee-orange-hover: #F05D40;
-  --color-shopee-orange-light: #FFEEEB;
-  --color-shopee-dark: #0F172A;
-  --color-shopee-dark-card: #1E293B;
+
+:root {
   --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
 }
 
@@ -25,7 +20,6 @@ body {
   background-color: #F8FAFC; /* Light mode default */
   color: #0F172A; /* Light mode default */
   overflow-x: hidden;
-  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* Khoảng đệm dưới của body trên di động để tránh bị thanh Bottom Navigation Bar che lấp nội dung */
@@ -62,23 +56,14 @@ body {
   }
 
   /* Force hardware acceleration on key animation layers */
-  .animate-fade-in-up, .animate-fade-in, img, button {
+  img, button {
     will-change: transform, opacity;
     transform: translateZ(0);
     backface-visibility: hidden;
   }
-  
-  /* Giảm các hoạt ảnh bay lơ lửng, pulse liên tục trên mobile */
-  .animate-float, .animate-pulse {
-    animation: none !important;
-    transform: translateZ(0) !important;
-  }
 }
 
-/* Custom premium transitions */
-.transition-premium {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+
 
 /* Glassmorphism utility card */
 .glass-panel {
@@ -87,7 +72,6 @@ body {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.03);
-  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 /* Glow effects */
@@ -101,123 +85,6 @@ body {
 
 .glow-orange-button:hover {
   box-shadow: 0 6px 30px rgba(238, 77, 45, 0.45);
-}
-
-/* Animate skeleton pulse */
-@keyframes skeleton-shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.shimmer-bg {
-  background: linear-gradient(90deg, rgba(226, 232, 240, 0.8) 25%, rgba(203, 213, 225, 0.9) 37%, rgba(226, 232, 240, 0.8) 63%);
-  background-size: 400% 100%;
-  animation: skeleton-shimmer 1.8s ease-in-out infinite;
-}
-
-/* Interactive focus glow */
-.input-focus-glow:focus {
-  outline: none;
-  border-color: #EE4D2D;
-  box-shadow: 0 0 15px rgba(238, 77, 45, 0.2);
-}
-
-/* Fade up and slide animations */
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* --- Nuxt Page & Layout Transitions --- */
-.page-enter-active,
-.page-leave-active {
-  transition: opacity 0.1s cubic-bezier(0.4, 0, 0.2, 1), transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.page-enter-from {
-  opacity: 0;
-  transform: translateY(2px);
-}
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(-2px);
-}
-
-.layout-enter-active,
-.layout-leave-active {
-  transition: opacity 0.1s ease;
-}
-.layout-enter-from,
-.layout-leave-to {
-  opacity: 0;
-}
-
-/* Premium UModal Animations (Spring & Fade) */
-@keyframes modal-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes modal-fade-out {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-@keyframes modal-scale-in {
-  from {
-    opacity: 0;
-    scale: 0.96;
-  }
-  to {
-    opacity: 1;
-    scale: 1;
-  }
-}
-
-@keyframes modal-scale-out {
-  from {
-    opacity: 1;
-    scale: 1;
-  }
-  to {
-    opacity: 0;
-    scale: 0.96;
-  }
-}
-
-/* Target Dialog Overlays and Contents */
-div[class*="bg-slate-950/20"],
-div[class*="bg-neutral-950/"],
-div[class*="backdrop-blur-"] {
-  &[data-state="open"] {
-    animation: modal-fade-in 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-  }
-  &[data-state="closed"] {
-    animation: modal-fade-out 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-  }
-}
-
-/* Nuxt UI v3 modal panels */
-div[role="dialog"] {
-  &[data-state="open"] {
-    animation: modal-scale-in 320ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
-  }
-  &[data-state="closed"] {
-    animation: modal-scale-out 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-  }
 }
 
 

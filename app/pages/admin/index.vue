@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6 animate-in fade-in duration-500 pb-12">
+  <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
@@ -11,91 +11,66 @@
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <!-- Total Users -->
-      <UCard
-        :ui="{
-          body: 'p-5 flex items-center gap-4',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
+      <div
+        class="p-5 flex items-center gap-4 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm"
       >
         <div class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-650 dark:text-indigo-400 flex items-center justify-center shrink-0">
-          <UIcon name="i-lucide-users" class="h-5 w-5" />
+          <TeamOutlined class="text-[20px]" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng Users</div>
           <div class="text-xl font-bold text-slate-800 dark:text-white mt-0.5 tracking-tight">1,248</div>
         </div>
-      </UCard>
+      </div>
 
       <!-- Successful Orders -->
-      <UCard
-        :ui="{
-          body: 'p-5 flex items-center gap-4',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
+      <div
+        class="p-5 flex items-center gap-4 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm"
       >
         <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-650 dark:text-emerald-400 flex items-center justify-center shrink-0">
-          <UIcon name="i-lucide-circle-check" class="h-5 w-5" />
+          <CheckCircleOutlined class="text-[20px]" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Đơn thành công</div>
           <div class="text-xl font-bold text-slate-800 dark:text-white mt-0.5 tracking-tight">856</div>
         </div>
-      </UCard>
+      </div>
 
       <!-- Total Commission -->
-      <UCard
-        :ui="{
-          body: 'p-5 flex items-center gap-4',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
+      <div
+        class="p-5 flex items-center gap-4 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm"
       >
         <div class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-650 dark:text-amber-400 flex items-center justify-center shrink-0">
-          <UIcon name="i-lucide-banknote" class="h-5 w-5" />
+          <BankOutlined class="text-[20px]" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tổng Hoa hồng</div>
           <div class="text-xl font-bold text-slate-800 dark:text-white mt-0.5 tracking-tight">42.5M</div>
         </div>
-      </UCard>
+      </div>
 
       <!-- Pending Orders -->
-      <UCard
-        :ui="{
-          body: 'p-5 flex items-center gap-4',
-          ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-          background: 'bg-white dark:bg-slate-900',
-          rounded: 'rounded-xl shadow-sm'
-        }"
+      <div
+        class="p-5 flex items-center gap-4 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-xl shadow-sm"
       >
         <div class="w-10 h-10 rounded-lg bg-rose-50 dark:bg-rose-900/30 text-rose-650 dark:text-rose-450 flex items-center justify-center shrink-0">
-          <UIcon name="i-lucide-clock" class="h-5 w-5" />
+          <ClockCircleOutlined class="text-[20px]" />
         </div>
         <div>
           <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Đơn chờ duyệt</div>
           <div class="text-xl font-bold text-slate-800 dark:text-white mt-0.5 tracking-tight">142</div>
         </div>
-      </UCard>
+      </div>
     </div>
 
     <!-- Leaderboard Section -->
-    <UCard
-      :ui="{
-        body: 'p-6 md:p-8',
-        ring: 'ring-1 ring-slate-200 dark:ring-slate-800',
-        background: 'bg-white dark:bg-slate-900',
-        rounded: 'rounded-2xl shadow-sm'
-      }"
-      class="relative overflow-hidden mt-2"
+    <!-- Leaderboard Section -->
+    <div
+      class="p-6 md:p-8 ring-1 ring-slate-200 dark:ring-slate-800 bg-white dark:bg-slate-900 rounded-2xl shadow-sm relative overflow-hidden mt-2"
     >
       <!-- Decorative Background Icon -->
       <div class="absolute top-0 right-0 p-8 opacity-[0.03] dark:opacity-[0.02] pointer-events-none scale-150 transform translate-x-10 -translate-y-10">
-        <UIcon name="i-lucide-sparkles" class="w-[200px] h-[200px]" />
+        <StarOutlined class="text-[200px]" />
       </div>
 
       <!-- Header & Tabs -->
@@ -103,7 +78,7 @@
         <!-- Title -->
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-amber-50 dark:bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center shrink-0">
-            <UIcon name="i-lucide-sparkles" class="h-6 w-6" />
+            <StarOutlined class="text-[24px]" />
           </div>
           <h3 class="text-xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight">Bảng Xếp Hạng</h3>
         </div>
@@ -121,34 +96,32 @@
             leave-to-class="opacity-0 scale-95 translate-x-4 max-w-0"
           >
             <div v-show="activeTab === 'monthly'" class="relative shrink-0 z-10 w-full sm:w-auto">
-              <UInput 
-                type="month" 
-                v-model="selectedMonth" 
-                size="md"
-                class="w-full sm:w-auto font-bold"
-                :ui="{ rounded: 'rounded-full' }"
+              <a-date-picker 
+                picker="month" 
+                v-model:value="selectedMonthObj"
+                size="middle"
+                class="w-full sm:w-auto font-bold rounded-full"
+                format="YYYY-MM"
               />
             </div>
           </transition>
 
           <!-- Pill Tabs -->
           <div class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-full border border-slate-200/50 dark:border-slate-700/50 relative z-20 shrink-0">
-            <UButton 
+            <a-button 
               @click="activeTab = 'allTime'"
-              :variant="activeTab === 'allTime' ? 'solid' : 'ghost'"
-              :color="activeTab === 'allTime' ? 'primary' : 'neutral'"
-              class="px-6 py-2 text-sm font-bold rounded-full"
+              :type="activeTab === 'allTime' ? 'primary' : 'text'"
+              class="px-6 rounded-full font-bold shadow-none"
             >
               Tất Cả
-            </UButton>
-            <UButton 
+            </a-button>
+            <a-button 
               @click="activeTab = 'monthly'"
-              :variant="activeTab === 'monthly' ? 'solid' : 'ghost'"
-              :color="activeTab === 'monthly' ? 'primary' : 'neutral'"
-              class="px-6 py-2 text-sm font-bold rounded-full"
+              :type="activeTab === 'monthly' ? 'primary' : 'text'"
+              class="px-6 rounded-full font-bold shadow-none"
             >
               Tháng Này
-            </UButton>
+            </a-button>
           </div>
         </div>
       </div>
@@ -157,12 +130,12 @@
       <div class="relative min-h-[400px]">
         <!-- Loading State -->
         <div v-if="pendingLeaderboard" class="absolute inset-0 flex flex-col gap-3">
-          <USkeleton v-for="i in 5" :key="i" class="h-20 rounded-2xl" />
+          <div v-for="i in 5" :key="i" class="h-20 bg-slate-200 dark:bg-slate-700 rounded-2xl animate-pulse"></div>
         </div>
 
         <!-- Empty State -->
         <div v-else-if="!currentData || currentData.length === 0" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 gap-3">
-          <UIcon name="i-lucide-trending-up" class="h-12 w-12 text-slate-300 dark:text-slate-700" />
+          <LineChartOutlined class="text-[48px] text-slate-300 dark:text-slate-700" />
           <p class="text-sm font-medium">Chưa có dữ liệu thống kê trong khoảng thời gian này</p>
         </div>
 
@@ -220,17 +193,19 @@
               :class="idx <= 2 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-700 dark:text-slate-300'"
             >
               {{ formatMoney(user.totalCommission) }}
-              <UIcon name="i-lucide-dollar-sign" class="h-4 w-4 sm:h-5 sm:w-5 opacity-40 text-emerald-600 dark:text-emerald-400" />
+              <DollarOutlined class="text-[18px] opacity-40 text-emerald-600 dark:text-emerald-400" />
             </div>
           </div>
         </div>
       </div>
-    </UCard>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
+import { TeamOutlined, CheckCircleOutlined, BankOutlined, ClockCircleOutlined, StarOutlined, LineChartOutlined, DollarOutlined } from "@ant-design/icons-vue";
+import dayjs from "dayjs";
 
 definePageMeta({
   layout: "admin"
@@ -245,6 +220,14 @@ const activeTab = ref('allTime'); // 'monthly' or 'allTime'
 const now = new Date();
 const currentMonthStr = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}`;
 const selectedMonth = ref(currentMonthStr);
+const selectedMonthObj = ref(dayjs(currentMonthStr));
+
+// Watcher for a-date-picker to update selectedMonth string
+watch(selectedMonthObj, (newVal) => {
+  if (newVal) {
+    selectedMonth.value = newVal.format('YYYY-MM');
+  }
+});
 
 const pendingLeaderboard = ref(true);
 const leaderboardData = ref({ allTime: [], monthly: [] });
