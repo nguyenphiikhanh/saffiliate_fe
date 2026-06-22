@@ -1,26 +1,22 @@
 <template>
-  <div class="layout-root">
-    <!-- Premium background decoration (disabled on mobile via CSS) -->
-    <div class="bg-decoration blur-decoration" style="position:absolute;top:-10%;left:-10%;width:50%;height:50%;border-radius:50%;background:rgba(238,77,45,0.05);filter:blur(120px);pointer-events:none"></div>
-    <div class="bg-decoration blur-decoration" style="position:absolute;bottom:-10%;right:-10%;width:50%;height:50%;border-radius:50%;background:rgba(245,158,11,0.05);filter:blur(120px);pointer-events:none"></div>
-
+  <a-layout class="min-h-screen font-sans" style="background: var(--bg-color)">
     <!-- Header -->
     <AppHeader />
 
     <!-- Main Content Area -->
-    <main class="layout-main">
+    <a-layout-content class="w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10 flex flex-col">
       <!-- Dynamic Breadcrumb Navigation -->
-      <Breadcrumb />
+      <Breadcrumb class="mb-4" />
 
       <!-- Inner page contents container -->
-      <div class="layout-content">
+      <div class="flex-1 w-full flex flex-col">
         <slot />
       </div>
-    </main>
+    </a-layout-content>
 
     <!-- Footer -->
     <AppFooter />
-  </div>
+  </a-layout>
 </template>
 
 <script setup>
@@ -35,43 +31,16 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.layout-root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background: transparent;
-  position: relative;
-  overflow: hidden;
+/* CSS Variables for Dark Mode */
+html {
+  --bg-color: #f8fafc; /* slate-50 */
 }
 
-.layout-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 1.5rem 1rem;
-  position: relative;
-  z-index: 10;
+html.dark {
+  --bg-color: #020617; /* slate-950 */
 }
 
-@media (min-width: 768px) {
-  .layout-main {
-    padding: 2.5rem 1.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .layout-main {
-    padding: 2.5rem 2rem;
-  }
-}
-
-.layout-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+:deep(.ant-layout) {
+  background: transparent !important;
 }
 </style>

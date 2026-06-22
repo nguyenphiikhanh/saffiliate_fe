@@ -1,431 +1,204 @@
 <template>
-  <div class="w-full space-y-6">
+  <div class="w-full">
     <!-- Page Title & Header -->
-    <div class="mt-6">
-      <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-        Quản Lý <span class="text-shopee-orange">Tài Chính</span>
+    <div class="mb-6">
+      <h1 class="text-2xl font-black tracking-tight text-slate-800 dark:text-slate-100">
+        Quản Lý Tài Chính
       </h1>
-      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">
+      <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-1">
         Yêu cầu rút số dư hoa hồng tích lũy về tài khoản ngân hàng của bạn cực kỳ nhanh chóng.
       </p>
     </div>
 
     <!-- Financial Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-      <!-- Card 1: Khả dụng -->
-      <div
-        class="p-6 ring-1 ring-slate-100 dark:ring-slate-800/60 bg-gradient-to-br from-shopee-orange/5 to-transparent dark:from-shopee-orange/10 dark:bg-slate-900/40 rounded-3xl shadow-lg shadow-slate-900/[0.02] dark:shadow-slate-950/10"
-      >
-        <div class="flex items-center justify-between gap-3">
-          <span class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">
-            Số dư khả dụng
-          </span>
-          <div class="h-10 w-10 rounded-xl bg-orange-500/10 text-shopee-orange flex items-center justify-center shrink-0">
-            <BankOutlined class="text-[20px]" />
-          </div>
-        </div>
-        <p class="text-4xl font-black text-slate-800 dark:text-white mt-4 leading-none">
-          {{ formatMoney(availableBalance) }}
-        </p>
-        <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-3 font-semibold">
-          Có thể thanh toán
-        </p>
-      </div>
-
-      <!-- Card 2: Chờ xử lý -->
-      <div
-        class="p-6 ring-1 ring-slate-100 dark:ring-slate-800/60 bg-white dark:bg-slate-900/40 rounded-3xl shadow-lg shadow-slate-900/[0.02] dark:shadow-slate-950/10"
-      >
-        <div class="flex items-center justify-between gap-3">
-          <span class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">
-            Chờ xử lý
-          </span>
-          <div class="h-10 w-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
-            <ClockCircleOutlined class="text-[20px]" />
-          </div>
-        </div>
-        <p class="text-4xl font-black text-slate-800 dark:text-white mt-4 leading-none">
-          {{ formatMoney(pendingBalance) }}
-        </p>
-        <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-3 font-semibold">
-          Chờ rút tiền
-        </p>
-      </div>
-
-      <!-- Card 3: Đã thanh toán -->
-      <div
-        class="p-6 ring-1 ring-slate-100 dark:ring-slate-800/60 bg-white dark:bg-slate-900/40 rounded-3xl shadow-lg shadow-slate-900/[0.02] dark:shadow-slate-950/10"
-      >
-        <div class="flex items-center justify-between gap-3">
-          <span class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">
-            Đã thanh toán
-          </span>
-          <div class="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
-            <CheckCircleOutlined class="text-[20px]" />
-          </div>
-        </div>
-        <p class="text-4xl font-black text-slate-800 dark:text-white mt-4 leading-none">
-          {{ formatMoney(totalWithdrawn) }}
-        </p>
-        <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-3 font-semibold">
-          Saffi đã thanh toán cho bạn
-        </p>
-      </div>
-    </div>
-
-    <!-- Card: Bank Account Linked Info -->
-    <div
-      class="p-6 ring-1 ring-slate-100 dark:ring-slate-800/60 bg-white dark:bg-slate-900/40 rounded-3xl shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/10 mt-8"
-    >
-      <div v-if="isBankLoading" class="flex flex-col gap-4">
-        <!-- Skeleton Loading -->
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-            <div class="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
-          </div>
-          <div class="h-4 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-4">
-          <div class="flex flex-col gap-2" v-for="i in 3" :key="i">
-            <div class="h-3 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
-            <div class="h-4 w-32 bg-slate-200 dark:bg-slate-700 rounded"></div>
-          </div>
-        </div>
-      </div>
-
-      <div v-else-if="bankAccountInfo" class="w-full">
-        <!-- Bank linked display -->
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="h-10 w-10 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center border border-slate-100 dark:border-slate-700 shrink-0 text-slate-500 dark:text-slate-400">
-              <BankOutlined class="text-[20px]" />
+    <a-row :gutter="[24, 24]" class="mb-8">
+      <!-- Khả dụng -->
+      <a-col :xs="24" :md="8">
+        <a-card :bordered="false" class="rounded-2xl shadow-sm bg-orange-50 dark:bg-orange-950/20">
+          <div class="flex justify-between items-start mb-4">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Số dư khả dụng</span>
+            <div class="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/40 text-[#ee4d2d] flex items-center justify-center text-xl">
+              <BankOutlined />
             </div>
-            <h3 class="text-sm font-black text-slate-800 dark:text-slate-200 leading-tight">
-              Tài khoản đối soát
-            </h3>
+          </div>
+          <div class="text-3xl font-black text-slate-800 dark:text-slate-100">{{ formatMoney(availableBalance) }}</div>
+          <div class="text-[10px] text-slate-400 font-bold mt-2">Có thể thanh toán</div>
+        </a-card>
+      </a-col>
+
+      <!-- Chờ xử lý -->
+      <a-col :xs="24" :md="8">
+        <a-card :bordered="false" class="rounded-2xl shadow-sm bg-white dark:bg-slate-900">
+          <div class="flex justify-between items-start mb-4">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Chờ xử lý</span>
+            <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/20 text-amber-500 flex items-center justify-center text-xl">
+              <ClockCircleOutlined />
+            </div>
+          </div>
+          <div class="text-3xl font-black text-slate-800 dark:text-slate-100">{{ formatMoney(pendingBalance) }}</div>
+          <div class="text-[10px] text-slate-400 font-bold mt-2">Chờ rút tiền</div>
+        </a-card>
+      </a-col>
+
+      <!-- Đã thanh toán -->
+      <a-col :xs="24" :md="8">
+        <a-card :bordered="false" class="rounded-2xl shadow-sm bg-white dark:bg-slate-900">
+          <div class="flex justify-between items-start mb-4">
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Đã thanh toán</span>
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 flex items-center justify-center text-xl">
+              <CheckCircleOutlined />
+            </div>
+          </div>
+          <div class="text-3xl font-black text-slate-800 dark:text-slate-100">{{ formatMoney(totalWithdrawn) }}</div>
+          <div class="text-[10px] text-slate-400 font-bold mt-2">Saffi đã thanh toán cho bạn</div>
+        </a-card>
+      </a-col>
+    </a-row>
+
+    <!-- Bank Account Linked Info -->
+    <a-card :bordered="false" class="mb-8 rounded-2xl shadow-sm bg-white dark:bg-slate-900">
+      <a-skeleton active :loading="isBankLoading">
+        <div v-if="bankAccountInfo">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 text-slate-500">
+                <BankOutlined class="text-lg" />
+              </div>
+              <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">Tài khoản đối soát</h3>
+            </div>
+            <NuxtLink to="/ho-so">
+              <a-button type="text" size="small" class="font-bold text-xs text-blue-500">
+                <template #icon><EditOutlined /></template>
+                Chỉnh sửa
+              </a-button>
+            </NuxtLink>
+          </div>
+
+          <a-row :gutter="16">
+            <a-col :xs="24" :sm="8">
+              <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Ngân hàng</span>
+              <span class="text-sm font-bold text-slate-800 dark:text-slate-200">{{ bankAccountInfo.bank_name }}</span>
+            </a-col>
+            <a-col :xs="24" :sm="8">
+              <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1 mt-4 sm:mt-0">Số tài khoản</span>
+              <span class="text-sm font-bold text-slate-800 dark:text-slate-200">{{ bankAccountInfo.account_no }}</span>
+            </a-col>
+            <a-col :xs="24" :sm="8">
+              <span class="text-[10px] font-bold text-slate-400 uppercase block mb-1 mt-4 sm:mt-0">Chủ tài khoản</span>
+              <span class="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase">{{ bankAccountInfo.account_name }}</span>
+            </a-col>
+          </a-row>
+        </div>
+        
+        <div v-else class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-orange-50 dark:bg-orange-900/20 text-[#ee4d2d] flex items-center justify-center text-xl">
+              <WarningOutlined />
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200">Chưa liên kết tài khoản ngân hàng</h4>
+              <p class="text-xs text-slate-500 mt-1">Vui lòng liên kết tài khoản ngân hàng trong mục Hồ sơ để rút tiền.</p>
+            </div>
           </div>
           <NuxtLink to="/ho-so">
-            <a-button
-              type="text"
-              size="small"
-              class="font-bold text-xs text-blue-600"
-            >
-              <template #icon><EditOutlined /></template>
-              Chỉnh sửa
-            </a-button>
+            <a-button type="primary" class="font-bold">Liên kết ngay</a-button>
           </NuxtLink>
         </div>
+      </a-skeleton>
+    </a-card>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
-          <div>
-            <span class="text-[10px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase block select-none">
-              Ngân hàng
-            </span>
-            <span class="text-sm font-black text-slate-800 dark:text-slate-200 block mt-1.5">{{ bankAccountInfo.bank_name }}</span>
-          </div>
-          <div>
-            <span class="text-[10px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase block select-none">
-              Số tài khoản
-            </span>
-            <span class="text-sm font-black text-slate-800 dark:text-slate-200 block mt-1.5">{{ bankAccountInfo.account_no }}</span>
-          </div>
-          <div>
-            <span class="text-[10px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase block select-none">
-              Chủ tài khoản
-            </span>
-            <span class="text-sm font-black text-slate-800 dark:text-slate-200 block mt-1.5 uppercase">{{ bankAccountInfo.account_name }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div v-else class="flex flex-col sm:flex-row items-center justify-between gap-4 py-2">
-        <div class="flex items-center gap-3.5 text-center sm:text-left flex-col sm:flex-row">
-          <div class="h-10 w-10 rounded-full bg-orange-500/10 text-shopee-orange flex items-center justify-center shrink-0">
-            <WarningOutlined class="text-[20px]" />
-          </div>
-          <div>
-            <h4 class="text-xs font-black text-slate-800 dark:text-slate-200">
-              Chưa liên kết tài khoản ngân hàng đối soát
-            </h4>
-            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 font-bold">
-              Vui lòng liên kết tài khoản ngân hàng trong mục Hồ sơ để thực hiện rút tiền về tài khoản của bạn.
-            </p>
-          </div>
-        </div>
-        <NuxtLink to="/ho-so">
-          <a-button
-            type="primary"
-            class="font-bold text-xs"
-            size="small"
-          >
-            Liên kết ngay
-          </a-button>
-        </NuxtLink>
-      </div>
-    </div>
-
-    <!-- MAIN TWO COLUMN GRID layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8 items-start">
-      <!-- COLUMN Left: Withdraw Form (Span 7) -->
-      <div
-        class="lg:col-span-7 p-6 ring-1 ring-slate-100 dark:ring-slate-800/80 bg-white dark:bg-slate-900/60 rounded-3xl shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20"
-      >
-        <h2 class="text-[13px] font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none pb-4 border-b border-slate-100 dark:border-slate-800/60">
-          Yêu Cầu Rút Tiền
-        </h2>
-
-        <form @submit.prevent="handleSubmit" class="mt-6 flex flex-col gap-5">
-          <!-- 1. Destination bank preview card -->
-          <div
-            v-if="bankAccountInfo"
-            class="p-4 rounded-2xl bg-slate-50/60 dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
-          >
-            <div class="flex items-center gap-2.5 min-w-0">
-              <div class="h-8 w-8 rounded-xl bg-orange-500/5 dark:bg-orange-500/10 text-shopee-orange flex items-center justify-center shrink-0">
-                <BankOutlined class="text-[18px]" />
-              </div>
-              <div class="min-w-0">
-                <span class="block text-[9px] font-extrabold uppercase text-slate-400">Rút về tài khoản đối soát</span>
-                <span class="font-black text-slate-800 dark:text-slate-200 truncate block mt-0.5">
-                  {{ bankAccountInfo.bank_name }} • {{ bankAccountInfo.account_no }}
-                </span>
-              </div>
-            </div>
-            <span class="font-bold text-[10px] text-slate-400 dark:text-slate-500 uppercase select-all shrink-0">
-              {{ bankAccountInfo.account_name }}
-            </span>
-          </div>
-
-          <!-- Alert error when not bank account linked -->
-          <a-alert
-            v-else
-            type="warning"
-            show-icon
-            message="Vui lòng liên kết tài khoản ngân hàng đối soát tại trang Hồ Sơ trước khi rút tiền."
-          >
-            <template #icon><WarningOutlined /></template>
-          </a-alert>
-
-          <!-- 2. Withdraw Amount -->
-          <div class="flex flex-col gap-2">
-            <div class="flex flex-col gap-1">
-              <div class="flex items-center justify-between w-full">
-                <span class="text-[11px] font-extrabold tracking-wider text-slate-400 dark:text-slate-500 uppercase">
-                  Số tiền rút
-                </span>
-                <a-button
-                  type="link"
-                  :disabled="isApiLoading || isSubmitting"
-                  @click="withdrawAmount = availableBalance"
-                  class="p-0 text-[10px] font-black uppercase tracking-wide cursor-pointer disabled:opacity-40"
-                >
-                  Rút toàn bộ số dư
-                </a-button>
-              </div>
-
-              <a-input
-                v-model:value="formattedWithdrawAmount"
-                type="text"
-                required
-                :disabled="isApiLoading || isSubmitting || !bankAccountInfo"
-                placeholder="Rút tối thiểu 10.000đ..."
-                size="large"
-                class="w-full font-bold focus:ring-2 focus:ring-shopee-orange/20 focus:border-shopee-orange rounded-2xl"
-                :status="amountError ? 'error' : ''"
-              >
-                <template #suffix>
-                  <span class="font-extrabold text-[11px] text-slate-400">ĐỒNG</span>
-                </template>
-              </a-input>
-
-              <span v-if="amountError" class="text-[10px] text-red-500 font-bold select-none mt-1">
-                {{ amountError }}
-              </span>
-              <span v-else class="text-[10px] text-slate-400 dark:text-slate-500 font-bold select-none mt-1">
-                * Hạn mức rút tối thiểu: <span class="text-slate-600 dark:text-slate-350">10.000đ</span> • Phí chuyển khoản: <span class="text-emerald-500">Miễn phí</span>
-              </span>
-            </div>
-          </div>
-
-          <!-- Alert message if any -->
-          <transition
-            enter-active-class="transition duration-300 ease-out"
-            enter-from-class="transform -translate-y-2 opacity-0"
-            enter-to-class="transform translate-y-0 opacity-100"
-          >
-            <div v-if="successMsg || errorMsg">
-              <a-alert
-                v-if="errorMsg"
-                type="error"
-                show-icon
-                :message="errorMsg"
-              >
-                <template #icon><WarningOutlined /></template>
-              </a-alert>
-              <a-alert
-                v-else
-                type="success"
-                show-icon
-                :message="successMsg"
-              >
-                <template #icon><CheckCircleOutlined /></template>
-              </a-alert>
-            </div>
-          </transition>
-
-          <!-- Submit Button -->
-          <a-button
-            html-type="submit"
-            :loading="isSubmitting"
-            :disabled="!canSubmit"
-            block
-            type="primary"
-            size="large"
-            class="font-bold text-xs py-5 rounded-2xl shadow-lg shadow-orange-500/15"
-          >
-            Xác Nhận Rút Tiền
-          </a-button>
-        </form>
-      </div>
-
-      <!-- COLUMN Right: Withdrawal History (Span 5) -->
-      <div
-        class="lg:col-span-5 p-6 ring-1 ring-slate-100 dark:ring-slate-800/80 bg-white dark:bg-slate-900/60 rounded-3xl shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20"
-      >
-        <h2 class="text-[13px] font-black tracking-widest text-slate-800 dark:text-slate-200 uppercase select-none pb-4 border-b border-slate-100 dark:border-slate-800/60">
-          Lịch Sử Rút Tiền
-        </h2>
-
-        <!-- History Items Stack -->
-        <div v-if="isHistoryLoading" class="mt-6 flex flex-col gap-4">
-          <div
-            v-for="i in 3"
-            :key="i"
-            class="p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-900/40 flex items-center justify-between gap-3.5"
-          >
-            <div class="flex items-start gap-3 w-full">
-              <div class="h-9 w-9 rounded-xl shrink-0 bg-slate-200 dark:bg-slate-700"></div>
-              <div class="space-y-2 w-full">
-                <div class="h-4 w-2/3 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                <div class="h-3 w-1/3 bg-slate-200 dark:bg-slate-700 rounded"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div v-else class="mt-6 flex flex-col gap-4">
-          <div
-            v-for="item in historyList"
-            :key="item.id"
-            class="p-4 rounded-2xl border flex flex-col gap-3 transition-colors"
-            :class="{
-              'bg-emerald-500/5 border-emerald-500/10 dark:bg-emerald-500/10 dark:border-emerald-500/20':
-                item.status === 'success' || item.status === 'completed',
-              'bg-amber-500/5 border-amber-500/10 dark:bg-amber-500/10 dark:border-amber-500/20':
-                item.status === 'pending',
-              'bg-rose-500/5 border-rose-500/10 dark:bg-rose-500/10 dark:border-rose-500/20':
-                item.status === 'rejected' || item.status === 'failed',
-              'border-slate-100 dark:border-slate-800/60 bg-slate-50/20 dark:bg-slate-900/20':
-                ![
-                  'success',
-                  'completed',
-                  'pending',
-                  'rejected',
-                  'failed',
-                ].includes(item.status),
-            }"
-          >
-            <!-- Thông tin chính -->
-            <div class="flex items-center justify-between gap-3.5">
-              <div class="flex items-start gap-3">
-                <!-- Wallet Icon -->
-                <div class="h-9 w-9 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
-                  <WalletOutlined class="text-[20px]" />
+    <!-- Main Grid -->
+    <a-row :gutter="[24, 24]">
+      <!-- Withdraw Form -->
+      <a-col :xs="24" :lg="14">
+        <a-card :bordered="false" class="rounded-2xl shadow-sm bg-white dark:bg-slate-900" title="Yêu Cầu Rút Tiền">
+          <a-form layout="vertical" @finish="handleSubmit">
+            <!-- Bank preview -->
+            <div v-if="bankAccountInfo" class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-orange-100 text-[#ee4d2d] flex items-center justify-center">
+                  <BankOutlined />
                 </div>
                 <div>
-                  <span class="text-xs font-black text-slate-800 dark:text-slate-100">
-                    {{ item.bankCode }} ({{ item.account }})
-                  </span>
-                  <p class="text-[9.5px] text-slate-400 dark:text-slate-500 mt-1 font-bold">
-                    {{ item.date }}
-                  </p>
+                  <span class="block text-[10px] font-bold text-slate-400 uppercase">Rút về tài khoản</span>
+                  <span class="font-bold text-slate-800 dark:text-slate-200">{{ bankAccountInfo.bank_name }} • {{ bankAccountInfo.account_no }}</span>
                 </div>
               </div>
+              <span class="font-bold text-[11px] text-slate-500 uppercase">{{ bankAccountInfo.account_name }}</span>
+            </div>
+            
+            <a-alert v-else type="warning" show-icon message="Vui lòng liên kết tài khoản ngân hàng trước khi rút tiền." class="mb-6 rounded-xl" />
 
-              <!-- Amount details and status -->
-              <div class="flex flex-col items-end shrink-0">
-                <span class="text-xs font-extrabold text-slate-800 dark:text-white leading-none">
-                  {{ formatMoney(item.amount) }}
-                </span>
-                <div class="flex items-center gap-1.5 mt-1.5">
-                  <a-button
-                    v-if="(item.status === 'rejected' || item.status === 'failed') && item.rejectReason"
-                    type="link"
-                    size="small"
-                    class="p-0 text-[9px] font-bold text-rose-500 hover:text-rose-600 underline"
-                    @click="item.showReason = !item.showReason"
-                  >
-                    Lý do huỷ
-                  </a-button>
-                  <span
-                    class="font-black tracking-wide uppercase select-none text-[8.5px] px-2 py-0.5 rounded-full"
-                    :class="
-                      item.status === 'completed' || item.status === 'success'
-                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                        : item.status === 'pending'
-                        ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
-                        : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
-                    "
-                  >
-                    {{
-                      item.status === "completed" || item.status === "success"
-                        ? "Thành công"
-                        : item.status === "pending"
-                        ? "Đang xử lý"
-                        : "Đã hủy"
-                    }}
-                  </span>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[11px] font-bold text-slate-500 uppercase">Số tiền rút</span>
+              <a-button type="link" :disabled="isApiLoading || isSubmitting" @click="withdrawAmount = availableBalance" class="p-0 text-[10px] font-bold text-[#ee4d2d]">
+                RÚT TOÀN BỘ SỐ DƯ
+              </a-button>
+            </div>
+
+            <a-form-item :validate-status="amountError ? 'error' : ''" :help="amountError || '* Hạn mức rút tối thiểu: 10.000đ • Miễn phí chuyển khoản'">
+              <a-input
+                v-model:value="formattedWithdrawAmount"
+                :disabled="isApiLoading || isSubmitting || !bankAccountInfo"
+                placeholder="Nhập số tiền..."
+                size="large"
+                class="font-bold text-lg"
+              >
+                <template #suffix><span class="text-xs font-bold text-slate-400">ĐỒNG</span></template>
+              </a-input>
+            </a-form-item>
+
+            <a-alert v-if="errorMsg" type="error" show-icon :message="errorMsg" class="mb-4 rounded-xl" />
+            <a-alert v-if="successMsg" type="success" show-icon :message="successMsg" class="mb-4 rounded-xl" />
+
+            <a-button
+              html-type="submit"
+              type="primary"
+              size="large"
+              block
+              :loading="isSubmitting"
+              :disabled="!canSubmit"
+              class="font-bold shadow-md shadow-orange-500/20"
+            >
+              Xác Nhận Rút Tiền
+            </a-button>
+          </a-form>
+        </a-card>
+      </a-col>
+
+      <!-- History -->
+      <a-col :xs="24" :lg="10">
+        <a-card :bordered="false" class="rounded-2xl shadow-sm bg-white dark:bg-slate-900" title="Lịch Sử Rút Tiền">
+          <a-skeleton active :loading="isHistoryLoading">
+            <div v-if="historyList.length === 0" class="text-center py-8 text-slate-400 font-medium text-xs">
+              Chưa có thông tin.
+            </div>
+            
+            <div class="flex flex-col gap-3">
+              <div v-for="item in historyList" :key="item.id" class="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                    :class="item.status === 'completed' || item.status === 'success' ? 'bg-emerald-100 text-emerald-500' : item.status === 'pending' ? 'bg-amber-100 text-amber-500' : 'bg-rose-100 text-rose-500'">
+                    <WalletOutlined />
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">{{ item.bankCode }} ({{ item.account }})</div>
+                    <div class="text-[10px] text-slate-500 mt-0.5">{{ item.date }}</div>
+                  </div>
+                </div>
+                
+                <div class="flex flex-col items-end">
+                  <span class="text-xs font-bold text-slate-800 dark:text-slate-100 mb-1">{{ formatMoney(item.amount) }}</span>
+                  <a-tag :color="item.status === 'completed' || item.status === 'success' ? 'success' : item.status === 'pending' ? 'warning' : 'error'" style="margin: 0">
+                    {{ item.status === "completed" || item.status === "success" ? "Thành công" : item.status === "pending" ? "Đang xử lý" : "Đã hủy" }}
+                  </a-tag>
                 </div>
               </div>
             </div>
-
-            <!-- Lý do từ chối -->
-            <transition
-              enter-active-class="transition duration-200 ease-out"
-              enter-from-class="opacity-0 -translate-y-2"
-              enter-to-class="opacity-100 translate-y-0"
-              leave-active-class="transition duration-150 ease-in"
-              leave-from-class="opacity-100 translate-y-0"
-              leave-to-class="opacity-0 -translate-y-2"
-            >
-              <div
-                v-if="
-                  item.showReason &&
-                  (item.status === 'rejected' || item.status === 'failed') &&
-                  item.rejectReason
-                "
-                class="px-3 py-2.5 bg-rose-50/80 dark:bg-rose-500/10 rounded-xl border border-rose-100 dark:border-rose-500/20 flex items-start gap-2"
-              >
-                <WarningOutlined class="h-4 w-4 text-rose-500 shrink-0 mt-0.5" />
-                <p class="text-[10px] text-rose-600 dark:text-rose-400 font-bold leading-relaxed">
-                  <span class="uppercase tracking-widest text-rose-400 dark:text-rose-500/80 mr-1">Lý do huỷ:</span>
-                  {{ item.rejectReason }}
-                </p>
-              </div>
-            </transition>
-          </div>
-
-          <!-- Empty list state -->
-          <div
-            v-if="historyList.length === 0"
-            class="py-12 text-center text-slate-400 font-medium text-xs"
-          >
-            Chưa có thông tin.
-          </div>
-        </div>
-      </div>
-    </div>
+          </a-skeleton>
+        </a-card>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
@@ -439,11 +212,8 @@ const { isLoading: isApiLoading } = usePromiseTracker();
 useSeoMeta({
   title: "Tài chính & Rút tiền - Saffi",
   ogTitle: "Tài chính & Rút tiền - Saffi",
-  description:
-    "Trang đối soát số dư hoa hồng và làm lệnh yêu cầu thanh toán nhanh chóng.",
-  ogDescription:
-    "Trang đối soát số dư hoa hồng và làm lệnh yêu cầu thanh toán nhanh chóng.",
-  ogImage: "/shopee-banner.png",
+  description: "Trang đối soát số dư hoa hồng và làm lệnh yêu cầu thanh toán nhanh chóng.",
+  ogDescription: "Trang đối soát số dư hoa hồng và làm lệnh yêu cầu thanh toán nhanh chóng.",
   twitterCard: "summary_large_image",
 });
 
@@ -455,16 +225,11 @@ const bankAccountInfo = ref(null);
 const isBankLoading = ref(true);
 
 const fetchBankAccount = async () => {
-  if (!user.value?.id) {
-    isBankLoading.value = false;
-    return;
-  }
+  if (!user.value?.id) { isBankLoading.value = false; return; }
   isBankLoading.value = true;
   try {
     const res = await api.get(`/bank-account/${user.value.id}`);
-    if (res.data) {
-      bankAccountInfo.value = res.data;
-    }
+    if (res.data) bankAccountInfo.value = res.data;
   } catch (err) {
     console.error("Lỗi khi tải thông tin tài khoản ngân hàng:", err);
   } finally {
@@ -478,24 +243,9 @@ onMounted(() => {
   fetchHistory();
 });
 
-const availableBalance = computed({
-  get: () => walletData.value.availableBalance,
-  set: (val) => {
-    walletData.value.availableBalance = val;
-  },
-});
-const pendingBalance = computed({
-  get: () => walletData.value.pendingBalance,
-  set: (val) => {
-    walletData.value.pendingBalance = val;
-  },
-});
-const totalWithdrawn = computed({
-  get: () => walletData.value.totalPaid,
-  set: (val) => {
-    walletData.value.totalPaid = val;
-  },
-});
+const availableBalance = computed({ get: () => walletData.value.availableBalance, set: (val) => { walletData.value.availableBalance = val; } });
+const pendingBalance = computed({ get: () => walletData.value.pendingBalance, set: (val) => { walletData.value.pendingBalance = val; } });
+const totalWithdrawn = computed({ get: () => walletData.value.totalPaid, set: (val) => { walletData.value.totalPaid = val; } });
 
 const withdrawAmount = ref("");
 const isSubmitting = ref(false);
@@ -510,28 +260,17 @@ const fetchHistory = async () => {
   try {
     const res = await api.get("/wallet/withdrawals");
     if (res.data) {
-      // Hỗ trợ cả 3 format: có pagination (res.data.items), Laravel (res.data.data), hoặc mảng (res.data)
-      let dataArray = [];
-      if (Array.isArray(res.data)) {
-        dataArray = res.data;
-      } else if (res.data && Array.isArray(res.data.data)) {
-        dataArray = res.data.data;
-      } else if (res.data && Array.isArray(res.data.items)) {
-        dataArray = res.data.items;
-      }
-
-      historyList.value = dataArray.map((item) => {
-        return {
-          id: item.id || Math.random(),
-          bankCode: "Tài khoản đối soát",
-          account: item.reference_id,
-          amount: Math.abs(item.amount),
-          date: new Date(item.created_at).toLocaleString("vi-VN"),
-          status: item.status,
-          rejectReason: item.reject_reason,
-          showReason: false,
-        };
-      });
+      let dataArray = Array.isArray(res.data) ? res.data : (Array.isArray(res.data.data) ? res.data.data : (Array.isArray(res.data.items) ? res.data.items : []));
+      historyList.value = dataArray.map((item) => ({
+        id: item.id || Math.random(),
+        bankCode: "Tài khoản đối soát",
+        account: item.reference_id,
+        amount: Math.abs(item.amount),
+        date: new Date(item.created_at).toLocaleString("vi-VN"),
+        status: item.status,
+        rejectReason: item.reject_reason,
+        showReason: false,
+      }));
     }
   } catch (err) {
     console.error("Lỗi khi tải lịch sử rút tiền:", err);
@@ -539,6 +278,7 @@ const fetchHistory = async () => {
     isHistoryLoading.value = false;
   }
 };
+
 const formattedWithdrawAmount = computed({
   get: () => {
     if (withdrawAmount.value === "" || withdrawAmount.value === null) return "";
@@ -559,77 +299,39 @@ const amountError = computed(() => {
 });
 
 const canSubmit = computed(() => {
-  return (
-    !isApiLoading.value &&
-    !isSubmitting.value &&
-    bankAccountInfo.value &&
-    withdrawAmount.value !== "" &&
-    amountError.value === ""
-  );
+  return !isApiLoading.value && !isSubmitting.value && bankAccountInfo.value && withdrawAmount.value !== "" && amountError.value === "";
 });
 
 const handleSubmit = async () => {
   if (!canSubmit.value) return;
-
-  isSubmitting.value = true;
-  successMsg.value = "";
-  errorMsg.value = "";
-
+  isSubmitting.value = true; successMsg.value = ""; errorMsg.value = "";
   try {
-    const res = await api.post("/wallet/withdraw", {
-      amount: Number(withdrawAmount.value),
-    });
-
-    // API call succeeded (if it didn't throw), update balance locally
+    const res = await api.post("/wallet/withdraw", { amount: Number(withdrawAmount.value) });
     availableBalance.value -= withdrawAmount.value;
-
-    // The API should return the new transaction in res.data
     const transaction = res.data;
-
-    // Add to history list at beginning (optimistic update)
+    
     historyList.value.unshift({
       id: transaction?.id || Date.now(),
       bankCode: "Tài khoản đối soát",
       account: transaction?.referenceId || "...",
       amount: withdrawAmount.value,
       date: new Date().toLocaleString("vi-VN"),
-      status: "Đang xử lý",
+      status: "pending",
     });
 
-    successMsg.value =
-      "Yêu cầu rút tiền thành công! Hệ thống đang xử lý đối soát tự động.";
+    successMsg.value = "Yêu cầu rút tiền thành công! Hệ thống đang xử lý đối soát tự động.";
     withdrawAmount.value = "";
-
-    // Fetch wallet and history again to ensure sync
-    fetchWallet();
-    fetchHistory();
+    
+    fetchWallet(); fetchHistory();
   } catch (error) {
-    console.error("Lỗi khi rút tiền:", error, error?.data);
-
-    // Extract exact message from parsedError in useAppFetch
-    if (error?.message && error.message !== "Bad Request") {
-      errorMsg.value = error.message;
-    } else if (error?.data?.message) {
-      errorMsg.value = error.data.message;
-    } else {
-      errorMsg.value = "Yêu cầu rút tiền bị từ chối. Vui lòng thử lại.";
-    }
-
-    if (error?.data?.stack) {
-      errorMsg.value += " | STACK: " + error.data.stack;
-    }
+    if (error?.message && error.message !== "Bad Request") errorMsg.value = error.message;
+    else if (error?.data?.message) errorMsg.value = error.data.message;
+    else errorMsg.value = "Yêu cầu rút tiền bị từ chối. Vui lòng thử lại.";
   } finally {
     isSubmitting.value = false;
-
-    // Clear message after 4s
-    setTimeout(() => {
-      successMsg.value = "";
-      errorMsg.value = "";
-    }, 4000);
+    setTimeout(() => { successMsg.value = ""; errorMsg.value = ""; }, 4000);
   }
 };
 
-const formatMoney = (val) => {
-  return val.toLocaleString("vi-VN") + "đ";
-};
+const formatMoney = (val) => { return (val || 0).toLocaleString("vi-VN") + "đ"; };
 </script>

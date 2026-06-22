@@ -38,9 +38,9 @@
       </div>
 
       <!-- Leaderboard List -->
-      <div v-else-if="visibleLeaderboard.length > 0" class="leaderboard-list">
+      <div v-else-if="currentLeaderboard.length > 0" class="leaderboard-list">
         <div
-          v-for="(entry, idx) in visibleLeaderboard"
+          v-for="(entry, idx) in currentLeaderboard"
           :key="entry.userId"
           class="leaderboard-row"
           :class="{
@@ -114,16 +114,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Show More button (mobile-first: only show top 5 by default) -->
-        <button
-          v-if="currentLeaderboard.length > initialLimit && !showAll"
-          @click="showAll = true"
-          class="leaderboard-show-more"
-        >
-          Xem thêm {{ currentLeaderboard.length - initialLimit }} người
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
       </div>
 
       <!-- Empty State -->
@@ -142,25 +132,11 @@ import { useAppFetch } from "@/composables/useAppFetch";
 const activeTab = ref("allTime");
 const leaderboardData = ref({ allTime: [], monthly: [] });
 const isLoading = ref(true);
-const showAll = ref(false);
-
-// On mobile, only render 5 rows initially to keep DOM lean
-const initialLimit = 5;
-
 const currentLeaderboard = computed(() =>
   activeTab.value === "monthly"
     ? leaderboardData.value.monthly
     : leaderboardData.value.allTime
 );
-
-const visibleLeaderboard = computed(() =>
-  showAll.value
-    ? currentLeaderboard.value
-    : currentLeaderboard.value.slice(0, initialLimit)
-);
-
-// Reset showAll when switching tabs
-watch(activeTab, () => { showAll.value = false; });
 
 const fetchLeaderboard = async () => {
   try {

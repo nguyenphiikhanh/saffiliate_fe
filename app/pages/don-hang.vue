@@ -4,7 +4,7 @@
     <div class="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div>
         <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-          Quản Lý <span class="text-shopee-orange">Đơn Hàng</span>
+          Quản Lý <span class="text-[#ee4d2d]">Đơn Hàng</span>
         </h1>
         <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">
           Xem thông tin chi tiết và tiến trình hoàn tiền của toàn bộ đơn hàng của bạn.
@@ -15,319 +15,131 @@
     <!-- Order Process Info Component -->
     <OrderProcessInfo />
 
-    <!-- MAIN BODY: Filters, Search & Table -->
-    <div class="p-6 ring-1 ring-slate-100 dark:ring-slate-800/80 bg-white dark:bg-slate-900/60 rounded-3xl shadow-xl shadow-slate-900/[0.02] dark:shadow-slate-950/20 mt-8">
-      <div class="flex flex-col gap-6">
-      <div class="flex items-center w-full">
-        <!-- Status Tabs Filters -->
-        <div class="flex items-center gap-1 bg-slate-50 dark:bg-slate-950/60 p-1 rounded-2xl border border-slate-200/40 dark:border-slate-800/50 w-full sm:w-auto">
-          <a-button
-            v-for="tab in tabs"
-            :key="tab.value"
-            @click="activeTab = tab.value"
-            :type="activeTab === tab.value ? 'primary' : 'text'"
-            class="flex-1 sm:flex-initial text-[11px] sm:text-xs font-bold rounded-xl whitespace-nowrap"
-          >
-            <template #icon>
-              <InfoCircleOutlined v-if="tab.icon === 'i-lucide-info'" />
-              <ClockCircleOutlined v-else-if="tab.icon === 'i-lucide-clock'" />
-              <CheckCircleOutlined v-else-if="tab.icon === 'i-lucide-circle-check'" />
-              <CloseCircleOutlined v-else-if="tab.icon === 'i-lucide-circle-x'" />
-            </template>
-            {{ tab.label }}
-          </a-button>
-        </div>
-      </div>
+    <!-- MAIN BODY: Filters & Table -->
+    <a-card :bordered="false" class="rounded-3xl shadow-xl shadow-slate-900/[0.02] bg-white dark:bg-slate-900/60 mt-8">
+      
+      <!-- Tabs Filter -->
+      <a-tabs v-model:activeKey="activeTab" class="font-bold">
+        <a-tab-pane key="pending">
+          <template #tab>
+            <span><ClockCircleOutlined /> Chờ duyệt</span>
+          </template>
+        </a-tab-pane>
+        <a-tab-pane key="success">
+          <template #tab>
+            <span><CheckCircleOutlined /> Thành công</span>
+          </template>
+        </a-tab-pane>
+        <a-tab-pane key="cancelled">
+          <template #tab>
+            <span><CloseCircleOutlined /> Đã hủy</span>
+          </template>
+        </a-tab-pane>
+      </a-tabs>
 
       <!-- Info Box for Pending Tab -->
-      <div v-if="activeTab === 'pending'" class="mt-5">
-        <a-alert
-          type="warning"
-          show-icon
-          message="Chờ hoàn: đơn đã ghi nhận hoàn tiền, đang đợi sàn xác nhận hết thời gian hủy, đổi trả. Với Sộp-pe, hãy bấm Đã nhận hàng trong app để được hoàn sớm nhất."
-        >
-          <template #icon><InfoCircleOutlined /></template>
-        </a-alert>
-      </div>
+      <a-alert
+        v-if="activeTab === 'pending'"
+        type="warning"
+        show-icon
+        class="mb-6 rounded-xl"
+        message="Chờ hoàn: đơn đã ghi nhận hoàn tiền, đang đợi sàn xác nhận hết thời gian hủy, đổi trả. Với Sộp-pe, hãy bấm Đã nhận hàng trong app để được hoàn sớm nhất."
+      />
 
       <!-- Info Box for Cancelled Tab -->
-      <div v-if="activeTab === 'cancelled'" class="mt-5">
-        <a-alert
-          type="error"
-          show-icon
-        >
-          <template #icon><CloseCircleOutlined /></template>
-          <template #message>
-            <div class="text-[13px] leading-relaxed font-semibold">
-              <span class="font-black">Đã hủy:</span> đơn có thể do bạn hủy, hoặc cashback bị hủy từ sàn. Saffi là trung gian nên không được cung cấp lý do cụ thể, nhưng luôn sẵn sàng gửi thông tin đối soát từ sàn cho bạn để đảm bảo hệ thống minh bạch. Vui lòng liên hệ <NuxtLink to="/ho-tro" class="text-rose-500 hover:underline font-black transition-all">Hỗ trợ</NuxtLink> để được cung cấp thêm thông tin.
+      <a-alert
+        v-if="activeTab === 'cancelled'"
+        type="error"
+        show-icon
+        class="mb-6 rounded-xl"
+      >
+        <template #message>
+          <div class="text-[13px] leading-relaxed font-semibold">
+            <span class="font-black">Đã hủy:</span> đơn có thể do bạn hủy, hoặc cashback bị hủy từ sàn. Saffi là trung gian nên không được cung cấp lý do cụ thể, nhưng luôn sẵn sàng gửi thông tin đối soát từ sàn cho bạn để đảm bảo hệ thống minh bạch. Vui lòng liên hệ <NuxtLink to="/ho-tro" class="text-rose-500 hover:underline font-black transition-all">Hỗ trợ</NuxtLink> để được cung cấp thêm thông tin.
+          </div>
+        </template>
+      </a-alert>
+
+      <!-- Data Table -->
+      <a-table
+        :dataSource="filteredOrders"
+        :columns="columns"
+        :loading="status === 'pending'"
+        :rowKey="(record) => record.code"
+        :pagination="paginationConfig"
+        @change="handleTableChange"
+        :scroll="{ x: 800 }"
+        class="custom-table"
+      >
+        <template #bodyCell="{ column, record }">
+          <!-- Mã Đơn -->
+          <template v-if="column.key === 'code'">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 flex items-center justify-center shrink-0">
+                <img :src="getBrandLogo(record.type)" class="w-7 h-7 object-contain shrink-0" alt="Logo" />
+              </div>
+              <span class="font-bold text-slate-700 dark:text-slate-200 text-xs">#{{ record.code }}</span>
             </div>
           </template>
-        </a-alert>
-      </div>
-
-      <!-- Skeleton Loading State -->
-      <div
-        v-if="status === 'pending'"
-        class="mt-6 overflow-x-auto bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-100 dark:border-slate-800/60"
-      >
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="text-[10px] uppercase tracking-widest font-bold text-slate-400 border-b border-slate-100 dark:border-slate-800">
-              <th class="p-4 pl-6 whitespace-nowrap w-[20%]">Mã đơn</th>
-              <th class="p-4 whitespace-nowrap w-[35%]">Sản phẩm</th>
-              <th class="p-4 whitespace-nowrap w-[15%]">Ngày</th>
-              <th class="p-4 text-right whitespace-nowrap w-[15%]">Hoa hồng</th>
-              <th class="p-4 whitespace-nowrap text-center w-[10%]">Trạng thái</th>
-              <th class="p-4 whitespace-nowrap text-center w-[5%]">Hành động</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm">
-            <tr v-for="i in 5" :key="i">
-              <td class="p-4 pl-6">
-                <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded shrink-0 bg-slate-200 dark:bg-slate-700"></div>
-                  <div class="h-3 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                </div>
-              </td>
-              <td class="p-4">
-                <div class="h-3.5 w-48 max-w-full bg-slate-200 dark:bg-slate-700 rounded"></div>
-              </td>
-              <td class="p-4">
-                <div class="h-3 w-20 bg-slate-200 dark:bg-slate-700 rounded"></div>
-              </td>
-              <td class="p-4 text-right">
-                <div class="flex items-center justify-end">
-                  <div class="h-3.5 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
-                </div>
-              </td>
-              <td class="p-4 text-center">
-                <div class="h-5 w-20 rounded-full mx-auto bg-slate-200 dark:bg-slate-700"></div>
-              </td>
-              <td class="p-4 text-center">
-                <div class="h-6.5 w-12 rounded-lg mx-auto bg-slate-200 dark:bg-slate-700"></div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Orders Table -->
-      <div class="mt-6" v-else-if="filteredOrders.length > 0">
-        <!-- Desktop Table View -->
-        <div class="hidden md:block overflow-x-auto bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-100 dark:border-slate-800/60">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="text-[10px] uppercase tracking-widest font-bold text-slate-400 border-b border-slate-100 dark:border-slate-800">
-                <th class="p-4 pl-6 whitespace-nowrap w-[20%]">Mã đơn</th>
-                <th class="p-4 whitespace-nowrap w-[35%]">Sản phẩm</th>
-                <th class="p-4 whitespace-nowrap w-[15%]">Ngày</th>
-                <th class="p-4 text-right whitespace-nowrap w-[15%]">Hoa hồng</th>
-                <th class="p-4 whitespace-nowrap text-center w-[10%]">Trạng thái</th>
-                <th class="p-4 whitespace-nowrap text-center w-[5%]">Hành động</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm">
-              <tr
-                v-for="order in filteredOrders"
-                :key="order.code"
-                class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors"
-              >
-                <!-- Mã đơn -->
-                <td class="p-4 pl-6">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-7 h-7 flex items-center justify-center shrink-0">
-                      <NuxtPicture
-                        :src="getBrandLogo(order.type)"
-                        :img-attrs="{
-                          class: 'w-7 h-7 object-contain shrink-0',
-                          alt: 'Logo',
-                          width: '28',
-                          height: '28'
-                        }"
-                      />
-                    </div>
-                    <span class="font-bold text-slate-700 dark:text-slate-200 text-xs">#{{ order.code }}</span>
-                  </div>
-                </td>
-                <!-- Sản phẩm -->
-                <td class="p-4">
-                  <div
-                    class="font-bold text-slate-600 dark:text-slate-300 text-[13px] truncate max-w-[280px]"
-                    :title="order.itemName || order.storeName"
-                  >
-                    {{ order.itemName || order.storeName || "Sản phẩm từ Shopee" }}
-                  </div>
-                </td>
-                <!-- Ngày -->
-                <td class="p-4">
-                  <div class="text-xs text-slate-500 font-medium">
-                    {{ order.date }}
-                  </div>
-                </td>
-                <!-- Hoa hồng -->
-                <td class="p-4 text-right">
-                  <div class="flex items-center justify-end gap-1.5 font-black text-emerald-505 dark:text-emerald-400 text-[13px]">
-                    +{{ formatMoney(order.cashbackAmount) }}
-                    <span class="w-3.5 h-3.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 flex items-center justify-center text-[8px] font-bold">đ</span>
-                  </div>
-                </td>
-                <!-- Trạng thái -->
-                <td class="p-4 text-center">
-                  <span
-                    class="font-bold uppercase tracking-wider text-[10px] px-3 py-1 rounded-full"
-                    :class="
-                      order.status === 'Thành công' || order.status === 'Completed'
-                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                        : order.status === 'Chờ duyệt'
-                        ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
-                        : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
-                    "
-                  >
-                    {{
-                      order.status === "Completed" || order.status === "Thành công"
-                        ? "HOÀN THÀNH"
-                        : order.status
-                    }}
-                  </span>
-                </td>
-                <!-- Hành động -->
-                <td class="p-4 text-center">
-                  <a-button
-                    size="small"
-                    class="font-bold cursor-pointer text-blue-600 border-blue-600"
-                    @click="openOrderDetails(order)"
-                  >
-                    Xem
-                  </a-button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Mobile Card List View -->
-        <div class="block md:hidden divide-y divide-slate-100 dark:divide-slate-800/60">
-          <div
-            v-for="order in filteredOrders"
-            :key="order.code"
-            @click="openOrderDetails(order)"
-            class="flex items-center justify-between py-3.5 cursor-pointer active:bg-slate-50 dark:active:bg-slate-800/40 transition-colors"
-          >
-            <!-- Left Side: Icon & Order Info -->
-            <div class="flex items-center gap-3 min-w-0">
-              <!-- Brand Icon -->
-              <div class="w-10 h-10 flex items-center justify-center shrink-0">
-                <NuxtPicture
-                  :src="getBrandLogo(order.type)"
-                  :img-attrs="{
-                    class: 'w-10 h-10 object-contain shrink-0',
-                    alt: 'Logo',
-                    width: '40',
-                    height: '40'
-                  }"
-                />
-              </div>
-
-              <!-- Order Text Info -->
-              <div class="flex flex-col min-w-0">
-                <span class="font-extrabold text-slate-800 dark:text-slate-200 text-[13.5px] truncate">
-                  #{{ order.code }}
-                </span>
-                <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate max-w-[170px] mt-0.5">
-                  {{ order.itemName || order.storeName || "Sản phẩm từ Shopee" }}
-                </span>
-                <span class="text-[10px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">
-                  {{ order.date }}
-                </span>
-              </div>
+          
+          <!-- Sản Phẩm -->
+          <template v-else-if="column.key === 'item'">
+            <div class="font-bold text-slate-600 dark:text-slate-300 text-[13px] truncate max-w-[280px]" :title="record.itemName || record.storeName">
+              {{ record.itemName || record.storeName || "Sản phẩm từ Shopee" }}
             </div>
+          </template>
 
-            <!-- Right Side: Money & Status -->
-            <div class="flex flex-col items-end shrink-0 pl-2">
-              <span class="font-black text-shopee-orange text-[14px] leading-tight">
-                +{{ formatMoney(order.cashbackAmount) }}<span class="underline ml-0.5">đ</span>
-              </span>
-              <div class="flex items-center gap-0.5 mt-1.5">
-                <span
-                  class="text-[11px] font-bold"
-                  :class="[
-                    order.status === 'Thành công'
-                      ? 'text-emerald-500 dark:text-emerald-400'
-                      : order.status === 'Chờ duyệt'
-                      ? 'text-amber-500 dark:text-amber-400'
-                      : 'text-rose-500 dark:text-rose-455',
-                  ]"
-                >
-                  {{ order.status }}
-                </span>
-                <RightOutlined class="text-[14px] text-slate-400 dark:text-slate-500" />
-              </div>
-            </div>
-          </div>
-        </div>
+          <!-- Ngày -->
+          <template v-else-if="column.key === 'date'">
+            <div class="text-xs text-slate-500 font-medium">{{ record.date }}</div>
+          </template>
 
-        <!-- Pagination -->
-        <div v-if="lastPage > 1" class="flex items-center justify-center gap-2 mt-6">
-          <a-button
-            :disabled="currentPage === 1"
-            @click="changePage(currentPage - 1)"
-          >
-            <template #icon><LeftOutlined /></template>
-          </a-button>
-          <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 px-2">
-            Trang {{ currentPage }} / {{ lastPage }}
-          </span>
-          <a-button
-            :disabled="currentPage === lastPage"
-            @click="changePage(currentPage + 1)"
-          >
-            <template #icon><RightOutlined /></template>
-          </a-button>
-        </div>
-      </div>
+          <!-- Hoa hồng -->
+          <template v-else-if="column.key === 'commission'">
+            <div class="flex items-center justify-end gap-1.5 font-black text-emerald-500 text-[13px]">
+              +{{ formatMoney(record.cashbackAmount) }}
+              <span class="w-3.5 h-3.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 flex items-center justify-center text-[8px] font-bold">đ</span>
+            </div>
+          </template>
 
-      <!-- Empty state -->
-      <div v-else class="py-16 flex flex-col items-center justify-center text-center">
-        <template v-if="activeTab === 'pending'">
-          <div class="relative">
-            <div class="h-16 w-16 rounded-3xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex items-center justify-center text-shopee-orange shadow-inner">
-              <ShoppingOutlined class="text-[28px]" />
-            </div>
-            <div class="absolute -top-1.5 -right-1.5 h-6 w-6 rounded-full bg-shopee-orange flex items-center justify-center text-white border-2 border-white dark:border-slate-900 shadow-md">
-              <GiftOutlined class="text-[14px]" />
-            </div>
-          </div>
-          <h3 class="text-[17px] font-black text-slate-800 dark:text-slate-100 mt-5">
-            Đừng bỏ lỡ cơ hội hoàn tiền!
-          </h3>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2.5 max-w-[320px] font-medium leading-relaxed">
-            Hãy bắt đầu <b>mua sắm qua Saffi</b> để tích điểm hoàn tiền ngay cho đơn mua sắm của bạn.
-          </p>
-          <NuxtLink to="/hoan-tien">
-            <a-button
-              type="primary"
-              size="large"
-              class="mt-6 font-bold shadow-lg shadow-orange-500/20"
+          <!-- Trạng thái -->
+          <template v-else-if="column.key === 'status'">
+            <span
+              class="font-bold uppercase tracking-wider text-[10px] px-3 py-1 rounded-full whitespace-nowrap inline-block"
+              :class="
+                record.status === 'Thành công' || record.status === 'Completed'
+                  ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                  : record.status === 'Chờ duyệt'
+                  ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                  : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+              "
             >
-              MUA SẮM HOÀN TIỀN NGAY
-            </a-button>
-          </NuxtLink>
-        </template>
+              {{ record.status === "Completed" || record.status === "Thành công" ? "HOÀN THÀNH" : record.status }}
+            </span>
+          </template>
 
-        <template v-else>
-          <div class="h-16 w-16 rounded-full bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex items-center justify-center text-slate-400">
-            <FrownOutlined class="text-[32px]" />
-          </div>
-          <h3 class="text-xs font-bold text-slate-700 dark:text-slate-300 mt-4">
-            Không tìm thấy đơn hàng nào
-          </h3>
-          <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1 max-w-[280px]">
-            Chưa có đơn hàng nào trong trạng thái này.
-          </p>
+          <!-- Hành động -->
+          <template v-else-if="column.key === 'action'">
+            <a-button size="small" type="link" class="font-bold px-0" @click="openOrderDetails(record)">
+              Chi tiết
+            </a-button>
+          </template>
         </template>
-      </div>
-    </div>
-  </div>
+        
+        <template #emptyText>
+          <div class="py-12 flex flex-col items-center">
+            <div class="h-16 w-16 rounded-full bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800 flex items-center justify-center text-slate-400 mb-4">
+              <FrownOutlined class="text-[32px]" />
+            </div>
+            <h3 class="text-xs font-bold text-slate-700 dark:text-slate-300">Không tìm thấy đơn hàng nào</h3>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1 max-w-[280px]">Chưa có đơn hàng nào trong trạng thái này.</p>
+            <NuxtLink v-if="activeTab === 'pending' || activeTab === 'success'" to="/hoan-tien">
+              <a-button type="primary" size="small" class="mt-4 font-bold">MUA SẮM HOÀN TIỀN NGAY</a-button>
+            </NuxtLink>
+          </div>
+        </template>
+      </a-table>
+    </a-card>
 
     <!-- User Order Details Drawer -->
     <a-drawer
@@ -336,12 +148,10 @@
       placement="right"
       :closable="false"
       :bodyStyle="{ padding: 0 }"
-      class="order-details-drawer"
+      width="100%"
+      class="md:!w-[400px]"
     >
-      <div
-        v-if="selectedOrder"
-        class="flex flex-col h-full overflow-hidden border border-slate-100 dark:border-slate-800/80 bg-white dark:bg-slate-950"
-      >
+      <div v-if="selectedOrder" class="flex flex-col h-full overflow-hidden bg-white dark:bg-slate-950">
         <div class="flex items-start justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0">
           <div>
             <span
@@ -354,38 +164,29 @@
                   : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
               "
             >
-              {{
-                selectedOrder.status === "Completed" || selectedOrder.status === "Thành công"
-                  ? "HOÀN THÀNH"
-                  : selectedOrder.status
-              }}
+              {{ selectedOrder.status === "Completed" || selectedOrder.status === "Thành công" ? "HOÀN THÀNH" : selectedOrder.status }}
             </span>
-            <h3 class="text-base font-black text-slate-800 dark:text-slate-100">
+            <h3 class="text-base font-black text-slate-800 dark:text-slate-100 m-0">
               Chi tiết đơn hàng
               <span class="text-orange-500 dark:text-orange-400 select-all">#{{ selectedOrder.code }}</span>
             </h3>
-            <p class="text-xs text-slate-500 mt-1 font-medium">
-              Cửa hàng: {{ selectedOrder.storeName || "Shopee Store" }}
-            </p>
+            <p class="text-xs text-slate-500 mt-1 font-medium m-0">Cửa hàng: {{ selectedOrder.storeName || "Shopee Store" }}</p>
           </div>
           <a-button type="text" @click="closeOrderDetails">
             <template #icon><CloseOutlined /></template>
           </a-button>
         </div>
 
-        <div class="p-6 space-y-6 flex-1 overflow-y-auto bg-white dark:bg-slate-950 select-none pr-1">
+        <div class="p-6 space-y-6 flex-1 overflow-y-auto">
           <!-- 1. Rank Discount rate Info -->
-          <div
-            v-if="selectedOrder.rawItem?.order?.userRank"
-            class="bg-slate-50/50 dark:bg-slate-955/20 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/80 flex items-center justify-between"
-          >
+          <div v-if="selectedOrder.rawItem?.order?.userRank" class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div class="flex flex-col">
               <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Hạng thành viên mua đơn</span>
               <span class="text-xs font-black text-slate-800 dark:text-slate-200 mt-1">
                 Cấp bậc: {{ getRankName(selectedOrder.rawItem.order.userRank) }}
               </span>
             </div>
-            <span class="font-extrabold text-[9px] px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+            <span class="font-extrabold text-[9px] px-2.5 py-1 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
               Nhận {{ selectedOrder.rawItem.order.commissionRate }}% hoa hồng
             </span>
           </div>
@@ -394,37 +195,28 @@
           <div>
             <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Thông tin sản phẩm</span>
             <div class="space-y-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
-              <div class="text-xs font-bold text-slate-700 dark:text-slate-205 leading-relaxed">
+              <div class="text-xs font-bold text-slate-700 dark:text-slate-200 leading-relaxed">
                 {{ selectedOrder.itemName || "Sản phẩm từ Shopee" }}
               </div>
-              <div class="flex items-center gap-1.5 text-[10px] text-slate-450 dark:text-slate-500 mt-2">
+              <div class="flex items-center gap-1.5 text-[10px] text-slate-500 mt-2">
                 <span v-if="selectedOrder.rawItem?.order?.itemId">Mã SP: {{ selectedOrder.rawItem.order.itemId }}</span>
-                <span
-                  v-if="selectedOrder.rawItem?.order?.l1GlobalCategory"
-                  class="h-1 w-1 bg-slate-300 dark:bg-slate-700 rounded-full"
-                ></span>
-                <span v-if="selectedOrder.rawItem?.order?.l1GlobalCategory">
-                  Danh mục: {{ selectedOrder.rawItem.order.l1GlobalCategory }}
-                </span>
+                <span v-if="selectedOrder.rawItem?.order?.l1GlobalCategory" class="h-1 w-1 bg-slate-300 dark:bg-slate-700 rounded-full"></span>
+                <span v-if="selectedOrder.rawItem?.order?.l1GlobalCategory">Danh mục: {{ selectedOrder.rawItem.order.l1GlobalCategory }}</span>
               </div>
             </div>
           </div>
 
-          <!-- 3. Financial Info Grid -->
+          <!-- 3. Financial Info -->
           <div>
             <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-2.5">Chi tiết tích lũy hoàn tiền</span>
-            <div class="grid grid-cols-2 gap-3.5">
-              <div class="bg-shopee-orange/5 dark:bg-shopee-orange/10 p-4 rounded-2xl border border-shopee-orange/10 dark:border-shopee-orange/20 text-center col-span-2 shadow-sm">
-                <span class="text-[9px] font-black text-shopee-orange uppercase block tracking-widest">Tiền hoàn bạn nhận được</span>
-                <span class="text-base font-black text-shopee-orange block mt-1.5">
-                  +{{ formatMoney(selectedOrder.cashbackAmount) }}đ
-                </span>
-              </div>
+            <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-2xl border border-orange-100 dark:border-orange-500/20 text-center shadow-sm">
+              <span class="text-[9px] font-black text-[#ee4d2d] uppercase block tracking-widest">Tiền hoàn bạn nhận được</span>
+              <span class="text-xl font-black text-[#ee4d2d] block mt-1.5">+{{ formatMoney(selectedOrder.cashbackAmount) }}đ</span>
             </div>
           </div>
 
           <!-- 4. Date Info -->
-          <div class="pt-4 border-t border-slate-100 dark:border-slate-800/60 flex flex-col gap-2 text-[10px] text-slate-450 dark:text-slate-500 font-bold">
+          <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2 text-[10px] text-slate-500 font-bold">
             <div>Thời gian đặt hàng: {{ selectedOrder.date }}</div>
             <div>Trạng thái đối soát: {{ selectedOrder.status }}</div>
           </div>
@@ -435,8 +227,16 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onUnmounted } from "vue";
+import { ref, computed, watch } from "vue";
+import { ClockCircleOutlined, CheckCircleOutlined, CloseCircleOutlined, InfoCircleOutlined, CloseOutlined, FrownOutlined } from "@ant-design/icons-vue";
 import { AFFILIATE_TYPES } from "~/utils/constants";
+
+useSeoMeta({
+  title: "Lịch sử đơn hàng - Saffi",
+  ogTitle: "Lịch sử đơn hàng - Saffi",
+  description: "Trình theo dõi và quản lý toàn bộ các đơn hàng hoàn tiền từ Shopee.",
+  twitterCard: "summary_large_image",
+});
 
 const getBrandLogo = (type) => {
   if (type === AFFILIATE_TYPES.TIKTOK) return "/icon/tiktok.png";
@@ -444,46 +244,8 @@ const getBrandLogo = (type) => {
   return "/icon/shopee.png";
 };
 
-useSeoMeta({
-  title: "Lịch sử đơn hàng - Saffi",
-  ogTitle: "Lịch sử đơn hàng - Saffi",
-  description:
-    "Trình theo dõi và quản lý toàn bộ các đơn hàng hoàn tiền từ Shopee.",
-  ogDescription:
-    "Trình theo dõi và quản lý toàn bộ các đơn hàng hoàn tiền từ Shopee.",
-  ogImage: "/shopee-banner.png",
-  twitterCard: "summary_large_image",
-});
-
 const activeTab = ref("pending");
 const currentPage = ref(1);
-
-const tabs = [
-  {
-    label: "Chờ duyệt",
-    value: "pending",
-    icon: "i-lucide-clock",
-  },
-  {
-    label: "Thành công",
-    value: "success",
-    icon: "i-lucide-circle-check",
-  },
-  {
-    label: "Đã hủy",
-    value: "cancelled",
-    icon: "i-lucide-circle-x",
-  },
-];
-
-const statusStyles = {
-  "Thành công":
-    "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/15",
-  "Chờ duyệt":
-    "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/15",
-  "Đã hủy":
-    "bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/15",
-};
 
 const statusMap = {
   pending: "Pending",
@@ -501,22 +263,28 @@ const { data: response, status } = useLazyAsyncData(
   "user-orders",
   () => api.get("/order", { query: queryParams.value }),
   {
-    watch: [activeTab, currentPage], // Tự động gọi lại API khi chuyển tab hoặc trang
+    watch: [activeTab, currentPage],
     server: false,
   }
 );
 
-const lastPage = computed(() => response.value?.data?.last_page || 1);
-const totalOrders = computed(() => response.value?.data?.total || 0);
-
-const changePage = (page) => {
-  if (page < 1 || page > lastPage.value) return;
-  currentPage.value = page;
-};
-
 watch(activeTab, () => {
   currentPage.value = 1;
 });
+
+const totalOrders = computed(() => response.value?.data?.total || 0);
+const pageSize = computed(() => response.value?.data?.per_page || 15);
+
+const paginationConfig = computed(() => ({
+  current: currentPage.value,
+  total: totalOrders.value,
+  pageSize: pageSize.value,
+  showSizeChanger: false,
+}));
+
+const handleTableChange = (pagination) => {
+  currentPage.value = pagination.current;
+};
 
 const rawOrders = computed(() => {
   const res = response.value;
@@ -529,29 +297,16 @@ const rawOrders = computed(() => {
 
 const mapOrder = (item) => {
   const order = item.order || item;
-
-  // Format date
   let dateStr = "N/A";
-  const time = order.order_time;
-  if (time) {
-    const d = new Date(time);
-    dateStr = `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}/${d.getFullYear()} ${d
-      .getHours()
-      .toString()
-      .padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
+  if (order.order_time) {
+    const d = new Date(order.order_time);
+    dateStr = `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1).toString().padStart(2, "0")}/${d.getFullYear()} ${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
   }
 
-  // Normalize status cho UI hiển thị đẹp tiếng Việt
   let normStatus = "Chờ duyệt";
   const s = order.order_status?.toLowerCase() || "";
-
-  if (s.includes("completed") || s.includes("Completed")) {
-    normStatus = "Thành công";
-  } else if (s.includes("cancelled") || s.includes("Cancelled")) {
-    normStatus = "Đã hủy";
-  }
+  if (s.includes("completed") || s.includes("Completed")) normStatus = "Thành công";
+  else if (s.includes("cancelled") || s.includes("Cancelled")) normStatus = "Đã hủy";
 
   return {
     code: order.order_id || "N/A",
@@ -566,38 +321,57 @@ const mapOrder = (item) => {
   };
 };
 
-// Sử dụng trực tiếp orders vì Backend đã filter rồi
 const filteredOrders = computed(() => rawOrders.value.map(mapOrder));
 
-const formatMoney = (val) => {
-  if (!val) return "0";
-  return Math.round(Number(val)).toLocaleString("vi-VN");
-};
+const columns = [
+  { title: "Mã đơn", key: "code", width: 180 },
+  { title: "Sản phẩm", key: "item", width: 250 },
+  { title: "Ngày", key: "date", width: 120 },
+  { title: "Hoa hồng", key: "commission", align: "right", width: 120 },
+  { title: "Trạng thái", key: "status", align: "center", width: 120 },
+  { title: "Hành động", key: "action", align: "center", width: 100 },
+];
+
+const formatMoney = (val) => Math.round(Number(val || 0)).toLocaleString("vi-VN");
 
 const selectedOrder = ref(null);
-
-const isModalOpen = computed({
-  get: () => !!selectedOrder.value,
-  set: (val) => {
-    if (!val) selectedOrder.value = null;
-  }
-});
-
-const openOrderDetails = (orderItem) => {
-  selectedOrder.value = orderItem;
-};
-
-const closeOrderDetails = () => {
-  selectedOrder.value = null;
-};
-
-
+const isModalOpen = computed(() => !!selectedOrder.value);
+const openOrderDetails = (order) => selectedOrder.value = order;
+const closeOrderDetails = () => selectedOrder.value = null;
 
 const getRankName = (rank) => {
   if (!rank) return "BẠC";
   const r = rank.toLowerCase();
   if (r === "obsidian") return "TINH HOA";
   if (r === "gold") return "VÀNG";
+  if (r === "diamond") return "KIM CƯƠNG";
   return "BẠC";
 };
 </script>
+
+<style scoped>
+:deep(.custom-table .ant-table-thead > tr > th) {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  background: transparent;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+:deep(.custom-table .ant-table-tbody > tr > td) {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 16px;
+}
+
+/* Dark mode overwrites via tailwind classes in parent wrapper or use general rules */
+@media (prefers-color-scheme: dark) {
+  :deep(.custom-table .ant-table-thead > tr > th) {
+    border-bottom-color: #1e293b;
+  }
+  :deep(.custom-table .ant-table-tbody > tr > td) {
+    border-bottom-color: #1e293b;
+  }
+}
+</style>
