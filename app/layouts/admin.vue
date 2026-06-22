@@ -1,158 +1,91 @@
 <template>
-  <div class="flex h-screen w-full bg-slate-50 dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 overflow-hidden relative font-sans">
-    
-    <!-- Mobile Sidebar Overlay -->
-    <div 
-      v-if="isSidebarOpen" 
-      @click="isSidebarOpen = false" 
-      class="fixed inset-0 bg-slate-900/50 z-40 lg:hidden backdrop-blur-sm"
-    ></div>
-
+  <a-layout class="min-h-screen">
     <!-- Sidebar -->
-    <aside 
-      class="fixed inset-y-0 left-0 lg:static w-64 h-full border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col z-50 lg:translate-x-0"
-      :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+    <a-layout-sider
+      v-model:collapsed="collapsed"
+      :breakpoint="'lg'"
+      collapsed-width="0"
+      :zero-width-trigger-style="{ display: 'none' }"
+      class="border-r border-slate-200 dark:border-slate-800"
+      theme="light"
+      :style="{ background: 'var(--bg-color)', zIndex: 100 }"
     >
-      <div class="h-16 flex items-center px-6 border-b border-slate-200 dark:border-slate-800 shrink-0">
-        <NuxtLink to="/admin" class="flex items-center gap-2.5 cursor-pointer" @click="isSidebarOpen = false">
-          <div class="w-8 h-8 rounded-lg bg-slate-900 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+      <!-- Logo -->
+      <div class="h-16 flex items-center justify-center border-b border-slate-200 dark:border-slate-800 px-4">
+        <NuxtLink to="/admin" class="flex items-center gap-2 cursor-pointer w-full overflow-hidden">
+          <div class="w-8 h-8 rounded-lg bg-slate-900 dark:bg-slate-100 flex items-center justify-center text-white dark:text-slate-900 shrink-0">
+            <span class="font-black text-lg leading-none">S</span>
           </div>
-          <div class="flex flex-col">
-            <span class="font-bold text-[15px] leading-tight tracking-tight">Saffi</span>
+          <div class="flex flex-col" v-show="!collapsed">
+            <span class="font-bold text-[15px] leading-tight tracking-tight text-slate-800 dark:text-slate-100">Saffi</span>
             <span class="text-[9px] font-bold text-slate-500 tracking-widest uppercase">Workspace</span>
           </div>
         </NuxtLink>
       </div>
 
-      <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto scrollbar-hide">
-        <NuxtLink 
-          to="/admin"
-          @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
-          :class="[
-            $route.path === '/admin' || $route.path === '/admin/' 
-              ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
-              : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
-          ]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-          </svg>
+      <!-- Navigation Menu -->
+      <a-menu
+        v-model:selectedKeys="selectedKeys"
+        mode="inline"
+        class="border-r-0 py-4"
+        style="background: transparent"
+        @click="handleMenuClick"
+      >
+        <a-menu-item key="/admin">
+          <template #icon><DashboardOutlined /></template>
           Tổng quan
-        </NuxtLink>
-
-        <NuxtLink 
-          to="/admin/orders"
-          @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
-          :class="[
-            $route.path.includes('/admin/orders') 
-              ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
-              : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
-          ]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-          </svg>
-          Đơn hàng (Orders)
-        </NuxtLink>
-
-        <NuxtLink 
-          to="/admin/withdrawals"
-          @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
-          :class="[
-            $route.path.includes('/admin/withdrawals') 
-              ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
-              : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
-          ]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2" />
-          </svg>
-          Rút tiền (Withdrawals)
-        </NuxtLink>
+        </a-menu-item>
         
-        <NuxtLink 
-          to="/admin/users"
-          @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
-          :class="[
-            $route.path.includes('/admin/users') 
-              ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
-              : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
-          ]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-          </svg>
+        <a-menu-item key="/admin/orders">
+          <template #icon><ShoppingCartOutlined /></template>
+          Đơn hàng (Orders)
+        </a-menu-item>
+        
+        <a-menu-item key="/admin/withdrawals">
+          <template #icon><WalletOutlined /></template>
+          Rút tiền (Withdrawals)
+        </a-menu-item>
+        
+        <a-menu-item key="/admin/users">
+          <template #icon><TeamOutlined /></template>
           Người dùng (Users)
-        </NuxtLink>
-
-        <NuxtLink 
-          to="/admin/link-history"
-          @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
-          :class="[
-            $route.path.includes('/admin/link-history') 
-              ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
-              : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
-          ]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-          </svg>
+        </a-menu-item>
+        
+        <a-menu-item key="/admin/link-history">
+          <template #icon><LinkOutlined /></template>
           Lịch sử tạo Link
-        </NuxtLink>
-
-        <NuxtLink 
-          to="/admin/settings"
-          @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold"
-          :class="[
-            $route.path.includes('/admin/settings') 
-              ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' 
-              : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 hover:text-slate-700 dark:hover:text-slate-300'
-          ]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+        </a-menu-item>
+        
+        <a-menu-item key="/admin/settings">
+          <template #icon><SettingOutlined /></template>
           Cấu hình hệ thống
-        </NuxtLink>
-      </nav>
-      
-      <div class="p-4 shrink-0 border-t border-slate-200 dark:border-slate-800">
-        <button 
-          @click="handleSignOut" 
-          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer select-none text-left"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-          </svg>
+        </a-menu-item>
+        
+        <a-divider style="margin: 8px 0" />
+        
+        <a-menu-item key="logout" danger @click="handleSignOut">
+          <template #icon><LogoutOutlined /></template>
           Đăng xuất
-        </button>
-      </div>
-    </aside>
+        </a-menu-item>
+      </a-menu>
+    </a-layout-sider>
 
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col h-full overflow-hidden relative z-10 w-full min-w-0">
-      <header class="h-16 flex items-center justify-between px-4 lg:px-8 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shrink-0">
-        <div class="flex items-center gap-3">
-          <button 
-            @click="isSidebarOpen = !isSidebarOpen" 
-            class="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+    <!-- Main Layout -->
+    <a-layout>
+      <!-- Header -->
+      <a-layout-header class="h-16 px-4 lg:px-8 flex items-center justify-between border-b border-slate-200 dark:border-slate-800" style="background: var(--bg-color); padding: 0 24px;">
+        <div class="flex items-center gap-4">
+          <a-button 
+            type="text" 
+            class="lg:hidden" 
+            @click="collapsed = !collapsed"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-          <h1 class="text-sm font-bold text-slate-800 dark:text-slate-100 hidden sm:block tracking-tight">Admin Console</h1>
+            <MenuUnfoldOutlined v-if="collapsed" class="text-lg" />
+            <MenuFoldOutlined v-else class="text-lg" />
+          </a-button>
+          <h1 class="text-sm font-bold text-slate-800 dark:text-slate-100 hidden sm:block tracking-tight mb-0">Admin Console</h1>
         </div>
+
         <div class="flex items-center gap-3 select-none">
           <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 hidden sm:inline">{{ userName }}</span>
           <div class="h-8 w-8 rounded-full overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 shrink-0">
@@ -162,27 +95,63 @@
             </div>
           </div>
         </div>
-      </header>
-      
-      <div class="flex-1 overflow-y-auto scrollbar-hide p-4 sm:p-6 lg:p-8">
+      </a-layout-header>
+
+      <!-- Content -->
+      <a-layout-content class="overflow-y-auto p-4 sm:p-6 lg:p-8" style="background: var(--bg-content);">
         <div class="max-w-[1400px] mx-auto w-full">
           <slot />
         </div>
-      </div>
-    </main>
-  </div>
+      </a-layout-content>
+    </a-layout>
+  </a-layout>
 </template>
 
 <script setup>
-import { onMounted, computed, ref } from "vue";
+import { onMounted, computed, ref, watch } from "vue";
 import { useTheme } from "@/composables/useTheme";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { 
+  DashboardOutlined, 
+  ShoppingCartOutlined, 
+  WalletOutlined, 
+  TeamOutlined, 
+  LinkOutlined, 
+  SettingOutlined, 
+  LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined
+} from "@ant-design/icons-vue";
 
 const route = useRoute();
+const router = useRouter();
 const { initTheme } = useTheme();
 const { user, logout } = useAuth();
 
-const isSidebarOpen = ref(false);
+const collapsed = ref(false);
+const selectedKeys = ref([route.path]);
+
+// Sync active menu item with route changes
+watch(() => route.path, (newPath) => {
+  // Ignore logout key or specific sub-paths if necessary
+  // Here we do simple matching. If path is exactly /admin, we select /admin.
+  // Otherwise we match the base path like /admin/orders.
+  const pathParts = newPath.split('/');
+  if (pathParts.length > 3) {
+    selectedKeys.value = [`/${pathParts[1]}/${pathParts[2]}`];
+  } else {
+    selectedKeys.value = [newPath];
+  }
+});
+
+const handleMenuClick = ({ key }) => {
+  if (key === 'logout') return;
+  router.push(key);
+  // Auto collapse on mobile after navigation
+  if (window.innerWidth < 992) {
+    collapsed.value = true;
+  }
+};
 
 const userName = computed(() => user.value?.name || "Admin");
 const userAvatar = computed(() => user.value?.image || "");
@@ -198,5 +167,43 @@ const handleSignOut = async () => {
 
 onMounted(() => {
   initTheme();
+  // Close sidebar by default on mobile on initial load
+  if (window.innerWidth < 992) {
+    collapsed.value = true;
+  }
 });
 </script>
+
+<style scoped>
+:deep(.ant-layout-sider) {
+  background: var(--bg-color) !important;
+}
+
+:deep(.ant-menu) {
+  background: transparent !important;
+}
+
+:deep(.ant-layout-header) {
+  background: var(--bg-color) !important;
+}
+
+:deep(.ant-layout-content) {
+  background: var(--bg-content) !important;
+}
+
+:deep(.ant-menu-item-selected) {
+  background-color: var(--ant-primary-color-deprecated-bg) !important;
+  font-weight: bold;
+}
+
+/* Add custom CSS variables to match your Tailwind setup dynamically based on dark mode class if needed */
+html {
+  --bg-color: #ffffff;
+  --bg-content: #f8fafc; /* slate-50 */
+}
+
+html.dark {
+  --bg-color: #020617; /* slate-950 */
+  --bg-content: #0B0F19; /* dark theme content bg */
+}
+</style>

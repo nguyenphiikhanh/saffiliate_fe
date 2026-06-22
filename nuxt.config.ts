@@ -6,12 +6,12 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: "icon", type: "image/png", href: "/saficon.png" },
-        { rel: "apple-touch-icon", href: "/saficon.png" },
+        { rel: "icon", type: "image/png", href: "/saficon.webp" },
+        { rel: "apple-touch-icon", href: "/saficon.webp" },
         { rel: "manifest", href: "/manifest.json" }
       ],
       meta: [
-        { property: "og:image", content: "/saffi_logo.png" },
+        { property: "og:image", content: "/saficon.webp" },
         { name: "color-scheme", content: "light" },
         { name: "apple-mobile-web-app-title", content: "Saffi" },
         { name: "application-name", content: "Saffi" }
@@ -29,12 +29,24 @@ export default defineNuxtConfig({
     // Auto-import all components, icons, message/notification methods
   },
 
+  // @nuxt/image: use IPX (built-in) for local images; serves WebP/AVIF on-the-fly.
+  // For Cloudflare Pages, sharp is bundled automatically by @nuxt/image.
+  image: {
+    format: ["webp", "avif"],
+    quality: 80,
+    screens: {
+      xs: 375,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+    },
+  },
+
   vite: {
     optimizeDeps: {
       include: [
         '@ant-design/icons-vue',
-        '@vue/devtools-core',
-        '@vue/devtools-kit',
         'dayjs',
         'dayjs/plugin/advancedFormat',
         'dayjs/plugin/customParseFormat',
@@ -49,8 +61,9 @@ export default defineNuxtConfig({
       rollupOptions: {
         output: {
           manualChunks: {
-            "antd-vendor": ["ant-design-vue"],
-            "antd-icons": ["@ant-design/icons-vue"],
+            // Ant Design split into two chunks: core + icons (icons are large)
+            "vendor-antd": ["ant-design-vue"],
+            "vendor-antd-icons": ["@ant-design/icons-vue"],
           }
         }
       }
@@ -94,4 +107,4 @@ export default defineNuxtConfig({
       autoSubfolderIndex: false
     }
   }
-});
+});
