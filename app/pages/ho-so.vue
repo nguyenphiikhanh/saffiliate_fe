@@ -105,7 +105,7 @@
               </a-button>
             </template>
 
-            <a-form layout="vertical" @finish="saveProfile">
+            <a-form layout="vertical" @submit.prevent="saveProfile">
               <a-row :gutter="16">
                 <a-col :xs="24" :sm="12">
                   <a-form-item label="Họ tên">
@@ -163,7 +163,7 @@
               </a-button>
             </template>
 
-            <a-form layout="vertical" @finish="saveBank">
+            <a-form layout="vertical" @submit.prevent="saveBank">
               <a-form-item label="Ngân hàng liên kết">
                 <a-select
                   v-model:value="linkedBank"

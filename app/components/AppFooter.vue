@@ -6,21 +6,36 @@
         <a-col :xs="24" :lg="10">
           <div class="footer-brand-box">
             <div class="flex items-center gap-3 mb-4">
-              <NuxtImg src="/saficon.webp" class="w-12 h-12 rounded-xl shadow-sm" alt="Saffi Logo" />
+              <NuxtImg
+                src="/saficon.webp"
+                class="w-12 h-12 rounded-xl shadow-sm"
+                alt="Saffi Logo"
+              />
               <div>
-                <div class="text-2xl font-black text-slate-800 dark:text-slate-100 tracking-tight">Saffi</div>
-                <div class="text-[9px] font-bold text-slate-500 tracking-[0.2em] uppercase mt-0.5">Smart Shopping</div>
+                <div
+                  class="text-2xl font-black text-slate-800 dark:text-slate-100 tracking-tight"
+                >
+                  Saffi
+                </div>
+                <div
+                  class="text-[9px] font-bold text-slate-500 tracking-[0.2em] uppercase mt-0.5"
+                >
+                  Smart Shopping
+                </div>
               </div>
             </div>
-            <p class="text-sm font-medium text-slate-500 dark:text-slate-400 leading-relaxed mb-6 max-w-sm">
-              Trợ lý mua sắm thông minh thế hệ mới. Hoàn tiền tự động, minh bạch và siêu tốc từ các sàn TMĐT.
+            <p
+              class="text-sm font-medium text-slate-500 dark:text-slate-400 leading-relaxed mb-6 max-w-sm"
+            >
+              Trợ lý mua sắm thông minh thế hệ mới. Hoàn tiền tự động, minh bạch
+              và siêu tốc từ các sàn TMĐT.
             </p>
             <div class="flex items-center gap-3">
               <a href="mailto:support@saffi.vn" class="social-btn">
                 <MailOutlined />
               </a>
               <a :href="zaloGroup" target="_blank" class="social-btn">
-                <MessageOutlined />
+                <UsergroupAddOutlined />
               </a>
             </div>
           </div>
@@ -29,17 +44,27 @@
         <!-- Navigation Section -->
         <a-col :xs="24" :sm="12" :lg="6">
           <div class="footer-nav-box h-full">
-            <div class="text-xs font-black tracking-widest uppercase text-slate-800 dark:text-slate-200 mb-6 flex items-center gap-2">
-              <div class="w-2 h-2 rounded-full bg-slate-800 dark:bg-slate-200"></div>
+            <div
+              class="text-xs font-black tracking-widest uppercase text-slate-800 dark:text-slate-200 mb-6 flex items-center gap-2"
+            >
+              <div
+                class="w-2 h-2 rounded-full bg-slate-800 dark:bg-slate-200"
+              ></div>
               Menu
             </div>
             <div class="flex flex-col gap-4">
               <NuxtLink to="/hoan-tien" class="nav-link">Hoàn tiền</NuxtLink>
-              <a-divider style="margin: 0; border-color: rgba(226,232,240,0.5)" />
+              <a-divider
+                style="margin: 0; border-color: rgba(226, 232, 240, 0.5)"
+              />
               <NuxtLink to="/don-hang" class="nav-link">Đơn hàng</NuxtLink>
-              <a-divider style="margin: 0; border-color: rgba(226,232,240,0.5)" />
+              <a-divider
+                style="margin: 0; border-color: rgba(226, 232, 240, 0.5)"
+              />
               <NuxtLink to="/tai-chinh" class="nav-link">Tài chính</NuxtLink>
-              <a-divider style="margin: 0; border-color: rgba(226,232,240,0.5)" />
+              <a-divider
+                style="margin: 0; border-color: rgba(226, 232, 240, 0.5)"
+              />
               <NuxtLink to="/huong-dan" class="nav-link">Hướng dẫn</NuxtLink>
             </div>
           </div>
@@ -48,13 +73,26 @@
         <!-- Contact Section -->
         <a-col :xs="24" :sm="12" :lg="8">
           <div class="flex flex-col gap-4 h-full">
-            <div class="contact-card cursor-pointer" onclick="window.location.href='mailto:support@saffi.vn'">
-              <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-500 flex items-center justify-center text-xl shrink-0">
+            <div
+              class="contact-card cursor-pointer"
+              onclick="window.location.href='mailto:support@saffi.vn'"
+            >
+              <div
+                class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-500 flex items-center justify-center text-xl shrink-0"
+              >
                 <CustomerServiceOutlined />
               </div>
               <div>
-                <div class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Hỗ trợ 24/7</div>
-                <div class="text-sm font-bold text-slate-800 dark:text-slate-200">support@saffi.vn</div>
+                <div
+                  class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5"
+                >
+                  Hỗ trợ 24/7
+                </div>
+                <div
+                  class="text-sm font-bold text-slate-800 dark:text-slate-200"
+                >
+                  support@saffi.vn
+                </div>
               </div>
             </div>
 
@@ -62,15 +100,27 @@
               <a-col :span="12">
                 <div class="stat-card h-full">
                   <ClockCircleOutlined class="text-emerald-500 text-xl mb-2" />
-                  <div class="text-xs font-bold text-slate-800 dark:text-slate-200">08:00 - 22:00</div>
-                  <div class="text-[10px] font-medium text-slate-500">Hàng ngày</div>
+                  <div
+                    class="text-xs font-bold text-slate-800 dark:text-slate-200"
+                  >
+                    08:00 - 22:00
+                  </div>
+                  <div class="text-[10px] font-medium text-slate-500">
+                    Hàng ngày
+                  </div>
                 </div>
               </a-col>
               <a-col :span="12">
                 <div class="stat-card h-full">
                   <ThunderboltOutlined class="text-amber-500 text-xl mb-2" />
-                  <div class="text-xs font-bold text-slate-800 dark:text-slate-200">&lt; 60 Phút</div>
-                  <div class="text-[10px] font-medium text-slate-500">Rút tiền</div>
+                  <div
+                    class="text-xs font-bold text-slate-800 dark:text-slate-200"
+                  >
+                    &lt; 60 Phút
+                  </div>
+                  <div class="text-[10px] font-medium text-slate-500">
+                    Rút tiền
+                  </div>
                 </div>
               </a-col>
             </a-row>
@@ -79,14 +129,32 @@
       </a-row>
 
       <!-- Bottom Bar -->
-      <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
+      <div
+        class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4"
+      >
+        <div
+          class="text-[11px] font-bold text-slate-500 uppercase tracking-widest"
+        >
           &copy; 2026 Saffi Platform. All Rights Reserved.
         </div>
-        <div class="flex items-center gap-6 text-[11px] font-bold text-slate-500">
-          <a :href="`${mainSiteURL}/privacy-policy`" target="_blank" class="hover:text-[#ee4d2d] transition-colors">Privacy Policy</a>
-          <div class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"></div>
-          <a :href="`${mainSiteURL}/terms-of-service`" target="_blank" class="hover:text-[#ee4d2d] transition-colors">Terms of Service</a>
+        <div
+          class="flex items-center gap-6 text-[11px] font-bold text-slate-500"
+        >
+          <a
+            :href="`${mainSiteURL}/privacy-policy`"
+            target="_blank"
+            class="hover:text-[#ee4d2d] transition-colors"
+            >Privacy Policy</a
+          >
+          <div
+            class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"
+          ></div>
+          <a
+            :href="`${mainSiteURL}/terms-of-service`"
+            target="_blank"
+            class="hover:text-[#ee4d2d] transition-colors"
+            >Terms of Service</a
+          >
         </div>
       </div>
     </div>
@@ -94,12 +162,12 @@
 </template>
 
 <script setup>
-import { 
-  MailOutlined, 
-  MessageOutlined, 
-  CustomerServiceOutlined, 
-  ClockCircleOutlined, 
-  ThunderboltOutlined 
+import {
+  MailOutlined,
+  UsergroupAddOutlined,
+  CustomerServiceOutlined,
+  ClockCircleOutlined,
+  ThunderboltOutlined,
 } from "@ant-design/icons-vue";
 
 const config = useRuntimeConfig();
@@ -145,7 +213,7 @@ html.dark .footer-brand-box {
   align-items: center;
   justify-content: center;
   color: #64748b;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
 
@@ -186,7 +254,8 @@ html.dark .nav-link {
   color: #ee4d2d;
 }
 
-.contact-card, .stat-card {
+.contact-card,
+.stat-card {
   background: #f8fafc;
   border: 1px solid #f1f5f9;
   border-radius: 24px;
@@ -195,7 +264,8 @@ html.dark .nav-link {
   transition: all 0.3s ease;
 }
 
-html.dark .contact-card, html.dark .stat-card {
+html.dark .contact-card,
+html.dark .stat-card {
   background: #1e293b;
   border-color: #334155;
 }
@@ -205,7 +275,8 @@ html.dark .contact-card, html.dark .stat-card {
   gap: 16px;
 }
 
-.contact-card:hover, .stat-card:hover {
+.contact-card:hover,
+.stat-card:hover {
   border-color: rgba(59, 130, 246, 0.3);
 }
 

@@ -70,6 +70,10 @@
         @change="handleTableChange"
         :scroll="{ x: 800 }"
         class="custom-table"
+        :customRow="(record) => ({
+          onClick: () => openOrderDetails(record),
+          class: 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors',
+        })"
       >
         <template #bodyCell="{ column, record }">
           <!-- Mã Đơn -->
@@ -148,8 +152,7 @@
       placement="right"
       :closable="false"
       :bodyStyle="{ padding: 0 }"
-      width="100%"
-      class="md:!w-[400px]"
+      :width="drawerWidth"
     >
       <div v-if="selectedOrder" class="flex flex-col h-full overflow-hidden bg-white dark:bg-slate-950">
         <div class="flex items-start justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shrink-0">
@@ -227,7 +230,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 import { ClockCircleOutlined, CheckCircleOutlined, CloseCircleOutlined, InfoCircleOutlined, CloseOutlined, FrownOutlined } from "@ant-design/icons-vue";
 import { AFFILIATE_TYPES } from "~/utils/constants";
 
@@ -347,6 +350,16 @@ const getRankName = (rank) => {
   if (r === "diamond") return "KIM CƯƠNG";
   return "BẠC";
 };
+
+const drawerWidth = ref("100%");
+onMounted(() => {
+  const updateWidth = () => {
+    drawerWidth.value = window.innerWidth >= 768 ? "400px" : "100%";
+  };
+  updateWidth();
+  window.addEventListener("resize", updateWidth);
+  onUnmounted(() => window.removeEventListener("resize", updateWidth));
+});
 </script>
 
 <style scoped>

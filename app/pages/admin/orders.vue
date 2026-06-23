@@ -6,10 +6,16 @@
         <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">Quản lý Đơn hàng</h2>
         <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-1">Theo dõi, đối soát và upload dữ liệu đơn hàng từ mạng Affiliate.</p>
       </div>
-      <a-button type="primary" @click="showUploadModal = true" class="font-semibold">
-        <template #icon><UploadOutlined /></template>
-        Upload CSV
-      </a-button>
+      <div class="flex items-center gap-3">
+        <a-button type="default" @click="showSyncModal = true" class="font-semibold">
+          <template #icon><SyncOutlined /></template>
+          Đồng bộ ID
+        </a-button>
+        <a-button type="primary" @click="showUploadModal = true" class="font-semibold">
+          <template #icon><UploadOutlined /></template>
+          Upload CSV
+        </a-button>
+      </div>
     </div>
 
     <!-- Stats Cards -->
@@ -203,6 +209,14 @@
       </div>
     </a-modal>
 
+    <!-- Sync Modal -->
+    <a-modal v-model:open="showSyncModal" title="Đồng bộ Đơn hàng thủ công" @ok="confirmSync" :confirmLoading="isSyncing" okText="Đồng bộ" cancelText="Hủy">
+      <div class="py-4">
+        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">Nhập mã đơn hàng (Order ID) để đồng bộ dữ liệu:</p>
+        <a-input v-model:value="syncOrderId" placeholder="Ví dụ: 123456789" allow-clear @pressEnter="confirmSync" />
+      </div>
+    </a-modal>
+
     <!-- Order Details Drawer -->
     <a-drawer v-model:open="isDrawerOpen" placement="right" width="450px" :closable="false">
       <template #title>
@@ -339,6 +353,29 @@ const fileInput = ref(null);
 const isUploading = ref(false);
 const selectedFile = ref(null);
 
+const showSyncModal = ref(false);
+const syncOrderId = ref('');
+const isSyncing = ref(false);
+
+const confirmSync = async () => {
+  if (!syncOrderId.value.trim()) {
+    showToast('Vui lòng nhập ID đơn hàng', 'error');
+    return;
+  }
+  isSyncing.value = true;
+  try {
+    const res = await api.post('/order/manual-sync', { data: { order_id: syncOrderId.value.trim() } });
+    showToast(res?.data?.message || res?.message || 'Đồng bộ thành công!');
+    showSyncModal.value = false;
+    syncOrderId.value = '';
+    await refresh();
+  } catch (err) {
+    showToast(err?.data?.message || err?.message || 'Đồng bộ thất bại. Vui lòng thử lại.', 'error');
+  } finally {
+    isSyncing.value = false;
+  }
+};
+
 const showToast = (msg, type = "success") => {
   if (type === "success") message.success(msg);
   else message.error(msg);
@@ -442,13 +479,13 @@ const confirmUpload = async () => {
   try {
     const formData = new FormData();
     formData.append('file', selectedFile.value);
-    await api.post('/admin/orders/upload', formData);
-    showToast('Upload thành công!');
+    const res = await api.post('/admin/orders/upload', formData);
+    showToast(res?.data?.message || res?.message || 'Upload thành công!');
     showUploadModal.value = false;
     selectedFile.value = null;
     await refresh();
   } catch (err) {
-    showToast(err?.data?.message || 'Upload thất bại. Vui lòng thử lại.', 'error');
+    showToast(err?.data?.message || err?.message || 'Upload thất bại. Vui lòng thử lại.', 'error');
   } finally {
     isUploading.value = false;
   }
