@@ -189,9 +189,14 @@
                 
                 <div class="flex flex-col items-end">
                   <span class="text-xs font-bold text-slate-800 dark:text-slate-100 mb-1">{{ formatMoney(item.amount) }}</span>
-                  <a-tag :color="item.status === 'completed' || item.status === 'success' ? 'success' : item.status === 'pending' ? 'warning' : 'error'" style="margin: 0">
-                    {{ item.status === "completed" || item.status === "success" ? "Thành công" : item.status === "pending" ? "Đang xử lý" : "Đã hủy" }}
-                  </a-tag>
+                  <div class="flex items-center gap-2">
+                    <a-button v-if="item.status !== 'completed' && item.status !== 'success' && item.status !== 'pending'" type="text" size="small" class="p-0 h-auto text-[10px] text-blue-500 hover:text-blue-600" @click="showRejectReason(item.rejectReason)">
+                      Lý do
+                    </a-button>
+                    <a-tag :color="item.status === 'completed' || item.status === 'success' ? 'success' : item.status === 'pending' ? 'warning' : 'error'" style="margin: 0">
+                      {{ item.status === "completed" || item.status === "success" ? "Thành công" : item.status === "pending" ? "Đang xử lý" : "Đã hủy" }}
+                    </a-tag>
+                  </div>
                 </div>
               </div>
             </div>
@@ -206,6 +211,7 @@
 import { ref, computed, onMounted } from "vue";
 import { usePromiseTracker } from "@/composables/usePromiseTracker";
 import { BankOutlined, ClockCircleOutlined, CheckCircleOutlined, WarningOutlined, EditOutlined, WalletOutlined } from "@ant-design/icons-vue";
+import { Modal } from "ant-design-vue";
 
 const { isLoading: isApiLoading } = usePromiseTracker();
 
@@ -277,6 +283,15 @@ const fetchHistory = async () => {
   } finally {
     isHistoryLoading.value = false;
   }
+};
+
+const showRejectReason = (reason) => {
+  Modal.info({
+    title: 'Lý do từ chối',
+    content: reason || 'Không có lý do cụ thể hoặc yêu cầu bị huỷ bỏ.',
+    okText: 'Đóng',
+    centered: true,
+  });
 };
 
 const formattedWithdrawAmount = computed({

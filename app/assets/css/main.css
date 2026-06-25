@@ -14,12 +14,14 @@ html {
   font-family: var(--font-sans);
   font-size: 106.25%; /* Tăng kích thước chữ gốc của toàn hệ thống lên ~17px (tương đương tăng ~6.25%) */
   color-scheme: light; /* Force light mode at browser engine level, turning off any system-forced dark overrides */
+  scrollbar-gutter: stable; /* Ngăn chặn giật giao diện khi ẩn hiện thanh cuộn (mở Modal/Drawer) */
 }
 
 body {
   background-color: #F8FAFC; /* Light mode default */
   color: #0F172A; /* Light mode default */
   overflow-x: hidden;
+  padding-right: 0 !important; /* Ghi đè padding mặc định của Ant Design Vue khi mở Modal */
 }
 
 /* Khoảng đệm dưới của body trên di động để tránh bị thanh Bottom Navigation Bar che lấp nội dung */

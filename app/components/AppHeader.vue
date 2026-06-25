@@ -29,7 +29,9 @@
             </a-menu-item>
             <a-menu-item key="/hoan-tien">
               <template #icon><WalletOutlined /></template>
-              Hoàn tiền
+              <a-badge :dot="route.path !== '/hoan-tien'" color="#10b981" :offset="[5, 5]">
+                Hoàn tiền
+              </a-badge>
             </a-menu-item>
             <a-menu-item key="/don-hang">
               <template #icon><ShoppingCartOutlined /></template>
@@ -117,14 +119,15 @@
           v-for="item in mobileMenuItems"
           :key="item.path"
           @click="handleMobileMenuClick({ key: item.path })"
-          class="flex flex-col items-center justify-center w-full h-full cursor-pointer transition-all duration-300"
+          class="flex flex-col items-center justify-center w-full h-full cursor-pointer transition-all duration-300 relative z-10"
           :class="route.path === item.path ? 'text-[#ee4d2d] -translate-y-1' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'"
         >
           <div class="relative">
-            <component :is="item.icon" class="text-[22px] mb-1 transition-transform duration-300" :class="route.path === item.path ? 'scale-110' : ''" />
-            <div v-if="route.path === item.path" class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#ee4d2d]"></div>
+            <a-badge :dot="item.path === '/hoan-tien' && route.path !== item.path" color="#10b981" :offset="[0, 5]">
+              <component :is="item.icon" class="text-[22px] mb-1 transition-transform duration-300" :class="route.path === item.path ? 'scale-110' : ''" />
+            </a-badge>
           </div>
-          <span class="text-[9px] font-extrabold uppercase tracking-widest mt-1 transition-colors duration-300" :class="route.path === item.path ? 'text-[#ee4d2d]' : ''">{{ item.name }}</span>
+          <span class="text-[9px] font-extrabold uppercase tracking-widest mt-1 transition-colors duration-300">{{ item.name }}</span>
         </div>
       </div>
     </div>
@@ -162,7 +165,6 @@ const mobileMenuItems = [
   { path: '/hoan-tien', name: 'Hoàn tiền', icon: WalletOutlined },
   { path: '/don-hang', name: 'Đơn hàng', icon: ShoppingCartOutlined },
   { path: '/tai-chinh', name: 'Tài chính', icon: BankOutlined },
-  { path: '/ho-tro', name: 'Hỗ trợ', icon: QuestionCircleOutlined },
 ];
 
 watch(() => route.path, (newPath) => {
@@ -261,4 +263,5 @@ html.dark :deep(.header-menu) {
 :deep(.ant-menu-horizontal > .ant-menu-item:hover::after) {
   border-bottom-color: #ee4d2d !important;
 }
+
 </style>

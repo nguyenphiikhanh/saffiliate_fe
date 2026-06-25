@@ -60,40 +60,43 @@
       </div>
     </div>
 
-    <!-- Toggle button -->
-    <div class="flex justify-center mb-6">
-      <a-button type="link" @click="isDetailsOpen = !isDetailsOpen" class="font-bold text-[#ee4d2d] flex items-center gap-1.5">
-        Xem chi tiết <DownOutlined :class="{'rotate-180': isDetailsOpen}" class="transition-transform text-[10px]" />
-      </a-button>
-    </div>
-
-    <!-- Details section -->
-    <div v-show="isDetailsOpen" class="mb-6">
-      <a-row :gutter="12">
-        <a-col :span="12">
-          <div class="flex items-center gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 h-full">
-            <div class="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-500 flex items-center justify-center shrink-0">
-              <ClockCircleOutlined class="text-lg" />
-            </div>
-            <div>
-              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Thời gian ghi nhận</div>
-              <div class="text-[13px] font-bold text-slate-700 dark:text-slate-300">Trong vòng <span class="text-[#ee4d2d]">24h</span></div>
-            </div>
+    <!-- Details section with a-collapse -->
+    <a-collapse v-model:activeKey="activeKey" ghost :bordered="false" class="custom-collapse mb-6">
+      <a-collapse-panel key="1" :showArrow="false">
+        <template #header>
+          <div class="flex justify-center w-full">
+            <span class="font-bold text-[#ee4d2d] flex items-center gap-1.5 hover:opacity-80 transition-opacity">
+              Xem chi tiết <DownOutlined :class="{'rotate-180': activeKey.includes('1')}" class="transition-transform text-[10px]" />
+            </span>
           </div>
-        </a-col>
-        <a-col :span="12">
-          <div class="flex items-center gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 h-full">
-            <div class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 flex items-center justify-center shrink-0">
-              <CheckCircleOutlined class="text-lg" />
+        </template>
+        
+        <a-row :gutter="12">
+          <a-col :span="12">
+            <div class="flex items-center gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 h-full">
+              <div class="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-500 flex items-center justify-center shrink-0">
+                <ClockCircleOutlined class="text-lg" />
+              </div>
+              <div>
+                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Thời gian ghi nhận</div>
+                <div class="text-[13px] font-bold text-slate-700 dark:text-slate-300">Trong vòng <span class="text-[#ee4d2d]">24h</span></div>
+              </div>
             </div>
-            <div>
-              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Thời gian duyệt hoàn</div>
-              <div class="text-[13px] font-bold text-emerald-500">7 - 14 ngày</div>
+          </a-col>
+          <a-col :span="12">
+            <div class="flex items-center gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 h-full">
+              <div class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-500 flex items-center justify-center shrink-0">
+                <CheckCircleOutlined class="text-lg" />
+              </div>
+              <div>
+                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Thời gian duyệt hoàn</div>
+                <div class="text-[13px] font-bold text-emerald-500">7 - 14 ngày</div>
+              </div>
             </div>
-          </div>
-        </a-col>
-      </a-row>
-    </div>
+          </a-col>
+        </a-row>
+      </a-collapse-panel>
+    </a-collapse>
 
     <!-- Footer note -->
     <div class="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-5">
@@ -106,5 +109,14 @@
 import { ref } from 'vue';
 import { InfoCircleOutlined, ShoppingCartOutlined, ExceptionOutlined, SyncOutlined, CheckCircleOutlined, DownOutlined, ClockCircleOutlined } from '@ant-design/icons-vue';
 
-const isDetailsOpen = ref(false);
+const activeKey = ref([]);
 </script>
+
+<style scoped>
+:deep(.custom-collapse .ant-collapse-header) {
+  padding: 0 !important;
+}
+:deep(.custom-collapse .ant-collapse-content > .ant-collapse-content-box) {
+  padding: 16px 0 0 0 !important;
+}
+</style>
