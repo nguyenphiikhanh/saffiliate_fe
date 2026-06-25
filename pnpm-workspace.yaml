@@ -19,5 +19,6 @@ allowBuilds:
   sharp: false
   u: true
   v: true
+  vue-demi: true
   w: true
   workerd: true
