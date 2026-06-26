@@ -55,6 +55,7 @@ export default defineNuxtConfig({
         'dayjs/plugin/weekOfYear',
         'dayjs/plugin/weekYear',
         'dayjs/plugin/weekday',
+        'papaparse',
       ]
     },
     build: {

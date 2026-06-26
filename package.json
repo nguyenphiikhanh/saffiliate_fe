@@ -16,6 +16,7 @@
     "@ant-design-vue/nuxt": "^1.4.6",
     "nuxt": "^4.4.5",
     "nuxt-vue3-google-signin": "0.0.13",
+    "papaparse": "^5.5.4",
     "vue": "^3.5.34",
     "vue-router": "^5.0.6",
     "wrangler": "^4.93.1"

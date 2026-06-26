@@ -333,6 +333,7 @@ import { ref, computed, watch, onUnmounted } from "vue";
 import { useAdminUsers } from "~/composables/useAdminUsers";
 import { UploadOutlined, UserOutlined, CloseOutlined, DeleteOutlined, RightOutlined, SyncOutlined, FileDoneOutlined, InfoCircleOutlined, TeamOutlined, LeftOutlined } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
+import Papa from "papaparse";
 
 const columns = [
   { title: 'Mã đơn', key: 'order_id', width: 110 },
@@ -473,22 +474,88 @@ const closeOrderDetails = () => { selectedOrder.value = null; };
 const triggerFileInput = () => fileInput.value?.click();
 const handleFileSelect = (e) => { selectedFile.value = e.target.files?.[0] || null; };
 const onDrop = (e) => { selectedFile.value = e.dataTransfer.files?.[0] || null; };
-const confirmUpload = async () => {
+const confirmUpload = () => {
   if (!selectedFile.value) return;
   isUploading.value = true;
-  try {
-    const formData = new FormData();
-    formData.append('file', selectedFile.value);
-    const res = await api.post('/admin/orders/upload', formData);
-    showToast(res?.data?.message || res?.message || 'Upload thành công!');
-    showUploadModal.value = false;
-    selectedFile.value = null;
-    await refresh();
-  } catch (err) {
-    showToast(err?.data?.message || err?.message || 'Upload thất bại. Vui lòng thử lại.', 'error');
-  } finally {
-    isUploading.value = false;
-  }
+
+  Papa.parse(selectedFile.value, {
+    header: true,
+    skipEmptyLines: true,
+    complete: async (results) => {
+      try {
+        const getVal = (row, key) => row[key] ? String(row[key]).trim() : '';
+        const getNum = (row, key) => {
+          const val = row[key];
+          if (!val) return 0;
+          const cleanStr = String(val).replace(/,/g, '');
+          const num = Number(cleanStr);
+          return isNaN(num) ? 0 : num;
+        };
+
+        const payload = results.data.map(row => {
+          return {
+            orderId: getVal(row, "Order id"),
+            orderStatus: getVal(row, "Order Status"),
+            conversionId: getNum(row, "Conversion id"),
+            orderTime: getVal(row, "Order Time"),
+            completeTime: getVal(row, "Complete Time"),
+            clickTime: getVal(row, "Click Time"),
+            shopName: getVal(row, "Shop Name"),
+            shopId: getNum(row, "Shop id"),
+            shopType: getVal(row, "Shop Type"),
+            itemId: getNum(row, "Item id"),
+            itemName: getVal(row, "Item Name"),
+            modelId: getNum(row, "Model id"),
+            productType: getVal(row, "Product Type"),
+            promotionId: getNum(row, "Promotion id"),
+            l1GlobalCategory: getVal(row, "L1 Global Category"),
+            l2GlobalCategory: getVal(row, "L2 Global Category"),
+            l3GlobalCategory: getVal(row, "L3 Global Category"),
+            price: getNum(row, "Price(₫)"),
+            qty: getNum(row, "Qty"),
+            offerType: getVal(row, "Offer Type"),
+            campaignPartner: getVal(row, "Campaign"),
+            purchaseValue: getNum(row, "Purchase Value(₫)"),
+            refundAmount: getNum(row, "Refund Amount(₫)"),
+            itemShopeeCommissionRate: getVal(row, "Item Shopee Commission Rate"),
+            itemShopeeCommission: getNum(row, "Item Shopee Commission(₫)"),
+            itemSellerCommissionRate: getVal(row, "Item Seller Commission Rate"),
+            itemSellerCommission: getNum(row, "Item Seller Commission(₫)"),
+            itemTotalCommission: getNum(row, "Item Total Commission(₫)"),
+            orderShopeeCommission: getNum(row, "Order Shopee Commission(₫)"),
+            orderSellerCommission: getNum(row, "Order Seller Commission(₫)"),
+            totalOrderCommission: getNum(row, "Total Order Commission(₫)"),
+            linkedMcnName: getVal(row, "Linked MCN Name"),
+            mcnContractId: getNum(row, "MCN Contract id"),
+            mcnManagementFeeRate: getVal(row, "MCN Management Fee Rate"),
+            mcnManagementFee: getNum(row, "MCN Management Fee(₫)"),
+            affiliateAgreementFeeRate: getVal(row, "Affiliate Agreement Fee Rate"),
+            affiliateNetCommission: getNum(row, "Affiliate Net Commission(₫)"),
+            affiliateItemStatus: getVal(row, "Affiliate Item Status"),
+            itemNote: getVal(row, "Item Note"),
+            attributionType: getVal(row, "Attribution Type"),
+            buyerStatus: getVal(row, "Buyer Status"),
+            subId1: getVal(row, "Sub_id1"),
+            channel: getVal(row, "Channel"),
+          };
+        });
+
+        const res = await api.post('/order/import', { data: payload });
+        showToast(res?.data?.message || res?.message || 'Upload thành công!');
+        showUploadModal.value = false;
+        selectedFile.value = null;
+        await refresh();
+      } catch (err) {
+        showToast(err?.data?.message || err?.message || 'Upload thất bại. Vui lòng thử lại.', 'error');
+      } finally {
+        isUploading.value = false;
+      }
+    },
+    error: (error) => {
+      showToast('Lỗi khi đọc file CSV: ' + error.message, 'error');
+      isUploading.value = false;
+    }
+  });
 };
 
 // User filter modal
