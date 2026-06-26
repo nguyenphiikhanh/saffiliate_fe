@@ -55,7 +55,6 @@ export default defineNuxtConfig({
         'dayjs/plugin/weekOfYear',
         'dayjs/plugin/weekYear',
         'dayjs/plugin/weekday',
-        'papaparse',
       ]
     },
     build: {
@@ -106,6 +105,6 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       autoSubfolderIndex: false
-    }
+    },
   }
 });
