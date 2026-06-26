@@ -145,10 +145,13 @@ const faqItems = computed(() => {
   color: #1e293b !important;
   padding: 16px 0 !important;
 }
+</style>
 
-@media (prefers-color-scheme: dark) {
-  :deep(.faq-panel .ant-collapse-header) {
-    color: #f1f5f9 !important;
-  }
+<style>
+html.dark .faq-panel .ant-collapse-header {
+  color: #f8fafc !important;
+}
+html.dark .faq-panel .ant-collapse-expand-icon {
+  color: #94a3b8 !important;
 }
 </style>

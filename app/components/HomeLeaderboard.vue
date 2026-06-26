@@ -254,22 +254,22 @@ onMounted(fetchLeaderboard);
 }
 
 .leaderboard-row--gold {
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  background: linear-gradient(to right, rgba(254, 243, 199, 0.5), rgba(254, 243, 199, 0.1), transparent);
-  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(125, 211, 252, 0.4);
+  background: linear-gradient(to right, rgba(224, 242, 254, 0.6), rgba(224, 242, 254, 0.1), transparent);
+  box-shadow: 0 4px 20px rgba(125, 211, 252, 0.15);
   border-radius: 1.25rem;
   padding: 1.25rem;
 }
-.leaderboard-row--gold:hover { box-shadow: 0 8px 30px rgba(245, 158, 11, 0.12); transform: translateY(-2px); }
+.leaderboard-row--gold:hover { box-shadow: 0 8px 30px rgba(125, 211, 252, 0.2); transform: translateY(-2px); }
 
 .leaderboard-row--silver {
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  background: linear-gradient(to right, rgba(248, 250, 252, 1), rgba(248, 250, 252, 0.2), transparent);
-  box-shadow: 0 4px 16px rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  background: linear-gradient(to right, rgba(254, 243, 199, 0.5), rgba(254, 243, 199, 0.1), transparent);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.06);
   border-radius: 1.25rem;
   padding: 1.25rem;
 }
-.leaderboard-row--silver:hover { box-shadow: 0 8px 24px rgba(148, 163, 184, 0.12); transform: translateY(-2px); }
+.leaderboard-row--silver:hover { box-shadow: 0 8px 24px rgba(245, 158, 11, 0.12); transform: translateY(-2px); }
 
 .leaderboard-row--bronze {
   border: 1px solid rgba(251, 146, 60, 0.3);
@@ -303,8 +303,8 @@ onMounted(fetchLeaderboard);
   align-items: center;
   gap: 4px;
 }
-.leaderboard-ribbon--gold { background: linear-gradient(to right, #f59e0b, #eab308); color: #1e293b; }
-.leaderboard-ribbon--silver { background: linear-gradient(to right, #94a3b8, #cbd5e1); color: #1e293b; }
+.leaderboard-ribbon--gold { background: linear-gradient(to right, #38bdf8, #bae6fd); color: #082f49; }
+.leaderboard-ribbon--silver { background: linear-gradient(to right, #f59e0b, #eab308); color: #1e293b; }
 .leaderboard-ribbon--bronze { background: linear-gradient(to right, #f97316, rgba(251, 146, 60, 0.8)); color: white; }
 
 .leaderboard-row-left { display: flex; align-items: center; gap: 8px; }
@@ -327,14 +327,14 @@ onMounted(fetchLeaderboard);
 .rank-num-text--gold {
   font-size: 36px;
   color: transparent;
-  background: linear-gradient(to bottom, #fbbf24, #d97706);
+  background: linear-gradient(to bottom, #7dd3fc, #0284c7);
   -webkit-background-clip: text;
   background-clip: text;
 }
 .rank-num-text--silver {
   font-size: 28px;
   color: transparent;
-  background: linear-gradient(to bottom, #94a3b8, #64748b);
+  background: linear-gradient(to bottom, #fbbf24, #d97706);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -457,5 +457,38 @@ onMounted(fetchLeaderboard);
 }
 @media (prefers-reduced-motion: reduce) {
   .skeleton-block { animation: none; background: #f1f5f9; }
+}
+</style>
+
+<style>
+/* Dark Mode Overrides */
+html.dark .leaderboard-card { background: #0B0F19 !important; border-color: #1E293B !important; box-shadow: none !important; }
+html.dark .leaderboard-header { border-color: #1E293B !important; }
+html.dark .leaderboard-title { color: #F8FAFC !important; }
+html.dark .leaderboard-tabs { background: #0F172A !important; border-color: #1E293B !important; }
+html.dark .leaderboard-tab { color: #94A3B8 !important; }
+html.dark .leaderboard-tab--active { background: #ee4d2d !important; color: white !important; }
+html.dark .leaderboard-row--gold {
+  background: linear-gradient(to right, rgba(56, 189, 248, 0.12), transparent) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+}
+html.dark .leaderboard-row--silver {
+  background: linear-gradient(to right, rgba(251, 191, 36, 0.1), transparent) !important;
+  border-color: rgba(251, 191, 36, 0.2) !important;
+}
+html.dark .leaderboard-row--bronze {
+  background: linear-gradient(to right, rgba(249, 115, 22, 0.1), transparent) !important;
+  border-color: rgba(249, 115, 22, 0.2) !important;
+}
+html.dark .leaderboard-row--normal { border-color: #1E293B !important; }
+html.dark .leaderboard-row--normal:hover { background: rgba(30, 41, 59, 0.4) !important; }
+html.dark .leaderboard-user-name { color: #F8FAFC !important; }
+html.dark .leaderboard-commission-amount { color: #F8FAFC !important; }
+html.dark .leaderboard-empty { background: rgba(15, 23, 42, 0.5) !important; border-color: #1E293B !important; color: #94A3B8 !important; }
+html.dark .leaderboard-check-icon { background: #0B0F19 !important; border-color: rgba(16, 185, 129, 0.4) !important; }
+html.dark .skeleton-row { background: #0F172A !important; }
+html.dark .skeleton-block {
+  background: linear-gradient(90deg, #0F172A 25%, #1E293B 50%, #0F172A 75%) !important;
+  background-size: 200% 100% !important;
 }
 </style>

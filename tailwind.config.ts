@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 export default <Partial<Config>>{
+  darkMode: 'class',
   corePlugins: {
     preflight: false, // Tắt CSS reset mặc định để không xung đột với Ant Design
   },

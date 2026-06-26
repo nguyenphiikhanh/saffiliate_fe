@@ -13,7 +13,7 @@
     <!-- 1. PRODUCT DETAILS CARD -->
     <div v-if="productInfo" class="result-card">
       <!-- Header gradient line -->
-      <div class="result-header-line" :class="platformType === 2 ? 'result-header-line--tiktok' : 'result-header-line--shopee'"></div>
+      <div class="result-header-line result-header-line--shopee"></div>
 
       <!-- Header -->
       <div class="result-header">
@@ -38,7 +38,7 @@
           <!-- Info -->
           <div class="product-info">
             <div class="product-platform-row">
-              <span class="product-platform-badge" :class="platformType === 2 ? 'product-platform-badge--tiktok' : 'product-platform-badge--shopee'">
+              <span class="product-platform-badge product-platform-badge--shopee">
                 {{ platformType === 2 ? "TÓP-TÓP" : "SỘP-PE" }}
               </span>
               <span class="product-shop">{{ productInfo.shopName }}</span>
@@ -50,11 +50,11 @@
         <!-- Cashback cards -->
         <div class="cashback-grid">
           <!-- Partner commission -->
-          <div class="cashback-card" :class="platformType === 2 ? 'cashback-card--tiktok' : 'cashback-card--shopee'">
-            <div class="cashback-icon" :class="platformType === 2 ? 'cashback-icon--tiktok' : 'cashback-icon--shopee'">%</div>
+          <div class="cashback-card cashback-card--shopee">
+            <div class="cashback-icon cashback-icon--shopee">%</div>
             <div>
-              <div class="cashback-label" :class="platformType === 2 ? 'cashback-label--tiktok' : 'cashback-label--shopee'">HOA HỒNG ĐỐI TÁC</div>
-              <div class="cashback-amount" :class="platformType === 2 ? 'cashback-amount--tiktok' : 'cashback-amount--shopee'">
+              <div class="cashback-label cashback-label--shopee">HOA HỒNG ĐỐI TÁC</div>
+              <div class="cashback-amount cashback-amount--shopee">
                 {{ formatPartnerCommission(productInfo.commission) }}<span style="text-decoration:underline;margin-left:2px">đ</span>
               </div>
             </div>
@@ -81,7 +81,6 @@
           type="primary"
           size="large"
           class="result-cta-btn"
-          :class="platformType === 2 ? 'result-cta-btn--tiktok' : ''"
           @click="handleOpenAffiliate"
         >
           <div class="flex items-center justify-center gap-2">
@@ -194,6 +193,29 @@ const formatCashbackRange = (value) => {
 .convert-result-modal .ant-modal-body {
   padding: 0 !important;
 }
+
+/* Dark Mode Overrides */
+html.dark .convert-result-modal .ant-modal-content {
+  background: #0B0F19 !important;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.5) !important;
+  border: 1px solid #1E293B !important;
+}
+html.dark .result-header { background: #0F172A !important; border-color: #1E293B !important; }
+html.dark .result-title { color: #F8FAFC !important; }
+html.dark .result-close-btn:hover { background: #1E293B !important; color: #F8FAFC !important; }
+html.dark .product-image-wrap { background: #0F172A !important; border-color: #1E293B !important; }
+html.dark .product-name { color: #F8FAFC !important; }
+html.dark .product-shop { color: #94A3B8 !important; }
+html.dark .cashback-card--tiktok { background: rgba(248, 250, 252, 0.05) !important; border-color: rgba(248, 250, 252, 0.1) !important; }
+html.dark .cashback-label--tiktok { color: #94A3B8 !important; }
+html.dark .cashback-amount--tiktok { color: #F8FAFC !important; }
+html.dark .cashback-icon--tiktok { background: #1E293B !important; border: 1px solid #334155 !important; }
+html.dark .product-platform-badge--tiktok { background: #1E293B !important; border: 1px solid #334155 !important; color: #F8FAFC !important; }
+html.dark .result-footer-row { border-color: #1E293B !important; }
+html.dark .result-back-btn { background: #0F172A !important; border-color: #1E293B !important; color: #F8FAFC !important; }
+html.dark .result-back-btn:hover { background: #1E293B !important; }
+html.dark .fallback-btn-outline { background: transparent !important; border-color: #334155 !important; color: #F8FAFC !important; }
+html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !important; }
 </style>
 
 <style scoped>

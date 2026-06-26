@@ -87,6 +87,12 @@
         </div>
 
         <div class="flex items-center gap-3 select-none">
+          <a-button type="text" shape="circle" @click="toggleTheme" class="flex items-center justify-center mr-1" title="Chuyển đổi giao diện Sáng/Tối">
+            <template #icon>
+              <span class="text-[16px] leading-none">{{ isDark ? '🌞' : '🌙' }}</span>
+            </template>
+          </a-button>
+
           <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 hidden sm:inline">{{ userName }}</span>
           <div class="h-8 w-8 rounded-full overflow-hidden flex items-center justify-center border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 shrink-0">
             <img v-if="userAvatar" :src="userAvatar" class="h-full w-full object-cover" referrerpolicy="no-referrer" />
@@ -125,7 +131,7 @@ import {
 
 const route = useRoute();
 const router = useRouter();
-const { initTheme } = useTheme();
+const { initTheme, toggleTheme, isDark } = useTheme();
 const { user, logout } = useAuth();
 
 const collapsed = ref(false);
@@ -195,7 +201,9 @@ onMounted(() => {
   background-color: var(--ant-primary-color-deprecated-bg) !important;
   font-weight: bold;
 }
+</style>
 
+<style>
 /* Add custom CSS variables to match your Tailwind setup dynamically based on dark mode class if needed */
 html {
   --bg-color: #ffffff;

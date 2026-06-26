@@ -144,23 +144,23 @@
         </div>
 
         <!-- Detail metrics using a-descriptions -->
-        <a-descriptions :column="2" bordered size="small">
-          <a-descriptions-item label="Cấp bậc" :span="1">
+        <a-descriptions :column="1" bordered size="small">
+          <a-descriptions-item label="Cấp bậc">
             <div class="flex items-center gap-1.5">
               <img :src="getRankStyles(selectedUser.rank).image" class="h-5 w-5 object-contain" />
               <span class="font-bold text-xs">{{ getRankStyles(selectedUser.rank).fullName }}</span>
             </div>
           </a-descriptions-item>
-          <a-descriptions-item label="Số dư" :span="1">
+          <a-descriptions-item label="Số dư">
             <span class="font-bold text-emerald-600 dark:text-emerald-400">{{ formatCurrency(selectedUser.availableBalance) }}</span>
           </a-descriptions-item>
-          <a-descriptions-item label="Tham gia" :span="1">
+          <a-descriptions-item label="Tham gia">
             <span class="font-bold text-xs">{{ formatDate(selectedUser.createdAt) }}</span>
           </a-descriptions-item>
-          <a-descriptions-item label="Đơn thành công" :span="1">
+          <a-descriptions-item label="Đơn thành công">
             <span class="font-bold text-xs">{{ selectedUser.completedOrdersCount }}</span>
           </a-descriptions-item>
-          <a-descriptions-item label="Thăng hạng" :span="2">
+          <a-descriptions-item label="Thăng hạng">
             <span class="text-xs">
               {{ selectedUser.ordersToNextRank > 0 ? `Cần thêm ${selectedUser.ordersToNextRank} đơn` : 'Đã đạt cấp tối đa' }}
             </span>

@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
-    <nav v-if="shouldShow" aria-label="Breadcrumb" class="breadcrumb-nav animate-fade-in">
-      <a-breadcrumb :items="antdItems" class="breadcrumb-inner">
+    <nav v-if="shouldShow" aria-label="Breadcrumb" class="w-full mb-4 select-none animate-fade-in">
+      <a-breadcrumb :items="antdItems" class="px-4 py-2 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-slate-200/50 dark:border-slate-800/50 rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.03)] dark:shadow-[0_1px_4px_rgba(0,0,0,0.2)] inline-flex items-center">
         <template #itemRender="{ route: item, routes }">
           <span v-if="routes.indexOf(item) === routes.length - 1" class="breadcrumb-active">
             {{ item.breadcrumbName }}
@@ -75,57 +75,29 @@ const antdItems = computed(() => {
 </script>
 
 <style scoped>
-.breadcrumb-nav {
-  width: 100%;
-  margin-bottom: 1rem;
-  user-select: none;
-}
-
-.breadcrumb-inner {
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(226, 232, 240, 0.5);
-  padding: 0.625rem 1rem;
-  border-radius: 1rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
-}
-
 /* Override AntD breadcrumb styles */
 :deep(.ant-breadcrumb) {
-  font-size: 12px;
-  font-weight: 700;
-  color: #64748B;
+  @apply text-xs font-bold text-slate-500 dark:text-slate-400;
 }
 
 :deep(.ant-breadcrumb-separator) {
-  color: #CBD5E1;
-  font-weight: 400;
+  @apply text-slate-300 dark:text-slate-600 font-normal;
 }
 
 .breadcrumb-link {
-  color: #64748B;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 12px;
-  transition: color 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  @apply text-slate-500 dark:text-slate-400 no-underline font-bold text-xs transition-colors duration-200 inline-flex items-center gap-1.5;
 }
 
 .breadcrumb-link:hover {
-  color: #EE4D2D;
+  @apply text-shopee-orange dark:text-shopee-orange-hover;
 }
 
 .breadcrumb-active {
-  color: #EE4D2D;
-  font-weight: 800;
-  font-size: 12px;
+  @apply text-shopee-orange dark:text-shopee-orange-hover font-extrabold text-xs;
 }
 
 .breadcrumb-home {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  @apply inline-flex items-center gap-1.5;
 }
 
 /* Fade transition */
