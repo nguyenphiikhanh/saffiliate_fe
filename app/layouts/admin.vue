@@ -1,12 +1,12 @@
 <template>
-  <a-layout class="min-h-screen">
+  <a-layout class="h-screen overflow-hidden">
     <!-- Sidebar -->
     <a-layout-sider
       v-model:collapsed="collapsed"
       :breakpoint="'lg'"
       collapsed-width="0"
       :zero-width-trigger-style="{ display: 'none' }"
-      class="border-r border-slate-200 dark:border-slate-800"
+      class="border-r border-slate-200 dark:border-slate-800 overflow-y-auto"
       theme="light"
       :style="{ background: 'var(--bg-color)', zIndex: 100 }"
     >

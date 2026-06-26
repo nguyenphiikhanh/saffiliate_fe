@@ -133,21 +133,24 @@
         </div>
 
         <!-- Detail grid -->
-        <a-descriptions :column="2" bordered size="small">
-          <a-descriptions-item label="Trạng Thái" :span="1">
+        <a-descriptions :column="1" bordered size="small">
+          <a-descriptions-item label="Trạng Thái">
             <a-tag :color="getStatusColor(selectedItem.status)">{{ getStatusLabel(selectedItem.status) }}</a-tag>
           </a-descriptions-item>
-          <a-descriptions-item label="Số Tiền" :span="1">
+          <a-descriptions-item label="Số Tiền">
             <span class="font-bold text-rose-500">{{ formatMoney(Math.abs(selectedItem.amount)) }}</span>
           </a-descriptions-item>
-          <a-descriptions-item label="Khách Hàng" :span="1">
+          <a-descriptions-item label="Khách Hàng">
             <span class="font-bold text-sm">{{ selectedItem?.wallet?.user?.name || 'Ẩn danh' }}</span>
           </a-descriptions-item>
-          <a-descriptions-item label="Email" :span="1">
-            <span class="truncate max-w-full block" :title="selectedItem?.wallet?.user?.email">{{ selectedItem?.wallet?.user?.email || 'N/A' }}</span>
+          <a-descriptions-item label="Email">
+            <span class="break-all" :title="selectedItem?.wallet?.user?.email">{{ selectedItem?.wallet?.user?.email || 'N/A' }}</span>
           </a-descriptions-item>
-          <a-descriptions-item label="Mô Tả" :span="2">
+          <a-descriptions-item label="Mô Tả">
             <span class="font-medium">{{ selectedItem.description || 'Không có mô tả' }}</span>
+          </a-descriptions-item>
+          <a-descriptions-item v-if="selectedItem.status === 'rejected'" label="Lý Do Hủy">
+            <span class="font-medium text-rose-500">{{ selectedItem.reject_reason || selectedItem.rejectReason || 'Không có lý do cụ thể' }}</span>
           </a-descriptions-item>
         </a-descriptions>
       </div>
@@ -180,7 +183,7 @@
               </a-space>
             </template>
             <template v-else-if="selectedItem.status === 'rejected'">
-              <a-alert type="error" show-icon :message="`Lý do từ chối: ${selectedItem.rejectReason || 'Không có lý do cụ thể'}`" />
+              <a-alert type="error" show-icon :message="`Lý do từ chối: ${selectedItem.reject_reason || selectedItem.rejectReason || 'Không có lý do cụ thể'}`" />
             </template>
           </div>
         </div>
