@@ -164,9 +164,16 @@
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'order_id'">
-            <span class="font-bold text-slate-700 dark:text-slate-200 text-xs"
-              >#{{ record.order_id }}</span
-            >
+            <div class="flex items-center gap-2">
+              <img
+                :src="getBrandLogo(record.type)"
+                class="w-4 h-4 object-contain shrink-0"
+                alt="Logo"
+              />
+              <span class="font-bold text-slate-700 dark:text-slate-200 text-xs"
+                >#{{ record.order_id }}</span
+              >
+            </div>
           </template>
 
           <template v-else-if="column.key === 'user'">
@@ -588,6 +595,13 @@ import {
   LeftOutlined,
 } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
+import { AFFILIATE_TYPES } from "~/utils/constants";
+
+const getBrandLogo = (type) => {
+  if (type === AFFILIATE_TYPES.TIKTOK) return "/icon/tiktok.png";
+  if (type === AFFILIATE_TYPES.LAZADA) return "/icon/lazada.png";
+  return "/icon/shopee.png";
+};
 
 const columns = [
   { title: "Mã đơn", key: "order_id", width: 110 },

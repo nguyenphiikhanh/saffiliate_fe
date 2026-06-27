@@ -126,7 +126,21 @@
         <a-button type="text" @click="closeDetails"><CloseOutlined /></a-button>
       </template>
 
-      <div v-if="selectedItem">
+      <div v-if="selectedItem" class="flex flex-col gap-4">
+        <!-- Sub ID -->
+        <div v-if="selectedItem.sub_id" class="bg-slate-50 dark:bg-[#0D1117] border border-slate-200 dark:border-slate-700 rounded-xl p-4 flex flex-col gap-2">
+          <div class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center justify-between">
+            <span>Sub ID</span>
+            <a-button @click="copyText(selectedItem.sub_id)" type="text" size="small" class="font-semibold text-slate-400 hover:text-slate-700 dark:hover:text-white">
+              <template #icon><CopyOutlined /></template>
+              Copy
+            </a-button>
+          </div>
+          <div class="text-[13px] font-mono text-slate-800 dark:text-slate-200 break-all bg-white dark:bg-[#161B22] p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
+            {{ selectedItem.sub_id }}
+          </div>
+        </div>
+
         <!-- JSON viewer -->
         <div class="bg-[#0D1117] rounded-xl overflow-hidden border border-slate-700">
           <div class="flex items-center justify-between px-4 py-2 bg-[#161B22] border-b border-slate-700">
@@ -259,6 +273,13 @@ const copyJson = (obj) => {
   if (!obj) return;
   navigator.clipboard.writeText(JSON.stringify(obj, null, 2))
     .then(() => alert("Đã copy JSON!"))
+    .catch(err => console.error(err));
+};
+
+const copyText = (text) => {
+  if (!text) return;
+  navigator.clipboard.writeText(text)
+    .then(() => alert("Đã copy!"))
     .catch(err => console.error(err));
 };
 
