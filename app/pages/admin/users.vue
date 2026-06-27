@@ -112,7 +112,7 @@
       <div v-if="pagination.totalPages > 1" class="px-4 py-3 flex justify-end border-t border-slate-100 dark:border-slate-800">
         <a-pagination
           :current="pagination.page"
-          :total="pagination.totalItems"
+          :total="pagination.total"
           :page-size="selectedLimit"
           show-less-items
           @change="changePage"

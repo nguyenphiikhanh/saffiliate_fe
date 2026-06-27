@@ -446,19 +446,21 @@
           >
             Chi tiết hoa hồng & doanh số
           </p>
-          <a-descriptions :column="2" bordered size="small">
-            <a-descriptions-item label="Giá trị">{{
-              formatMoney(selectedOrder.purchase_value)
-            }}</a-descriptions-item>
-            <a-descriptions-item label="Hoa hồng (Sàn)">{{
-              formatMoney(selectedOrder.actual_commission)
-            }}</a-descriptions-item>
-            <a-descriptions-item label="Hoa hồng (User)" :span="2">
-              <span class="font-bold text-emerald-600">{{
-                formatMoney(selectedOrder.user_commission)
-              }}</span>
-            </a-descriptions-item>
-          </a-descriptions>
+          <div class="flex flex-col gap-2 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+            <div class="flex items-center justify-between text-[13px]">
+              <span class="text-slate-500 font-medium">Giá trị</span>
+              <span class="font-bold text-slate-700 dark:text-slate-200">{{ formatMoney(selectedOrder.purchase_value) }} đ</span>
+            </div>
+            <div class="flex items-center justify-between text-[13px]">
+              <span class="text-slate-500 font-medium">Hoa hồng (Sàn)</span>
+              <span class="font-bold text-slate-700 dark:text-slate-200">{{ formatMoney(selectedOrder.actual_commission) }} đ</span>
+            </div>
+            <div class="h-px bg-slate-200 dark:bg-slate-800 my-1 w-full"></div>
+            <div class="flex items-center justify-between text-[13px]">
+              <span class="text-slate-500 font-bold uppercase tracking-wide text-[11px]">Hoa hồng (User)</span>
+              <span class="font-black text-emerald-600 dark:text-emerald-400 text-sm">+{{ formatMoney(selectedOrder.user_commission) }} đ</span>
+            </div>
+          </div>
         </div>
 
         <!-- Meta -->
