@@ -72,7 +72,7 @@
         :data-source="filteredWithdrawals"
         :row-key="(r) => r.id"
         :pagination="false"
-        :loading="pending && !response"
+        :loading="pending"
         :scroll="{ x: 700 }"
         :custom-row="(record) => ({
           onClick: () => openDetails(record),

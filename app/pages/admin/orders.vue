@@ -36,7 +36,7 @@
 
     <!-- Stats Cards -->
     <a-row :gutter="[16, 16]">
-      <a-col :xs="12" :sm="12" :lg="{ span: 24 / 5 }">
+      <a-col :xs="12" :sm="12" :lg="{ span: 12 }">
         <a-card size="small" :bordered="false" class="admin-stat-card">
           <a-skeleton-button active v-if="pending && !response" block />
           <a-statistic
@@ -46,7 +46,7 @@
           />
         </a-card>
       </a-col>
-      <a-col :xs="12" :sm="12" :lg="{ span: 24 / 5 }">
+      <a-col :xs="12" :sm="12" :lg="{ span: 12 }">
         <a-card size="small" :bordered="false" class="admin-stat-card">
           <a-skeleton-button active v-if="pending && !response" block />
           <a-statistic
@@ -54,37 +54,6 @@
             title="Chờ duyệt"
             :value="pendingCount"
             :value-style="{ color: '#f59e0b' }"
-          />
-        </a-card>
-      </a-col>
-      <a-col :xs="12" :sm="12" :lg="{ span: 24 / 5 }">
-        <a-card size="small" :bordered="false" class="admin-stat-card">
-          <a-skeleton-button active v-if="pending && !response" block />
-          <a-statistic
-            v-else
-            title="Hoa hồng sàn"
-            :value="formatMoney(totalCommission)"
-          />
-        </a-card>
-      </a-col>
-      <a-col :xs="12" :sm="12" :lg="{ span: 24 / 5 }">
-        <a-card size="small" :bordered="false" class="admin-stat-card">
-          <a-skeleton-button active v-if="pending && !response" block />
-          <a-statistic
-            v-else
-            title="Hoa hồng User"
-            :value="formatMoney(totalUserCommission)"
-            :value-style="{ color: '#059669' }"
-          />
-        </a-card>
-      </a-col>
-      <a-col :xs="24" :sm="12" :lg="{ span: 24 / 5 }">
-        <a-card size="small" :bordered="false" class="admin-stat-card">
-          <a-skeleton-button active v-if="pending && !response" block />
-          <a-statistic
-            v-else
-            title="Doanh thu (Lợi nhuận)"
-            :value="formatMoney(systemRevenue)"
           />
         </a-card>
       </a-col>
@@ -100,17 +69,17 @@
           @click="showUserModal = true"
           :type="selectedUserFilter ? 'primary' : 'default'"
           :ghost="!!selectedUserFilter"
-          class="font-medium text-xs"
+          class="font-medium text-xs flex items-center justify-center gap-1.5"
         >
-          <template #icon><UserOutlined /></template>
-          <span class="max-w-[160px] truncate inline-block">{{
+          <UserOutlined />
+          <span class="max-w-[160px] truncate">{{
             selectedUserFilter
               ? selectedUserFilter.name || selectedUserFilter.email
               : "Tìm theo người dùng"
           }}</span>
           <CloseOutlined
             v-if="selectedUserFilter"
-            class="ml-1 hover:text-rose-500"
+            class="hover:text-rose-500"
             @click.stop="clearUserFilter"
           />
         </a-button>
@@ -127,6 +96,17 @@
         />
 
         <a-select
+          v-model:value="selectedType"
+          :options="[
+            { label: 'Tất cả nền tảng', value: 'all' },
+            { label: 'Shopee', value: AFFILIATE_TYPES.SHOPEE },
+            { label: 'TikTok', value: AFFILIATE_TYPES.TIKTOK },
+            { label: 'Lazada', value: AFFILIATE_TYPES.LAZADA },
+          ]"
+          style="width: 150px"
+        />
+
+        <a-select
           v-model:value="limit"
           :options="[
             { label: '20 / trang', value: 20 },
@@ -137,7 +117,7 @@
         />
 
         <a-button
-          v-if="selectedStatus !== 'all' || selectedUserFilter"
+          v-if="selectedStatus !== 'all' || selectedType !== 'all' || selectedUserFilter"
           @click="clearAllFilters"
           type="text"
           danger
@@ -153,7 +133,7 @@
         :data-source="filteredOrders"
         :row-key="(r) => r.order_id"
         :pagination="false"
-        :loading="pending && !response"
+        :loading="pending"
         :scroll="{ x: 800 }"
         :custom-row="
           (record) => ({
@@ -671,6 +651,7 @@ const showToast = (msg, type = "success") => {
 
 const searchQuery = ref("");
 const selectedStatus = ref("all");
+const selectedType = ref("all");
 const selectedUserFilter = ref(null);
 const currentPage = ref(1);
 const limit = ref(20);
@@ -687,6 +668,9 @@ const queryParams = computed(() => {
     else if (selectedStatus.value === "success") params.status = "Completed";
     else if (selectedStatus.value === "cancelled") params.status = "Cancelled";
   }
+  if (selectedType.value !== "all") {
+    params.type = selectedType.value;
+  }
   if (selectedUserFilter.value) params.userId = selectedUserFilter.value.id;
   return params;
 });
@@ -701,7 +685,7 @@ const {
   { watch: [queryParams], server: false }
 );
 
-watch([selectedStatus, selectedUserFilter, limit], () => {
+watch([selectedStatus, selectedType, selectedUserFilter, limit], () => {
   currentPage.value = 1;
 });
 
@@ -742,15 +726,7 @@ const filteredOrders = computed(() => {
   return list;
 });
 
-const totalCommission = computed(() =>
-  filteredOrders.value.reduce((s, o) => s + (o.actual_commission || 0), 0)
-);
-const totalUserCommission = computed(() =>
-  filteredOrders.value.reduce((s, o) => s + (o.user_commission || 0), 0)
-);
-const systemRevenue = computed(
-  () => totalCommission.value - totalUserCommission.value
-);
+
 const pendingCount = computed(
   () =>
     filteredOrders.value.filter(
@@ -940,6 +916,7 @@ const clearUserFilter = () => {
 };
 const clearAllFilters = () => {
   selectedStatus.value = "all";
+  selectedType.value = "all";
   selectedUserFilter.value = null;
 };
 const handleUserSearch = () => fetchUsers(1, userSearchQuery.value.trim(), 20);
@@ -947,6 +924,10 @@ const applyUserFilter = (u) => {
   selectedUserFilter.value = u;
   showUserModal.value = false;
 };
+
+watch(showUserModal, (newVal) => {
+  if (newVal && usersList.value.length === 0) fetchUsers(1, "", 20);
+});
 
 const formatMoney = (val) => {
   if (!val && val !== 0) return "0đ";

@@ -21,11 +21,11 @@
           @click="showUserModal = true"
           :type="selectedUserFilter ? 'primary' : 'default'"
           :ghost="!!selectedUserFilter"
-          class="font-medium text-xs"
+          class="font-medium text-xs flex items-center justify-center gap-1.5"
         >
-          <template #icon><UserOutlined /></template>
-          <span class="max-w-[160px] truncate inline-block">{{ selectedUserFilter ? (selectedUserFilter.name || selectedUserFilter.email) : 'Tìm theo người dùng' }}</span>
-          <CloseOutlined v-if="selectedUserFilter" class="ml-1 hover:text-rose-500" @click.stop="clearUserFilter" />
+          <UserOutlined />
+          <span class="max-w-[160px] truncate">{{ selectedUserFilter ? (selectedUserFilter.name || selectedUserFilter.email) : 'Tìm theo người dùng' }}</span>
+          <CloseOutlined v-if="selectedUserFilter" class="hover:text-rose-500" @click.stop="clearUserFilter" />
         </a-button>
 
         <!-- Date range -->
@@ -58,7 +58,7 @@
         :data-source="links"
         :row-key="(r) => r.id"
         :pagination="false"
-        :loading="pending && !response"
+        :loading="pending"
         :scroll="{ x: 800 }"
         :custom-row="(record) => ({
           onClick: () => openDetails(record),
