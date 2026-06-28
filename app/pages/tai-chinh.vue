@@ -112,7 +112,7 @@
       <!-- Withdraw Form -->
       <a-col :xs="24" :lg="14">
         <a-card :bordered="false" class="rounded-2xl shadow-sm bg-white dark:bg-slate-900" title="Yêu Cầu Rút Tiền">
-          <a-form layout="vertical" @finish="handleSubmit">
+          <a-form layout="vertical" @submit.prevent="handleSubmit">
             <!-- Bank preview -->
             <div v-if="bankAccountInfo" class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs mb-6">
               <div class="flex items-center gap-3">
@@ -309,12 +309,12 @@ const amountError = computed(() => {
   if (withdrawAmount.value === "") return "";
   const amount = Number(withdrawAmount.value);
   if (amount < 10000) return "Số tiền rút tối thiểu là 10.000đ";
-  if (amount > availableBalance.value) return "Số dư khả dụng không đủ";
+  if (amount > Number(availableBalance.value)) return "Số dư khả dụng không đủ";
   return "";
 });
 
 const canSubmit = computed(() => {
-  return !isApiLoading.value && !isSubmitting.value && bankAccountInfo.value && withdrawAmount.value !== "" && amountError.value === "";
+  return !isSubmitting.value && bankAccountInfo.value && withdrawAmount.value !== "" && amountError.value === "";
 });
 
 const handleSubmit = async () => {
