@@ -51,6 +51,11 @@
           Người dùng (Users)
         </a-menu-item>
         
+        <a-menu-item key="/admin/transaction-history">
+          <template #icon><HistoryOutlined /></template>
+          Lịch sử giao dịch
+        </a-menu-item>
+
         <a-menu-item key="/admin/link-history">
           <template #icon><LinkOutlined /></template>
           Lịch sử tạo Link
@@ -126,7 +131,8 @@ import {
   SettingOutlined, 
   LogoutOutlined,
   MenuFoldOutlined,
-  MenuUnfoldOutlined
+  MenuUnfoldOutlined,
+  HistoryOutlined
 } from "@ant-design/icons-vue";
 
 const route = useRoute();

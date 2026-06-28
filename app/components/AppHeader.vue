@@ -83,6 +83,10 @@
                   <template #icon><TeamOutlined /></template>
                   Quản lý Thành Viên
                 </a-menu-item>
+                <a-menu-item v-if="isAdmin" key="/admin/transaction-history" @click="router.push('/admin/transaction-history')">
+                  <template #icon><HistoryOutlined /></template>
+                  Lịch sử Giao Dịch
+                </a-menu-item>
                 
                 <a-menu-divider v-if="isAdmin" />
                 
@@ -150,7 +154,8 @@ import {
   LogoutOutlined,
   DashboardOutlined,
   TeamOutlined,
-  MenuOutlined
+  MenuOutlined,
+  HistoryOutlined
 } from "@ant-design/icons-vue";
 
 const route = useRoute();
