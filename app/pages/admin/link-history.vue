@@ -85,8 +85,8 @@
           </template>
 
           <template v-else-if="column.key === 'platform'">
-            <a-tag :color="record.type === AFFILIATE_TYPES.SHOPEE ? 'orange' : 'default'">
-              {{ record.type === AFFILIATE_TYPES.SHOPEE ? 'Shopee' : 'TikTok' }}
+            <a-tag :color="record.type === AFFILIATE_TYPES.SHOPEE ? 'orange' : record.type === AFFILIATE_TYPES.TIKTOK ? 'default' : 'blue'">
+              {{ record.type === AFFILIATE_TYPES.SHOPEE ? 'Shopee' : record.type === AFFILIATE_TYPES.TIKTOK ? 'TikTok' : 'Lazada' }}
             </a-tag>
           </template>
 
@@ -115,8 +115,8 @@
     <a-drawer v-model:open="isDrawerOpen" placement="right" width="450px" :closable="false">
       <template #title>
         <div v-if="selectedItem">
-          <a-tag :color="selectedItem.type === AFFILIATE_TYPES.SHOPEE ? 'orange' : 'default'" class="mb-2">
-            {{ selectedItem.type === AFFILIATE_TYPES.SHOPEE ? 'Shopee Link' : 'TikTok Link' }}
+          <a-tag :color="selectedItem.type === AFFILIATE_TYPES.SHOPEE ? 'orange' : selectedItem.type === AFFILIATE_TYPES.TIKTOK ? 'default' : 'blue'" class="mb-2">
+            {{ selectedItem.type === AFFILIATE_TYPES.SHOPEE ? 'Shopee Link' : selectedItem.type === AFFILIATE_TYPES.TIKTOK ? 'TikTok Link' : 'Lazada Link' }}
           </a-tag>
           <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">Thông tin sản phẩm</h3>
           <p class="text-xs text-slate-500 mt-1 font-medium">Lưu lúc: {{ new Date(selectedItem.created_at).toLocaleString('vi-VN') }}</p>

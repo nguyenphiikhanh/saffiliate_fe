@@ -21,7 +21,20 @@
           <h3 class="result-title">Chi tiết hoàn tiền</h3>
         </div>
         <button @click="closeModal" class="result-close-btn" aria-label="Đóng">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
         </button>
       </div>
 
@@ -31,19 +44,38 @@
         <div class="product-row">
           <!-- Image -->
           <div class="product-image-wrap">
-            <img :src="productInfo.imageUrl" :alt="productInfo.productName" class="product-image" />
-            <div v-if="productInfo.isXtra && platformType !== 2" class="product-xtra-badge">Xtra</div>
+            <img
+              :src="productInfo.imageUrl"
+              :alt="productInfo.productName"
+              class="product-image"
+            />
+            <div
+              v-if="productInfo.isXtra && platformType !== 2"
+              class="product-xtra-badge"
+            >
+              Xtra
+            </div>
           </div>
 
           <!-- Info -->
           <div class="product-info">
             <div class="product-platform-row">
-              <span class="product-platform-badge product-platform-badge--shopee">
-                {{ platformType === 2 ? "TÓP-TÓP" : "SỘP-PE" }}
+              <span
+                class="product-platform-badge product-platform-badge--shopee"
+              >
+                {{
+                  platformType === 1
+                    ? "SỘP-PE"
+                    : platformType === 2
+                    ? "TÓP-TÓP"
+                    : "LAZADA"
+                }}
               </span>
               <span class="product-shop">{{ productInfo.shopName }}</span>
             </div>
-            <h3 class="product-name" :title="productInfo.productName">{{ productInfo.productName }}</h3>
+            <h3 class="product-name" :title="productInfo.productName">
+              {{ productInfo.productName }}
+            </h3>
           </div>
         </div>
 
@@ -53,9 +85,14 @@
           <div class="cashback-card cashback-card--shopee">
             <div class="cashback-icon cashback-icon--shopee">%</div>
             <div>
-              <div class="cashback-label cashback-label--shopee">HOA HỒNG ĐỐI TÁC</div>
+              <div class="cashback-label cashback-label--shopee">
+                HOA HỒNG ĐỐI TÁC
+              </div>
               <div class="cashback-amount cashback-amount--shopee">
-                {{ formatPartnerCommission(productInfo.commission) }}<span style="text-decoration:underline;margin-left:2px">đ</span>
+                {{ formatPartnerCommission(productInfo.commission)
+                }}<span style="text-decoration: underline; margin-left: 2px"
+                  >đ</span
+                >
               </div>
             </div>
           </div>
@@ -63,16 +100,55 @@
           <!-- Saffi cashback -->
           <div class="cashback-card cashback-card--saffi">
             <div class="cashback-icon cashback-icon--saffi">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+                <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+                <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+              </svg>
             </div>
             <div>
-              <div class="cashback-label cashback-label--saffi">SAFFI HOÀN TIỀN CHO BẠN</div>
+              <div class="cashback-label cashback-label--saffi">
+                SAFFI HOÀN TIỀN CHO BẠN
+              </div>
               <div class="cashback-range">
-                Từ <span class="cashback-range-amount">{{ formatCashbackRange(minCashback) }}<span style="text-decoration:underline;margin-left:2px">đ</span></span>
-                đến <span class="cashback-range-amount">{{ formatCashbackRange(maxCashback) }}<span style="text-decoration:underline;margin-left:2px">đ</span></span>
+                Từ
+                <span class="cashback-range-amount"
+                  >{{ formatCashbackRange(minCashback)
+                  }}<span style="text-decoration: underline; margin-left: 2px"
+                    >đ</span
+                  ></span
+                >
+                đến
+                <span class="cashback-range-amount"
+                  >{{ formatCashbackRange(maxCashback)
+                  }}<span style="text-decoration: underline; margin-left: 2px"
+                    >đ</span
+                  ></span
+                >
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Affiliate Link display for Tiktok & Lazada -->
+        <div v-if="platformType === 2 || platformType === 3" class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+          <div class="flex-1 truncate text-xs font-medium text-slate-600 dark:text-slate-400 select-all" :title="affiliateLink || link">
+            {{ affiliateLink || link }}
+          </div>
+          <a-button type="primary" ghost size="small" @click="copyToClipboard(affiliateLink || link)" class="shrink-0 flex items-center gap-1.5 px-3 rounded-lg text-xs font-bold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            Copy
+          </a-button>
         </div>
 
         <!-- CTA Button -->
@@ -84,7 +160,22 @@
           @click="handleOpenAffiliate"
         >
           <div class="flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="-mt-[1px]"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" x2="21" y1="6" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="-mt-[1px]"
+            >
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+              <line x1="3" x2="21" y1="6" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
             <span>MỞ ĐỂ MUA HÀNG NGAY</span>
           </div>
         </a-button>
@@ -93,11 +184,27 @@
         <div class="result-footer-row">
           <a-button @click="closeModal" class="result-back-btn">
             <div class="flex items-center justify-center gap-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><path d="M21 3v4h-4"/></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                <path d="M21 3v4h-4" />
+              </svg>
               <span>Mua sản phẩm khác</span>
             </div>
           </a-button>
-          <span class="result-disclaimer">Hệ thống tự động phát hiện và tối ưu hóa hoa hồng tốt nhất cho bạn.</span>
+          <span class="result-disclaimer"
+            >Hệ thống tự động phát hiện và tối ưu hóa hoa hồng tốt nhất cho
+            bạn.</span
+          >
         </div>
       </div>
     </div>
@@ -108,25 +215,100 @@
 
       <div class="result-header">
         <div class="result-header-icon result-header-icon--success">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
         </div>
         <h3 class="result-title">Đã chuyển đổi thành công!</h3>
         <button @click="closeModal" class="result-close-btn" aria-label="Đóng">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
         </button>
       </div>
 
       <div class="result-body">
+        <!-- Affiliate Link display for Tiktok & Lazada -->
+        <div v-if="platformType === 2 || platformType === 3" class="mb-4 flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+          <div class="flex-1 truncate text-xs font-medium text-slate-600 dark:text-slate-400 select-all" :title="affiliateLink || link">
+            {{ affiliateLink || link }}
+          </div>
+          <a-button type="primary" ghost size="small" @click="copyToClipboard(affiliateLink || link)" class="shrink-0 flex items-center gap-1.5 px-3 rounded-lg text-xs font-bold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            Copy
+          </a-button>
+        </div>
+
         <div class="fallback-actions">
-          <a-button block @click="handleOpenAffiliate" class="fallback-btn-outline">
+          <a-button
+            block
+            @click="handleOpenAffiliate"
+            class="fallback-btn-outline"
+          >
             <div class="flex items-center justify-center gap-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" x2="21" y1="14" y2="3" />
+              </svg>
               <span>Mở Link Trực Tiếp</span>
             </div>
           </a-button>
-          <a-button block type="primary" @click="closeModal" class="fallback-btn-primary">
+          <a-button
+            block
+            type="primary"
+            @click="closeModal"
+            class="fallback-btn-primary"
+          >
             <div class="flex items-center justify-center gap-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><path d="M21 3v4h-4"/></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                <path d="M21 3v4h-4" />
+              </svg>
               <span>Tiếp Tục Chuyển Đổi</span>
             </div>
           </a-button>
@@ -138,6 +320,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { message } from "ant-design-vue";
 
 const props = defineProps({
   link: { type: String, required: true },
@@ -150,18 +333,26 @@ const emit = defineEmits(["reset"]);
 
 const isOpen = computed({
   get: () => true,
-  set: (val) => { if (!val) emit("reset"); },
+  set: (val) => {
+    if (!val) emit("reset");
+  },
 });
 
 const closeModal = () => emit("reset");
 
 const minCashback = computed(() => {
-  const rate = props.productInfo?.commission_min_rate !== undefined ? props.productInfo.commission_min_rate : 56;
+  const rate =
+    props.productInfo?.commission_min_rate !== undefined
+      ? props.productInfo.commission_min_rate
+      : 56;
   return (props.productInfo?.commission || 0) * (rate / 100);
 });
 
 const maxCashback = computed(() => {
-  const rate = props.productInfo?.commission_max_rate !== undefined ? props.productInfo.commission_max_rate : 84;
+  const rate =
+    props.productInfo?.commission_max_rate !== undefined
+      ? props.productInfo.commission_max_rate
+      : 84;
   return (props.productInfo?.commission || 0) * (rate / 100);
 });
 
@@ -179,6 +370,15 @@ const formatCashbackRange = (value) => {
   if (value === undefined || value === null) return "0";
   return new Intl.NumberFormat("vi-VN").format(Math.round(value));
 };
+
+const copyToClipboard = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    message.success("Đã sao chép link!");
+  } catch (err) {
+    message.error("Lỗi khi sao chép link!");
+  }
+};
 </script>
 
 <style>
@@ -187,7 +387,7 @@ const formatCashbackRange = (value) => {
   padding: 0 !important;
   border-radius: 1.5rem !important;
   overflow: hidden;
-  box-shadow: 0 25px 80px rgba(0,0,0,0.12) !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.12) !important;
 }
 
 .convert-result-modal .ant-modal-body {
@@ -196,26 +396,69 @@ const formatCashbackRange = (value) => {
 
 /* Dark Mode Overrides */
 html.dark .convert-result-modal .ant-modal-content {
-  background: #0B0F19 !important;
-  box-shadow: 0 25px 80px rgba(0,0,0,0.5) !important;
-  border: 1px solid #1E293B !important;
+  background: #0b0f19 !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid #1e293b !important;
 }
-html.dark .result-header { background: #0F172A !important; border-color: #1E293B !important; }
-html.dark .result-title { color: #F8FAFC !important; }
-html.dark .result-close-btn:hover { background: #1E293B !important; color: #F8FAFC !important; }
-html.dark .product-image-wrap { background: #0F172A !important; border-color: #1E293B !important; }
-html.dark .product-name { color: #F8FAFC !important; }
-html.dark .product-shop { color: #94A3B8 !important; }
-html.dark .cashback-card--tiktok { background: rgba(248, 250, 252, 0.05) !important; border-color: rgba(248, 250, 252, 0.1) !important; }
-html.dark .cashback-label--tiktok { color: #94A3B8 !important; }
-html.dark .cashback-amount--tiktok { color: #F8FAFC !important; }
-html.dark .cashback-icon--tiktok { background: #1E293B !important; border: 1px solid #334155 !important; }
-html.dark .product-platform-badge--tiktok { background: #1E293B !important; border: 1px solid #334155 !important; color: #F8FAFC !important; }
-html.dark .result-footer-row { border-color: #1E293B !important; }
-html.dark .result-back-btn { background: #0F172A !important; border-color: #1E293B !important; color: #F8FAFC !important; }
-html.dark .result-back-btn:hover { background: #1E293B !important; }
-html.dark .fallback-btn-outline { background: transparent !important; border-color: #334155 !important; color: #F8FAFC !important; }
-html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !important; }
+html.dark .result-header {
+  background: #0f172a !important;
+  border-color: #1e293b !important;
+}
+html.dark .result-title {
+  color: #f8fafc !important;
+}
+html.dark .result-close-btn:hover {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+}
+html.dark .product-image-wrap {
+  background: #0f172a !important;
+  border-color: #1e293b !important;
+}
+html.dark .product-name {
+  color: #f8fafc !important;
+}
+html.dark .product-shop {
+  color: #94a3b8 !important;
+}
+html.dark .cashback-card--tiktok {
+  background: rgba(248, 250, 252, 0.05) !important;
+  border-color: rgba(248, 250, 252, 0.1) !important;
+}
+html.dark .cashback-label--tiktok {
+  color: #94a3b8 !important;
+}
+html.dark .cashback-amount--tiktok {
+  color: #f8fafc !important;
+}
+html.dark .cashback-icon--tiktok {
+  background: #1e293b !important;
+  border: 1px solid #334155 !important;
+}
+html.dark .product-platform-badge--tiktok {
+  background: #1e293b !important;
+  border: 1px solid #334155 !important;
+  color: #f8fafc !important;
+}
+html.dark .result-footer-row {
+  border-color: #1e293b !important;
+}
+html.dark .result-back-btn {
+  background: #0f172a !important;
+  border-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+html.dark .result-back-btn:hover {
+  background: #1e293b !important;
+}
+html.dark .fallback-btn-outline {
+  background: transparent !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+html.dark .fallback-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
 </style>
 
 <style scoped>
@@ -234,15 +477,15 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 }
 
 .result-header-line--shopee {
-  background: linear-gradient(to right, #F97316, #EE4D2D, #EAB308);
+  background: linear-gradient(to right, #f97316, #ee4d2d, #eab308);
 }
 
 .result-header-line--tiktok {
-  background: #0F172A;
+  background: #0f172a;
 }
 
 .result-header-line--success {
-  background: linear-gradient(to right, #10B981, #14B8A6);
+  background: linear-gradient(to right, #10b981, #14b8a6);
 }
 
 .result-header {
@@ -250,8 +493,8 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 1.5rem 1rem;
-  border-bottom: 1px solid #F1F5F9;
-  background: #F8FAFC;
+  border-bottom: 1px solid #f1f5f9;
+  background: #f8fafc;
   flex-shrink: 0;
 }
 
@@ -262,7 +505,7 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 .result-title {
   font-size: 12px;
   font-weight: 800;
-  color: #1E293B;
+  color: #1e293b;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin: 0;
@@ -280,9 +523,9 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 }
 
 .result-header-icon--success {
-  background: rgba(16,185,129,0.1);
+  background: rgba(16, 185, 129, 0.1);
   color: #059669;
-  border: 1px solid rgba(16,185,129,0.2);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .result-close-btn {
@@ -294,7 +537,7 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
   border-radius: 8px;
   border: none;
   background: none;
-  color: #94A3B8;
+  color: #94a3b8;
   cursor: pointer;
   transition: all 0.2s ease;
   flex-shrink: 0;
@@ -304,7 +547,7 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 }
 
 .result-close-btn:hover {
-  background: #F1F5F9;
+  background: #f1f5f9;
   color: #334155;
 }
 
@@ -329,7 +572,7 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
   height: 96px;
   border-radius: 1rem;
   overflow: hidden;
-  border: 1px solid rgba(226,232,240,0.5);
+  border: 1px solid rgba(226, 232, 240, 0.5);
   background: white;
   display: flex;
   align-items: center;
@@ -338,7 +581,10 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 }
 
 @media (min-width: 640px) {
-  .product-image-wrap { width: 112px; height: 112px; }
+  .product-image-wrap {
+    width: 112px;
+    height: 112px;
+  }
 }
 
 .product-image {
@@ -352,7 +598,7 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
   bottom: 0;
   left: 0;
   right: 0;
-  background: #EE4D2D;
+  background: #ee4d2d;
   color: white;
   font-size: 9px;
   font-weight: 800;
@@ -390,12 +636,16 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
   color: white;
 }
 
-.product-platform-badge--shopee { background: #EE4D2D; }
-.product-platform-badge--tiktok { background: #0F172A; }
+.product-platform-badge--shopee {
+  background: #ee4d2d;
+}
+.product-platform-badge--tiktok {
+  background: #0f172a;
+}
 
 .product-shop {
   font-size: 12px;
-  color: #64748B;
+  color: #64748b;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -405,7 +655,7 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 .product-name {
   font-size: 14px;
   font-weight: 700;
-  color: #0F172A;
+  color: #0f172a;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -415,7 +665,9 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 }
 
 @media (min-width: 640px) {
-  .product-name { font-size: 16px; }
+  .product-name {
+    font-size: 16px;
+  }
 }
 
 /* Cashback grid */
@@ -426,7 +678,9 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 }
 
 @media (min-width: 640px) {
-  .cashback-grid { grid-template-columns: 1fr 1fr; }
+  .cashback-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .cashback-card {
@@ -439,18 +693,18 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 }
 
 .cashback-card--shopee {
-  background: rgba(238,77,45,0.03);
-  border-color: rgba(238,77,45,0.1);
+  background: rgba(238, 77, 45, 0.03);
+  border-color: rgba(238, 77, 45, 0.1);
 }
 
 .cashback-card--tiktok {
-  background: rgba(15,23,42,0.02);
-  border-color: rgba(15,23,42,0.1);
+  background: rgba(15, 23, 42, 0.02);
+  border-color: rgba(15, 23, 42, 0.1);
 }
 
 .cashback-card--saffi {
-  background: rgba(16,185,129,0.03);
-  border-color: rgba(16,185,129,0.1);
+  background: rgba(16, 185, 129, 0.03);
+  border-color: rgba(16, 185, 129, 0.1);
 }
 
 .cashback-icon {
@@ -464,12 +718,18 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
   font-weight: 800;
   font-size: 16px;
   color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.cashback-icon--shopee { background: #EE4D2D; }
-.cashback-icon--tiktok { background: #0F172A; }
-.cashback-icon--saffi { background: #10B981; }
+.cashback-icon--shopee {
+  background: #ee4d2d;
+}
+.cashback-icon--tiktok {
+  background: #0f172a;
+}
+.cashback-icon--saffi {
+  background: #10b981;
+}
 
 .cashback-label {
   font-size: 10px;
@@ -478,9 +738,15 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
   letter-spacing: 0.08em;
 }
 
-.cashback-label--shopee { color: #EE4D2D; }
-.cashback-label--tiktok { color: #64748B; }
-.cashback-label--saffi { color: #059669; }
+.cashback-label--shopee {
+  color: #ee4d2d;
+}
+.cashback-label--tiktok {
+  color: #64748b;
+}
+.cashback-label--saffi {
+  color: #059669;
+}
 
 .cashback-amount {
   font-size: 18px;
@@ -490,11 +756,17 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 }
 
 @media (min-width: 640px) {
-  .cashback-amount { font-size: 20px; }
+  .cashback-amount {
+    font-size: 20px;
+  }
 }
 
-.cashback-amount--shopee { color: #EE4D2D; }
-.cashback-amount--tiktok { color: #0F172A; }
+.cashback-amount--shopee {
+  color: #ee4d2d;
+}
+.cashback-amount--tiktok {
+  color: #0f172a;
+}
 
 .cashback-range {
   font-size: 12px;
@@ -515,12 +787,12 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
   letter-spacing: 0.1em !important;
   text-transform: uppercase;
   border-radius: 1rem !important;
-  box-shadow: 0 4px 20px rgba(238,77,45,0.25) !important;
+  box-shadow: 0 4px 20px rgba(238, 77, 45, 0.25) !important;
 }
 
 .result-cta-btn--tiktok {
-  background: #0F172A !important;
-  border-color: #0F172A !important;
+  background: #0f172a !important;
+  border-color: #0f172a !important;
 }
 
 /* Footer row */
@@ -530,7 +802,7 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
   justify-content: space-between;
   gap: 1rem;
   padding-top: 4px;
-  border-top: 1px solid #F1F5F9;
+  border-top: 1px solid #f1f5f9;
 }
 
 .result-back-btn {
@@ -542,7 +814,7 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 .result-disclaimer {
   font-size: 9.5px;
   font-weight: 600;
-  color: #94A3B8;
+  color: #94a3b8;
   text-align: right;
   line-height: 1.5;
   max-width: 55%;
@@ -556,7 +828,9 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
 }
 
 @media (min-width: 640px) {
-  .fallback-actions { flex-direction: row; }
+  .fallback-actions {
+    flex-direction: row;
+  }
 }
 
 .fallback-btn-outline {
@@ -573,6 +847,6 @@ html.dark .fallback-btn-outline:hover { background: rgba(255,255,255,0.05) !impo
   font-weight: 700 !important;
   border-radius: 1rem !important;
   font-size: 13px !important;
-  box-shadow: 0 4px 20px rgba(238,77,45,0.15) !important;
+  box-shadow: 0 4px 20px rgba(238, 77, 45, 0.15) !important;
 }
 </style>
