@@ -141,12 +141,38 @@
         </div>
 
         <!-- Affiliate Link display for Tiktok & Lazada -->
-        <div v-if="platformType === 2 || platformType === 3" class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
-          <div class="flex-1 truncate text-xs font-medium text-slate-600 dark:text-slate-400 select-all" :title="affiliateLink || link">
+        <div
+          class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700"
+        >
+          <div
+            class="flex-1 truncate text-xs font-medium text-slate-600 dark:text-slate-400 select-all"
+            :title="affiliateLink || link"
+          >
             {{ affiliateLink || link }}
           </div>
-          <a-button type="primary" ghost size="small" @click="copyToClipboard(affiliateLink || link)" class="shrink-0 flex items-center gap-1.5 px-3 rounded-lg text-xs font-bold">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <a-button
+            type="primary"
+            ghost
+            size="small"
+            @click="copyToClipboard(affiliateLink || link)"
+            class="shrink-0 flex items-center gap-1.5 px-3 rounded-lg text-xs font-bold"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+              <path
+                d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+              />
+            </svg>
             Copy
           </a-button>
         </div>
@@ -251,12 +277,38 @@
 
       <div class="result-body">
         <!-- Affiliate Link display for Tiktok & Lazada -->
-        <div v-if="platformType === 2 || platformType === 3" class="mb-4 flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
-          <div class="flex-1 truncate text-xs font-medium text-slate-600 dark:text-slate-400 select-all" :title="affiliateLink || link">
+        <div
+          class="mb-4 flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700"
+        >
+          <div
+            class="flex-1 truncate text-xs font-medium text-slate-600 dark:text-slate-400 select-all"
+            :title="affiliateLink || link"
+          >
             {{ affiliateLink || link }}
           </div>
-          <a-button type="primary" ghost size="small" @click="copyToClipboard(affiliateLink || link)" class="shrink-0 flex items-center gap-1.5 px-3 rounded-lg text-xs font-bold">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <a-button
+            type="primary"
+            ghost
+            size="small"
+            @click="copyToClipboard(affiliateLink || link)"
+            class="shrink-0 flex items-center gap-1.5 px-3 rounded-lg text-xs font-bold"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+              <path
+                d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+              />
+            </svg>
             Copy
           </a-button>
         </div>
