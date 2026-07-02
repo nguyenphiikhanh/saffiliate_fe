@@ -137,6 +137,63 @@
             </div>
           </div>
         </a-card>
+
+        <!-- Shopee Cookies -->
+        <a-card
+          :bordered="false"
+          class="admin-card"
+          title="Cấu hình Shopee Cookie"
+          style="margin-top: 24px"
+        >
+          <template #extra>
+            <a-button
+              v-if="!isEditingCookies"
+              type="primary"
+              size="small"
+              @click="startEditCookies"
+            >
+              Chỉnh sửa
+            </a-button>
+            <div v-else class="flex gap-2">
+              <a-button
+                size="small"
+                @click="cancelEditCookies"
+                :disabled="isSavingCookies"
+              >
+                Hủy
+              </a-button>
+              <a-button
+                type="primary"
+                size="small"
+                @click="handleSaveCookies"
+                :loading="isSavingCookies"
+              >
+                Lưu
+              </a-button>
+            </div>
+          </template>
+          <div class="p-2">
+            <p class="text-xs text-slate-500 mb-3">
+              Nhập cookie của tài khoản Shopee để hệ thống tự động xử lý. (Dạng văn bản)
+            </p>
+            
+            <div v-if="!isEditingCookies">
+              <div v-if="shopeeCookies" class="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-slate-100 dark:border-slate-800 break-all text-xs font-mono text-slate-600">
+                {{ shopeeCookies.length > 60 ? shopeeCookies.substring(0, 30) + '...' + shopeeCookies.substring(shopeeCookies.length - 30) : shopeeCookies }}
+              </div>
+              <div v-else class="text-xs text-amber-500 italic">
+                Chưa có cấu hình cookie.
+              </div>
+            </div>
+            
+            <a-textarea
+              v-else
+              v-model:value="editShopeeCookies"
+              placeholder="Nhập cookie Shopee vào đây..."
+              :rows="4"
+            />
+          </div>
+        </a-card>
       </a-col>
 
       <!-- Right: Preview + Notes -->
@@ -245,6 +302,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { message } from "ant-design-vue";
 
 definePageMeta({ layout: "admin" });
 useHead({ title: "Cấu hình hệ thống | Admin Saffiliate" });
@@ -258,17 +316,57 @@ onMounted(() => {
 });
 
 const settings = ref({ shopee: true, tiktok: true, lazada: false });
+const shopeeCookies = ref("");
+const editShopeeCookies = ref("");
+const isEditingCookies = ref(false);
 const isSaving = ref(false);
+const isSavingCookies = ref(false);
 const alertMessage = ref("");
 const alertType = ref("success");
 
+const startEditCookies = () => {
+  editShopeeCookies.value = shopeeCookies.value;
+  isEditingCookies.value = true;
+};
+
+const cancelEditCookies = () => {
+  isEditingCookies.value = false;
+};
+
 const fetchSettings = async () => {
   try {
-    const res = await api.get("/admin/system-config");
-    if (res.data?.platforms) {
-      settings.value.shopee = res.data.platforms.shopee;
-      settings.value.tiktok = res.data.platforms.tiktok;
-      settings.value.lazada = res.data.platforms.lazada;
+    const [resConfig, resCookies] = await Promise.all([
+      api.get("/admin/system-config").catch((e) => ({ data: null })),
+      api
+        .get("/admin/system-config/shopee_cookie")
+        .catch((e) => ({ data: null })),
+    ]);
+
+    // Xử lý config platform
+    const configItem = Array.isArray(resConfig.data)
+      ? resConfig.data.find((item) => item.key === "platforms_status")
+      : resConfig.data;
+
+    if (configItem && configItem.value) {
+      let parsed = {};
+      try {
+        parsed =
+          typeof configItem.value === "string"
+            ? JSON.parse(configItem.value)
+            : configItem.value;
+      } catch (e) {
+        console.error("Failed to parse config JSON string", e);
+      }
+
+      settings.value.shopee = parsed.shopee ?? false;
+      settings.value.tiktok = parsed.tiktok ?? false;
+      settings.value.lazada = parsed.lazada ?? false;
+    }
+
+    // Xử lý cookies
+    if (resCookies.data) {
+      shopeeCookies.value =
+        resCookies.data.shopee_cookies || resCookies.data.value || "";
     }
   } catch (error) {
     console.error("Failed to load settings:", error);
@@ -288,6 +386,7 @@ const handleSave = async () => {
     });
     alertType.value = "success";
     alertMessage.value = "Lưu cấu hình hệ thống thành công!";
+    message.success("Lưu cấu hình hệ thống thành công!");
     setTimeout(() => {
       alertMessage.value = "";
     }, 3000);
@@ -295,8 +394,37 @@ const handleSave = async () => {
     alertType.value = "error";
     alertMessage.value =
       error.message || "Có lỗi xảy ra khi lưu cấu hình. Vui lòng thử lại.";
+    message.error(alertMessage.value);
   } finally {
     isSaving.value = false;
+  }
+};
+
+const handleSaveCookies = async () => {
+  isSavingCookies.value = true;
+  try {
+    await api.put("/admin/system-config/shopee_cookie", {
+      shopee_cookies: editShopeeCookies.value,
+    });
+    
+    // Gọi API get lại thông tin mới sau khi lưu thành công
+    const resCookies = await api
+      .get("/admin/system-config/shopee_cookie")
+      .catch((e) => ({ data: null }));
+      
+    if (resCookies.data) {
+      shopeeCookies.value = resCookies.data.shopee_cookies || resCookies.data.value || "";
+    } else {
+      // Fallback nếu API get bị lỗi tạm thời
+      shopeeCookies.value = editShopeeCookies.value;
+    }
+    
+    isEditingCookies.value = false;
+    message.success("Lưu cấu hình Shopee Cookie thành công!");
+  } catch (error) {
+    message.error(error.message || "Có lỗi xảy ra khi lưu cookie. Vui lòng thử lại.");
+  } finally {
+    isSavingCookies.value = false;
   }
 };
 </script>
