@@ -98,6 +98,15 @@
             </div>
           </template>
 
+          <template v-else-if="column.key === 'affiliate_link'">
+            <div class="text-[13px] text-slate-700 dark:text-slate-300">
+              <span v-if="record.affiliate_link">
+                {{ record.affiliate_link.length > 30 ? record.affiliate_link.slice(0, 30) + '...' : record.affiliate_link }}
+              </span>
+              <span v-else class="text-slate-400 italic">Không có</span>
+            </div>
+          </template>
+
           <template v-else-if="column.key === 'details'">
             <RightOutlined class="text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200" />
           </template>
@@ -212,6 +221,7 @@ const columns = [
   { title: 'Thời Gian', key: 'created_at', width: 130 },
   { title: 'Tạo Bởi', key: 'user', width: 220 },
   { title: 'Nền Tảng', key: 'platform', width: 110 },
+  { title: 'Affiliate Link', key: 'affiliate_link', width: 200 },
   { title: 'Sản Phẩm', key: 'product', width: 300 },
   { title: '', key: 'details', align: 'center', width: 50 },
 ];
