@@ -45,8 +45,19 @@
           style="width: 120px"
         />
 
+        <!-- Sub ID -->
+        <a-input-search
+          v-model:value="subIdInput"
+          placeholder="Tìm theo SubID..."
+          enter-button
+          @search="handleSubIdSearch"
+          style="width: 250px"
+          allow-clear
+          class="font-medium"
+        />
+
         <!-- Clear filters -->
-        <a-button v-if="startDate || endDate || selectedUserFilter" @click="clearAllFilters" type="text" danger>
+        <a-button v-if="startDate || endDate || selectedUserFilter || subIdFilter" @click="clearAllFilters" type="text" danger>
           <template #icon><DeleteOutlined /></template>
           Xóa bộ lọc
         </a-button>
@@ -213,7 +224,7 @@
 
 <script setup>
 import { ref, computed, watch, onUnmounted } from "vue";
-import { SyncOutlined, CloseOutlined, DeleteOutlined, UserOutlined, RightOutlined, CopyOutlined, TeamOutlined } from "@ant-design/icons-vue";
+import { SyncOutlined, CloseOutlined, DeleteOutlined, UserOutlined, RightOutlined, CopyOutlined, TeamOutlined, SearchOutlined } from "@ant-design/icons-vue";
 import { AFFILIATE_TYPES } from "~/utils/constants";
 import { useAdminUsers } from "~/composables/useAdminUsers";
 
@@ -234,6 +245,8 @@ const limit = ref(20);
 const startDate = ref("");
 const endDate = ref("");
 const selectedUserFilter = ref(null);
+const subIdFilter = ref("");
+const subIdInput = ref("");
 const { api } = useAppFetch();
 
 const queryParams = computed(() => {
@@ -241,6 +254,7 @@ const queryParams = computed(() => {
   if (startDate.value) params.startDate = startDate.value;
   if (endDate.value) params.endDate = endDate.value;
   if (selectedUserFilter.value) params.userId = selectedUserFilter.value.id;
+  if (subIdFilter.value) params.subId = subIdFilter.value.trim();
   return params;
 });
 
@@ -264,7 +278,7 @@ const totalPages = computed(() => {
   return Math.ceil(res.meta.total / limit.value);
 });
 
-watch([limit, startDate, endDate, selectedUserFilter], () => { page.value = 1; });
+watch([limit, startDate, endDate, selectedUserFilter, subIdFilter], () => { page.value = 1; });
 
 const selectedItem = ref(null);
 const isDrawerOpen = computed({
@@ -307,7 +321,8 @@ const { users: usersList, pagination: userPagination, isLoading: usersLoading, f
 const changeUserPage = (targetPage) => fetchUsers(targetPage, userSearchQuery.value.trim(), 20);
 const handleUserSearch = () => fetchUsers(1, userSearchQuery.value.trim(), 20);
 const clearUserFilter = () => { selectedUserFilter.value = null; };
-const clearAllFilters = () => { startDate.value = ""; endDate.value = ""; selectedUserFilter.value = null; };
+const clearAllFilters = () => { startDate.value = ""; endDate.value = ""; selectedUserFilter.value = null; subIdFilter.value = ""; subIdInput.value = ""; };
+const handleSubIdSearch = (value) => { subIdFilter.value = value; };
 const applyUserFilter = (user) => { selectedUserFilter.value = user; showUserModal.value = false; };
 
 watch(showUserModal, (newVal) => {
