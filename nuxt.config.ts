@@ -27,6 +27,7 @@ export default defineNuxtConfig({
 
   antd: {
     // Auto-import all components, icons, message/notification methods
+    extractStyle: true,
   },
 
   // @nuxt/image: use IPX (built-in) for local images; serves WebP/AVIF on-the-fly.
