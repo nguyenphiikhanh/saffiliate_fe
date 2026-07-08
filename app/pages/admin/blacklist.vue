@@ -1,17 +1,26 @@
 <template>
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+    >
       <div>
-        <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight">
+        <h2
+          class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight"
+        >
           Danh sách đen (Blacklist)
         </h2>
         <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-1">
-          Quản lý người dùng bị Shopee ghim huỷ hoa hồng và sử dụng Affiliate ID khác.
+          Quản lý người dùng bị Shopee ghim huỷ hoa hồng và sử dụng Affiliate ID
+          khác.
         </p>
       </div>
       <div class="flex items-center gap-3">
-        <a-button type="primary" @click="showUserModal = true" class="font-semibold">
+        <a-button
+          type="primary"
+          @click="showUserModal = true"
+          class="font-semibold"
+        >
           <template #icon><PlusOutlined /></template>
           Thêm người dùng
         </a-button>
@@ -21,7 +30,9 @@
     <!-- Data Table -->
     <a-card :bordered="false" class="admin-card" :body-style="{ padding: 0 }">
       <!-- Toolbar -->
-      <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-end">
+      <div
+        class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-end"
+      >
         <a-select
           v-model:value="limit"
           :options="[
@@ -45,20 +56,40 @@
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'user'">
             <div class="flex items-center gap-3">
-              <div class="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700 overflow-hidden">
-                <img v-if="record.image" :src="record.image" class="h-full w-full object-cover" />
-                <span v-else class="text-sm font-bold text-slate-500 uppercase">{{ record.name?.charAt(0) || "U" }}</span>
+              <div
+                class="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700 overflow-hidden"
+              >
+                <img
+                  v-if="record.image"
+                  :src="record.image"
+                  class="h-full w-full object-cover"
+                />
+                <span
+                  v-else
+                  class="text-sm font-bold text-slate-500 uppercase"
+                  >{{ record.name?.charAt(0) || "U" }}</span
+                >
               </div>
               <div class="flex flex-col">
-                <span class="font-bold text-slate-800 dark:text-slate-200 text-sm truncate max-w-[200px]">{{ record.name || "N/A" }}</span>
-                <span class="text-[11px] text-slate-500 truncate max-w-[200px] font-medium mt-0.5">{{ record.email }}</span>
+                <span
+                  class="font-bold text-slate-800 dark:text-slate-200 text-sm truncate max-w-[200px]"
+                  >{{ record.name || "N/A" }}</span
+                >
+                <span
+                  class="text-[11px] text-slate-500 truncate max-w-[200px] font-medium mt-0.5"
+                  >{{ record.email }}</span
+                >
               </div>
             </div>
           </template>
 
           <template v-else-if="column.key === 'created_at'">
             <span class="text-xs text-slate-500 font-medium">
-              {{ record.created_at ? new Date(record.created_at).toLocaleDateString("vi-VN") : "N/A" }}
+              {{
+                record.created_at
+                  ? new Date(record.created_at).toLocaleDateString("vi-VN")
+                  : "N/A"
+              }}
             </span>
           </template>
 
@@ -80,8 +111,12 @@
       </a-table>
 
       <!-- Pagination -->
-      <div class="px-4 py-3 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <span class="text-xs text-slate-500">Tổng {{ blacklistUsers.length }} người dùng trên trang này</span>
+      <div
+        class="px-4 py-3 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3"
+      >
+        <span class="text-xs text-slate-500"
+          >Tổng {{ blacklistUsers.length }} người dùng trên trang này</span
+        >
         <a-pagination
           v-if="totalPages > 1"
           :current="currentPage"
@@ -107,11 +142,17 @@
         class="mb-4"
       />
       <div class="min-h-[150px] max-h-[400px] overflow-y-auto">
-        <div v-if="usersLoading" class="flex flex-col items-center justify-center py-8 gap-3">
+        <div
+          v-if="usersLoading"
+          class="flex flex-col items-center justify-center py-8 gap-3"
+        >
           <a-spin />
           <span class="text-xs font-semibold text-slate-400">Đang tải...</span>
         </div>
-        <a-empty v-else-if="usersList.length === 0" description="Không tìm thấy người dùng" />
+        <a-empty
+          v-else-if="usersList.length === 0"
+          description="Không tìm thấy người dùng"
+        />
         <div v-else class="flex flex-col gap-1">
           <button
             v-for="u in usersList"
@@ -122,21 +163,43 @@
             type="button"
           >
             <div class="flex items-center gap-3 min-w-0">
-              <div class="h-10 w-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 border border-indigo-100 overflow-hidden">
-                <img v-if="u.image" :src="u.image" class="h-full w-full object-cover" />
-                <span v-else class="text-sm font-bold text-indigo-600 uppercase">{{ u.name?.charAt(0) || "U" }}</span>
+              <div
+                class="h-10 w-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center shrink-0 border border-indigo-100 overflow-hidden"
+              >
+                <img
+                  v-if="u.image"
+                  :src="u.image"
+                  class="h-full w-full object-cover"
+                />
+                <span
+                  v-else
+                  class="text-sm font-bold text-indigo-600 uppercase"
+                  >{{ u.name?.charAt(0) || "U" }}</span
+                >
               </div>
               <div class="flex flex-col min-w-0">
-                <span class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate">{{ u.name || "N/A" }}</span>
-                <span class="text-[11px] font-medium text-slate-500 truncate mt-0.5">{{ u.email }}</span>
+                <span
+                  class="text-sm font-bold text-slate-800 dark:text-slate-100 truncate"
+                  >{{ u.name || "N/A" }}</span
+                >
+                <span
+                  class="text-[11px] font-medium text-slate-500 truncate mt-0.5"
+                  >{{ u.email }}</span
+                >
               </div>
             </div>
             <a-tag color="red">THÊM</a-tag>
           </button>
         </div>
 
-        <div v-if="userPagination.totalPages > 1" class="flex justify-between items-center mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
-          <span class="text-[11px] font-bold text-slate-400 uppercase">Trang {{ userPagination.page }} / {{ userPagination.totalPages }}</span>
+        <div
+          v-if="userPagination.totalPages > 1"
+          class="flex justify-between items-center mt-4 pt-4 border-t border-slate-100 dark:border-slate-800"
+        >
+          <span class="text-[11px] font-bold text-slate-400 uppercase"
+            >Trang {{ userPagination.page }} /
+            {{ userPagination.totalPages }}</span
+          >
           <a-space>
             <a-button
               :disabled="userPagination.page === 1"
@@ -166,7 +229,7 @@ import {
   PlusOutlined,
   DeleteOutlined,
   LeftOutlined,
-  RightOutlined
+  RightOutlined,
 } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 
@@ -179,7 +242,6 @@ const limit = ref(20);
 
 const columns = [
   { title: "Người dùng", key: "user", width: 300 },
-  { title: "Ngày thêm", key: "created_at", width: 150 },
   { title: "Thao tác", key: "action", align: "right", width: 100 },
 ];
 
@@ -211,7 +273,8 @@ const totalPages = computed(() => {
 const blacklistUsers = computed(() => {
   const res = response.value;
   if (!res) return [];
-  if (res.data && Array.isArray(res.data) && !res.data.hasOwnProperty("data")) return res.data;
+  if (res.data && Array.isArray(res.data) && !res.data.hasOwnProperty("data"))
+    return res.data;
   if (res.data && Array.isArray(res.data.data)) return res.data.data;
   if (Array.isArray(res.data)) return res.data;
   if (Array.isArray(res)) return res;
@@ -245,9 +308,11 @@ const addToBlacklist = async (u) => {
   isAdding.value = true;
   try {
     const res = await api.post("/admin/blacklist-commission", {
-      body: { user_id: u.id },
+      user_id: u.id,
     });
-    message.success(res?.data?.message || res?.message || "Đã thêm vào Blacklist!");
+    message.success(
+      res?.data?.message || res?.message || "Đã thêm vào Blacklist!"
+    );
     showUserModal.value = false;
     await refresh();
   } catch (err) {
@@ -260,7 +325,9 @@ const addToBlacklist = async (u) => {
 const removeFromBlacklist = async (id) => {
   try {
     const res = await api.delete(`/admin/blacklist-commission/${id}`);
-    message.success(res?.data?.message || res?.message || "Đã xoá khỏi Blacklist!");
+    message.success(
+      res?.data?.message || res?.message || "Đã xoá khỏi Blacklist!"
+    );
     await refresh();
   } catch (err) {
     message.error(err?.data?.message || err?.message || "Xoá thất bại!");
