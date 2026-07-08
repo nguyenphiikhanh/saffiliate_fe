@@ -49,6 +49,11 @@
           Tổng quan
         </a-menu-item>
 
+        <a-menu-item key="/admin/analytics">
+          <template #icon><BarChartOutlined /></template>
+          Thống kê
+        </a-menu-item>
+
         <a-menu-item key="/admin/orders">
           <template #icon><ShoppingCartOutlined /></template>
           Đơn hàng
@@ -183,6 +188,7 @@ import {
   MenuUnfoldOutlined,
   HistoryOutlined,
   ExceptionOutlined,
+  BarChartOutlined,
 } from "@ant-design/icons-vue";
 
 const route = useRoute();

@@ -8,10 +8,10 @@
         <h2
           class="text-lg font-bold text-slate-800 dark:text-slate-100 tracking-tight"
         >
-          Danh sách đen (Blacklist)
+          Blacklist
         </h2>
         <p class="text-[13px] text-slate-500 dark:text-slate-400 mt-1">
-          Quản lý người dùng bị Shopee ghim huỷ hoa hồng và sử dụng Affiliate ID
+          Người dùng bị Shopee ghim huỷ hoa hồng, phải sử dụng Affiliate ID
           khác.
         </p>
       </div>
