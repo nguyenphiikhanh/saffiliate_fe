@@ -15,52 +15,83 @@
     <!-- Data Table -->
     <a-card :bordered="false" class="admin-card" :body-style="{ padding: 0 }">
       <!-- Filter Toolbar -->
-      <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-wrap items-center gap-3">
-        <!-- Filter by user -->
-        <a-button
-          @click="showUserModal = true"
-          :type="selectedUserFilter ? 'primary' : 'default'"
-          :ghost="!!selectedUserFilter"
-          class="font-medium text-xs flex items-center justify-center gap-1.5"
-        >
-          <UserOutlined />
-          <span class="max-w-[160px] truncate">{{ selectedUserFilter ? (selectedUserFilter.name || selectedUserFilter.email) : 'Tìm theo người dùng' }}</span>
-          <CloseOutlined v-if="selectedUserFilter" class="hover:text-rose-500" @click.stop="clearUserFilter" />
-        </a-button>
+      <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-col">
+        <div class="flex flex-wrap items-center gap-3">
+          <!-- Filter by user -->
+          <a-button
+            @click="showUserModal = true"
+            :type="selectedUserFilter ? 'primary' : 'default'"
+            :ghost="!!selectedUserFilter"
+            class="font-medium text-xs flex items-center justify-center gap-1.5"
+          >
+            <UserOutlined />
+            <span class="max-w-[160px] truncate">{{ selectedUserFilter ? (selectedUserFilter.name || selectedUserFilter.email) : 'Tìm theo người dùng' }}</span>
+            <CloseOutlined v-if="selectedUserFilter" class="hover:text-rose-500" @click.stop="clearUserFilter" />
+          </a-button>
 
-        <!-- Date range -->
-        <a-input type="date" v-model:value="startDate" size="small" style="width: 140px" class="font-medium" />
-        <span class="text-slate-400 text-sm">–</span>
-        <a-input type="date" v-model:value="endDate" size="small" style="width: 140px" class="font-medium" />
+          <!-- Limit -->
+          <a-select
+            v-model:value="limit"
+            :options="[
+              { label: '10 / trang', value: 10 },
+              { label: '20 / trang', value: 20 },
+              { label: '50 / trang', value: 50 },
+              { label: '100 / trang', value: 100 },
+            ]"
+            style="width: 120px"
+          />
 
-        <!-- Limit -->
-        <a-select
-          v-model:value="limit"
-          :options="[
-            { label: '10 / trang', value: 10 },
-            { label: '20 / trang', value: 20 },
-            { label: '50 / trang', value: 50 },
-            { label: '100 / trang', value: 100 },
-          ]"
-          style="width: 120px"
-        />
+          <!-- Sub ID -->
+          <a-input-search
+            v-model:value="subIdInput"
+            placeholder="Tìm theo SubID..."
+            enter-button
+            @search="handleSubIdSearch"
+            style="width: 250px"
+            allow-clear
+            class="font-medium"
+          />
 
-        <!-- Sub ID -->
-        <a-input-search
-          v-model:value="subIdInput"
-          placeholder="Tìm theo SubID..."
-          enter-button
-          @search="handleSubIdSearch"
-          style="width: 250px"
-          allow-clear
-          class="font-medium"
-        />
+          <!-- Toggle Expand -->
+          <a-button type="default" @click="toggleCollapse" class="font-medium text-xs" :class="{ 'bg-slate-100 dark:bg-slate-800': activeKey.includes('1') }">
+            <template #icon><FilterOutlined /></template>
+            {{ activeKey.includes('1') ? 'Thu gọn' : 'Mở rộng' }}
+          </a-button>
 
-        <!-- Clear filters -->
-        <a-button v-if="startDate || endDate || selectedUserFilter || subIdFilter" @click="clearAllFilters" type="text" danger>
-          <template #icon><DeleteOutlined /></template>
-          Xóa bộ lọc
-        </a-button>
+          <!-- Clear filters -->
+          <a-button v-if="startDate || endDate || selectedUserFilter || subIdFilter || selectedType !== 'all'" @click="clearAllFilters" type="text" danger>
+            <template #icon><DeleteOutlined /></template>
+            Xóa bộ lọc
+          </a-button>
+        </div>
+
+        <!-- Expanded Filters using a-collapse -->
+        <a-collapse v-model:activeKey="activeKey" ghost :bordered="false" class="admin-filter-collapse">
+          <a-collapse-panel key="1" :show-arrow="false">
+            <div class="flex flex-wrap items-center gap-3 pt-3 mt-3 border-t border-slate-100 dark:border-slate-800 border-dashed">
+              <span class="text-xs font-semibold text-slate-500 uppercase">Nền tảng:</span>
+              <a-select
+                v-model:value="selectedType"
+                :options="[
+                  { label: 'Tất cả', value: 'all' },
+                  { label: 'Shopee', value: AFFILIATE_TYPES.SHOPEE },
+                  { label: 'TikTok', value: AFFILIATE_TYPES.TIKTOK },
+                  { label: 'Lazada', value: AFFILIATE_TYPES.LAZADA },
+                ]"
+                style="width: 120px"
+                size="small"
+              />
+              
+              <div class="w-px h-4 bg-slate-200 dark:bg-slate-700 mx-2 hidden sm:block"></div>
+
+              <span class="text-xs font-semibold text-slate-500 uppercase">Lọc theo ngày:</span>
+              <!-- Date range -->
+              <a-input type="date" v-model:value="startDate" size="small" style="width: 140px" class="font-medium" />
+              <span class="text-slate-400 text-sm">–</span>
+              <a-input type="date" v-model:value="endDate" size="small" style="width: 140px" class="font-medium" />
+            </div>
+          </a-collapse-panel>
+        </a-collapse>
       </div>
 
       <!-- Table -->
@@ -125,9 +156,16 @@
       </a-table>
 
       <!-- Pagination -->
-      <div v-if="totalPages > 1" class="px-4 py-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+      <div class="px-4 py-3 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
         <span class="text-xs text-slate-500 font-medium">Trang {{ page }} / {{ totalPages }}</span>
-        <a-pagination :current="page" :total="totalPages * limit" :page-size="limit" show-less-items @change="(p) => page = p" />
+        <a-pagination
+          v-if="totalPages > 1"
+          :current="page"
+          :total="totalPages * limit"
+          :page-size="limit"
+          show-less-items
+          @change="(p) => page = p"
+        />
       </div>
     </a-card>
 
@@ -224,7 +262,7 @@
 
 <script setup>
 import { ref, computed, watch, onUnmounted } from "vue";
-import { SyncOutlined, CloseOutlined, DeleteOutlined, UserOutlined, RightOutlined, CopyOutlined, TeamOutlined, SearchOutlined } from "@ant-design/icons-vue";
+import { SyncOutlined, CloseOutlined, DeleteOutlined, UserOutlined, RightOutlined, CopyOutlined, TeamOutlined, SearchOutlined, FilterOutlined } from "@ant-design/icons-vue";
 import { AFFILIATE_TYPES } from "~/utils/constants";
 import { useAdminUsers } from "~/composables/useAdminUsers";
 
@@ -240,6 +278,15 @@ const columns = [
 definePageMeta({ layout: "admin" });
 useHead({ title: "Lịch sử chuyển đổi Link | Admin Saffiliate" });
 
+const activeKey = ref([]);
+const toggleCollapse = () => {
+  if (activeKey.value.includes("1")) {
+    activeKey.value = [];
+  } else {
+    activeKey.value = ["1"];
+  }
+};
+
 const page = ref(1);
 const limit = ref(20);
 const startDate = ref("");
@@ -247,6 +294,7 @@ const endDate = ref("");
 const selectedUserFilter = ref(null);
 const subIdFilter = ref("");
 const subIdInput = ref("");
+const selectedType = ref("all");
 const { api } = useAppFetch();
 
 const queryParams = computed(() => {
@@ -255,6 +303,7 @@ const queryParams = computed(() => {
   if (endDate.value) params.endDate = endDate.value;
   if (selectedUserFilter.value) params.userId = selectedUserFilter.value.id;
   if (subIdFilter.value) params.subId = subIdFilter.value.trim();
+  if (selectedType.value !== "all") params.type = selectedType.value;
   return params;
 });
 
@@ -273,12 +322,17 @@ const links = computed(() => {
 });
 
 const totalPages = computed(() => {
-  const res = response.value?.data;
-  if (!res || !res.meta) return 1;
-  return Math.ceil(res.meta.total / limit.value);
+  const res = response.value;
+  if (!res) return 1;
+  if (res.last_page !== undefined) return res.last_page;
+  if (res.data?.totalPages !== undefined) return res.data.totalPages;
+  if (res.data?.meta?.total !== undefined) return Math.ceil(res.data.meta.total / limit.value);
+  
+  const total = res.total !== undefined ? res.total : res.data?.total || 0;
+  return Math.ceil(total / limit.value) || 1;
 });
 
-watch([limit, startDate, endDate, selectedUserFilter, subIdFilter], () => { page.value = 1; });
+watch([limit, startDate, endDate, selectedUserFilter, subIdFilter, selectedType], () => { page.value = 1; });
 
 const selectedItem = ref(null);
 const isDrawerOpen = computed({
@@ -321,7 +375,7 @@ const { users: usersList, pagination: userPagination, isLoading: usersLoading, f
 const changeUserPage = (targetPage) => fetchUsers(targetPage, userSearchQuery.value.trim(), 20);
 const handleUserSearch = () => fetchUsers(1, userSearchQuery.value.trim(), 20);
 const clearUserFilter = () => { selectedUserFilter.value = null; };
-const clearAllFilters = () => { startDate.value = ""; endDate.value = ""; selectedUserFilter.value = null; subIdFilter.value = ""; subIdInput.value = ""; };
+const clearAllFilters = () => { startDate.value = ""; endDate.value = ""; selectedUserFilter.value = null; subIdFilter.value = ""; subIdInput.value = ""; selectedType.value = "all"; };
 const handleSubIdSearch = (value) => { subIdFilter.value = value; };
 const applyUserFilter = (user) => { selectedUserFilter.value = user; showUserModal.value = false; };
 
@@ -333,4 +387,8 @@ watch(showUserModal, (newVal) => {
 <style scoped>
 .admin-card { border-radius: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
 :deep(.ant-table-row:hover > td) { background: rgba(248,250,252,0.8) !important; }
+
+/* Hide collapse header and remove padding for custom toggle */
+:deep(.admin-filter-collapse > .ant-collapse-item > .ant-collapse-header) { display: none !important; }
+:deep(.admin-filter-collapse > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box) { padding: 0 !important; }
 </style>
