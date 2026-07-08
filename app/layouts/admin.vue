@@ -51,6 +51,11 @@
           Người dùng (Users)
         </a-menu-item>
         
+        <a-menu-item key="/admin/blacklist">
+          <template #icon><ExceptionOutlined /></template>
+          Danh sách đen (Blacklist)
+        </a-menu-item>
+        
         <a-menu-item key="/admin/transaction-history">
           <template #icon><HistoryOutlined /></template>
           Lịch sử giao dịch
@@ -132,7 +137,8 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  HistoryOutlined
+  HistoryOutlined,
+  ExceptionOutlined
 } from "@ant-design/icons-vue";
 
 const route = useRoute();
