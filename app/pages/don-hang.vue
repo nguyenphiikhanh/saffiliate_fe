@@ -78,15 +78,15 @@
 
       <!-- Data List -->
       <a-spin :spinning="status === 'pending'">
-        <div v-if="filteredOrders.length > 0" class="flex flex-col">
+        <div v-if="filteredOrders.length > 0" class="flex flex-col gap-3 md:gap-0">
           <div
             v-for="record in filteredOrders"
             :key="record.code"
             @click="openOrderDetails(record)"
-            class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800/60 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all duration-200"
+            class="flex flex-col md:flex-row md:items-center justify-between p-4 border md:border-0 md:border-b border-slate-100 dark:border-slate-800/60 odd:bg-orange-50/60 even:bg-white dark:odd:bg-orange-900/20 dark:even:bg-slate-900 md:odd:bg-transparent md:even:bg-transparent md:dark:odd:bg-transparent md:dark:even:bg-transparent rounded-2xl md:rounded-none hover:bg-orange-100/50 md:hover:bg-slate-50 dark:hover:bg-orange-900/30 md:dark:hover:bg-slate-800/50 cursor-pointer transition-all duration-200 gap-3 md:gap-0"
           >
-            <!-- Cột trái: Thông tin -->
-            <div class="flex items-center gap-3.5 overflow-hidden pr-4">
+            <!-- Phần trên (Mobile) / Cột trái (Desktop): Thông tin SP -->
+            <div class="flex items-center gap-3.5 flex-1 min-w-0 pr-0 md:pr-4">
               <div
                 class="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center justify-center shrink-0"
               >
@@ -96,9 +96,9 @@
                   alt="Logo"
                 />
               </div>
-              <div class="flex flex-col overflow-hidden">
+              <div class="flex flex-col flex-1 min-w-0">
                 <span
-                  class="font-bold text-[13px] text-slate-700 dark:text-slate-200 truncate max-w-[200px] sm:max-w-xs md:max-w-md"
+                  class="font-bold text-[13px] text-slate-700 dark:text-slate-200 truncate"
                   :title="record.itemName || record.storeName"
                 >
                   {{
@@ -110,26 +110,20 @@
                 >
                   <span class="text-slate-400">#{{ record.code }}</span>
                   <span
-                    class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"
+                    class="hidden md:block w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"
                   ></span>
-                  <span>{{ record.date }}</span>
+                  <span class="hidden md:inline">{{ record.date }}</span>
                 </div>
               </div>
             </div>
 
-            <!-- Cột phải: Hoa hồng & Trạng thái -->
-            <div class="flex flex-col items-end shrink-0 gap-1.5">
-              <div
-                class="flex items-center gap-1 font-black text-emerald-500 text-[13px]"
-              >
-                +{{ formatMoney(record.cashbackAmount) }}
-                <span
-                  class="w-3.5 h-3.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 flex items-center justify-center text-[8px] font-bold"
-                  >đ</span
-                >
-              </div>
+            <!-- Đường phân cách ngang chỉ hiện trên Mobile -->
+            <div class="md:hidden w-full border-t border-dashed border-slate-200 dark:border-slate-700/50 my-1"></div>
+
+            <!-- Phần dưới (Mobile) / Cột phải (Desktop): Hoa hồng & Trạng thái -->
+            <div class="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center shrink-0 gap-1.5 md:gap-1.5">
               <span
-                class="font-bold uppercase tracking-wider text-[9px] px-2.5 py-0.5 rounded-full whitespace-nowrap inline-block"
+                class="font-bold uppercase tracking-wider text-[9px] px-2.5 py-0.5 rounded-full whitespace-nowrap inline-block md:order-last"
                 :class="
                   record.status === 'Thành công' ||
                   record.status === 'Completed'
@@ -146,6 +140,15 @@
                     : record.status
                 }}
               </span>
+              <div
+                class="flex items-center gap-1 font-black text-emerald-500 text-[13px]"
+              >
+                +{{ formatMoney(record.cashbackAmount) }}
+                <span
+                  class="w-3.5 h-3.5 rounded-full border border-emerald-500/40 bg-emerald-500/10 flex items-center justify-center text-[8px] font-bold"
+                  >đ</span
+                >
+              </div>
             </div>
           </div>
 
