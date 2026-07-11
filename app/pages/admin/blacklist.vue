@@ -234,7 +234,7 @@ import {
 import { message } from "ant-design-vue";
 
 definePageMeta({ layout: "admin" });
-useHead({ title: "Quản lý Blacklist | Admin Saffiliate" });
+useHead({ title: "Quản lý Blacklist | Saffi Admin" });
 
 const { api } = useAppFetch();
 const currentPage = ref(1);

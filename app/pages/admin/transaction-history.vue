@@ -345,7 +345,7 @@ import {
 import { useAdminUsers } from "~/composables/useAdminUsers";
 
 definePageMeta({ layout: "admin" });
-useHead({ title: "Lịch sử giao dịch | Admin Saffiliate" });
+useHead({ title: "Lịch sử giao dịch | Saffi Admin" });
 
 const formatMoney = (val) => Math.round(val || 0).toLocaleString("vi-VN");
 

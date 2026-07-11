@@ -122,11 +122,6 @@
                       class="text-[13.5px] font-bold text-slate-800 dark:text-slate-200"
                       >Lazada Việt Nam</span
                     >
-                    <a-tag
-                      color="gold"
-                      style="font-size: 8px; padding: 0 4px; line-height: 16px"
-                      >BETA</a-tag
-                    >
                   </div>
                   <div class="text-[11px] text-slate-400 mt-0.5">
                     Hoàn tiền Lazada.
@@ -174,18 +169,28 @@
           </template>
           <div class="p-2">
             <p class="text-xs text-slate-500 mb-3">
-              Nhập cookie của tài khoản Shopee để hệ thống tự động xử lý. (Dạng văn bản)
+              Nhập cookie của tài khoản Shopee để hệ thống tự động xử lý. (Dạng
+              văn bản)
             </p>
-            
+
             <div v-if="!isEditingCookies">
-              <div v-if="shopeeCookies" class="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-slate-100 dark:border-slate-800 break-all text-xs font-mono text-slate-600">
-                {{ shopeeCookies.length > 60 ? shopeeCookies.substring(0, 30) + '...' + shopeeCookies.substring(shopeeCookies.length - 30) : shopeeCookies }}
+              <div
+                v-if="shopeeCookies"
+                class="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-slate-100 dark:border-slate-800 break-all text-xs font-mono text-slate-600"
+              >
+                {{
+                  shopeeCookies.length > 60
+                    ? shopeeCookies.substring(0, 30) +
+                      "..." +
+                      shopeeCookies.substring(shopeeCookies.length - 30)
+                    : shopeeCookies
+                }}
               </div>
               <div v-else class="text-xs text-amber-500 italic">
                 Chưa có cấu hình cookie.
               </div>
             </div>
-            
+
             <a-textarea
               v-else
               v-model:value="editShopeeCookies"
@@ -259,11 +264,6 @@
                     class="text-xs font-bold text-slate-700 dark:text-slate-300"
                     >Lazada</span
                   >
-                  <a-tag
-                    color="gold"
-                    style="font-size: 8px; padding: 0 4px; line-height: 16px"
-                    >BETA</a-tag
-                  >
                 </div>
               </div>
 
@@ -305,7 +305,7 @@ import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 
 definePageMeta({ layout: "admin" });
-useHead({ title: "Cấu hình hệ thống | Admin Saffiliate" });
+useHead({ title: "Cấu hình hệ thống | Saffi Admin" });
 
 const { user, isAdmin } = useAuth();
 const router = useRouter();
@@ -406,23 +406,26 @@ const handleSaveCookies = async () => {
     await api.put("/admin/system-config/shopee_cookie", {
       shopee_cookies: editShopeeCookies.value,
     });
-    
+
     // Gọi API get lại thông tin mới sau khi lưu thành công
     const resCookies = await api
       .get("/admin/system-config/shopee_cookie")
       .catch((e) => ({ data: null }));
-      
+
     if (resCookies.data) {
-      shopeeCookies.value = resCookies.data.shopee_cookies || resCookies.data.value || "";
+      shopeeCookies.value =
+        resCookies.data.shopee_cookies || resCookies.data.value || "";
     } else {
       // Fallback nếu API get bị lỗi tạm thời
       shopeeCookies.value = editShopeeCookies.value;
     }
-    
+
     isEditingCookies.value = false;
     message.success("Lưu cấu hình Shopee Cookie thành công!");
   } catch (error) {
-    message.error(error.message || "Có lỗi xảy ra khi lưu cookie. Vui lòng thử lại.");
+    message.error(
+      error.message || "Có lỗi xảy ra khi lưu cookie. Vui lòng thử lại."
+    );
   } finally {
     isSavingCookies.value = false;
   }

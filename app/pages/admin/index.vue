@@ -160,14 +160,11 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import { Empty } from "ant-design-vue";
-import {
-  StarOutlined,
-  DollarOutlined,
-} from "@ant-design/icons-vue";
+import { StarOutlined, DollarOutlined } from "@ant-design/icons-vue";
 import dayjs from "dayjs";
 
 definePageMeta({ layout: "admin" });
-useHead({ title: "Tổng quan | Admin Saffiliate" });
+useHead({ title: "Tổng quan | Saffi Admin" });
 
 const activeTab = ref("allTime");
 const now = new Date();

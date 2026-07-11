@@ -62,67 +62,100 @@
     <!-- Data Table -->
     <a-card :bordered="false" class="admin-card" :body-style="{ padding: 0 }">
       <!-- Toolbar -->
-      <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-col gap-3">
-        <div class="flex flex-wrap items-center gap-3">
-          <a-select
-            v-model:value="selectedStatus"
-            :options="[
-              { label: 'Tất cả trạng thái', value: 'all' },
-              { label: 'Chờ duyệt', value: 'pending' },
-              { label: 'Thành công', value: 'success' },
-              { label: 'Đã hủy', value: 'cancelled' },
-            ]"
-            style="width: 180px"
-          />
+      <div
+        class="p-4 border-b border-slate-100 dark:border-slate-800 flex flex-col gap-3"
+      >
+        <div
+          class="flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+        >
+          <div class="flex flex-wrap items-center gap-3">
+            <a-select
+              v-model:value="selectedStatus"
+              :options="[
+                { label: 'Tất cả trạng thái', value: 'all' },
+                { label: 'Chờ duyệt', value: 'pending' },
+                { label: 'Thành công', value: 'success' },
+                { label: 'Đã hủy', value: 'cancelled' },
+              ]"
+              style="width: 180px"
+            />
 
-          <a-select
-            v-model:value="selectedType"
-            :options="[
-              { label: 'Tất cả nền tảng', value: 'all' },
-              { label: 'Shopee', value: AFFILIATE_TYPES.SHOPEE },
-              { label: 'TikTok', value: AFFILIATE_TYPES.TIKTOK },
-              { label: 'Lazada', value: AFFILIATE_TYPES.LAZADA },
-            ]"
-            style="width: 150px"
-          />
+            <a-select
+              v-model:value="selectedType"
+              :options="[
+                { label: 'Tất cả nền tảng', value: 'all' },
+                { label: 'Shopee', value: AFFILIATE_TYPES.SHOPEE },
+                { label: 'TikTok', value: AFFILIATE_TYPES.TIKTOK },
+                { label: 'Lazada', value: AFFILIATE_TYPES.LAZADA },
+              ]"
+              style="width: 150px"
+            />
 
-          <a-select
-            v-model:value="limit"
-            :options="[
-              { label: '20 / trang', value: 20 },
-              { label: '50 / trang', value: 50 },
-              { label: '100 / trang', value: 100 },
-            ]"
-            style="width: 120px"
-          />
+            <a-select
+              v-model:value="limit"
+              :options="[
+                { label: '20 / trang', value: 20 },
+                { label: '50 / trang', value: 50 },
+                { label: '100 / trang', value: 100 },
+              ]"
+              style="width: 120px"
+            />
 
-          <!-- Toggle Expand -->
-          <a-button type="default" @click="toggleCollapse" class="font-medium text-xs" :class="{ 'bg-slate-100 dark:bg-slate-800': activeKey.includes('1') }">
-            <template #icon><FilterOutlined /></template>
-            {{ activeKey.includes('1') ? 'Thu gọn' : 'Mở rộng' }}
-          </a-button>
+            <!-- Toggle Expand -->
+            <a-button
+              type="default"
+              @click="toggleCollapse"
+              class="font-medium text-xs"
+              :class="{
+                'bg-slate-100 dark:bg-slate-800': activeKey.includes('1'),
+              }"
+            >
+              <template #icon><FilterOutlined /></template>
+              {{ activeKey.includes("1") ? "Thu gọn" : "Mở rộng" }}
+            </a-button>
+
+            <a-button
+              v-if="
+                selectedStatus !== 'all' ||
+                selectedType !== 'all' ||
+                selectedUserFilter ||
+                orderIdFilter
+              "
+              @click="clearAllFilters"
+              type="text"
+              danger
+            >
+              <template #icon><DeleteOutlined /></template>
+              Xóa bộ lọc
+            </a-button>
+          </div>
 
           <a-button
-            v-if="
-              selectedStatus !== 'all' ||
-              selectedType !== 'all' ||
-              selectedUserFilter ||
-              orderIdFilter
-            "
-            @click="clearAllFilters"
-            type="text"
-            danger
+            type="primary"
+            ghost
+            @click="refresh"
+            :loading="pending"
+            class="font-medium px-4"
           >
-            <template #icon><DeleteOutlined /></template>
-            Xóa bộ lọc
+            <template #icon><ReloadOutlined /></template>
+            Làm mới
           </a-button>
         </div>
 
         <!-- Expanded Filters using a-collapse -->
-        <a-collapse v-model:activeKey="activeKey" ghost :bordered="false" class="admin-filter-collapse">
+        <a-collapse
+          v-model:activeKey="activeKey"
+          ghost
+          :bordered="false"
+          class="admin-filter-collapse"
+        >
           <a-collapse-panel key="1" :show-arrow="false">
-            <div class="flex flex-wrap items-center gap-3 pt-3 mt-3 border-t border-slate-100 dark:border-slate-800 border-dashed">
-              <span class="text-xs font-semibold text-slate-500 uppercase">Tìm theo Order ID:</span>
+            <div
+              class="flex flex-wrap items-center gap-3 pt-3 mt-3 border-t border-slate-100 dark:border-slate-800 border-dashed"
+            >
+              <span class="text-xs font-semibold text-slate-500 uppercase"
+                >Tìm theo Order ID:</span
+              >
               <a-input-search
                 v-model:value="orderIdInput"
                 placeholder="Nhập mã đơn hàng..."
@@ -133,9 +166,13 @@
                 class="font-medium"
               />
 
-              <div class="w-px h-4 bg-slate-200 dark:bg-slate-700 mx-2 hidden sm:block"></div>
+              <div
+                class="w-px h-4 bg-slate-200 dark:bg-slate-700 mx-2 hidden sm:block"
+              ></div>
 
-              <span class="text-xs font-semibold text-slate-500 uppercase">Tìm theo người dùng:</span>
+              <span class="text-xs font-semibold text-slate-500 uppercase"
+                >Tìm theo người dùng:</span
+              >
               <a-button
                 @click="showUserModal = true"
                 :type="selectedUserFilter ? 'primary' : 'default'"
@@ -625,6 +662,7 @@ import {
   TeamOutlined,
   LeftOutlined,
   FilterOutlined,
+  ReloadOutlined,
 } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 import { AFFILIATE_TYPES } from "~/utils/constants";
@@ -657,7 +695,7 @@ const columns = [
 ];
 
 definePageMeta({ layout: "admin" });
-useHead({ title: "Quản lý Đơn hàng | Admin Saffiliate" });
+useHead({ title: "Quản lý Đơn hàng | Saffi Admin" });
 
 const activeKey = ref([]);
 const toggleCollapse = () => {
@@ -747,9 +785,12 @@ const {
   { watch: [queryParams], server: false }
 );
 
-watch([selectedStatus, selectedType, selectedUserFilter, limit, orderIdFilter], () => {
-  currentPage.value = 1;
-});
+watch(
+  [selectedStatus, selectedType, selectedUserFilter, limit, orderIdFilter],
+  () => {
+    currentPage.value = 1;
+  }
+);
 
 const totalPages = computed(() => {
   const res = response.value;
@@ -1015,6 +1056,15 @@ const formatMoney = (val) => {
 }
 
 /* Hide collapse header and remove padding for custom toggle */
-:deep(.admin-filter-collapse > .ant-collapse-item > .ant-collapse-header) { display: none !important; }
-:deep(.admin-filter-collapse > .ant-collapse-item > .ant-collapse-content > .ant-collapse-content-box) { padding: 0 !important; }
+:deep(.admin-filter-collapse > .ant-collapse-item > .ant-collapse-header) {
+  display: none !important;
+}
+:deep(
+    .admin-filter-collapse
+      > .ant-collapse-item
+      > .ant-collapse-content
+      > .ant-collapse-content-box
+  ) {
+  padding: 0 !important;
+}
 </style>

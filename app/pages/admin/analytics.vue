@@ -17,115 +17,84 @@
           <small>* Báo cáo sẽ được cập nhật mới vào cuối mỗi ngày</small>
         </p>
       </div>
-
-      <div class="flex items-center gap-3">
-        <span class="text-sm font-semibold text-slate-600 dark:text-slate-300">
-          Thời gian:
-        </span>
-        <a-select
-          v-model:value="timeFilter"
-          style="width: 150px"
-          @change="updateMockData"
-        >
-          <a-select-option value="all">Tất cả thời gian</a-select-option>
-          <a-select-option value="today">Hôm nay</a-select-option>
-          <a-select-option value="week">Tuần này</a-select-option>
-          <a-select-option value="month">Tháng này</a-select-option>
-        </a-select>
-      </div>
     </div>
 
     <!-- Overview Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <a-card :bordered="false" class="admin-stat-card">
-        <div class="flex justify-between items-start">
+        <a-skeleton active :paragraph="{ rows: 1 }" v-if="commissionAnalyticPending" />
+        <div v-else class="flex justify-between items-start">
           <div>
-            <div
-              class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
-            >
-              Tổng hoa hồng
+            <div class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">
+              Hoa hồng sàn
             </div>
-            <div
-              class="text-2xl font-bold text-emerald-600 dark:text-emerald-400"
-            >
-              {{ formatMoney(mockStats.commissions.profit) }}
+            <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+              {{ formatMoney(commissionAnalytic.total_commission) }}
             </div>
           </div>
-          <div
-            class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-500"
-          >
-            <DollarOutlined class="text-xl" />
+          <div class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-500">
+            <BankOutlined class="text-xl" />
           </div>
         </div>
       </a-card>
       <a-card :bordered="false" class="admin-stat-card">
-        <div class="flex justify-between items-start">
+        <a-skeleton active :paragraph="{ rows: 1 }" v-if="commissionAnalyticPending" />
+        <div v-else class="flex justify-between items-start">
           <div>
-            <div
-              class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
-            >
-              Phí dịch vụ(Dự kiến)
+            <div class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">
+              Hoa hồng người dùng
             </div>
-            <div
-              class="text-2xl font-bold text-emerald-600 dark:text-emerald-400"
-            >
-              {{ formatMoney(mockStats.commissions.profit) }}
+            <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              {{ formatMoney(commissionAnalytic.total_user_commission) }}
             </div>
           </div>
-          <div
-            class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-500"
-          >
-            <DollarOutlined class="text-xl" />
+          <div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500">
+            <UserOutlined class="text-xl" />
           </div>
         </div>
       </a-card>
       <a-card :bordered="false" class="admin-stat-card">
-        <div class="flex justify-between items-start">
+        <a-skeleton active :paragraph="{ rows: 1 }" v-if="commissionAnalyticPending" />
+        <div v-else class="flex justify-between items-start">
           <div>
-            <div
-              class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
-            >
-              Thuế(Dự kiến)
+            <div class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">
+              Phí dịch vụ + Thuế (ước tính)
             </div>
-            <div
-              class="text-2xl font-bold text-emerald-600 dark:text-emerald-400"
-            >
-              {{ formatMoney(mockStats.commissions.profit) }}
+            <div class="text-2xl font-bold text-rose-600 dark:text-rose-400">
+              {{ formatMoney(commissionAnalytic.total_fee) }}
             </div>
           </div>
-          <div
-            class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-500"
-          >
-            <DollarOutlined class="text-xl" />
+          <div class="w-10 h-10 rounded-full bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center text-rose-500">
+            <PercentageOutlined class="text-xl" />
           </div>
         </div>
       </a-card>
       <!-- Commission Card -->
       <a-card :bordered="false" class="admin-stat-card">
-        <div class="flex justify-between items-start">
+        <a-skeleton active :paragraph="{ rows: 1 }" v-if="commissionAnalyticPending" />
+        <div v-else class="flex justify-between items-start">
           <div>
-            <div
-              class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
-            >
+            <div class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">
               Lợi nhuận(Ước tính)
             </div>
-            <div
-              class="text-2xl font-bold text-emerald-600 dark:text-emerald-400"
-            >
-              {{ formatMoney(mockStats.commissions.profit) }}
+            <div class="text-2xl font-bold text-amber-600 dark:text-amber-400">
+              {{ formatMoney(commissionAnalytic.total_profit) }}
             </div>
           </div>
-          <div
-            class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-500"
-          >
-            <DollarOutlined class="text-xl" />
+          <div class="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-500">
+            <MoneyCollectOutlined class="text-xl" />
           </div>
         </div>
       </a-card>
 
       <!-- Users Card -->
       <a-card :bordered="false" class="admin-stat-card">
-        <div class="flex justify-between items-start">
+        <a-skeleton
+          active
+          :paragraph="{ rows: 1 }"
+          v-if="userAnalyticPending"
+        />
+        <div v-else class="flex justify-between items-start">
           <div>
             <div
               class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
@@ -133,26 +102,7 @@
               Tổng người dùng
             </div>
             <div class="text-2xl font-bold text-slate-800 dark:text-slate-100">
-              {{ mockStats.users.total }}
-            </div>
-          </div>
-          <div
-            class="w-10 h-10 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-500"
-          >
-            <TeamOutlined class="text-xl" />
-          </div>
-        </div>
-      </a-card>
-      <a-card :bordered="false" class="admin-stat-card">
-        <div class="flex justify-between items-start">
-          <div>
-            <div
-              class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
-            >
-              Người dùng mới
-            </div>
-            <div class="text-2xl font-bold text-slate-800 dark:text-slate-100">
-              {{ mockStats.users.total }}
+              {{ userAnalytic.total_users }}
             </div>
           </div>
           <div
@@ -163,40 +113,76 @@
         </div>
       </a-card>
 
-      <!-- Performance Card -->
       <a-card :bordered="false" class="admin-stat-card">
-        <div class="flex justify-between items-start">
+        <a-skeleton
+          active
+          :paragraph="{ rows: 1 }"
+          v-if="userAnalyticPending"
+        />
+        <div v-else class="flex justify-between items-start">
           <div>
             <div
               class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
             >
-              Tổng đơn hàng
+              Người dùng mới
+            </div>
+            <div class="text-2xl font-bold text-slate-800 dark:text-slate-100">
+              {{ userAnalytic.new_users }}
+            </div>
+          </div>
+          <div
+            class="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-500"
+          >
+            <UserAddOutlined class="text-xl" />
+          </div>
+        </div>
+      </a-card>
+
+      <!-- Performance Card -->
+      <a-card :bordered="false" class="admin-stat-card">
+        <a-skeleton
+          active
+          :paragraph="{ rows: 1 }"
+          v-if="userAnalyticPending"
+        />
+        <div v-else class="flex justify-between items-start">
+          <div>
+            <div
+              class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
+            >
+              Người dùng đã có đơn hàng
             </div>
             <div
               class="text-2xl font-bold text-orange-600 dark:text-orange-400"
             >
-              {{ mockStats.performance.linksWithOrders }}
+              {{ userAnalytic.users_with_orders }}
             </div>
           </div>
           <div
             class="w-10 h-10 rounded-full bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-500"
           >
-            <LinkOutlined class="text-xl" />
+            <ShoppingCartOutlined class="text-xl" />
           </div>
         </div>
       </a-card>
+
       <a-card :bordered="false" class="admin-stat-card">
-        <div class="flex justify-between items-start">
+        <a-skeleton
+          active
+          :paragraph="{ rows: 1 }"
+          v-if="userAnalyticPending"
+        />
+        <div v-else class="flex justify-between items-start">
           <div>
             <div
               class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
             >
-              Tỉ lệ đơn thành công(%)
+              Người dùng đã tạo link
             </div>
             <div
               class="text-2xl font-bold text-orange-600 dark:text-orange-400"
             >
-              {{ mockStats.performance.linksWithOrders }}
+              {{ userAnalytic.users_generate_link }}
             </div>
           </div>
           <div
@@ -228,7 +214,7 @@
       <!-- Withdrawals Chart -->
       <a-card :bordered="false" class="admin-card">
         <template #title>
-          <span class="font-bold">Trạng thái Rút tiền</span>
+          <span class="font-bold">Dòng tiền từ người dùng</span>
         </template>
         <div ref="withdrawalsChartRef" class="w-full h-[300px]"></div>
       </a-card>
@@ -236,7 +222,7 @@
       <!-- Users & Links Chart -->
       <a-card :bordered="false" class="admin-card">
         <template #title>
-          <span class="font-bold">Người dùng & Hiệu suất Link</span>
+          <span class="font-bold">Hiệu suất Link</span>
         </template>
         <div ref="usersLinksChartRef" class="w-full h-[300px]"></div>
       </a-card>
@@ -253,12 +239,55 @@ import {
   DollarOutlined,
   TeamOutlined,
   LinkOutlined,
+  UserAddOutlined,
+  BankOutlined,
+  UserOutlined,
+  PercentageOutlined,
+  MoneyCollectOutlined,
 } from "@ant-design/icons-vue";
 
 definePageMeta({ layout: "admin" });
-useHead({ title: "Thống kê | Admin Saffiliate" });
+useHead({ title: "Thống kê | Saffi Admin" });
 
 const { isDark } = useTheme();
+
+const { api } = useAppFetch();
+
+// Fetch API for Commission Analytics
+const { data: commissionAnalyticRes, pending: commissionAnalyticPending } =
+  useLazyAsyncData(
+    "commission-analytic",
+    () => api.get("/admin/analytics", { query: { key: "commission-analytic" } }),
+    { server: false }
+  );
+
+const commissionAnalytic = computed(
+  () =>
+    commissionAnalyticRes.value?.data || {
+      total_commission: 0,
+      total_user_commission: 0,
+      total_fee: 0,
+      total_profit: 0,
+    }
+);
+
+// Fetch API for User Analytics
+const { data: userAnalyticRes, pending: userAnalyticPending } =
+  useLazyAsyncData(
+    "user-analytic",
+    () => api.get("/admin/analytics", { query: { key: "user-analytic" } }),
+    { server: false }
+  );
+
+const userAnalytic = computed(
+  () =>
+    userAnalyticRes.value?.data || {
+      total_users: 0,
+      new_users: 0,
+      users_with_orders: 0,
+      users_generate_link: 0,
+    }
+);
 
 // Time Filter
 const timeFilter = ref("all");

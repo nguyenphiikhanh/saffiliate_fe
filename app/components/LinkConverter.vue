@@ -154,10 +154,6 @@
                   "
                 >
                   Lazada
-                  <span
-                    class="px-1.5 py-0.5 rounded border border-amber-500/20 bg-amber-500/10 text-amber-600 text-[8px] uppercase tracking-widest"
-                    >BETA</span
-                  >
                 </div>
               </div>
             </div>
