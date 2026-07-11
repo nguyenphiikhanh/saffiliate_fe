@@ -239,13 +239,7 @@
         <div ref="ordersChartRef" class="w-full h-[300px]"></div>
       </a-card>
 
-      <!-- Commissions Chart -->
-      <a-card :bordered="false" class="admin-card">
-        <template #title>
-          <span class="font-bold">Hoa hồng</span>
-        </template>
-        <div ref="commissionsChartRef" class="w-full h-[300px]"></div>
-      </a-card>
+
 
       <!-- Withdrawals Chart -->
       <a-card :bordered="false" class="admin-card">
@@ -342,7 +336,28 @@ const walletAnalytic = computed(
     }
 );
 
-watch([orderAnalyticRes, walletAnalyticRes], () => {
+// Fetch API for Marketing Analytics
+const { data: marketingAnalyticRes } = useLazyAsyncData(
+  "affiliate-analytic",
+  () => api.get("/admin/analytics", { query: { key: "affiliate-analytic" } }),
+  { server: false }
+);
+
+const marketingAnalytic = computed(
+  () =>
+    marketingAnalyticRes.value?.data || {
+      total_links: 0,
+      shopee_links: 0,
+      lazada_links: 0,
+      tiktok_links: 0,
+      total_orders: 0,
+      shopee_orders: 0,
+      tiktok_orders: 0,
+      lazada_orders: 0,
+    }
+);
+
+watch([orderAnalyticRes, walletAnalyticRes, marketingAnalyticRes], () => {
   if (process.client) renderCharts();
 });
 
@@ -369,13 +384,11 @@ const timeFilter = ref("all");
 
 // Refs for chart DOM elements
 const ordersChartRef = ref(null);
-const commissionsChartRef = ref(null);
 const withdrawalsChartRef = ref(null);
 const usersLinksChartRef = ref(null);
 
 // Echarts instances
 let ordersChart = null;
-let commissionsChart = null;
 let withdrawalsChart = null;
 let usersLinksChart = null;
 
@@ -516,51 +529,6 @@ const renderCharts = () => {
     });
   }
 
-  // 2. Commissions Chart (Bar)
-  if (commissionsChartRef.value) {
-    if (!commissionsChart)
-      commissionsChart = markRaw(echarts.init(commissionsChartRef.value));
-    commissionsChart.setOption({
-      tooltip: {
-        trigger: "axis",
-        axisPointer: { type: "shadow" },
-        backgroundColor: tooltipBg,
-        textStyle: { color: textColor },
-      },
-      grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
-      xAxis: {
-        type: "category",
-        data: ["Ước tính", "Chờ hoàn", "Đã trả", "Lợi nhuận"],
-        axisLabel: { color: textColor },
-      },
-      yAxis: { type: "value", axisLabel: { color: textColor } },
-      series: [
-        {
-          data: [
-            {
-              value: mockStats.value.commissions.estimatedTotal,
-              itemStyle: { color: "#3b82f6" },
-            },
-            {
-              value: mockStats.value.commissions.pendingRefund,
-              itemStyle: { color: "#f59e0b" },
-            },
-            {
-              value: mockStats.value.commissions.paid,
-              itemStyle: { color: "#10b981" },
-            },
-            {
-              value: mockStats.value.commissions.profit,
-              itemStyle: { color: "#8b5cf6" },
-            },
-          ],
-          type: "bar",
-          barWidth: "40%",
-          itemStyle: { borderRadius: [4, 4, 0, 0] },
-        },
-      ],
-    });
-  }
 
   // 3. Withdrawals Chart (Doughnut)
   if (withdrawalsChartRef.value) {
@@ -628,25 +596,29 @@ const renderCharts = () => {
       xAxis: { type: "value", axisLabel: { color: textColor } },
       yAxis: {
         type: "category",
-        data: ["Hiệu suất"],
+        data: ["TikTok", "Lazada", "Shopee", "Tổng"],
         axisLabel: { color: textColor },
       },
       series: [
         {
-          name: "Đã tạo",
+          name: "Link đã tạo",
           type: "bar",
           data: [
-            mockStats.value.users.total,
-            mockStats.value.performance.linksCreated,
+            Number(marketingAnalytic.value.tiktok_links) || 0,
+            Number(marketingAnalytic.value.lazada_links) || 0,
+            Number(marketingAnalytic.value.shopee_links) || 0,
+            Number(marketingAnalytic.value.total_links) || 0,
           ],
           itemStyle: { color: "#94a3b8", borderRadius: [0, 4, 4, 0] },
         },
         {
-          name: "Phát sinh đơn hàng",
+          name: "Phát sinh đơn",
           type: "bar",
           data: [
-            mockStats.value.users.new,
-            mockStats.value.performance.linksWithOrders,
+            Number(marketingAnalytic.value.tiktok_orders) || 0,
+            Number(marketingAnalytic.value.lazada_orders) || 0,
+            Number(marketingAnalytic.value.shopee_orders) || 0,
+            Number(marketingAnalytic.value.total_orders) || 0,
           ],
           itemStyle: { color: "#3b82f6", borderRadius: [0, 4, 4, 0] },
         },
@@ -657,7 +629,6 @@ const renderCharts = () => {
 
 const handleResize = () => {
   ordersChart?.resize();
-  commissionsChart?.resize();
   withdrawalsChart?.resize();
   usersLinksChart?.resize();
 };
@@ -670,7 +641,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener("resize", handleResize);
   ordersChart?.dispose();
-  commissionsChart?.dispose();
   withdrawalsChart?.dispose();
   usersLinksChart?.dispose();
 });
