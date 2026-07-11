@@ -22,66 +22,100 @@
     <!-- Overview Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <a-card :bordered="false" class="admin-stat-card">
-        <a-skeleton active :paragraph="{ rows: 1 }" v-if="commissionAnalyticPending" />
+        <a-skeleton
+          active
+          :paragraph="{ rows: 1 }"
+          v-if="commissionAnalyticPending"
+        />
         <div v-else class="flex justify-between items-start">
           <div>
-            <div class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">
+            <div
+              class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
+            >
               Hoa hồng sàn
             </div>
-            <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+            <div
+              class="text-2xl font-bold text-emerald-600 dark:text-emerald-400"
+            >
               {{ formatMoney(commissionAnalytic.total_commission) }}
             </div>
           </div>
-          <div class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-500">
+          <div
+            class="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-emerald-500"
+          >
             <BankOutlined class="text-xl" />
           </div>
         </div>
       </a-card>
       <a-card :bordered="false" class="admin-stat-card">
-        <a-skeleton active :paragraph="{ rows: 1 }" v-if="commissionAnalyticPending" />
+        <a-skeleton
+          active
+          :paragraph="{ rows: 1 }"
+          v-if="commissionAnalyticPending"
+        />
         <div v-else class="flex justify-between items-start">
           <div>
-            <div class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">
+            <div
+              class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
+            >
               Hoa hồng người dùng
             </div>
             <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">
               {{ formatMoney(commissionAnalytic.total_user_commission) }}
             </div>
           </div>
-          <div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500">
+          <div
+            class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500"
+          >
             <UserOutlined class="text-xl" />
           </div>
         </div>
       </a-card>
       <a-card :bordered="false" class="admin-stat-card">
-        <a-skeleton active :paragraph="{ rows: 1 }" v-if="commissionAnalyticPending" />
+        <a-skeleton
+          active
+          :paragraph="{ rows: 1 }"
+          v-if="commissionAnalyticPending"
+        />
         <div v-else class="flex justify-between items-start">
           <div>
-            <div class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">
+            <div
+              class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
+            >
               Phí dịch vụ + Thuế (ước tính)
             </div>
             <div class="text-2xl font-bold text-rose-600 dark:text-rose-400">
               {{ formatMoney(commissionAnalytic.total_fee) }}
             </div>
           </div>
-          <div class="w-10 h-10 rounded-full bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center text-rose-500">
+          <div
+            class="w-10 h-10 rounded-full bg-rose-50 dark:bg-rose-900/20 flex items-center justify-center text-rose-500"
+          >
             <PercentageOutlined class="text-xl" />
           </div>
         </div>
       </a-card>
       <!-- Commission Card -->
       <a-card :bordered="false" class="admin-stat-card">
-        <a-skeleton active :paragraph="{ rows: 1 }" v-if="commissionAnalyticPending" />
+        <a-skeleton
+          active
+          :paragraph="{ rows: 1 }"
+          v-if="commissionAnalyticPending"
+        />
         <div v-else class="flex justify-between items-start">
           <div>
-            <div class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">
+            <div
+              class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1"
+            >
               Lợi nhuận(Ước tính)
             </div>
             <div class="text-2xl font-bold text-amber-600 dark:text-amber-400">
               {{ formatMoney(commissionAnalytic.total_profit) }}
             </div>
           </div>
-          <div class="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-500">
+          <div
+            class="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-500"
+          >
             <MoneyCollectOutlined class="text-xl" />
           </div>
         </div>
@@ -198,7 +232,9 @@
       <!-- Orders Chart -->
       <a-card :bordered="false" class="admin-card">
         <template #title>
-          <span class="font-bold">Đơn hàng</span>
+          <span class="font-bold"
+            >Đơn hàng({{ orderAnalytic.total_orders }})</span
+          >
         </template>
         <div ref="ordersChartRef" class="w-full h-[300px]"></div>
       </a-card>
@@ -222,7 +258,7 @@
       <!-- Users & Links Chart -->
       <a-card :bordered="false" class="admin-card">
         <template #title>
-          <span class="font-bold">Hiệu suất Link</span>
+          <span class="font-bold">Hiệu suất tiếp thị</span>
         </template>
         <div ref="usersLinksChartRef" class="w-full h-[300px]"></div>
       </a-card>
@@ -257,7 +293,8 @@ const { api } = useAppFetch();
 const { data: commissionAnalyticRes, pending: commissionAnalyticPending } =
   useLazyAsyncData(
     "commission-analytic",
-    () => api.get("/admin/analytics", { query: { key: "commission-analytic" } }),
+    () =>
+      api.get("/admin/analytics", { query: { key: "commission-analytic" } }),
     { server: false }
   );
 
@@ -270,6 +307,44 @@ const commissionAnalytic = computed(
       total_profit: 0,
     }
 );
+
+// Fetch API for Order Analytics
+const { data: orderAnalyticRes } = useLazyAsyncData(
+  "order-analytic",
+  () => api.get("/admin/analytics", { query: { key: "order-analytic" } }),
+  { server: false }
+);
+
+const orderAnalytic = computed(
+  () =>
+    orderAnalyticRes.value?.data || {
+      total_orders: 0,
+      completed_orders: 0,
+      pending_orders: 0,
+      cancelled_orders: 0,
+    }
+);
+
+// Fetch API for Wallet Analytics
+const { data: walletAnalyticRes } = useLazyAsyncData(
+  "wallet-analytic",
+  () => api.get("/admin/analytics", { query: { key: "wallet-analytic" } }),
+  { server: false }
+);
+
+const walletAnalytic = computed(
+  () =>
+    walletAnalyticRes.value?.data || {
+      available_balance: 0,
+      pending_balance: 0,
+      rejected_balance: 0,
+      total_paid: 0,
+    }
+);
+
+watch([orderAnalyticRes, walletAnalyticRes], () => {
+  if (process.client) renderCharts();
+});
 
 // Fetch API for User Analytics
 const { data: userAnalyticRes, pending: userAnalyticPending } =
@@ -421,17 +496,17 @@ const renderCharts = () => {
           labelLine: { show: false },
           data: [
             {
-              value: mockStats.value.orders.completed,
+              value: Number(orderAnalytic.value.completed_orders) || 0,
               name: "Hoàn thành",
               itemStyle: { color: "#10b981" },
             },
             {
-              value: mockStats.value.orders.pending,
+              value: Number(orderAnalytic.value.pending_orders) || 0,
               name: "Chờ duyệt",
               itemStyle: { color: "#f59e0b" },
             },
             {
-              value: mockStats.value.orders.canceled,
+              value: Number(orderAnalytic.value.cancelled_orders) || 0,
               name: "Đã huỷ",
               itemStyle: { color: "#ef4444" },
             },
@@ -505,22 +580,22 @@ const renderCharts = () => {
           radius: "70%",
           data: [
             {
-              value: mockStats.value.withdrawals.withdrawn,
+              value: Number(walletAnalytic.value.total_paid) || 0,
               name: "Đã rút",
               itemStyle: { color: "#10b981" },
             },
             {
-              value: mockStats.value.withdrawals.unwithdrawn,
+              value: Number(walletAnalytic.value.available_balance) || 0,
               name: "Chưa rút",
               itemStyle: { color: "#64748b" },
             },
             {
-              value: mockStats.value.withdrawals.pending,
+              value: Number(walletAnalytic.value.pending_balance) || 0,
               name: "Chờ duyệt",
               itemStyle: { color: "#f59e0b" },
             },
             {
-              value: mockStats.value.withdrawals.canceled,
+              value: Number(walletAnalytic.value.rejected_balance) || 0,
               name: "Đã huỷ",
               itemStyle: { color: "#ef4444" },
             },
@@ -553,12 +628,12 @@ const renderCharts = () => {
       xAxis: { type: "value", axisLabel: { color: textColor } },
       yAxis: {
         type: "category",
-        data: ["Người dùng", "Hiệu suất Link"],
+        data: ["Hiệu suất"],
         axisLabel: { color: textColor },
       },
       series: [
         {
-          name: "Tổng/Đã tạo",
+          name: "Đã tạo",
           type: "bar",
           data: [
             mockStats.value.users.total,
@@ -567,7 +642,7 @@ const renderCharts = () => {
           itemStyle: { color: "#94a3b8", borderRadius: [0, 4, 4, 0] },
         },
         {
-          name: "Mới/Có đơn",
+          name: "Phát sinh đơn hàng",
           type: "bar",
           data: [
             mockStats.value.users.new,
