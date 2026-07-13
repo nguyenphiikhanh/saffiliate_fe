@@ -84,6 +84,11 @@
           Blacklist
         </a-menu-item>
 
+        <a-menu-item key="/admin/tools">
+          <template #icon><ToolOutlined /></template>
+          Công cụ Affiliate
+        </a-menu-item>
+
         <a-menu-item key="/admin/settings">
           <template #icon><SettingOutlined /></template>
           Cấu hình hệ thống
@@ -189,6 +194,7 @@ import {
   HistoryOutlined,
   ExceptionOutlined,
   BarChartOutlined,
+  ToolOutlined,
 } from "@ant-design/icons-vue";
 
 const route = useRoute();
