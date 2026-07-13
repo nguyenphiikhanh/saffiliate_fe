@@ -379,8 +379,9 @@
         <div class="mt-4 flex items-start gap-2">
           <InfoCircleOutlined class="text-slate-400 mt-0.5 shrink-0" />
           <p class="text-[11px] text-slate-500 leading-relaxed">
-            File CSV phải được trích xuất từ báo cáo của Shopee Affiliate. Hệ
-            thống sẽ so khớp <span class="font-bold">Mã Đơn</span>.
+            Upload file CSV để đồng bộ dữ liệu nếu hệ thống không tự động đồng
+            bộ. File CSV phải được trích xuất từ báo cáo của
+            <b>Shopee Affiliate</b>.
           </p>
         </div>
       </div>
@@ -398,10 +399,14 @@
       <div class="py-4">
         <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">
           Nhập mã đơn hàng (Order ID) để đồng bộ dữ liệu:
+          <br />
+          <small style="color: red" class="font-bold"
+            >*Chỉ dành cho đơn Tiktok Shop</small
+          >
         </p>
         <a-input
           v-model:value="syncOrderId"
-          placeholder="Ví dụ: 123456789"
+          placeholder="Nhập mã đơn Tiktok Shop"
           allow-clear
           @pressEnter="confirmSync"
         />

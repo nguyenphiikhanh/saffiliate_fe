@@ -199,6 +199,72 @@
             />
           </div>
         </a-card>
+
+        <!-- Shopee Blacklist Cookies -->
+        <a-card
+          :bordered="false"
+          class="admin-card"
+          title="Cấu hình Shopee Blacklist Cookie"
+          style="margin-top: 24px"
+        >
+          <template #extra>
+            <a-button
+              v-if="!isEditingBlacklistCookies"
+              type="primary"
+              size="small"
+              @click="startEditBlacklistCookies"
+            >
+              Chỉnh sửa
+            </a-button>
+            <div v-else class="flex gap-2">
+              <a-button
+                size="small"
+                @click="cancelEditBlacklistCookies"
+                :disabled="isSavingBlacklistCookies"
+              >
+                Hủy
+              </a-button>
+              <a-button
+                type="primary"
+                size="small"
+                @click="handleSaveBlacklistCookies"
+                :loading="isSavingBlacklistCookies"
+              >
+                Lưu
+              </a-button>
+            </div>
+          </template>
+          <div class="p-2">
+            <p class="text-xs text-slate-500 mb-3">
+              Nhập cookie phụ để sử dụng làm dự phòng hoặc phục vụ cho tập Blacklist.
+            </p>
+
+            <div v-if="!isEditingBlacklistCookies">
+              <div
+                v-if="shopeeBlacklistCookies"
+                class="bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-slate-100 dark:border-slate-800 break-all text-xs font-mono text-slate-600"
+              >
+                {{
+                  shopeeBlacklistCookies.length > 60
+                    ? shopeeBlacklistCookies.substring(0, 30) +
+                      "..." +
+                      shopeeBlacklistCookies.substring(shopeeBlacklistCookies.length - 30)
+                    : shopeeBlacklistCookies
+                }}
+              </div>
+              <div v-else class="text-xs text-amber-500 italic">
+                Chưa có cấu hình cookie blacklist.
+              </div>
+            </div>
+
+            <a-textarea
+              v-else
+              v-model:value="editShopeeBlacklistCookies"
+              placeholder="Nhập cookie Shopee Blacklist vào đây..."
+              :rows="4"
+            />
+          </div>
+        </a-card>
       </a-col>
 
       <!-- Right: Preview + Notes -->
@@ -321,6 +387,10 @@ const editShopeeCookies = ref("");
 const isEditingCookies = ref(false);
 const isSaving = ref(false);
 const isSavingCookies = ref(false);
+const shopeeBlacklistCookies = ref("");
+const editShopeeBlacklistCookies = ref("");
+const isEditingBlacklistCookies = ref(false);
+const isSavingBlacklistCookies = ref(false);
 const alertMessage = ref("");
 const alertType = ref("success");
 
@@ -331,6 +401,15 @@ const startEditCookies = () => {
 
 const cancelEditCookies = () => {
   isEditingCookies.value = false;
+};
+
+const startEditBlacklistCookies = () => {
+  editShopeeBlacklistCookies.value = shopeeBlacklistCookies.value;
+  isEditingBlacklistCookies.value = true;
+};
+
+const cancelEditBlacklistCookies = () => {
+  isEditingBlacklistCookies.value = false;
 };
 
 const fetchSettings = async () => {
@@ -367,6 +446,7 @@ const fetchSettings = async () => {
     if (resCookies.data) {
       shopeeCookies.value =
         resCookies.data.shopee_cookies || resCookies.data.value || "";
+      shopeeBlacklistCookies.value = resCookies.data.shopee_blacklist_cookies || "";
     }
   } catch (error) {
     console.error("Failed to load settings:", error);
@@ -415,6 +495,7 @@ const handleSaveCookies = async () => {
     if (resCookies.data) {
       shopeeCookies.value =
         resCookies.data.shopee_cookies || resCookies.data.value || "";
+      shopeeBlacklistCookies.value = resCookies.data.shopee_blacklist_cookies || "";
     } else {
       // Fallback nếu API get bị lỗi tạm thời
       shopeeCookies.value = editShopeeCookies.value;
@@ -428,6 +509,39 @@ const handleSaveCookies = async () => {
     );
   } finally {
     isSavingCookies.value = false;
+  }
+};
+
+const handleSaveBlacklistCookies = async () => {
+  isSavingBlacklistCookies.value = true;
+  try {
+    await api.put("/admin/system-config/shopee_cookie", {
+      shopee_cookies: editShopeeBlacklistCookies.value,
+      blacklist: true
+    });
+
+    // Gọi API get lại thông tin mới sau khi lưu thành công
+    const resCookies = await api
+      .get("/admin/system-config/shopee_cookie")
+      .catch((e) => ({ data: null }));
+
+    if (resCookies.data) {
+      shopeeCookies.value =
+        resCookies.data.shopee_cookies || resCookies.data.value || "";
+      shopeeBlacklistCookies.value = resCookies.data.shopee_blacklist_cookies || "";
+    } else {
+      // Fallback
+      shopeeBlacklistCookies.value = editShopeeBlacklistCookies.value;
+    }
+
+    isEditingBlacklistCookies.value = false;
+    message.success("Lưu cấu hình Blacklist Cookie thành công!");
+  } catch (error) {
+    message.error(
+      error.message || "Có lỗi xảy ra khi lưu blacklist cookie. Vui lòng thử lại."
+    );
+  } finally {
+    isSavingBlacklistCookies.value = false;
   }
 };
 </script>
