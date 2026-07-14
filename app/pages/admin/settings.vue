@@ -130,6 +130,39 @@
               </div>
               <a-switch v-model:checked="settings.lazada" />
             </div>
+
+            <!-- ShopeeFood -->
+            <div class="flex items-center justify-between py-4">
+              <div class="flex items-center gap-3.5 min-w-0 pr-4">
+                <div
+                  class="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center shrink-0 overflow-hidden"
+                >
+                  <img
+                    src="/icon/shopeefood.png"
+                    class="w-5 h-5 object-contain"
+                    alt="ShopeeFood"
+                    @error="$event.target.src = '/icon/shopee.png'"
+                  />
+                </div>
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <span
+                      class="text-[13.5px] font-bold text-slate-800 dark:text-slate-200"
+                      >ShopeeFood</span
+                    >
+                    <a-tag
+                      color="orange"
+                      class="m-0 rounded-full border-none font-bold text-[9px] px-1.5 leading-4"
+                      >Beta</a-tag
+                    >
+                  </div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">
+                    Hoàn tiền ShopeeFood.
+                  </div>
+                </div>
+              </div>
+              <a-switch v-model:checked="settings.shopeefood" />
+            </div>
           </div>
         </a-card>
 
@@ -236,7 +269,8 @@
           </template>
           <div class="p-2">
             <p class="text-xs text-slate-500 mb-3">
-              Nhập cookie phụ để sử dụng làm dự phòng hoặc phục vụ cho tập Blacklist.
+              Nhập cookie phụ để sử dụng làm dự phòng hoặc phục vụ cho tập
+              Blacklist.
             </p>
 
             <div v-if="!isEditingBlacklistCookies">
@@ -248,7 +282,9 @@
                   shopeeBlacklistCookies.length > 60
                     ? shopeeBlacklistCookies.substring(0, 30) +
                       "..." +
-                      shopeeBlacklistCookies.substring(shopeeBlacklistCookies.length - 30)
+                      shopeeBlacklistCookies.substring(
+                        shopeeBlacklistCookies.length - 30
+                      )
                     : shopeeBlacklistCookies
                 }}
               </div>
@@ -333,8 +369,39 @@
                 </div>
               </div>
 
+              <div
+                v-if="settings.shopeefood"
+                class="flex items-center gap-3 p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/60 dark:border-slate-800"
+              >
+                <div
+                  class="w-7 h-7 rounded bg-orange-500/10 flex items-center justify-center shrink-0 overflow-hidden"
+                >
+                  <img
+                    src="/icon/shopeefood.png"
+                    class="w-4 h-4 object-contain"
+                    @error="$event.target.src = '/icon/shopee.png'"
+                  />
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span
+                    class="text-xs font-bold text-slate-700 dark:text-slate-300"
+                    >ShopeeFood</span
+                  >
+                  <a-tag
+                    color="orange"
+                    class="m-0 rounded-full border-none font-bold text-[9px] px-1.5 leading-4"
+                    >Beta</a-tag
+                  >
+                </div>
+              </div>
+
               <a-empty
-                v-if="!settings.shopee && !settings.tiktok && !settings.lazada"
+                v-if="
+                  !settings.shopee &&
+                  !settings.tiktok &&
+                  !settings.lazada &&
+                  !settings.shopeefood
+                "
                 description="Tất cả các sàn đã bị ẩn!"
               />
             </div>
@@ -381,7 +448,12 @@ onMounted(() => {
   if (!isAdmin.value) router.replace("/");
 });
 
-const settings = ref({ shopee: true, tiktok: true, lazada: false });
+const settings = ref({
+  shopee: true,
+  tiktok: true,
+  lazada: false,
+  shopeefood: false,
+});
 const shopeeCookies = ref("");
 const editShopeeCookies = ref("");
 const isEditingCookies = ref(false);
@@ -440,13 +512,15 @@ const fetchSettings = async () => {
       settings.value.shopee = parsed.shopee ?? false;
       settings.value.tiktok = parsed.tiktok ?? false;
       settings.value.lazada = parsed.lazada ?? false;
+      settings.value.shopeefood = parsed.shopeefood ?? false;
     }
 
     // Xử lý cookies
     if (resCookies.data) {
       shopeeCookies.value =
         resCookies.data.shopee_cookies || resCookies.data.value || "";
-      shopeeBlacklistCookies.value = resCookies.data.shopee_blacklist_cookies || "";
+      shopeeBlacklistCookies.value =
+        resCookies.data.shopee_blacklist_cookies || "";
     }
   } catch (error) {
     console.error("Failed to load settings:", error);
@@ -495,7 +569,8 @@ const handleSaveCookies = async () => {
     if (resCookies.data) {
       shopeeCookies.value =
         resCookies.data.shopee_cookies || resCookies.data.value || "";
-      shopeeBlacklistCookies.value = resCookies.data.shopee_blacklist_cookies || "";
+      shopeeBlacklistCookies.value =
+        resCookies.data.shopee_blacklist_cookies || "";
     } else {
       // Fallback nếu API get bị lỗi tạm thời
       shopeeCookies.value = editShopeeCookies.value;
@@ -517,7 +592,7 @@ const handleSaveBlacklistCookies = async () => {
   try {
     await api.put("/admin/system-config/shopee_cookie", {
       shopee_cookies: editShopeeBlacklistCookies.value,
-      blacklist: true
+      blacklist: true,
     });
 
     // Gọi API get lại thông tin mới sau khi lưu thành công
@@ -528,7 +603,8 @@ const handleSaveBlacklistCookies = async () => {
     if (resCookies.data) {
       shopeeCookies.value =
         resCookies.data.shopee_cookies || resCookies.data.value || "";
-      shopeeBlacklistCookies.value = resCookies.data.shopee_blacklist_cookies || "";
+      shopeeBlacklistCookies.value =
+        resCookies.data.shopee_blacklist_cookies || "";
     } else {
       // Fallback
       shopeeBlacklistCookies.value = editShopeeBlacklistCookies.value;
@@ -538,7 +614,8 @@ const handleSaveBlacklistCookies = async () => {
     message.success("Lưu cấu hình Blacklist Cookie thành công!");
   } catch (error) {
     message.error(
-      error.message || "Có lỗi xảy ra khi lưu blacklist cookie. Vui lòng thử lại."
+      error.message ||
+        "Có lỗi xảy ra khi lưu blacklist cookie. Vui lòng thử lại."
     );
   } finally {
     isSavingBlacklistCookies.value = false;

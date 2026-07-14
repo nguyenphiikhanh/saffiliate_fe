@@ -25,7 +25,7 @@
 
         <a-row :gutter="16" justify="center">
           <!-- Shopee Card -->
-          <a-col :xs="24" :sm="8" class="mb-4 sm:mb-0" v-if="platforms.shopee">
+          <a-col :xs="12" :sm="6" class="mb-4 sm:mb-0" v-if="platforms.shopee">
             <div
               @click="selectType(AFFILIATE_TYPES.SHOPEE)"
               class="flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
@@ -70,7 +70,7 @@
           </a-col>
 
           <!-- TikTok Card -->
-          <a-col :xs="24" :sm="8" class="mb-4 sm:mb-0" v-if="platforms.tiktok">
+          <a-col :xs="12" :sm="6" class="mb-4 sm:mb-0" v-if="platforms.tiktok">
             <div
               @click="selectType(AFFILIATE_TYPES.TIKTOK)"
               class="flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
@@ -115,7 +115,7 @@
           </a-col>
 
           <!-- Lazada Card -->
-          <a-col :xs="24" :sm="8" v-if="platforms.lazada">
+          <a-col :xs="12" :sm="6" class="mb-4 sm:mb-0" v-if="platforms.lazada">
             <div
               @click="selectType(AFFILIATE_TYPES.LAZADA)"
               class="flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
@@ -158,6 +158,57 @@
               </div>
             </div>
           </a-col>
+
+          <!-- ShopeeFood Card -->
+          <a-col
+            :xs="12"
+            :sm="6"
+            class="mb-4 sm:mb-0"
+            v-if="platforms.shopeefood"
+          >
+            <div
+              @click="selectType(AFFILIATE_TYPES.SHOPEEFOOD)"
+              class="flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
+              :class="
+                currentType === AFFILIATE_TYPES.SHOPEEFOOD
+                  ? 'border-[#ee4d2d] bg-orange-50 dark:bg-orange-950/30 shadow-md shadow-orange-500/10 scale-[1.02]'
+                  : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm'
+              "
+            >
+              <div
+                class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden"
+              >
+                <img
+                  src="/icon/shopeefood.png"
+                  class="w-[22px] h-[22px] object-contain"
+                  alt="ShopeeFood Logo"
+                  @error="$event.target.src = '/icon/shopee.png'"
+                />
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="text-[9px] font-bold tracking-widest uppercase"
+                  :class="
+                    currentType === AFFILIATE_TYPES.SHOPEEFOOD
+                      ? 'text-[#ee4d2d]'
+                      : 'text-slate-400'
+                  "
+                >
+                  Hoàn tiền
+                </div>
+                <div
+                  class="text-sm font-bold flex items-center gap-1.5"
+                  :class="
+                    currentType === AFFILIATE_TYPES.SHOPEEFOOD
+                      ? 'text-slate-800 dark:text-slate-100'
+                      : 'text-slate-500'
+                  "
+                >
+                  ShopeeFood
+                </div>
+              </div>
+            </div>
+          </a-col>
         </a-row>
       </div>
 
@@ -184,6 +235,8 @@
               ? "Shopee"
               : currentType === AFFILIATE_TYPES.TIKTOK
               ? "TikTok"
+              : currentType === AFFILIATE_TYPES.SHOPEEFOOD
+              ? "ShopeeFood"
               : "Lazada"
           }}</strong>
           của bạn vào bên dưới để mua sắm và nhận hoàn tiền.
@@ -195,13 +248,7 @@
         <a-input
           ref="urlInput"
           v-model:value="rawUrl"
-          :placeholder="
-            currentType === AFFILIATE_TYPES.SHOPEE
-              ? 'Dán link Shopee tại đây...'
-              : currentType === AFFILIATE_TYPES.TIKTOK
-              ? 'Dán link TikTok tại đây...'
-              : 'Dán link Lazada tại đây...'
-          "
+          placeholder="Dán link Sản phẩm tại đây"
           size="large"
           :disabled="isLoading"
           allow-clear
@@ -235,6 +282,20 @@
             <WarningOutlined />
             <span
               >Không nhận dạng được định dạng link. Vui lòng kiểm tra lại.</span
+            >
+          </div>
+        </transition>
+
+        <!-- Auto-detect hint -->
+        <transition name="slide-fade">
+          <div
+            v-if="autoDetectedTypeName && isUrlValid && rawUrl.length > 0"
+            class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-xs font-semibold px-2"
+          >
+            <span class="text-sm">✨</span>
+            <span
+              >Đã tự động nhận diện link
+              <strong>{{ autoDetectedTypeName }}</strong></span
             >
           </div>
         </transition>
@@ -283,7 +344,7 @@
 import { ref, computed, nextTick, watch, onMounted } from "vue";
 import { LinkOutlined, WarningOutlined } from "@ant-design/icons-vue";
 import { useShopeeApi } from "@/composables/useShopeeApi";
-import { AFFILIATE_TYPES } from "@/utils/constants";
+import { AFFILIATE_TYPES, detectPlatformFromUrl } from "@/utils/constants";
 
 const { user } = useAuth();
 const platforms = computed(() => {
@@ -292,6 +353,7 @@ const platforms = computed(() => {
       shopee: true,
       tiktok: true,
       lazada: false,
+      shopeefood: true,
     }
   );
 });
@@ -300,6 +362,7 @@ const currentType = ref(AFFILIATE_TYPES.SHOPEE);
 const rawUrl = ref("");
 const isValidating = ref(false);
 const urlInput = ref(null);
+const autoDetectedTypeName = ref("");
 
 const {
   resultLink,
@@ -310,6 +373,7 @@ const {
   convertUrl,
   clearStates,
   validateShopeeUrl,
+  validateShopeeFoodUrl,
   validateTiktokUrl,
   validateLazadaUrl,
 } = useShopeeApi();
@@ -324,6 +388,13 @@ const initDefaultTab = () => {
       platforms.value.lazada
     ) {
       currentType.value = AFFILIATE_TYPES.LAZADA;
+    } else if (
+      !platforms.value.shopee &&
+      !platforms.value.tiktok &&
+      !platforms.value.lazada &&
+      platforms.value.shopeefood
+    ) {
+      currentType.value = AFFILIATE_TYPES.SHOPEEFOOD;
     } else {
       currentType.value = AFFILIATE_TYPES.SHOPEE;
     }
@@ -341,11 +412,46 @@ watch(
   { deep: true }
 );
 
+const getPlatformName = (type) => {
+  switch (type) {
+    case AFFILIATE_TYPES.SHOPEE:
+      return "Shopee";
+    case AFFILIATE_TYPES.TIKTOK:
+      return "TikTok";
+    case AFFILIATE_TYPES.LAZADA:
+      return "Lazada";
+    case AFFILIATE_TYPES.SHOPEEFOOD:
+      return "ShopeeFood";
+    default:
+      return "";
+  }
+};
+
+watch(rawUrl, (newUrl) => {
+  if (newUrl) {
+    const detectedType = detectPlatformFromUrl(newUrl);
+    if (detectedType) {
+      if (currentType.value !== detectedType) {
+        currentType.value = detectedType;
+        autoDetectedTypeName.value = getPlatformName(detectedType);
+      } else {
+        autoDetectedTypeName.value = "";
+      }
+    } else {
+      autoDetectedTypeName.value = "";
+    }
+  } else {
+    autoDetectedTypeName.value = "";
+  }
+});
+
 const isUrlValid = computed(() => {
   if (currentType.value === AFFILIATE_TYPES.TIKTOK)
     return validateTiktokUrl(rawUrl.value);
   if (currentType.value === AFFILIATE_TYPES.LAZADA)
     return validateLazadaUrl(rawUrl.value);
+  if (currentType.value === AFFILIATE_TYPES.SHOPEEFOOD)
+    return validateShopeeFoodUrl(rawUrl.value);
   return validateShopeeUrl(rawUrl.value);
 });
 
@@ -366,6 +472,7 @@ const handleCloseModal = () => {
 const handleClear = () => {
   rawUrl.value = "";
   isValidating.value = false;
+  autoDetectedTypeName.value = "";
   clearStates();
 };
 
@@ -383,6 +490,7 @@ const handlePaste = async () => {
 
 const selectType = (type) => {
   currentType.value = type;
+  autoDetectedTypeName.value = "";
   handleClear();
   nextTick(() => {
     urlInput.value?.focus();

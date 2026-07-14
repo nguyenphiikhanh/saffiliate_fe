@@ -122,6 +122,7 @@
                   { label: 'Shopee', value: AFFILIATE_TYPES.SHOPEE },
                   { label: 'TikTok', value: AFFILIATE_TYPES.TIKTOK },
                   { label: 'Lazada', value: AFFILIATE_TYPES.LAZADA },
+                  { label: 'ShopeeFood', value: AFFILIATE_TYPES.SHOPEEFOOD },
                 ]"
                 style="width: 120px"
                 size="small"
@@ -211,22 +212,8 @@
           </template>
 
           <template v-else-if="column.key === 'platform'">
-            <a-tag
-              :color="
-                record.type === AFFILIATE_TYPES.SHOPEE
-                  ? 'orange'
-                  : record.type === AFFILIATE_TYPES.TIKTOK
-                  ? 'default'
-                  : 'blue'
-              "
-            >
-              {{
-                record.type === AFFILIATE_TYPES.SHOPEE
-                  ? "Shopee"
-                  : record.type === AFFILIATE_TYPES.TIKTOK
-                  ? "TikTok"
-                  : "Lazada"
-              }}
+            <a-tag :color="getPlatformColor(record.type)">
+              {{ getPlatformName(record.type) }}
             </a-tag>
           </template>
 
@@ -594,6 +581,26 @@ const copyText = (text) => {
     .writeText(text)
     .then(() => alert("Đã copy!"))
     .catch((err) => console.error(err));
+};
+
+const getPlatformName = (type) => {
+  switch (type) {
+    case AFFILIATE_TYPES.SHOPEE: return "Shopee";
+    case AFFILIATE_TYPES.TIKTOK: return "TikTok";
+    case AFFILIATE_TYPES.LAZADA: return "Lazada";
+    case AFFILIATE_TYPES.SHOPEEFOOD: return "ShopeeFood";
+    default: return "Unknown";
+  }
+};
+
+const getPlatformColor = (type) => {
+  switch (type) {
+    case AFFILIATE_TYPES.SHOPEE: return "orange";
+    case AFFILIATE_TYPES.TIKTOK: return "default";
+    case AFFILIATE_TYPES.LAZADA: return "blue";
+    case AFFILIATE_TYPES.SHOPEEFOOD: return "volcano";
+    default: return "default";
+  }
 };
 
 const formatMiniJson = (obj) => {

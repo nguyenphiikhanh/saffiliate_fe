@@ -11,14 +11,14 @@
     @cancel="closeModal"
   >
     <!-- 1. PRODUCT DETAILS CARD -->
-    <div v-if="productInfo" class="result-card">
+    <div class="result-card">
       <!-- Header gradient line -->
-      <div class="result-header-line result-header-line--shopee"></div>
+      <div class="result-header-line" :class="headerLineClass"></div>
 
       <!-- Header -->
       <div class="result-header">
         <div class="result-header-left">
-          <h3 class="result-title">Chi tiết hoàn tiền</h3>
+          <h3 class="result-title">{{ productInfo ? 'Chi tiết hoàn tiền' : 'Đã chuyển đổi thành công!' }}</h3>
         </div>
         <button @click="closeModal" class="result-close-btn" aria-label="Đóng">
           <svg
@@ -41,7 +41,7 @@
       <!-- Body -->
       <div class="result-body">
         <!-- Product row -->
-        <div class="product-row">
+        <div v-if="productInfo" class="product-row">
           <!-- Image -->
           <div class="product-image-wrap">
             <img
@@ -68,6 +68,8 @@
                     ? "SỘP-PE"
                     : platformType === 2
                     ? "TÓP-TÓP"
+                    : platformType === 4
+                    ? "SPFOOD"
                     : "LAZADA"
                 }}
               </span>
@@ -80,7 +82,7 @@
         </div>
 
         <!-- Cashback cards -->
-        <div class="cashback-grid">
+        <div v-if="productInfo" class="cashback-grid">
           <!-- Partner commission -->
           <div class="cashback-card cashback-card--shopee">
             <div class="cashback-icon cashback-icon--shopee">%</div>
@@ -183,6 +185,7 @@
           type="primary"
           size="large"
           class="result-cta-btn"
+          :class="ctaBtnClass"
           @click="handleOpenAffiliate"
         >
           <div class="flex items-center justify-center gap-2">
@@ -235,138 +238,7 @@
       </div>
     </div>
 
-    <!-- 2. FALLBACK CONVERTED RESULT CARD -->
-    <div v-else class="result-card">
-      <div class="result-header-line result-header-line--success"></div>
 
-      <div class="result-header">
-        <div class="result-header-icon result-header-icon--success">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-            <polyline points="22 4 12 14.01 9 11.01" />
-          </svg>
-        </div>
-        <h3 class="result-title">Đã chuyển đổi thành công!</h3>
-        <button @click="closeModal" class="result-close-btn" aria-label="Đóng">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="result-body">
-        <!-- Affiliate Link display for Tiktok & Lazada -->
-        <div
-          class="mb-4 flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700"
-        >
-          <div
-            class="flex-1 truncate text-xs font-medium text-slate-600 dark:text-slate-400 select-all"
-            :title="affiliateLink || link"
-          >
-            {{ affiliateLink || link }}
-          </div>
-          <a-button
-            type="primary"
-            ghost
-            size="small"
-            @click="copyToClipboard(affiliateLink || link)"
-            class="shrink-0 flex items-center gap-1.5 px-3 rounded-lg text-xs font-bold"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-              <path
-                d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
-              />
-            </svg>
-            Copy
-          </a-button>
-        </div>
-
-        <div class="fallback-actions">
-          <a-button
-            block
-            @click="handleOpenAffiliate"
-            class="fallback-btn-outline"
-          >
-            <div class="flex items-center justify-center gap-1.5">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
-                />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" x2="21" y1="14" y2="3" />
-              </svg>
-              <span>Mở Link Trực Tiếp</span>
-            </div>
-          </a-button>
-          <a-button
-            block
-            type="primary"
-            @click="closeModal"
-            class="fallback-btn-primary"
-          >
-            <div class="flex items-center justify-center gap-1.5">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-                <path d="M21 3v4h-4" />
-              </svg>
-              <span>Tiếp Tục Chuyển Đổi</span>
-            </div>
-          </a-button>
-        </div>
-      </div>
-    </div>
   </a-modal>
 </template>
 
@@ -379,6 +251,18 @@ const props = defineProps({
   affiliateLink: { type: String, default: "" },
   productInfo: { type: Object, default: null },
   platformType: { type: Number, default: 1 },
+});
+
+const headerLineClass = computed(() => {
+  if (props.platformType === 1 || props.platformType === 4) return "result-header-line--shopee";
+  if (props.platformType === 2) return "result-header-line--tiktok";
+  if (props.platformType === 3) return "result-header-line--lazada";
+  return "result-header-line--success";
+});
+
+const ctaBtnClass = computed(() => {
+  if (props.platformType === 2) return "result-cta-btn--tiktok";
+  return "";
 });
 
 const emit = defineEmits(["reset"]);
@@ -544,10 +428,16 @@ html.dark .fallback-btn-outline:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 1.5rem 1rem;
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid #f1f5f9;
   background: #f8fafc;
   flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .result-header {
+    padding: 1.25rem 1.5rem 1rem;
+  }
 }
 
 .result-header-left {
@@ -604,10 +494,17 @@ html.dark .fallback-btn-outline:hover {
 }
 
 .result-body {
-  padding: 1.5rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .result-body {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
 }
 
 /* Product row */

@@ -77,6 +77,16 @@ export function useShopeeApi() {
     return shopeeRegex.test(url);
   };
 
+  // Validation function for ShopeeFood link formats
+  const validateShopeeFoodUrl = (url: string): boolean => {
+    if (!url || url.trim() === "") return false;
+
+    // Check if it's a valid ShopeeFood domain pattern
+    const shopeeFoodRegex = /(spf\.shopee\.vn|shopeefood\.vn|shopeefood\.shopee\.vn)/i;
+
+    return shopeeFoodRegex.test(url);
+  };
+
   // Validation function for TikTok link formats
   const validateTiktokUrl = (url: string): boolean => {
     if (!url || url.trim() === "") return false;
@@ -114,6 +124,11 @@ export function useShopeeApi() {
     } else if (type === 3) {
       if (!validateLazadaUrl(trimmedUrl)) {
         error.value = "Vui lòng nhập đường dẫn Lazada hợp lệ! (Ví dụ: lazada.vn/... hoặc s.lazada.vn/...)";
+        return false;
+      }
+    } else if (type === 4) {
+      if (!validateShopeeFoodUrl(trimmedUrl)) {
+        error.value = "Vui lòng nhập đường dẫn ShopeeFood hợp lệ! (Ví dụ: shopeefood.vn/...)";
         return false;
       }
     } else {
@@ -223,6 +238,7 @@ export function useShopeeApi() {
     convertUrl,
     clearStates,
     validateShopeeUrl,
+    validateShopeeFoodUrl,
     validateTiktokUrl,
     validateLazadaUrl,
   };
