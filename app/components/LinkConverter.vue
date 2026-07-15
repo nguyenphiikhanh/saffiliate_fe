@@ -28,7 +28,7 @@
           <a-col :xs="12" :sm="6" class="mb-4 sm:mb-0" v-if="platforms.shopee">
             <div
               @click="selectType(AFFILIATE_TYPES.SHOPEE)"
-              class="flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
+              class="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
               :class="
                 currentType === AFFILIATE_TYPES.SHOPEE
                   ? 'border-[#ee4d2d] bg-orange-50 dark:bg-orange-950/30 shadow-md shadow-orange-500/10 scale-[1.02]'
@@ -36,11 +36,11 @@
               "
             >
               <div
-                class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden"
+                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden"
               >
                 <img
                   src="/icon/shopee.png"
-                  class="w-[22px] h-[22px] object-contain"
+                  class="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] object-contain"
                   alt="Shopee Logo"
                 />
               </div>
@@ -56,7 +56,7 @@
                   Hoàn tiền
                 </div>
                 <div
-                  class="text-sm font-bold flex items-center gap-1.5"
+                  class="text-xs sm:text-sm font-bold flex items-center gap-1 sm:gap-1.5"
                   :class="
                     currentType === AFFILIATE_TYPES.SHOPEE
                       ? 'text-slate-800 dark:text-slate-100'
@@ -73,7 +73,7 @@
           <a-col :xs="12" :sm="6" class="mb-4 sm:mb-0" v-if="platforms.tiktok">
             <div
               @click="selectType(AFFILIATE_TYPES.TIKTOK)"
-              class="flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
+              class="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
               :class="
                 currentType === AFFILIATE_TYPES.TIKTOK
                   ? 'border-[#ee4d2d] bg-orange-50 dark:bg-orange-950/30 shadow-md shadow-orange-500/10 scale-[1.02]'
@@ -81,11 +81,11 @@
               "
             >
               <div
-                class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden"
+                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden"
               >
                 <img
                   src="/icon/tiktok.png"
-                  class="w-[22px] h-[22px] object-contain"
+                  class="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] object-contain"
                   alt="TikTok Logo"
                 />
               </div>
@@ -101,7 +101,7 @@
                   Hoàn tiền
                 </div>
                 <div
-                  class="text-sm font-bold flex items-center gap-1.5"
+                  class="text-xs sm:text-sm font-bold flex items-center gap-1 sm:gap-1.5"
                   :class="
                     currentType === AFFILIATE_TYPES.TIKTOK
                       ? 'text-slate-800 dark:text-slate-100'
@@ -118,7 +118,7 @@
           <a-col :xs="12" :sm="6" class="mb-4 sm:mb-0" v-if="platforms.lazada">
             <div
               @click="selectType(AFFILIATE_TYPES.LAZADA)"
-              class="flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
+              class="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
               :class="
                 currentType === AFFILIATE_TYPES.LAZADA
                   ? 'border-[#ee4d2d] bg-orange-50 dark:bg-orange-950/30 shadow-md shadow-orange-500/10 scale-[1.02]'
@@ -126,11 +126,11 @@
               "
             >
               <div
-                class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden"
+                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden"
               >
                 <img
                   src="/icon/lazada.png"
-                  class="w-[22px] h-[22px] object-contain"
+                  class="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] object-contain"
                   alt="Lazada Logo"
                 />
               </div>
@@ -146,7 +146,7 @@
                   Hoàn tiền
                 </div>
                 <div
-                  class="text-sm font-bold flex items-center gap-1.5"
+                  class="text-xs sm:text-sm font-bold flex items-center gap-1 sm:gap-1.5"
                   :class="
                     currentType === AFFILIATE_TYPES.LAZADA
                       ? 'text-slate-800 dark:text-slate-100'
@@ -168,7 +168,7 @@
           >
             <div
               @click="selectType(AFFILIATE_TYPES.SHOPEEFOOD)"
-              class="flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
+              class="flex items-center justify-center sm:justify-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-2xl border-2 transition-all cursor-pointer w-full"
               :class="
                 currentType === AFFILIATE_TYPES.SHOPEEFOOD
                   ? 'border-[#ee4d2d] bg-orange-50 dark:bg-orange-950/30 shadow-md shadow-orange-500/10 scale-[1.02]'
@@ -176,11 +176,11 @@
               "
             >
               <div
-                class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden"
+                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden"
               >
                 <img
                   src="/icon/shopeefood.png"
-                  class="w-[22px] h-[22px] object-contain"
+                  class="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] object-contain"
                   alt="ShopeeFood Logo"
                   @error="$event.target.src = '/icon/shopee.png'"
                 />
@@ -197,7 +197,7 @@
                   Hoàn tiền
                 </div>
                 <div
-                  class="text-sm font-bold flex items-center gap-1.5"
+                  class="text-xs sm:text-sm font-bold flex items-center gap-1 sm:gap-1.5"
                   :class="
                     currentType === AFFILIATE_TYPES.SHOPEEFOOD
                       ? 'text-slate-800 dark:text-slate-100'
