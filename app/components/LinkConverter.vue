@@ -46,7 +46,7 @@
               </div>
               <div class="flex flex-col">
                 <div
-                  class="text-[9px] font-bold tracking-widest uppercase"
+                  class="hidden sm:block text-[9px] font-bold tracking-widest uppercase"
                   :class="
                     currentType === AFFILIATE_TYPES.SHOPEE
                       ? 'text-[#ee4d2d]'
@@ -91,7 +91,7 @@
               </div>
               <div class="flex flex-col">
                 <div
-                  class="text-[9px] font-bold tracking-widest uppercase"
+                  class="hidden sm:block text-[9px] font-bold tracking-widest uppercase"
                   :class="
                     currentType === AFFILIATE_TYPES.TIKTOK
                       ? 'text-[#ee4d2d]'
@@ -136,7 +136,7 @@
               </div>
               <div class="flex flex-col">
                 <div
-                  class="text-[9px] font-bold tracking-widest uppercase"
+                  class="hidden sm:block text-[9px] font-bold tracking-widest uppercase"
                   :class="
                     currentType === AFFILIATE_TYPES.LAZADA
                       ? 'text-[#ee4d2d]'
@@ -187,7 +187,7 @@
               </div>
               <div class="flex flex-col">
                 <div
-                  class="text-[9px] font-bold tracking-widest uppercase"
+                  class="hidden sm:block text-[9px] font-bold tracking-widest uppercase"
                   :class="
                     currentType === AFFILIATE_TYPES.SHOPEEFOOD
                       ? 'text-[#ee4d2d]'
@@ -204,7 +204,7 @@
                       : 'text-slate-500'
                   "
                 >
-                  ShopeeFood
+                  S.P Food
                 </div>
               </div>
             </div>
@@ -229,17 +229,20 @@
           Chuyển Đổi và Xem Thông Tin Hoàn Tiền
         </h2>
         <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-0">
-          Dán link sản phẩm
-          <strong>{{
-            currentType === AFFILIATE_TYPES.SHOPEE
-              ? "Shopee"
-              : currentType === AFFILIATE_TYPES.TIKTOK
-              ? "TikTok"
-              : currentType === AFFILIATE_TYPES.SHOPEEFOOD
-              ? "ShopeeFood"
-              : "Lazada"
-          }}</strong>
-          của bạn vào bên dưới để mua sắm và nhận hoàn tiền.
+          <template v-if="currentType === AFFILIATE_TYPES.SHOPEEFOOD">
+            Dán link quán hoặc món <strong>ShopeeFood</strong>
+          </template>
+          <template v-else>
+            Dán link sản phẩm
+            <strong>{{
+              currentType === AFFILIATE_TYPES.SHOPEE
+                ? "Shopee"
+                : currentType === AFFILIATE_TYPES.TIKTOK
+                ? "TikTok"
+                : "Lazada"
+            }}</strong>
+          </template>
+          vào bên dưới để mua sắm và nhận hoàn tiền.
         </p>
       </div>
 
