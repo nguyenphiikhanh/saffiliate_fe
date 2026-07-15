@@ -329,6 +329,12 @@
           class="mt-4 rounded-xl"
         />
       </transition>
+
+      <!-- Shopee High Commission Products -->
+      <ShopeeHighCommission 
+        v-show="currentType === AFFILIATE_TYPES.SHOPEE"
+        @get-link="handleGetProductLink"
+      />
     </a-card>
 
     <!-- Result Card Component -->
@@ -462,6 +468,23 @@ const checkUrlInput = () => {
   isValidating.value = true;
 };
 
+const handleGetProductLink = (product) => {
+  rawUrl.value = 'https://shopee.vn/product-i.' + product.id;
+  
+  nextTick(() => {
+    // Cuộn mượt mà đến đúng vị trí ô input thay vì nhảy vọt lên top 0
+    if (urlInput.value && urlInput.value.$el) {
+      urlInput.value.$el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    // Có thể focus luôn vào ô input nếu muốn
+    urlInput.value?.focus();
+  });
+  
+  checkUrlInput();
+};
+
 const handleConvert = async () => {
   if (!rawUrl.value || isLoading.value) return;
   isValidating.value = true;
@@ -496,6 +519,9 @@ const selectType = (type) => {
   autoDetectedTypeName.value = "";
   handleClear();
   nextTick(() => {
+    if (urlInput.value && urlInput.value.$el) {
+      urlInput.value.$el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
     urlInput.value?.focus();
   });
 };
