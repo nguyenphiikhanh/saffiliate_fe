@@ -1,235 +1,290 @@
 <template>
-  <div class="mt-6 border-t border-slate-100 dark:border-slate-800 pt-6">
+  <div class="mt-6 border-t border-slate-100 dark:border-slate-800 pt-6" ref="componentRoot">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-        <span class="text-[#ee4d2d]">🔥</span> Sản phẩm hoa hồng cao
-      </h3>
+      <div>
+        <h3
+          class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"
+        >
+          <span class="text-[#ee4d2d]">🔥</span> Sản phẩm hoa hồng cao
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Có thể chứa sản phẩm bạn cần, tìm kiếm sản phẩm với hoa hồng hoàn cao
+          nhất
+        </p>
+      </div>
     </div>
 
     <!-- Toolbar: Search & Sort -->
     <div class="flex flex-col sm:flex-row gap-3 mb-4">
-      <div class="flex-1">
+      <div class="flex-1 flex gap-2">
         <a-input
           v-model:value="searchQuery"
           placeholder="Tìm kiếm sản phẩm..."
           allow-clear
           class="w-full rounded-xl"
+          @pressEnter="handleSearch"
         >
           <template #prefix>
             <SearchOutlined class="text-slate-400" />
           </template>
         </a-input>
-      </div>
-      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-        <span class="text-[13px] font-medium text-slate-500 whitespace-nowrap">Sắp xếp:</span>
-        <div class="flex w-full sm:w-auto">
-          <button
-            class="px-4 py-1.5 text-[13px] font-semibold border rounded-l-md transition-colors w-1/2 sm:w-auto"
-            :class="sortBy === 'price_asc' ? 'border-[#ee4d2d] text-[#ee4d2d] z-10 relative' : 'border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 relative'"
-            @click="sortBy = 'price_asc'"
-          >
-            Giá
-          </button>
-          <button
-            class="px-4 py-1.5 text-[13px] font-semibold border rounded-r-md -ml-[1px] transition-colors w-1/2 sm:w-auto"
-            :class="sortBy === 'commission_desc' ? 'border-[#ee4d2d] text-[#ee4d2d] z-10 relative' : 'border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 relative'"
-            @click="sortBy = 'commission_desc'"
-          >
-            Hoa hồng (%)
-          </button>
-        </div>
+        <a-button
+          type="primary"
+          class="!bg-[#ee4d2d] hover:!bg-[#d73f1f] !border-none !rounded-xl px-5 h-auto py-1.5 flex items-center justify-center font-medium shrink-0 shadow-sm"
+          @click="handleSearch"
+        >
+          Tìm
+        </a-button>
       </div>
     </div>
 
     <!-- Product List (Scrollable) -->
-    <div class="max-h-[500px] overflow-y-auto pr-1 -mr-1 custom-scrollbar">
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 pb-4">
-        <div
-          v-for="product in filteredAndSortedProducts"
-          :key="product.id"
-          class="bg-white dark:bg-slate-800 rounded-xl border-2 border-slate-100 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-md hover:border-[#ee4d2d]/40 dark:hover:border-[#ee4d2d]/60 transition-all group flex flex-col"
-        >
-          <!-- Image Section -->
-          <div class="relative aspect-[4/5] bg-slate-100 dark:bg-slate-900 overflow-hidden shrink-0">
+    <div
+      ref="scrollContainerRef"
+      class="max-h-[500px] overflow-y-auto pr-1 -mr-1 custom-scrollbar"
+    >
+      <div
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 pb-4"
+      >
+        <template v-if="isLoading">
+          <div
+            v-for="i in 10"
+            :key="`skel-${i}`"
+            class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm flex flex-col"
+          >
+            <div class="relative aspect-[4/5] bg-slate-200 dark:bg-slate-700 animate-pulse"></div>
+            <div class="p-2 sm:p-3 flex flex-col flex-1 gap-2">
+              <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-full"></div>
+              <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-3/4 mb-auto"></div>
+              <div class="flex justify-between items-end mt-2">
+                <div class="h-5 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-1/2"></div>
+              </div>
+              <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded animate-pulse w-1/3 mb-3"></div>
+              <div class="flex gap-2">
+                <div class="w-6 h-6 rounded border border-slate-200 dark:border-slate-700 animate-pulse shrink-0"></div>
+                <div class="flex-1 h-6 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div
+            v-for="product in products"
+            :key="product.productLink"
+            class="bg-white dark:bg-slate-800 rounded-xl border border-slate-300 dark:border-slate-600 overflow-hidden shadow-sm hover:shadow-md hover:border-[#ee4d2d]/40 dark:hover:border-[#ee4d2d]/60 transition-all group flex flex-col"
+          >
+            <!-- Image Section -->
+          <div
+            class="relative aspect-[4/5] bg-slate-100 dark:bg-slate-900 overflow-hidden shrink-0"
+          >
             <img
-              :src="product.image"
-              :alt="product.title"
+              :src="product.imageUrl"
+              :alt="product.productName"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />
-            <!-- Xtra Badge Overlay -->
+            <!-- Rating Star Overlay -->
             <div
-              v-if="product.commissionRate > 20"
-              class="absolute top-0 right-0 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-1 flex flex-col items-center leading-tight"
+              v-if="parseFloat(product.ratingStar) > 4"
+              class="absolute top-0 right-0 bg-amber-400 text-white text-xs font-bold px-1.5 py-0.5 flex items-center gap-1 leading-tight rounded-bl-lg shadow-sm"
             >
-              <span>{{ product.commissionRate }}%</span>
-              <span class="uppercase">Giảm</span>
+              <span>{{ parseFloat(product.ratingStar).toFixed(1) }}</span>
+              <StarFilled class="text-[10px]" />
             </div>
           </div>
 
           <!-- Content Section -->
           <div class="p-2 sm:p-3 flex flex-col flex-1">
-            <h4 class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 line-clamp-2 leading-snug mb-1 min-h-[32px] sm:min-h-[40px]">
-              {{ product.title }}
+            <h4
+              class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 line-clamp-2 leading-snug mb-1 min-h-[32px] sm:min-h-[40px]"
+            >
+              {{ product.productName }}
             </h4>
 
             <div class="mt-auto">
-              <!-- Xtra tag -->
-              <div v-if="product.hasXtra" class="mb-1.5">
-                <span class="inline-block bg-[#0f2142] text-white text-[9px] font-bold px-1 py-0.5 rounded-sm">
-                  <span class="text-[#ee4d2d] italic">HOA HỒNG</span> XTRA
-                </span>
-              </div>
-
               <!-- Price & Sales -->
               <div class="flex items-end justify-between mb-1">
                 <div class="text-[#ee4d2d] font-medium text-sm sm:text-base">
-                  <span class="text-[10px] underline align-top mr-0.5">đ</span>{{ formatPrice(product.price) }}
-                </div>
-                <div class="text-[10px] sm:text-xs text-slate-400">
-                  {{ product.sales }} lượt bán
+                  <span class="text-[10px] underline align-top mr-0.5">đ</span
+                  >{{ formatPrice(product.price) }}
                 </div>
               </div>
 
               <!-- Commission Rate -->
               <div class="text-[#ee4d2d] text-[10px] sm:text-xs mb-3">
-                Tỉ lệ hoa hồng {{ product.commissionRate }}%
+                Hoa hồng
+                {{ (parseFloat(product.commissionRate) * 100).toFixed(0) }}%
               </div>
 
               <!-- Actions -->
               <div class="flex items-center gap-2 mt-auto">
                 <!-- Select Checkbox -->
-                <div 
+                <div
                   class="w-6 h-6 rounded border flex items-center justify-center cursor-pointer transition-colors shrink-0"
-                  :class="selectedProducts.includes(product.id) ? 'bg-[#ee4d2d] border-[#ee4d2d] text-white' : 'border-slate-300 dark:border-slate-600 hover:border-[#ee4d2d]'"
-                  @click="toggleSelect(product.id)"
+                  :class="
+                    selectedProducts.includes(product.productLink)
+                      ? 'bg-[#ee4d2d] border-[#ee4d2d] text-white'
+                      : 'border-slate-300 dark:border-slate-600 hover:border-[#ee4d2d]'
+                  "
+                  @click="toggleSelect(product.productLink)"
                 >
-                  <CheckOutlined v-if="selectedProducts.includes(product.id)" class="text-[12px]" />
+                  <CheckOutlined
+                    v-if="selectedProducts.includes(product.productLink)"
+                    class="text-[12px]"
+                  />
                 </div>
                 <!-- Get Link Button -->
-                <button
-                  class="flex-1 py-1.5 px-2 border border-[#ee4d2d] text-[#ee4d2d] rounded text-xs font-medium hover:bg-[#ee4d2d]/10 transition-colors"
+                <a-button
+                  size="small"
+                  class="flex-1 !h-6 !text-[11px] !border-[#ee4d2d] !text-[#ee4d2d] !rounded font-medium hover:!bg-[#ee4d2d]/10 flex items-center justify-center transition-colors"
                   @click="$emit('get-link', product)"
                 >
                   Lấy link
-                </button>
+                </a-button>
               </div>
             </div>
           </div>
         </div>
-        
+        </template>
+
         <!-- Empty State -->
-        <div v-if="filteredAndSortedProducts.length === 0" class="col-span-full py-8 text-center text-slate-500">
+        <div
+          v-if="!isLoading && products.length === 0"
+          class="col-span-full py-8 text-center text-slate-500"
+        >
           Không tìm thấy sản phẩm nào phù hợp.
         </div>
+      </div>
+
+      <!-- Load More / End Indicator -->
+      <div class="py-4 text-center text-slate-500 text-sm" ref="loadMoreRef">
+        <template v-if="products.length > 0">
+          <div
+            v-if="isFetchingMore || isLoading"
+            class="flex items-center justify-center gap-2"
+          >
+            <LoadingOutlined /> Đang tải thêm sản phẩm...
+          </div>
+          <div v-else-if="!hasNextPage">Đã hiển thị hết sản phẩm</div>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { SearchOutlined, CheckOutlined } from '@ant-design/icons-vue';
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import {
+  SearchOutlined,
+  CheckOutlined,
+  LoadingOutlined,
+  StarFilled,
+} from "@ant-design/icons-vue";
 
 // Emits
-defineEmits(['get-link']);
+defineEmits(["get-link"]);
 
 // State
-const searchQuery = ref('');
-const sortBy = ref('commission_desc');
+const searchQuery = ref("");
 const selectedProducts = ref([]);
+const products = ref([]);
+const page = ref(1);
+const hasNextPage = ref(true);
+const isLoading = ref(false);
+const isFetchingMore = ref(false);
+const loadMoreRef = ref(null);
+const scrollContainerRef = ref(null);
+const componentRoot = ref(null);
+const hasInitiallyFetched = ref(false);
 
+let observer = null;
 
-// Mock Data
-const mockProducts = ref([
-  {
-    id: 1,
-    image: 'https://picsum.photos/id/1025/300/400',
-    title: 'Váy yếm jean denim dáng dài - Đầm jean midi phong cách trẻ trung cá tính',
-    price: 215000,
-    sales: 474,
-    commissionRate: 24,
-    hasXtra: true
-  },
-  {
-    id: 2,
-    image: 'https://picsum.photos/id/1027/300/400',
-    title: 'Áo thun tay lỡ form rộng dáng unisex nam nữ mặc đi chơi thoải mái',
-    price: 99000,
-    sales: 1250,
-    commissionRate: 15,
-    hasXtra: false
-  },
-  {
-    id: 3,
-    image: 'https://picsum.photos/id/103/300/400',
-    title: 'Giày sneaker thể thao nam nữ Ulzzang đế cao tôn dáng, phối màu cực chất',
-    price: 350000,
-    sales: 890,
-    commissionRate: 35,
-    hasXtra: true
-  },
-  {
-    id: 4,
-    image: 'https://picsum.photos/id/1043/300/400',
-    title: 'Túi xách nữ đeo chéo thời trang Hàn Quốc cao cấp, da PU mềm mịn',
-    price: 189000,
-    sales: 320,
-    commissionRate: 10,
-    hasXtra: false
-  },
-  {
-    id: 5,
-    image: 'https://picsum.photos/id/1059/300/400',
-    title: 'Set đồ bộ nữ mặc nhà lụa satin cao cấp siêu mát mẻ',
-    price: 145000,
-    sales: 2100,
-    commissionRate: 20,
-    hasXtra: true
-  },
-  {
-    id: 6,
-    image: 'https://picsum.photos/id/1062/300/400',
-    title: 'Áo sơ mi lụa tơ tằm cổ chữ V sang trọng cho quý cô công sở',
-    price: 275000,
-    sales: 156,
-    commissionRate: 18,
-    hasXtra: false
-  }
-]);
+const fetchProducts = async (isLoadMore = false) => {
+  if (isLoadMore && (!hasNextPage.value || isFetchingMore.value)) return;
+  if (!isLoadMore && isLoading.value) return;
 
-// Computed
-const filteredAndSortedProducts = computed(() => {
-  let result = [...mockProducts.value];
-
-  // Search
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase();
-    result = result.filter(p => p.title.toLowerCase().includes(query));
+  if (isLoadMore) {
+    isFetchingMore.value = true;
+  } else {
+    isLoading.value = true;
   }
 
-  // Sort
-  switch (sortBy.value) {
-    case 'commission_desc':
-      result.sort((a, b) => b.commissionRate - a.commissionRate);
-      break;
-    case 'price_asc':
-      result.sort((a, b) => a.price - b.price);
-      break;
-    case 'price_desc':
-      result.sort((a, b) => b.price - a.price);
-      break;
-    case 'sales_desc':
-      result.sort((a, b) => b.sales - a.sales);
-      break;
-  }
+  try {
+    const res = await useAppFetch().api.get("/link/product/list", {
+      query: {
+        page: page.value,
+        keyword: searchQuery.value || undefined,
+      },
+    });
 
-  return result;
+    const data = res.data?.data || res.data || {};
+    const nodes = data.nodes || [];
+
+    if (isLoadMore) {
+      products.value = [...products.value, ...nodes];
+    } else {
+      products.value = nodes;
+    }
+
+    hasNextPage.value = !!data.pageInfo?.hasNextPage;
+  } catch (err) {
+    console.error("Failed to fetch products", err);
+  } finally {
+    if (isLoadMore) {
+      isFetchingMore.value = false;
+    } else {
+      isLoading.value = false;
+    }
+  }
+};
+
+const handleSearch = () => {
+  page.value = 1;
+  fetchProducts();
+};
+
+watch(searchQuery, (newVal) => {
+  if (!newVal) {
+    handleSearch();
+  }
+});
+
+const setupObserver = () => {
+  if (observer) observer.disconnect();
+  observer = new IntersectionObserver(
+    (entries) => {
+      if (
+        entries[0].isIntersecting &&
+        hasNextPage.value &&
+        !isLoading.value &&
+        !isFetchingMore.value
+      ) {
+        page.value++;
+        fetchProducts(true);
+      }
+    },
+    { root: scrollContainerRef.value, threshold: 0.1, rootMargin: "100px" }
+  );
+
+  if (loadMoreRef.value) {
+    observer.observe(loadMoreRef.value);
+  }
+};
+
+onMounted(() => {
+  fetchProducts();
+  setupObserver();
+});
+
+onUnmounted(() => {
+  if (observer) {
+    observer.disconnect();
+  }
 });
 
 // Methods
 const formatPrice = (price) => {
-  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "0";
 };
 
 const toggleSelect = (id) => {
