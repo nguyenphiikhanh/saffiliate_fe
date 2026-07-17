@@ -298,6 +298,11 @@ const toggleSelect = (id) => {
 </script>
 
 <style scoped>
+/* Fix lỗi iOS tự động zoom khi focus input (yêu cầu font-size >= 16px) */
+:deep(.ant-input) {
+  font-size: 16px !important;
+}
+
 /* Tùy chỉnh thanh cuộn cho khu vực danh sách sản phẩm */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;

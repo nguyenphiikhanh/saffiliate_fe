@@ -459,3 +459,31 @@ onMounted(() => {
 });
 </script>
 
+<style scoped>
+/* Tối ưu hiển thị thanh Tabs trên Mobile (Option A) */
+@media (max-width: 640px) {
+  :deep(.ant-tabs-nav-list) {
+    width: 100%;
+    display: flex;
+  }
+  :deep(.ant-tabs-tab) {
+    flex: 1;
+    justify-content: center;
+    padding: 12px 2px !important;
+    margin: 0 !important;
+  }
+  :deep(.ant-tabs-tab-btn) {
+    font-size: 13px !important;
+  }
+  :deep(.ant-tabs-tab-btn span) {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: center;
+  }
+  /* Ẩn icon trên mobile để gọn hơn */
+  :deep(.ant-tabs-tab-btn .anticon) {
+    display: none !important;
+  }
+}
+</style>
